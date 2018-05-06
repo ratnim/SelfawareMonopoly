@@ -2,22 +2,6 @@
 # Configure test project and environment
 #
 
-# CMake version
-cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
-
-# Declare project
-project("server-tests" C CXX)
-
-# Compiler settings and options
-
-if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../cmake")
-    include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/CompileOptions.cmake)
-    list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../cmake")
-else()
-    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/CompileOptions.cmake)
-    list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-endif()
-
 # Function: Build test and add command to execute it via target 'run-tests'
 function(add_test_without_ctest target)
     add_subdirectory(${target})
@@ -44,6 +28,7 @@ add_subdirectory(googletest/googlemock)
 
 # Create interface library to link against gmock
 add_library(gmock-dev INTERFACE)
+set_target_properties(gtest gtest_main gmock gmock_main PROPERTIES FOLDER "${IDE_FOLDER}")
 
 target_include_directories(gmock-dev
     SYSTEM INTERFACE
@@ -58,21 +43,10 @@ target_link_libraries(gmock-dev
 
 
 # 
-# Target 'test'
+# Tests
 # 
 
 add_custom_target(run-tests)
 set_target_properties(run-tests PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD 1)
 
-
-# 
-# Tests
-# 
-
 add_test_without_ctest(server-test)
-
-#
-# GTest and GMock IDE folder
-#
-
-set_target_properties(gtest gtest_main gmock gmock_main PROPERTIES FOLDER "${IDE_FOLDER}")
