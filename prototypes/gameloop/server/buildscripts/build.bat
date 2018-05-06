@@ -10,3 +10,5 @@ if not exist build (
 cd build
 
 cmake -G%CMAKE_GENERATOR% ..
+
+PAUSE
