@@ -1,4 +1,46 @@
-cmake_minimum_required (VERSION 2.8.11)
-project (SelfawareMonopoly)
+#
+# Configure CMake environment
+#
 
-add_executable (SelfawareMonopoly src/main.cpp)
+cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
+
+# Include cmake modules
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
+# Include custom cmake modules
+include(cmake/HealthCheck.cmake)
+include(cmake/CompileOptions.cmake)
+
+
+# 
+# Declare project
+# 
+
+# Declare project
+project(SelfawareMonopoly C CXX)
+
+# Set output directories
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_AUTOMOC ON)
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+set(IDE_FOLDER "")
+
+
+# 
+# Project configuration options
+# 
+
+option(OPTION_BUILD_TESTS "Build tests." ON)
+enable_cppcheck(On)
+
+
+# 
+# Project modules
+# 
+
+add_subdirectory(source)
+add_subdirectory(tests)
