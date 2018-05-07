@@ -27,7 +27,6 @@ add_executable(${target}
     ${includes}
 )
 
-
 # 
 # Project options
 # 
@@ -48,7 +47,6 @@ target_include_directories(${target}
     ${CMAKE_CURRENT_SOURCE_DIR}
     PRIVATE
     ${DEFAULT_INCLUDE_DIRECTORIES}
-    ${PROJECT_BINARY_DIR}/source/include
 )
 
 

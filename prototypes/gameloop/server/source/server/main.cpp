@@ -1,8 +1,17 @@
 #include <iostream>
 
+#include <QApplication>
+#include <QDebug>
+
+#include <database.h>
 #include <symbol.h>
 
-int main(int argc, char *argv)
+int main(int argc, char **argv)
 {
-	std::cout << "I'm alive: " << value << std::endl;
+    QApplication app(argc, argv);
+
+    Database db;
+    db.send("I'm alive with value: ");
+
+	qDebug() << db.receive() << value;
 }

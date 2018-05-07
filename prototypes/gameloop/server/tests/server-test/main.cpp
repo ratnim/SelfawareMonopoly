@@ -1,5 +1,7 @@
 #include <gmock/gmock.h>
 
+#include <QApplication>
+
 int main(int argc, char* argv[])
 {
     ::testing::InitGoogleMock(&argc, argv);

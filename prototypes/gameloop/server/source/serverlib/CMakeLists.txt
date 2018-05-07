@@ -12,10 +12,12 @@ message(STATUS "Lib ${target}")
 # 
 
 set(headers
+    database.h
     symbol.h
 )
 
 set(sources
+    database.cpp
     symbol.cpp
 )
 
@@ -67,6 +69,8 @@ target_link_libraries(${target}
     ${DEFAULT_LIBRARIES}
     Qt5::Core
     Qt5::Gui
+    Qt5::Sql
+    Qt5::Widgets
 
     INTERFACE
 )
