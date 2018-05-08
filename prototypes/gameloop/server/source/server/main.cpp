@@ -3,15 +3,14 @@
 #include <QApplication>
 #include <QDebug>
 
-#include <database.h>
-#include <symbol.h>
+#include <server.h>
 
 int main(int argc, char** argv)
 {
     QApplication app(argc, argv);
 
-    Database db;
-    db.send("I'm alive with value: ");
+    Server server;
+    server.run();
 
-    qDebug() << db.receive() << value;
+    return 0;
 }
