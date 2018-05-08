@@ -13,5 +13,5 @@ int main(int argc, char **argv)
     Database db;
     db.send("I'm alive with value: ");
 
-	qDebug() << db.receive() << value;
+    qDebug() << db.receive() << value;
 }
