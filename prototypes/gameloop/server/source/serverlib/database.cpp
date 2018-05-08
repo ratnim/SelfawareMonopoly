@@ -24,7 +24,7 @@ QSqlQuery Database::prepareSend()
     return query;
 }
 
-void Database::send(const QString &message)
+void Database::send(const QString& message)
 {
     m_send.bindValue(":message", message);
     if (!m_send.exec())

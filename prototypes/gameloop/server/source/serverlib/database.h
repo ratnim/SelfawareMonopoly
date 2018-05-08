@@ -9,7 +9,7 @@ class Database
 public:
     Database();
 
-    void send(const QString &message);
+    void send(const QString& message);
 
     QString receive();
 
