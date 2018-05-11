@@ -30,7 +30,7 @@ function getEnterGameMessage() {
 	return JSON.stringify(obj)
 }
 
-function handelResponse(response) {
+function handleResponse(response) {
 	log(response)
 	window.location.replace(getGameURL() + '?playerName=' + document.getElementById("playerNameText").value)
 }
