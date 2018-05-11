@@ -1,5 +1,7 @@
 @echo off
 
+set CALL_DIR=%CD%
+
 call default.bat
 
 cd ..
@@ -9,6 +11,10 @@ if not exist build (
 
 cd build
 
-cmake -G%CMAKE_GENERATOR% ..
+echo prefix path: %CMAKE_PREFIX_PATH%
+
+cmake -DCMAKE_PREFIX_PATH=%QT_CMAKE_DIR%;%CMAKE_PREFIX_PATH% -G%CMAKE_GENERATOR% ..
+
+cd %CALL_DIR%
 
 PAUSE
