@@ -13,12 +13,18 @@ message(STATUS "Lib ${target}")
 
 set(headers
     database.h
+    event.h
+    gamestate.h
+    path.h
     request.h
     server.h
 )
 
 set(sources
     database.cpp
+    event.cpp
+    gamestate.cpp
+    path.cpp
     request.cpp
     server.cpp
 )
