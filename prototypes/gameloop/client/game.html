@@ -28,8 +28,14 @@ function log(message) {
 	console.log(message);
 }
 
+function getAPIRoot() {
+	var url = window.location.href
+	var arr = url.split("/")
+	return arr[0] + "//" + arr[2]
+}
+
 function getGameURL() {
-	return "http://" + location.hostname + "/game"
+	return "getAPIRoot() + "/game"
 }
 
 function getRollDiceMessage() {
