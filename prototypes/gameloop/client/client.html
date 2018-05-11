@@ -10,7 +10,7 @@
 <p>Name: <input type="text" id="playerNameText" value="Insert Name"><br></p>
 
 <h1>Game:</h1>
-<p>Server Address: <input type="text" id="serverAddressText" value="Insert Server"><br></p>
+<p>Server Address: <input type="text" id="serverAddressText" value="localhost"><br></p>
 <p>Port: <input type="number" id="ServerPortNumber" value="80"><br></p>
 
 <p><button onclick="enterGame()"><b>Enter Game</b></button></p>
@@ -21,11 +21,11 @@ function log(message) {
 }
 
 function getURL() {
-	return document.getElementById("serverAddressText").value + ":" + document.getElementById("ServerPortNumber").value
+	return "http://" + document.getElementById("serverAddressText").value + ":" + document.getElementById("ServerPortNumber").value
 }
 
 function getEnterGameMessage() {
-	var obj = {"player": document.getElementById("playerNameText").value, "actions":["enterGame",]}
+	var obj = {"player": document.getElementById("playerNameText").value, "action":{"name":"enterGame"}}
 	return JSON.stringify(obj)
 }
 
