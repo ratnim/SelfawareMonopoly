@@ -2,7 +2,7 @@
 <html>
 <header>
 	<title>
-	Selfaware Monopoly
+	Selfaware Monopoly Lobby
 	</title>
 </header>
 <body>
@@ -17,8 +17,12 @@ function log(message) {
 	console.log(message);
 }
 
-function getURL() {
-	return location.hostname
+function getLobbyURL() {
+	return "http://" + location.hostname + "/lobby"
+}
+
+function getGameURL() {
+	return "http://" + location.hostname + "/game"
 }
 
 function getEnterGameMessage() {
@@ -26,16 +30,19 @@ function getEnterGameMessage() {
 	return JSON.stringify(obj)
 }
 
+function handelResponse(response) {
+	log(response)
+	window.location.replace(getGameURL() + '?playerName=' + document.getElementById("playerNameText").value)
+}
+
 function enterGame() {
-	var url = getURL()
+	var url = getLobbyURL()
 	var content = getEnterGameMessage()
-	log("content: " + content)
-	log("url: " + url)
 	
 	var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() { 
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-            callback(xmlHttp.responseText);
+            handleResponse(xmlHttp.responseText);
     }
     xmlHttp.open("POST", url, true); // true for asynchronous 
     xmlHttp.send(content);

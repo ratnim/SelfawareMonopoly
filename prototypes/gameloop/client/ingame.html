@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<header>
+	<title>
+	Selfaware Monopoly InGame
+	</title>
+</header>
+<body>
+<div id="PlayerStatsDiv" />
+
+<script>
+function getPlayerName() {
+	var url_string = window.location.href
+	var url = new URL(url_string);
+	return url.searchParams.get("playerName");
+}
+
+function addPlayerNameElement(player) {
+	var nameField = document.createElement("h1");
+	var node = document.createTextNode(player);
+	nameField.appendChild(node);
+	
+	var element = document.getElementById("PlayerStatsDiv");
+	element.appendChild(nameField);
+}
+
+function log(message) {
+	console.log(message);
+}
+
+function getGameURL() {
+	return "http://" + location.hostname + "/game"
+}
+
+function getRollDiceMessage() {
+	var obj = {"player": player, "action":{"name":"rollDice"}}
+	return JSON.stringify(obj)
+}
+
+function handelResponse(response) {
+	log(response)
+}
+
+function rollDice() {
+	var url = getGameURL()
+	var content = getRollDiceMessage()
+	
+	var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            handleResponse(xmlHttp.responseText);
+    }
+    xmlHttp.open("POST", url, true); // true for asynchronous 
+    xmlHttp.send(content);
+}
+
+
+var player = getPlayerName()
+addPlayerNameElement(player)
+</script>
+
+
+<div id="BoardDiv">
+	<p>This could be a game board soon.</p>
+
+</div>
+<div id="ControllDiv">
+	<p><button onclick="rollDice()"><b>RollDice</b></button></p>
+</div>
+
+</body>
+</html>
