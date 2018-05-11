@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<header>
+	<title>
+	Selfaware Monopoly
+	</title>
+</header>
+<body>
+<h1> Player:</h1>
+<p>Name: <input type="text" id="playerNameText" value="Insert Name"><br></p>
+
+<h1>Game:</h1>
+<p>Server Address: <input type="text" id="serverAddressText" value="Insert Server"><br></p>
+<p>Port: <input type="number" id="ServerPortNumber" value="80"><br></p>
+
+<p><button onclick="enterGame()"><b>Enter Game</b></button></p>
+
+<script>
+function log(message) {
+	console.log(message);
+}
+
+function getURL() {
+	return document.getElementById("serverAddressText").value + ":" + document.getElementById("ServerPortNumber").value
+}
+
+function getEnterGameMessage() {
+	var obj = {"player": document.getElementById("playerNameText").value, "actions":["enterGame",]}
+	return JSON.stringify(obj)
+}
+
+function enterGame() {
+	var url = getURL()
+	var content = getEnterGameMessage()
+	log(content)
+	log(url)
+	
+	var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            callback(xmlHttp.responseText);
+    }
+    xmlHttp.open("GET", url, true); // true for asynchronous 
+    xmlHttp.send(content);
+}
+</script>
+
+</body>
+</html>
