@@ -60,6 +60,24 @@ function rollDice() {
     xmlHttp.send(content);
 }
 
+function getStartGameMessage() {
+	var obj = {"action":{"name":"startGame"}}
+	return JSON.stringify(obj)
+}
+
+function startGame() {
+	var url = getGameURL()
+	var content = getStartGameMessage()
+	
+	var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            handleResponse(xmlHttp.responseText);
+    }
+    xmlHttp.open("POST", url, true); // true for asynchronous 
+    xmlHttp.send(content);
+}
+
 
 var player = getPlayerName()
 addPlayerNameElement(player)
@@ -72,6 +90,7 @@ addPlayerNameElement(player)
 </div>
 <div id="ControllDiv">
 	<p><button onclick="rollDice()"><b>RollDice</b></button></p>
+	<p><button onclick="startGame()"><b>StartGame</b></button></p>
 </div>
 
 </body>
