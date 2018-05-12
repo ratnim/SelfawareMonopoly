@@ -1,4 +1,5 @@
 var http = require('http');
+var url = require('url')
 
 var fileHandler = require('./staticfilehandler');
 var game = require('./game');
@@ -9,10 +10,15 @@ var returnBadRequest = function(req, res) {
   return res.end();
 }
 
-var handleGET = function(req, res) {
-  var url = req.url
+var getRoute = function(req) {
+  var url_parts = url.parse(req.url)
+  return url_parts.pathname
+}
 
-  switch (url) {
+var handleGET = function(req, res) {
+  var route = getRoute(req)
+
+  switch (route) {
     case '/':          
     case '/lobby':
       fileHandler.returnLobby(req, res)
@@ -27,11 +33,17 @@ var handleGET = function(req, res) {
 }
 
 var handlePOST = function(req, res) {
-  var url = req.url
+  var route = getRoute(req)
 
-  switch (url) {
+  switch (route) {
+    case '/lobby':
+      game.createPlayer(req, res)
+      break
+    case '/game':
+      game.receiveGameData(req, res)
+      break
     default:
-      game.receiveGameData(req, res);
+      returnBadRequest(req, res);
       break;
   }
 }
