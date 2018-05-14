@@ -50,7 +50,11 @@ class Game {
         break
     }
 
-    return JSON.stringify(action)
+    if(action.hasOwnProperty("error"))
+    return "Error: " + JSON.stringify(action["error"])
+    
+    var actions = this.getPassedActions()
+    return JSON.stringify(actions)
   }
 
   doSetupAction(action) {
@@ -62,7 +66,7 @@ class Game {
         this.startGame(action)
         break
       default:
-        action["error"] = "Action not Supported will setup."
+        action["error"] = "Action not supported while setup."
         break
     }
   }
@@ -73,7 +77,7 @@ class Game {
       this.rollDice(action)
       break
       default:
-        action["error"] = "Action not Supported will ingame."
+        action["error"] = "Action not supported while ingame."
         break
     }
   }
@@ -81,7 +85,7 @@ class Game {
   doReviewAction(action) {
     switch(action["action"]["name"]) {
       default:
-        action["error"] = "Action not Supported will review."
+        action["error"] = "Action not supported while review."
         break
     }
   }
@@ -134,6 +138,10 @@ class Game {
   signAction(action) {
     utils.logAction(action)
     this.actions.push(action)
+  }
+
+  getPassedActions() {
+    return this.actions
   }
 
   rollDice(action) {
