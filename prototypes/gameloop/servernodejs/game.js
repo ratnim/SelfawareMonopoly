@@ -38,6 +38,10 @@ class Game {
   }
 
   doAction(action) {
+    var lastKnownId = 0
+    if(action.hasOwnProperty("id"))
+      lastKnownId = action["id"]
+
     switch(this.state) {
       case GameStates.setup:
         this.doSetupAction(action)
@@ -51,10 +55,10 @@ class Game {
     }
 
     if(action.hasOwnProperty("error"))
-    return "Error: " + JSON.stringify(action["error"])
-    
-    var actions = this.getPassedActions()
-    return JSON.stringify(actions)
+      return JSON.stringify({ "error" : action["error"]});
+
+    var pastActions = this.getPassedActions(lastKnownId)
+    return JSON.stringify(pastActions)
   }
 
   doSetupAction(action) {
@@ -93,7 +97,7 @@ class Game {
   addPlayer(action) {
     if(this.state != GameStates.setup)
     {
-      action["error"] = "Game is already started."
+      action["error"] = "Game has already started."
       return
     }
 
@@ -140,8 +144,8 @@ class Game {
     this.actions.push(action)
   }
 
-  getPassedActions() {
-    return this.actions
+  getPassedActions(sinceId) {
+    return this.actions.slice(sinceId, this.actions.length)
   }
 
   rollDice(action) {
