@@ -9,6 +9,8 @@
 <div id="PlayerStatsDiv" />
 
 <script>
+var knownId = 0
+
 function getPlayerName() {
 	var url_string = window.location.href
 	var url = new URL(url_string);
@@ -39,12 +41,16 @@ function getGameURL() {
 }
 
 function getRollDiceMessage() {
-	var obj = {"player": player, "action":{"name":"rollDice"}}
+	var obj = {"player": player, "action":{"name":"rollDice"}, "id" : knownId}
 	return JSON.stringify(obj)
 }
 
 function handleResponse(response) {
-	log(response)
+	obj = JSON.parse(response);
+	if(obj[obj.length-1] != undefined && obj[obj.length-1].hasOwnProperty("id"))
+		knownId = obj[obj.length-1].id
+	
+	log(obj)
 }
 
 function rollDice() {
