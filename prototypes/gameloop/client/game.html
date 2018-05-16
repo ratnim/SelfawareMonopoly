@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<header>
+	<title>
+	Selfaware Monopoly InGame
+	</title>
+</header>
+<body>
+
+<div id="Top">
+
+<span id="PlayerStatsDiv">
+	<h2 id="PlayerName">
+		{{ playerName }}
+	</h2>
+</span>
+
+<span id="dices">
+  Your last dice roll: {{ eyes[0].value }} {{ eyes[1].value }}
+</span>
+
+<span id="BoardDiv">
+	<ol>
+    <!--
+      Now we provide each todo-item with the todo object
+      it's representing, so that its content can be dynamic.
+      We also need to provide each component with a "key",
+      which will be explained later.
+    -->
+    <player-status
+      v-for="player in playerList"
+      v-bind:player="player"
+      v-bind:key="player.id">
+    </player-status>
+  </ol>
+</span>
+
+<span id="ControllDiv">
+	<p><button onclick="rollDice()"><b>RollDice</b></button></p>
+	<p><button onclick="startGame()"><b>StartGame</b></button></p>
+</span>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+var knownId = -1
+
+Vue.component('player-status', {
+  props: ['player'],
+  template: '<ul>{{ player.name }} Position:{{ player.position }}</ul>'
+})
+
+var vue = new Vue({
+  el: '#Top',
+  data: {
+	eyes : [
+		{value : ""},
+		{value : ""}
+	],
+	playerName : "",
+	players : [],
+	playerList: []
+  }
+})
+
+function getPlayerName() {
+	var url_string = window.location.href
+	var url = new URL(url_string);
+	return url.searchParams.get("playerName");
+}
+
+vue.playerName = getPlayerName()
+
+
+function log(message) {
+	console.log(message);
+}
+
+function startGame() {
+	var url = getGameURL()
+	var message = getStartGameMessage()
+	
+	request(url, message)
+}
+
+function rollDice() {
+	var url = getGameURL()
+	var message = getRollDiceMessage()
+	
+	request(url, message)
+}
+
+function review() {
+	var url = getGameURL()
+	var message = getReviewMessage()
+	
+	request(url, message)
+}
+
+function getAPIRoot() {
+	var url = window.location.href
+	var arr = url.split("/")
+	return arr[0] + "//" + arr[2]
+}
+
+function getGameURL() {
+	return getAPIRoot() + "/game"
+}
+
+function getRollDiceMessage() {
+	var obj = {"player": vue.playerName, "action":{"name":"rollDice"}}
+	if(knownId > -1)
+		obj.id = knownId
+	return JSON.stringify(obj)
+}
+
+function getReviewMessage() {
+	var obj = {"action":{"name":"review"}}
+	if(knownId >= -1)
+		obj.id = knownId
+	return JSON.stringify(obj)
+}
+
+function getStartGameMessage() {
+	var obj = {"action":{"name":"startGame"}}
+	return JSON.stringify(obj)
+}
+
+function request(url, message) {	
+	var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            handleResponse(xmlHttp.responseText);
+    }
+    xmlHttp.open("POST", url, true); // true for asynchronous 
+    xmlHttp.send(message);
+}
+
+function handleResponse(response) {
+	obj = JSON.parse(response);
+	if(obj[obj.length-1] != undefined && obj[obj.length-1].hasOwnProperty("action"))
+	{
+		knownId = obj[obj.length-1].id
+		
+		obj.forEach(function(message) {
+			if(message.action.name == "rollDice")
+			{
+				if(message.player == vue.playerName)
+				{
+					vue.eyes[0].value = message.action.eyes[0]
+					vue.eyes[1].value = message.action.eyes[1]
+				}
+			
+				vue.playerList.forEach(function(player)
+				{							
+					if(message.player == player.name)
+					{
+						player.position += message.action.eyes[0] + message.action.eyes[1]
+					}
+				})	
+			}
+			if(message.action.name == "startGame")
+			{
+				message.action.players.forEach(function(player)
+				{
+					vue.playerList.push({"id" : vue.playerList.length-1, "name" : player, "position" : 0 })
+				})
+			}
+		})
+	}
+	
+	log(obj)
+}
+
+var t=setInterval(review, 1000)
+</script>
+</body>
+</html>
