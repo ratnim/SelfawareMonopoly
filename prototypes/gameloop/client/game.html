@@ -88,28 +88,27 @@ function getGameURL() {
 }
 
 function getRollDiceMessage() {
-	var obj = {"player": vue.playerName, "action":{"name":"rollDice"}, "id" : knownId}
+	var obj = {"player": vue.playerName, "action":{"name":"rollDice", "id" : knownId}}
 	return JSON.stringify(obj)
 }
 
 function handleResponse(response) {
 	obj = JSON.parse(response);
-	if(obj[obj.length-1] != undefined && obj[obj.length-1].hasOwnProperty("id"))
+	if(obj[obj.length-1] != undefined && obj[obj.length-1].hasOwnProperty("action"))
 	{
-		knownId = obj[obj.length-1].id
+		knownId = obj[obj.length-1].action.id
+		
 		obj.forEach(function(message) {
 			if(message.action.name == "rollDice")
 			{
-				vue.eyes[0].value = message.eyes[0]
-				vue.eyes[1].value = message.eyes[1]
+				vue.eyes[0].value = message.action.eyes[0]
+				vue.eyes[1].value = message.action.eyes[1]
 				
 				vue.playerList.forEach(function(player)
-				{
-					console.log(message.player + " : " + player.name)
-					
+				{			
 					if(message.player == player.name)
 					{
-						player.position += message.eyes[0] + message.eyes[1]
+						player.position += message.action.eyes[0] + message.action.eyes[1]
 					}
 				})	
 			}
