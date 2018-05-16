@@ -6,10 +6,63 @@
 	</title>
 </header>
 <body>
-<div id="PlayerStatsDiv" />
 
+<div id="Top">
+
+<span id="PlayerStatsDiv">
+	<h2 id="PlayerName">
+		{{ playerName }}
+	</h2>
+</span>
+
+<span id="dices">
+  {{ eyes[0].value }} {{ eyes[1].value }}
+</span>
+
+<span id="BoardDiv">
+	<ol>
+    <!--
+      Now we provide each todo-item with the todo object
+      it's representing, so that its content can be dynamic.
+      We also need to provide each component with a "key",
+      which will be explained later.
+    -->
+    <player-status
+      v-for="player in playerList"
+      v-bind:player="player"
+      v-bind:key="player.id">
+    </player-status>
+  </ol>
+</span>
+
+<span id="ControllDiv">
+	<p><button onclick="rollDice()"><b>RollDice</b></button></p>
+	<p><button onclick="startGame()"><b>StartGame</b></button></p>
+</span>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script>
 var knownId = 0
+
+Vue.component('player-status', {
+  props: ['player'],
+  template: '<ul>{{ player.name }} Position:{{ player.position }}</ul>'
+})
+
+var vue = new Vue({
+  el: '#Top',
+  data: {
+	eyes : [
+		{value : ""},
+		{value : ""}
+	],
+	playerName : "",
+	players : [],
+	playerList: []
+  }
+})
 
 function getPlayerName() {
 	var url_string = window.location.href
@@ -17,14 +70,8 @@ function getPlayerName() {
 	return url.searchParams.get("playerName");
 }
 
-function addPlayerNameElement(player) {
-	var nameField = document.createElement("h1");
-	var node = document.createTextNode(player);
-	nameField.appendChild(node);
-	
-	var element = document.getElementById("PlayerStatsDiv");
-	element.appendChild(nameField);
-}
+vue.playerName = getPlayerName()
+
 
 function log(message) {
 	console.log(message);
@@ -41,14 +88,49 @@ function getGameURL() {
 }
 
 function getRollDiceMessage() {
-	var obj = {"player": player, "action":{"name":"rollDice"}, "id" : knownId}
+	var obj = {"player": vue.playerName, "action":{"name":"rollDice"}, "id" : knownId}
 	return JSON.stringify(obj)
 }
 
 function handleResponse(response) {
 	obj = JSON.parse(response);
 	if(obj[obj.length-1] != undefined && obj[obj.length-1].hasOwnProperty("id"))
+	{
 		knownId = obj[obj.length-1].id
+		obj.forEach(function(message) {
+			if(message.action.name == "rollDice")
+			{
+				vue.eyes[0].value = message.eyes[0]
+				vue.eyes[1].value = message.eyes[1]
+				
+				vue.playerList.forEach(function(player)
+				{
+					console.log(message.player + " : " + player.name)
+					
+					if(message.player == player.name)
+					{
+						player.position += message.eyes[0] + message.eyes[1]
+					}
+				})	
+			}
+			if(message.action.name == "startTurn")
+			{
+				var playerExist = false
+				vue.playerList.forEach(function(player)
+				{
+					if(message.player == player.name)
+					{
+						playerExist = true
+					}
+				})
+
+				if(!playerExist)
+				{
+					vue.playerList.push({ id: vue.playerList.length, name: message.player, position: 0 })
+				}
+			}
+		})
+	}
 	
 	log(obj)
 }
@@ -83,21 +165,6 @@ function startGame() {
     xmlHttp.open("POST", url, true); // true for asynchronous 
     xmlHttp.send(content);
 }
-
-
-var player = getPlayerName()
-addPlayerNameElement(player)
 </script>
-
-
-<div id="BoardDiv">
-	<p>This could be a game board soon.</p>
-
-</div>
-<div id="ControllDiv">
-	<p><button onclick="rollDice()"><b>RollDice</b></button></p>
-	<p><button onclick="startGame()"><b>StartGame</b></button></p>
-</div>
-
 </body>
 </html>
