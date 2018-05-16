@@ -1,7 +1,9 @@
 var utils = require('./utils')
 
-var ActionNames = Object.freeze({"rollDice":1, "startTurn":2, "endTurn":3})
-var GameStates = Object.freeze({"setup":1, "running":2, "finished":3})
+var MessageFields = Object.freeze({"ACTION":"action", "PLAYER":"player", "ERROR":"error"})
+var ActionFields = Object.freeze({"NAME":"name", "ID":"id"})
+var ActionNames = Object.freeze({"ENTER_GAME":"enterGame", "START_GAME":"startGame", "STOP_GAME":"stopGame", "ROLL_DICE":"rollDice", "START_TURN":"startTurn", "END_TURN":"endTurn"})
+var GameStates = Object.freeze({"SETUP":"setup", "RUNNING":"running", "FINISHED":"finished"})
 
 class Player {
   constructor(name) {
@@ -12,7 +14,7 @@ class Player {
 
 class Game {
   constructor() {
-    this.state = GameStates.setup
+    this.state = GameStates.SETUP
     this.players = []
     this.actions = []
     this.current_players_turn
@@ -37,90 +39,90 @@ class Game {
     return actions.slice(lastAction)
   }
 
-  doAction(action) {
+  doAction(actionRequest) {
     var lastKnownId = 0
-    if(action.hasOwnProperty("id"))
-      lastKnownId = action["id"]
+    if(actionRequest.action.hasOwnProperty(ActionFields.ID))
+      lastKnownId = actionRequest.action[ActionFields.ID]
 
     switch(this.state) {
-      case GameStates.setup:
-        this.doSetupAction(action)
+      case GameStates.SETUP:
+        this.doSetupAction(actionRequest)
         break
-      case GameStates.running:
-        this.doIngameAction(action)
+      case GameStates.RUNNING:
+        this.doIngameAction(actionRequest)
         break
-      case GameStates.finished:
-        this.doReviewAction(action)
+      case GameStates.FINISHED:
+        this.doReviewAction(actionRequest)
         break
     }
 
-    if(action.hasOwnProperty("error"))
-      return JSON.stringify({ "error" : action["error"]});
+    if(actionRequest.hasOwnProperty(MessageFields.ERROR))
+      return JSON.stringify({ "error" : actionRequest[MessageFields.ERROR]});
 
     var pastActions = this.getPassedActions(lastKnownId)
     return JSON.stringify(pastActions)
   }
 
-  doSetupAction(action) {
-    switch(action["action"]["name"]) {
-      case "enterGame":
-        this.addPlayer(action)
+  doSetupAction(actionRequest) {
+    switch(actionRequest[MessageFields.ACTION][ActionFields.NAME]) {
+      case ActionNames.ENTER_GAME:
+        this.addPlayer(actionRequest)
         break
-      case "startGame":
-        this.startGame(action)
+      case ActionNames.START_GAME:
+        this.startGame(actionRequest)
         break
       default:
-        action["error"] = "Action not supported while setup."
+        actionRequest[MessageFields.ERROR] = "Action not supported while setup."
         break
     }
   }
 
-  doIngameAction(action) {
-    switch(action["action"]["name"]) {
-      case "rollDice":
-      this.rollDice(action)
+  doIngameAction(actionRequest) {
+    switch(actionRequest[MessageFields.ACTION][ActionFields.NAME]) {
+      case ActionNames.ROLL_DICE:
+        this.rollDice(actionRequest)
       break
       default:
-        action["error"] = "Action not supported while ingame."
+        actionRequest[MessageFields.ERROR] = "Action not supported while ingame."
         break
     }
   }
 
-  doReviewAction(action) {
-    switch(action["action"]["name"]) {
+  doReviewAction(actionRequest) {
+    switch(actionRequest[MessageFields.ACTION][ActionFields.NAME]) {
       default:
-        action["error"] = "Action not supported while review."
+        actionRequest[MessageFields.ERROR] = "Action not supported while review."
         break
     }
   }
 
-  addPlayer(action) {
-    if(this.state != GameStates.setup)
+  addPlayer(actionRequest) {
+    if(this.state != GameStates.SETUP)
     {
-      action["error"] = "Game has already started."
+      actionRequest[MessageFields.ERROR] = "Game has already started."
       return
     }
 
-    if(!this.players.includes(action["player"])){
-      this.players.push(action["player"])
+    if(!this.players.includes(actionRequest[MessageFields.PLAYER])){
+      this.players.push(actionRequest[MessageFields.PLAYER])
     } else {
-      action["error"] = "Player already exists."
+      actionRequest[MessageFields.ERROR] = "Player already exists."
     }
   }
 
-  startGame(action) {
-    if(this.state != GameStates.setup)
+  startGame(actionRequest) {
+    if(this.state != GameStates.SETUP)
     {
-      action["error"] = "Game is not in setup state."
+      actionRequest[MessageFields.ERROR] = "Game is not in setup state."
       return
     }
     if(this.players.length < 2)
     {
-      action["error"] = "At least 2 players are required."
+      actionRequest[MessageFields.ERROR] = "At least 2 players are required."
       return
     }
 
-    this.state = GameStates.running
+    this.state = GameStates.RUNNING
     this.current_players_turn = 0
     this.doPlayerStartTurn()
   }
@@ -149,13 +151,13 @@ class Game {
   }
 
   rollDice(action) {
-    if(this.getCurrentPlayer() != action["player"])
+    if(this.getCurrentPlayer() != action[MessageFields.PLAYER])
     {
-      action["error"] = "Not your turn."
+      action[MessageFields.ERROR] = "Not your turn."
       return
     }
 
-    action["id"] = this.getId()
+    action[ActionFields.ID] = this.getId()
     var eyes1 = (Math.floor((Math.random() * 6) + 1))
     var eyes2 = (Math.floor((Math.random() * 6) + 1))
     action["eyes"] = [eyes1, eyes2]
