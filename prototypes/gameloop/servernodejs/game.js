@@ -39,86 +39,86 @@ class Game {
     return actions.slice(lastAction)
   }
 
-  doAction(actionRequest) {
+  doAction(message) {
     var lastKnownId = 0
-    if(actionRequest.action.hasOwnProperty(ActionFields.ID))
-      lastKnownId = actionRequest.action[ActionFields.ID]
+    if(message.action.hasOwnProperty(ActionFields.ID))
+      lastKnownId = message.action.id
 
     switch(this.state) {
       case GameStates.SETUP:
-        this.doSetupAction(actionRequest)
+        this.doSetupAction(message)
         break
       case GameStates.RUNNING:
-        this.doIngameAction(actionRequest)
+        this.doIngameAction(message)
         break
       case GameStates.FINISHED:
-        this.doReviewAction(actionRequest)
+        this.doReviewAction(message)
         break
     }
 
-    if(actionRequest.hasOwnProperty(MessageFields.ERROR))
-      return JSON.stringify({ "error" : actionRequest[MessageFields.ERROR]});
+    if(message.hasOwnProperty(MessageFields.ERROR))
+      return JSON.stringify({ "error" : message.error});
 
     var pastActions = this.getPassedActions(lastKnownId)
     return JSON.stringify(pastActions)
   }
 
-  doSetupAction(actionRequest) {
-    switch(actionRequest[MessageFields.ACTION][ActionFields.NAME]) {
+  doSetupAction(message) {
+    switch(message.action.name) {
       case ActionNames.ENTER_GAME:
-        this.addPlayer(actionRequest)
+        this.addPlayer(message)
         break
       case ActionNames.START_GAME:
-        this.startGame(actionRequest)
+        this.startGame(message)
         break
       default:
-        actionRequest[MessageFields.ERROR] = "Action not supported while setup."
+        message.error = "Action not supported while setup."
         break
     }
   }
 
-  doIngameAction(actionRequest) {
-    switch(actionRequest[MessageFields.ACTION][ActionFields.NAME]) {
+  doIngameAction(message) {
+    switch(message.action.name) {
       case ActionNames.ROLL_DICE:
-        this.rollDice(actionRequest)
+        this.rollDice(message)
       break
       default:
-        actionRequest[MessageFields.ERROR] = "Action not supported while ingame."
+        message.error = "Action not supported while ingame."
         break
     }
   }
 
-  doReviewAction(actionRequest) {
-    switch(actionRequest[MessageFields.ACTION][ActionFields.NAME]) {
+  doReviewAction(message) {
+    switch(message.action.name) {
       default:
-        actionRequest[MessageFields.ERROR] = "Action not supported while review."
+        message.error = "Action not supported while review."
         break
     }
   }
 
-  addPlayer(actionRequest) {
+  addPlayer(message) {
     if(this.state != GameStates.SETUP)
     {
-      actionRequest[MessageFields.ERROR] = "Game has already started."
+      message.error = "Game has already started."
       return
     }
 
-    if(!this.players.includes(actionRequest[MessageFields.PLAYER])){
-      this.players.push(actionRequest[MessageFields.PLAYER])
+    if(!this.players.includes(message.player)){
+      this.players.push(message.player)
     } else {
-      actionRequest[MessageFields.ERROR] = "Player already exists."
+      message.error = "Player already exists."
     }
   }
 
-  startGame(actionRequest) {
+  startGame(message) {
     if(this.state != GameStates.SETUP)
     {
-      actionRequest[MessageFields.ERROR] = "Game is not in setup state."
+      message.error = "Game is not in setup state."
       return
     }
     if(this.players.length < 2)
     {
-      actionRequest[MessageFields.ERROR] = "At least 2 players are required."
+      message.error = "At least 2 players are required."
       return
     }
 
@@ -129,15 +129,13 @@ class Game {
 
   doPlayerStartTurn() {
     var action = {"player": this.getCurrentPlayer(),
-              "id": this.getId(), 
-              "action" : {"name" : "startTurn"}}
+              "action" : {"id": this.getId(), "name" : "startTurn"}}
     this.signAction(action)
   }
 
   doPlayerEndTurn() {
     var action = {"player": this.getCurrentPlayer(),
-              "id": this.getId(), 
-              "action" : {"name" : "endTurn"}}
+              "action" : {"id": this.getId(), "name" : "endTurn"}}
     this.signAction(action)
   }
 
@@ -150,18 +148,18 @@ class Game {
     return this.actions.slice(sinceId, this.actions.length)
   }
 
-  rollDice(action) {
-    if(this.getCurrentPlayer() != action[MessageFields.PLAYER])
+  rollDice(message) {
+    if(this.getCurrentPlayer() != message.player)
     {
-      action[MessageFields.ERROR] = "Not your turn."
+      message.error = "Not your turn."
       return
     }
 
-    action[ActionFields.ID] = this.getId()
+    message.action.id = this.getId()
     var eyes1 = (Math.floor((Math.random() * 6) + 1))
     var eyes2 = (Math.floor((Math.random() * 6) + 1))
-    action["eyes"] = [eyes1, eyes2]
-    this.signAction(action)
+    message.action.eyes = [eyes1, eyes2]
+    this.signAction(message)
     
     this.doPlayerEndTurn()
     this.changePlayer()
