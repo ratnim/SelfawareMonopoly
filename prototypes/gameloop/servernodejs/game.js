@@ -1,8 +1,8 @@
 var utils = require('./utils')
 
-var MessageFields = Object.freeze({"ACTION":"action", "PLAYER":"player", "ERROR":"error"})
-var ActionFields = Object.freeze({"NAME":"name", "ID":"id"})
-var ActionNames = Object.freeze({"ENTER_GAME":"enterGame", "START_GAME":"startGame", "STOP_GAME":"stopGame", "ROLL_DICE":"rollDice", "START_TURN":"startTurn", "END_TURN":"endTurn"})
+var MessageFields = Object.freeze({"ACTION":"action", "PLAYER":"player", "ERROR":"error", "ID":"id"})
+var ActionFields = Object.freeze({"NAME":"name"})
+var ActionNames = Object.freeze({"ENTER_GAME":"enterGame", "START_GAME":"startGame", "STOP_GAME":"stopGame", "ROLL_DICE":"rollDice", "START_TURN":"startTurn", "END_TURN":"endTurn", "REVIEW":"review"})
 var GameStates = Object.freeze({"SETUP":"setup", "RUNNING":"running", "FINISHED":"finished"})
 
 class Player {
@@ -11,7 +11,6 @@ class Player {
   }
 }
 
-
 class Game {
   constructor() {
     this.state = GameStates.SETUP
@@ -19,10 +18,6 @@ class Game {
     this.actions = []
     this.current_players_turn
     this.next_id = 0
-  }
-
-  getId() {
-    return this.next_id++
   }
 
   getCurrentPlayer() {
@@ -40,9 +35,9 @@ class Game {
   }
 
   doAction(message) {
-    var lastKnownId = 0
-    if(message.action.hasOwnProperty(ActionFields.ID))
-      lastKnownId = message.action.id
+    var lastKnownId = -1
+    if(message.hasOwnProperty(MessageFields.ID))
+      lastKnownId = message.id
 
     switch(this.state) {
       case GameStates.SETUP:
@@ -82,6 +77,9 @@ class Game {
       case ActionNames.ROLL_DICE:
         this.rollDice(message)
       break
+      case ActionNames.REVIEW:
+        message.id = this.actions[this.actions.length - 1].id
+      break
       default:
         message.error = "Action not supported while ingame."
         break
@@ -90,6 +88,8 @@ class Game {
 
   doReviewAction(message) {
     switch(message.action.name) {
+      case ActionNames.REVIEW:
+      break
       default:
         message.error = "Action not supported while review."
         break
@@ -121,7 +121,9 @@ class Game {
       message.error = "At least 2 players are required."
       return
     }
+    message.action.players = this.players
 
+    this.signAction(message)
     this.state = GameStates.RUNNING
     this.current_players_turn = 0
     this.doPlayerStartTurn()
@@ -129,23 +131,28 @@ class Game {
 
   doPlayerStartTurn() {
     var action = {"player": this.getCurrentPlayer(),
-              "action" : {"id": this.getId(), "name" : "startTurn"}}
+              "action" : {"name" : "startTurn"}}
     this.signAction(action)
   }
 
   doPlayerEndTurn() {
     var action = {"player": this.getCurrentPlayer(),
-              "action" : {"id": this.getId(), "name" : "endTurn"}}
+              "action" : {"name" : "endTurn"}}
     this.signAction(action)
   }
 
+  getId() {
+    return this.next_id++
+  }
+
   signAction(action) {
+    action.id = this.getId()
     utils.logAction(action)
     this.actions.push(action)
   }
 
-  getPassedActions(sinceId) {
-    return this.actions.slice(sinceId, this.actions.length)
+  getPassedActions(knownId) {
+    return this.actions.slice(knownId+1, this.actions.length)
   }
 
   rollDice(message) {
@@ -155,7 +162,6 @@ class Game {
       return
     }
 
-    message.action.id = this.getId()
     var eyes1 = (Math.floor((Math.random() * 6) + 1))
     var eyes2 = (Math.floor((Math.random() * 6) + 1))
     message.action.eyes = [eyes1, eyes2]
