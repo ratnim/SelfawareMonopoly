@@ -16,7 +16,7 @@
 </span>
 
 <span id="dices">
-  {{ eyes[0].value }} {{ eyes[1].value }}
+  Your last dice roll: {{ eyes[0].value }} {{ eyes[1].value }}
 </span>
 
 <span id="BoardDiv">
@@ -44,7 +44,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script>
-var knownId = 0
+var knownId = -1
 
 Vue.component('player-status', {
   props: ['player'],
@@ -77,6 +77,27 @@ function log(message) {
 	console.log(message);
 }
 
+function startGame() {
+	var url = getGameURL()
+	var message = getStartGameMessage()
+	
+	request(url, message)
+}
+
+function rollDice() {
+	var url = getGameURL()
+	var message = getRollDiceMessage()
+	
+	request(url, message)
+}
+
+function review() {
+	var url = getGameURL()
+	var message = getReviewMessage()
+	
+	request(url, message)
+}
+
 function getAPIRoot() {
 	var url = window.location.href
 	var arr = url.split("/")
@@ -88,63 +109,17 @@ function getGameURL() {
 }
 
 function getRollDiceMessage() {
-	var obj = {"player": vue.playerName, "action":{"name":"rollDice", "id" : knownId}}
+	var obj = {"player": vue.playerName, "action":{"name":"rollDice"}}
+	if(knownId > -1)
+		obj.id = knownId
 	return JSON.stringify(obj)
 }
 
-function handleResponse(response) {
-	obj = JSON.parse(response);
-	if(obj[obj.length-1] != undefined && obj[obj.length-1].hasOwnProperty("action"))
-	{
-		knownId = obj[obj.length-1].action.id
-		
-		obj.forEach(function(message) {
-			if(message.action.name == "rollDice")
-			{
-				vue.eyes[0].value = message.action.eyes[0]
-				vue.eyes[1].value = message.action.eyes[1]
-				
-				vue.playerList.forEach(function(player)
-				{			
-					if(message.player == player.name)
-					{
-						player.position += message.action.eyes[0] + message.action.eyes[1]
-					}
-				})	
-			}
-			if(message.action.name == "startTurn")
-			{
-				var playerExist = false
-				vue.playerList.forEach(function(player)
-				{
-					if(message.player == player.name)
-					{
-						playerExist = true
-					}
-				})
-
-				if(!playerExist)
-				{
-					vue.playerList.push({ id: vue.playerList.length, name: message.player, position: 0 })
-				}
-			}
-		})
-	}
-	
-	log(obj)
-}
-
-function rollDice() {
-	var url = getGameURL()
-	var content = getRollDiceMessage()
-	
-	var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() { 
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-            handleResponse(xmlHttp.responseText);
-    }
-    xmlHttp.open("POST", url, true); // true for asynchronous 
-    xmlHttp.send(content);
+function getReviewMessage() {
+	var obj = {"action":{"name":"review"}}
+	if(knownId >= -1)
+		obj.id = knownId
+	return JSON.stringify(obj)
 }
 
 function getStartGameMessage() {
@@ -152,18 +127,53 @@ function getStartGameMessage() {
 	return JSON.stringify(obj)
 }
 
-function startGame() {
-	var url = getGameURL()
-	var content = getStartGameMessage()
-	
+function request(url, message) {	
 	var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() { 
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
             handleResponse(xmlHttp.responseText);
     }
     xmlHttp.open("POST", url, true); // true for asynchronous 
-    xmlHttp.send(content);
+    xmlHttp.send(message);
 }
+
+function handleResponse(response) {
+	obj = JSON.parse(response);
+	if(obj[obj.length-1] != undefined && obj[obj.length-1].hasOwnProperty("action"))
+	{
+		knownId = obj[obj.length-1].id
+		
+		obj.forEach(function(message) {
+			if(message.action.name == "rollDice")
+			{
+				if(message.player == vue.playerName)
+				{
+					vue.eyes[0].value = message.action.eyes[0]
+					vue.eyes[1].value = message.action.eyes[1]
+				}
+			
+				vue.playerList.forEach(function(player)
+				{							
+					if(message.player == player.name)
+					{
+						player.position += message.action.eyes[0] + message.action.eyes[1]
+					}
+				})	
+			}
+			if(message.action.name == "startGame")
+			{
+				message.action.players.forEach(function(player)
+				{
+					vue.playerList.push({"id" : vue.playerList.length-1, "name" : player, "position" : 0 })
+				})
+			}
+		})
+	}
+	
+	log(obj)
+}
+
+var t=setInterval(review, 1000)
 </script>
 </body>
 </html>
