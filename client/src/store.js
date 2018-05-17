@@ -30,6 +30,18 @@ const vueAuth = new VueAuthenticate(Vue.prototype.$http, {
       clientId: '1720802108194706',
       redirectUri: window.origin + '/auth/callback',
       responseType: 'token'
+    },
+    twitter: {
+      clientId: 'ZeIvP1jaKMjgUiQT65xSkMzt4',
+      url: null,
+      redirectUri: window.origin + '/auth/callback',
+      responseType: 'token'
+    },
+    google: {
+      clientId: '89280433713-ru4dkc7emg9oqlp3gaqejcqrf689vsqe.apps.googleusercontent.com',
+      redirectUri: window.origin + '/auth/callback',
+      responseType: 'token',
+      scope: ['https://mail.google.com/']
     }
   }
 })
@@ -37,7 +49,7 @@ const vueAuth = new VueAuthenticate(Vue.prototype.$http, {
 export default new Vuex.Store({
   state: {
     isAuthenticated: false,
-    tokens: {'instagram' : null, 'facebook' : null}
+    tokens: {'instagram' : null, 'facebook' : null, 'google': null}
   },
   getters: {
     isAuthenticated() {
