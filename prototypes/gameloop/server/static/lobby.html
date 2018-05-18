@@ -17,12 +17,18 @@ function log(message) {
 	console.log(message);
 }
 
+function getAPIRoot() {
+	var url = window.location.href
+	var arr = url.split("/")
+	return arr[0] + "//" + arr[2]
+}
+
 function getLobbyURL() {
-	return "http://" + location.hostname + "/lobby"
+	return getAPIRoot() + "/lobby"
 }
 
 function getGameURL() {
-	return "http://" + location.hostname + "/game"
+	return getAPIRoot()+ "/game"
 }
 
 function getEnterGameMessage() {

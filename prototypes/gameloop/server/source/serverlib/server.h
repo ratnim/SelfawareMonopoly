@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QMap>
+#include <QScopedPointer>
 #include <QTcpServer>
 
 #include <vector>
@@ -15,17 +17,10 @@ public:
 
     void run();
 
-    static QString staticPage(const QString &filename);
-
 protected:
     QTcpSocket* acccept();
-    QByteArray handle(const QByteArray& data);
+    QByteArray handle(const QString& data);
     void finish(QTcpSocket* socket, const QByteArray& data);
 
-    QString handleLobby(const Request& request);
-    QString handleGame(const Request& request);
-
-    std::vector<Path> m_paths;
-    std::vector<std::unique_ptr<Event>> m_events;
     GameState m_state;
 };

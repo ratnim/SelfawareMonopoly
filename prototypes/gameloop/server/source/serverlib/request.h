@@ -2,11 +2,11 @@
 
 #include <QByteArray>
 #include <QJsonDocument>
+#include <QJsonObject>
 #include <QString>
 
-class Request
+struct Request
 {
-public:
     enum Type
     {
         GET,
@@ -14,15 +14,16 @@ public:
         INVALID
     };
 
-    Request(Type type = INVALID, const QString& path = QString(), const QString& body = QString());
+    Request(Type type = INVALID, const QString& path = QString(), const QJsonObject& body = QJsonObject());
 
     static Request fromString(const QString& data);
-    static QString extractBody(const QString& data);
+    static QJsonObject extractBody(const QString& data);
 
-    static QByteArray toHttpRequest(const QString& data);
+    static QByteArray toHttpAnswer(const QString& data);
+    static QByteArray toJsonError(const QString& message);
+    static QByteArray generateHttpError(int code);
 
-//protected:
-    const Type m_type;
-    const QString m_path;
-    const QString m_body;
+    const Type type;
+    const QString path;
+    const QJsonObject body;
 };

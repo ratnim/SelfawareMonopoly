@@ -13,18 +13,16 @@ message(STATUS "Lib ${target}")
 
 set(headers
     database.h
-    event.h
+    fileserver.h
     gamestate.h
-    path.h
     request.h
     server.h
 )
 
 set(sources
     database.cpp
-    event.cpp
+    fileserver.cpp
     gamestate.cpp
-    path.cpp
     request.cpp
     server.cpp
 )

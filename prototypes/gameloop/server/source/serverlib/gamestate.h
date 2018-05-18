@@ -1,11 +1,29 @@
 #pragma once
 
-#include <QString>
+#include "request.h"
 
 #include <vector>
 
-struct GameState
+class GameState
 {
-    int32_t turn = -1;
+public:
+    GameState();
+
+    QByteArray handle(const Request& request);
+
+protected:
+    QByteArray handleLobby(const Request& request);
+    QByteArray handleGame(const Request& request);
+
+    QJsonObject toAction(const QString& name);
+
+    void gameJoin(const QJsonObject& request);
+    void gameStart();
+    void turnStart();
+    void turnEnd();
+    void rollDice();
+
+    int turn;
     std::vector<QString> playerNames;
+    std::vector<QJsonObject> actions;
 };
