@@ -13,12 +13,18 @@ message(STATUS "Lib ${target}")
 
 set(headers
     database.h
-    symbol.h
+    fileserver.h
+    gamestate.h
+    request.h
+    server.h
 )
 
 set(sources
     database.cpp
-    symbol.cpp
+    fileserver.cpp
+    gamestate.cpp
+    request.cpp
+    server.cpp
 )
 
 # 
@@ -69,6 +75,7 @@ target_link_libraries(${target}
     ${DEFAULT_LIBRARIES}
     Qt5::Core
     Qt5::Gui
+    Qt5::Network
     Qt5::Sql
     Qt5::Widgets
 
