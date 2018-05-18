@@ -78,6 +78,7 @@ target_link_libraries(${target}
     Qt5::Network
     Qt5::Sql
     Qt5::Widgets
+    Qt5::WebSockets
 
     INTERFACE
 )
