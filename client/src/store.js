@@ -48,6 +48,7 @@ const vueAuth = new VueAuthenticate(Vue.prototype.$http, {
 
 export default new Vuex.Store({
   state: {
+    nickname : '',
     isAuthenticated: false,
     tokens: {'instagram' : null, 'facebook' : null, 'google': null}
   },
@@ -57,6 +58,9 @@ export default new Vuex.Store({
     },
     getTokens(state) {
       return state.tokens
+    },
+    getNickname(state) {
+      return state.nickname
     }
   },
   mutations: {
@@ -65,6 +69,9 @@ export default new Vuex.Store({
     },
     setToken(state, payload) {
       state.tokens[payload.provider] = payload.token
+    },
+    setNickname(state, payload) {
+      state.nickname = payload
     }
   },
   actions: {
@@ -86,6 +93,9 @@ export default new Vuex.Store({
           provider: payload.provider
         })
       })
+    },
+    setNickname(context, nickname) {
+      context.commit('setNickname', nickname);
     }
   }
 })
