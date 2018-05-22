@@ -81,13 +81,14 @@ expects:
         }
     }
 returns:
-    ```{
+
+    {
 	    "name" : "join_game"
 	    "data" : 
         { 
             "game_id": <game_id>
         }
-    }```
+    }
 
 Client should redirect to ```/game?game_id=<game_id>&session=<session>```
 
