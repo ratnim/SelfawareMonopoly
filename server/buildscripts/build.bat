@@ -11,9 +11,7 @@ if not exist build (
 
 cd build
 
-echo prefix path: %CMAKE_PREFIX_PATH%
-
-cmake -DCMAKE_PREFIX_PATH=%QT_CMAKE_DIR%;%CMAKE_PREFIX_PATH% -G%CMAKE_GENERATOR% ..
+cmake -G%CMAKE_GENERATOR% ..
 
 cd %CALL_DIR%
 

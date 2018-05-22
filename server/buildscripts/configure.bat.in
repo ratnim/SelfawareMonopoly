@@ -1,3 +1,1 @@
-
-REM Add the Qt5 cmake folder to the module search path.
-set CMAKE_PREFIX_PATH="D:/Programme/Qt/5.10.1/msvc2017_64/lib/cmake;%CMAKE_PREFIX_PATH%"
+set QT_PATH=C:/Qt/5.10.1/msvc2017_64
