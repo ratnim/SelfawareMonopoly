@@ -18,6 +18,6 @@ public:
     static QString generateError(const QString& message, error code);
 
 protected:
-    virtual void unmount(QWebSocket* socket);
+    static void unmount(QWebSocket* socket);
     static QJsonObject toJson(const QString& message);
 };
