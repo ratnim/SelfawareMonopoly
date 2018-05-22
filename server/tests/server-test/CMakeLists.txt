@@ -13,6 +13,7 @@ message(STATUS "Test ${target}")
 set(sources
     main.cpp
     overview_test.cpp
+    request_test.cpp
     
     mocked_server.cpp
 )

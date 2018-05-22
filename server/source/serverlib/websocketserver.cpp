@@ -8,6 +8,24 @@
 #include <lobby.h>
 #include <overview.h>
 
+Request Request::fromUrl(const QString& url)
+{
+    QString route, session, game_id;
+    const QString path = url.split('/').back();
+
+    const auto arguments = path.split('?');
+    route = arguments.front();
+
+    if (arguments.size() > 1)
+    {
+        QUrlQuery args(arguments.back());
+        session = args.queryItemValue("session");
+        game_id = args.queryItemValue("game_id");
+    }
+
+    return { route, session, game_id };
+}
+
 WebSocketServer::WebSocketServer()
     : QWebSocketServer("Monopoly", QWebSocketServer::NonSecureMode)
 {
@@ -26,17 +44,16 @@ WebSocketServer::WebSocketServer()
 void WebSocketServer::acccept()
 {
     auto socket = nextPendingConnection();
-    auto resource_name = socket->resourceName().split('/').back();
+    auto request = Request::fromUrl(socket->resourceName());
 
-    qDebug() << resource_name;
-
-    auto& route = m_routes.find(resource_name);
+    auto& route = m_routes.find(request.route);
     if (route == m_routes.end())
     {
-        invalidRoute(resource_name, socket);
+        invalidRoute(request.route, socket);
     }
     else
     {
+        // TODO it is possible to add the request object here.
         route->second->mount(socket);
     }
 }
