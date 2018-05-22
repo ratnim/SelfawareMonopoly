@@ -48,7 +48,7 @@ QString Overview::handle(const QJsonObject& message)
         return generateError(error, InvalidRequest);
     }
 
-    if (session(player).isEmpty())
+    if (!session(player).isEmpty())
     {
         const auto error = QString("User error: These is already a player with the name '%1'.").arg(player);
         return generateError(error, UserError);
@@ -73,7 +73,11 @@ QString Overview::session(const QString& name)
         throw std::runtime_error("User query failed.");
     }
 
-    return m_sessionFromName.value(0).toString();
+    if (m_sessionFromName.next())
+    {
+        return m_sessionFromName.value(0).toString();
+    }
+    return QString();
 }
 
 QString Overview::username(const QString& session)
@@ -85,7 +89,11 @@ QString Overview::username(const QString& session)
         throw std::runtime_error("Session query failed.");
     }
 
-    return m_nameFromSession.value(0).toString();
+    if (m_nameFromSession.next())
+    {
+        return m_nameFromSession.value(0).toString();
+    }
+    return QString();
 }
 
 QString Overview::createSession()
