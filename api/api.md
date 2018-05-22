@@ -61,7 +61,7 @@ expects:
 returns:
 
     {
-	    "action" : "create_game"
+	    "name" : "create_game"
 	    "data" : 
         { 
             "game_id": <game_id>
@@ -81,13 +81,13 @@ expects:
         }
     }
 returns:
-    {
+    ```{
 	    "name" : "join_game"
 	    "data" : 
         { 
             "game_id": <game_id>
         }
-    }
+    }```
 
 Client should redirect to ```/game?game_id=<game_id>&session=<session>```
 
