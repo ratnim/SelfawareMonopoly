@@ -13,14 +13,26 @@ message(STATUS "Lib ${target}")
 
 set(headers
     configuration.h
-    fileserver.h
-    request.h
+    database.h
+    gamestate.h
+    route.h
+    websocketserver.h
+    
+    game.h
+    lobby.h
+    overview.h
 )
 
 set(sources
     configuration.cpp
-    fileserver.cpp
-    request.cpp
+    database.cpp
+    gamestate.cpp
+    route.cpp
+    websocketserver.cpp
+    
+    game.cpp
+    lobby.cpp
+    overview.cpp
 )
 
 # 

@@ -7,7 +7,7 @@
 
 namespace
 {
-static const QString dbName("myDatabase.db3");
+static const QString dbName("monopoly.db3");
 }
 
 QSqlQuery Database::execute(const QString& queryString)
@@ -44,6 +44,9 @@ QSqlDatabase Database::createDatabase()
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName(dbName);
     db.open();
+
+    QSqlQuery query;
+    query.exec("CREATE TABLE IF NOT EXISTS accounts(name TEXT, session TEXT)");
 
     return db;
 }

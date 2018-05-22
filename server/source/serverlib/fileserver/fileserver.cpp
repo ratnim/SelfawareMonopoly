@@ -4,19 +4,21 @@
 #include <QTcpSocket>
 
 #include "request.h"
+#include <thread>
 
 FileServer::FileServer(const QString& rootDirectory)
     : QTcpServer(nullptr)
     , m_rootDirectory(rootDirectory)
 {
-    setMaxPendingConnections(1024);
-    listen(QHostAddress::Any, 80);
-
-    connect(this, &QTcpServer::newConnection, [this]() 
-    { 
+    connect(this, &QTcpServer::newConnection, [this]() {
         auto socket = acccept();
         finish(socket, handle(socket->readAll()));
     });
+
+    setMaxPendingConnections(1024);
+    listen(QHostAddress::Any, 80);
+
+    qDebug() << "Listen on port 80";
 }
 
 QTcpSocket* FileServer::acccept()
@@ -25,6 +27,7 @@ QTcpSocket* FileServer::acccept()
 
     // Waiting forever is a potential dos.
     socket->waitForReadyRead(-1);
+
     return socket;
 }
 
@@ -33,6 +36,7 @@ void FileServer::finish(QTcpSocket* socket, const QByteArray& data)
     socket->write(data);
     socket->flush();
     socket->close();
+    delete socket;
 }
 
 QByteArray FileServer::handle(const QString& data)
@@ -46,7 +50,7 @@ QByteArray FileServer::handle(const QString& data)
         return staticPage(route->second);
     }
 
-    return Request::generateHttpError(404);
+    return QByteArray();//    Request::generateHttpError(404);
 }
 
 std::map<QString, QString> FileServer::createRoutes()

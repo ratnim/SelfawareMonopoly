@@ -3,6 +3,7 @@
 #include <QJsonArray>
 #include <QVariantMap>
 
+/*
 GameState::GameState()
     : turn(-1)
 {
@@ -166,3 +167,4 @@ void GameState::rollDice()
     action["dices"] = QJsonArray({ rand() % 6 + 1, rand() % 6 + 1 });
     actions.push_back(action);
 }
+*/
