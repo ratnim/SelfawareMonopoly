@@ -12,9 +12,13 @@ message(STATUS "Test ${target}")
 
 set(sources
     main.cpp
+    overview_test.cpp
+    
+    mocked_server.cpp
 )
 
 set(includes
+    mocked_server.h
 )
 
 # 
