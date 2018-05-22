@@ -14,7 +14,7 @@ public:
     QString username(const QString &session);
 
 protected:
-    QString handle(QWebSocket* socket, const QJsonObject& message);
+    QString handle(const QJsonObject& message);
 
     QString createSession();
     QString createAnswer(const QString& userSession);

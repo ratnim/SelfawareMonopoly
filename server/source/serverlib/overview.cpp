@@ -16,7 +16,7 @@ Overview::Overview()
 void Overview::mount(QWebSocket* socket)
 {
     connect(socket, &QWebSocket::textMessageReceived, [this, socket](const QString& message) {
-        const auto answer = handle(socket, toJson(message));
+        const auto answer = handle(toJson(message));
         socket->sendTextMessage(answer);
     });
 
@@ -25,7 +25,7 @@ void Overview::mount(QWebSocket* socket)
     });
 }
 
-QString Overview::handle(QWebSocket* socket, const QJsonObject& message)
+QString Overview::handle(const QJsonObject& message)
 {
     if (message["request"] != "enter_lobby")
     {

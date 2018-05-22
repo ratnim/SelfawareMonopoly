@@ -17,7 +17,7 @@ TEST_F(OveviewTest, invalid_action)
 
     QJsonObject request;
     request["request"] = "something";
-    auto answer = handle(connection.second.get(), request);
+    auto answer = handle(request);
     QJsonObject obj = QJsonDocument::fromJson(answer.toLatin1()).object();
 
     EXPECT_EQ(obj["error"].toObject()["id"].toInt(), Route::UnsupportedAction);
