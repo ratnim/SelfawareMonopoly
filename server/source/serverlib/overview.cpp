@@ -67,33 +67,13 @@ QString Overview::handle(const QJsonObject& message)
 QString Overview::session(const QString& name)
 {
     m_sessionFromName.bindValue(":player_name", name);
-    auto result = m_sessionFromName.exec();
-    if (!result)
-    {
-        throw std::runtime_error("User query failed.");
-    }
-
-    if (m_sessionFromName.next())
-    {
-        return m_sessionFromName.value(0).toString();
-    }
-    return QString();
+    return fetchFromDatabase(m_sessionFromName);
 }
 
 QString Overview::username(const QString& session)
 {
     m_nameFromSession.bindValue(":session", session);
-    auto result = m_nameFromSession.exec();
-    if (!result)
-    {
-        throw std::runtime_error("Session query failed.");
-    }
-
-    if (m_nameFromSession.next())
-    {
-        return m_nameFromSession.value(0).toString();
-    }
-    return QString();
+    return fetchFromDatabase(m_nameFromSession);
 }
 
 QString Overview::createSession()
@@ -124,4 +104,19 @@ QString Overview::createAnswer(const QString& userSession)
         answer["data"] = data;
     }
     return QJsonDocument(answer).toJson();
+}
+
+QString Overview::fetchFromDatabase(QSqlQuery& query)
+{
+    auto result = query.exec();
+    if (!result)
+    {
+        throw std::runtime_error("Session query failed.");
+    }
+
+    if (query.next())
+    {
+        return query.value(0).toString();
+    }
+    return QString();
 }
