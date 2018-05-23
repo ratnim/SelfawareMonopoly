@@ -8,6 +8,8 @@ import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
 Vue.use(VueMaterial)
 
+Vue.use(require('vue-easeljs'));
+
 Vue.config.productionTip = false
 
 new Vue({

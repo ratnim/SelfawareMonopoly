@@ -1,0 +1,104 @@
+{
+  "fields": [
+    [{
+        "id": "los",
+        "type": "los",
+        "label": "LOS",
+        "attributes": {}
+      },
+      {
+        "id": "s1",
+        "type": "street",
+        "label": "Wedding",
+        "attributes": {
+          "color": "#D88DBC",
+          "houses": 0
+        }
+      },
+      {
+        "id": "s2",
+        "type": "street",
+        "label": "Lichtenberg",
+        "attributes": {
+          "color": "#D88DBC",
+          "houses": 0
+        }
+      }
+    ],
+    [{
+        "id": "prison",
+        "type": "prison",
+        "label": "Gefängnis",
+        "attributes": {}
+      },
+      {
+        "id": "s3",
+        "type": "street",
+        "label": "Köpenick",
+        "attributes": {
+          "color": "#F37336",
+          "houses": 0
+        }
+      },
+      {
+        "id": "s4",
+        "type": "street",
+        "label": "Reinickendorf",
+        "attributes": {
+          "color": "#F37336",
+          "houses": 0
+        }
+      }
+    ],
+    [{
+        "id": "free",
+        "type": "free",
+        "label": "Frei Parken",
+        "attributes": {}
+      },
+      {
+        "id": "s5",
+        "type": "street",
+        "label": "Moabit",
+        "attributes": {
+          "color": "#5ABA4A",
+          "houses": 0
+        }
+      },
+      {
+        "id": "s6",
+        "type": "street",
+        "label": "Neukölln",
+        "attributes": {
+          "color": "#5ABA4A",
+          "houses": 0
+        }
+      }
+    ],
+    [{
+        "id": "gotoprison",
+        "type": "gotoprison",
+        "label": "Gehe ins Gefängnis",
+        "attributes": {}
+      },
+      {
+        "id": "s7",
+        "type": "street",
+        "label": "Tempelhof",
+        "attributes": {
+          "color": "#1E3E72",
+          "houses": 0
+        }
+      },
+      {
+        "id": "s8",
+        "type": "street",
+        "label": "Schöneberg",
+        "attributes": {
+          "color": "#1E3E72",
+          "houses": 0
+        }
+      }
+    ]
+  ]
+}
