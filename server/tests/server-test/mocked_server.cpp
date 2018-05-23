@@ -11,7 +11,7 @@ MockedServer::MockedServer()
     : QWebSocketServer("monopoly testing", QWebSocketServer::NonSecureMode)
 {
     setMaxPendingConnections(1024);
-    listen(QHostAddress::Any, 31416);
+    listen(QHostAddress::LocalHost, 31416);
 
     qDebug() << "Listen on port 31416";
 }
