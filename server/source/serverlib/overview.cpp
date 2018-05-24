@@ -50,7 +50,7 @@ QString Overview::handle(const QJsonObject& message)
 
     if (!session(player).isEmpty())
     {
-        const auto error = QString("User error: These is already a player with the name '%1'.").arg(player);
+        const auto error = QString("User error: There is already a player with the name '%1'.").arg(player);
         return generateError(error, UserError);
     }
 
@@ -98,11 +98,7 @@ QString Overview::createAnswer(const QString& userSession)
 {
     QJsonObject answer;
     answer["name"] = "enter_lobby";
-    {
-        QJsonObject data;
-        data["session"] = userSession;
-        answer["data"] = data;
-    }
+    answer["data"] = QJsonObject({ { "session", userSession } });
     return QJsonDocument(answer).toJson();
 }
 
