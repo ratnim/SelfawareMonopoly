@@ -95,6 +95,7 @@ export default {
       this.stepper[id] = true;
       this.stepper.active = active;
       this.$store.dispatch('setNickname', this.nickname);
+      this.$socket.emit("add user", { name: this.nickname }); 
     },
     join(gameid) {
       this.$router.push({ name: 'monopoly', params: { gameid }})

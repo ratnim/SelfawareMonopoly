@@ -10,6 +10,11 @@ Vue.use(VueMaterial)
 
 Vue.use(require('vue-easeljs'));
 
+import VueWebsocket from "vue-websocket";
+Vue.use(VueWebsocket, process.env.VUE_APP_WEBSOCKET_URL);
+
+console.log("Websocket", process.env.VUE_APP_WEBSOCKET_URL);
+
 Vue.config.productionTip = false
 
 new Vue({
