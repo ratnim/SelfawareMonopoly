@@ -31,7 +31,7 @@ WebSocketServer::WebSocketServer()
 {
     connect(this, &QWebSocketServer::newConnection, this, &WebSocketServer::acccept);
 
-    m_routes[""] = std::make_unique<Overview>(m_state.overview);
+    m_routes[""] = std::make_unique<Overview>(m_overview);
     m_routes["lobby"] = std::make_unique<Lobby>();
     m_routes["game"] = std::make_unique<Game>();
 
@@ -61,7 +61,7 @@ void WebSocketServer::acccept()
 void WebSocketServer::invalidRoute(const QString& route, QWebSocket* socket)
 {
     const auto error = QString("Invalid Route: '%1'.").arg(route);
-    socket->sendTextMessage(Route::generateError(error, Route::InvalidRoute));
+    socket->sendTextMessage(Route::toString(Route::generateError(error, Route::InvalidRoute)));
     socket->flush();
     socket->close();
     socket->deleteLater();

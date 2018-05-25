@@ -17,6 +17,7 @@ public:
 protected:
     static QString fetchFromDatabase(QSqlQuery& query);
 
+    QSqlQuery m_createTable;
     QSqlQuery m_sessionFromName;
     QSqlQuery m_nameFromSession;
     QSqlQuery m_createUser;

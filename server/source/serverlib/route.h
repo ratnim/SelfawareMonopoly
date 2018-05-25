@@ -15,9 +15,11 @@ public:
         UserError,
         InternalError,
     };
-    static QString generateError(const QString& message, error code);
+    static QJsonObject generateError(const QString& message, error code);
+
+    static QJsonObject toJson(const QString& message);
+    static QString toString(const QJsonObject& answer);
 
 protected:
     static void unmount(QWebSocket* socket);
-    static QJsonObject toJson(const QString& message);
 };

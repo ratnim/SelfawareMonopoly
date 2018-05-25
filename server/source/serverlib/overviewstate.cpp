@@ -3,7 +3,8 @@
 #include <QVariant>
 
 OverviewState::OverviewState()
-    : m_sessionFromName(Database::prepare("SELECT session FROM accounts WHERE name=:player_name"))
+    : m_createTable(Database::execute("CREATE TABLE IF NOT EXISTS accounts(id INTEGER PRIMARY KEY, name TEXT UNIQUE NOT NULL, session TEXT UNIQUE NOT NULL)"))
+    , m_sessionFromName(Database::prepare("SELECT session FROM accounts WHERE name=:player_name"))
     , m_nameFromSession(Database::prepare("SELECT name FROM accounts WHERE session=:session"))
     , m_createUser(Database::prepare("INSERT INTO accounts (name, session) VALUES (:name, :session)"))
 {

@@ -15,7 +15,7 @@ void Overview::mount(QWebSocket* socket)
 {
     connect(socket, &QWebSocket::textMessageReceived, [this, socket](const QString& message) {
         const auto answer = handle(toJson(message));
-        socket->sendTextMessage(answer);
+        socket->sendTextMessage(toString(answer));
     });
 
     connect(socket, &QWebSocket::readChannelFinished, this, [this, socket] {
@@ -23,7 +23,7 @@ void Overview::mount(QWebSocket* socket)
     });
 }
 
-QString Overview::handle(const QJsonObject& message)
+QJsonObject Overview::handle(const QJsonObject& message)
 {
     if (message["request"] != "enter_lobby")
     {
@@ -46,37 +46,25 @@ QString Overview::handle(const QJsonObject& message)
         return generateError(error, InvalidRequest);
     }
 
-    if (!m_state.session(player).isEmpty())
+    const auto userSession = session();
+    if (!m_state.createUser(player, userSession))
     {
-        const auto error = QString("User error: There is already a player with the name '%1'.").arg(player);
+        const auto error = QString("User error: Could not create user account. The player name is probably already taken.");
         return generateError(error, UserError);
     }
 
-    const auto userSession = createSession();
-    if (!m_state.createUser(player, userSession))
-    {
-        const auto error = QString("Internal error: Could not create user account.");
-        return generateError(error, InternalError);
-    }
-
-    return createAnswer(userSession);
+    return answer(userSession);
 }
 
-QString Overview::createSession()
+QString Overview::session()
 {
-    QString userSession;
-    do
-    {
-        userSession = QUuid::createUuid().toString();
-    } while (!m_state.username(userSession).isEmpty());
-
-    return userSession;
+    return QUuid::createUuid().toString();
 }
 
-QString Overview::createAnswer(const QString& userSession)
+QJsonObject Overview::answer(const QString& userSession)
 {
     QJsonObject answer;
     answer["name"] = "enter_lobby";
     answer["data"] = QJsonObject({ { "session", userSession } });
-    return QJsonDocument(answer).toJson();
+    return answer;
 }

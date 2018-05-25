@@ -13,10 +13,10 @@ public:
     void mount(QWebSocket* socket) override;
 
 protected:
-    QString handle(const QJsonObject& message);
+    QJsonObject handle(const QJsonObject& message);
 
-    QString createSession();
-    QString createAnswer(const QString& userSession);
+    QString session();
+    QJsonObject answer(const QString& userSession);
 
     OverviewState& m_state;
 };
