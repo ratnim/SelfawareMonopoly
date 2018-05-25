@@ -6,7 +6,7 @@
 
 #include <database.h>
 
-Overview::Overview(OverviewState& overviewState)
+Overview::Overview(AccountModel& overviewState)
     : m_state(overviewState)
 {
 }

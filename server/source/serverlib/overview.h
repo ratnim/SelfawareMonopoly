@@ -8,7 +8,7 @@
 class Overview : public Route
 {
 public:
-    Overview(OverviewState& overviewState);
+    Overview(AccountModel& overviewState);
 
     void connectClient(QWebSocket* socket, const Request& request) override;
 
@@ -18,5 +18,5 @@ protected:
     QString session();
     QJsonObject answer(const QString& userSession);
 
-    OverviewState& m_state;
+    AccountModel& m_state;
 };

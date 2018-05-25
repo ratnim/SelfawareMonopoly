@@ -17,6 +17,6 @@ protected:
     void acccept();
     static void invalidRoute(const QString& route, QWebSocket* socket);
 
-    OverviewState m_overview;
+    AccountModel m_overview;
     std::map<QString, std::unique_ptr<Route>> m_routes;
 };

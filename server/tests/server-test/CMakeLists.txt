@@ -12,6 +12,7 @@ message(STATUS "Test ${target}")
 
 set(sources
     main.cpp
+    lobby_test.cpp
     overview_test.cpp
     request_test.cpp
     

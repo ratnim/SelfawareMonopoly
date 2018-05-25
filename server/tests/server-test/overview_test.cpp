@@ -8,14 +8,14 @@
 
 struct State
 {
-    OverviewState overview;
+    AccountModel accounts;
 };
 
 class OverviewTest : public ::testing::Test, public State, public Overview
 {
 public:
     OverviewTest()
-        : Overview(overview)
+        : Overview(accounts)
     {
     }
 };

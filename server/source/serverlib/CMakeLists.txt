@@ -14,7 +14,7 @@ message(STATUS "Lib ${target}")
 set(headers
     configuration.h
     database.h
-    gamestate.h
+	gamestate.h
     request.h
     route.h
     websocketserver.h
@@ -23,13 +23,13 @@ set(headers
     lobby.h
     overview.h
 
-    overviewstate.h
+    accountmodel.h
 )
 
 set(sources
     configuration.cpp
     database.cpp
-    gamestate.cpp
+	gamestate.cpp
     request.cpp
     route.cpp
     websocketserver.cpp
@@ -38,7 +38,7 @@ set(sources
     lobby.cpp
     overview.cpp
 
-    overviewstate.cpp
+    accountmodel.cpp
 )
 
 # 

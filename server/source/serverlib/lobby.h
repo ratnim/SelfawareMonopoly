@@ -6,7 +6,7 @@
 class Lobby : public Route
 {
 public:
-    Lobby(OverviewState& overviewState);
+    Lobby(AccountModel& overviewState);
 
     void connectClient(QWebSocket* socket, const Request& request) override;
 
@@ -19,6 +19,6 @@ protected:
     QJsonObject answer(const QString& request, const int gameID);
 
 protected:
-    OverviewState& m_overviewState;
+    AccountModel& m_accountModel;
     std::vector<QWebSocket*> m_gameListReceivers;
 };

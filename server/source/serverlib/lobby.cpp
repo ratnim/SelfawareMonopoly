@@ -1,19 +1,19 @@
 
 #include "lobby.h"
 
-#include <QJsonDocument>
-
 #include <gamestate.h>
 
-Lobby::Lobby(OverviewState& overviewState)
-    : m_overviewState(overviewState)
+#include <QJsonDocument>
+
+Lobby::Lobby(AccountModel& overviewState)
+    : m_accountModel(overviewState)
 {
 }
 
 void Lobby::connectClient(QWebSocket* socket, const Request& request)
 {
     connect(socket, &QWebSocket::textMessageReceived, [this, socket, request](const QString& message) {
-        const auto answer = handle(toJson(message), m_overviewState.username(request.session));
+        const auto answer = handle(toJson(message), m_accountModel.username(request.session));
         socket->sendTextMessage(toString(answer));
     });
 
