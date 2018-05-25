@@ -7,7 +7,7 @@
 class OverviewState
 {
 public:
-    OverviewState(Database& db);
+    OverviewState();
 
     QString session(const QString& name);
     QString username(const QString& session);

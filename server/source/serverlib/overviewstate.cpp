@@ -2,10 +2,10 @@
 
 #include <QVariant>
 
-OverviewState::OverviewState(Database& db)
-    : m_sessionFromName(db.prepare("SELECT session FROM accounts WHERE name=:player_name"))
-    , m_nameFromSession(db.prepare("SELECT name FROM accounts WHERE session=:session"))
-    , m_createUser(db.prepare("INSERT INTO accounts (name, session) VALUES (:name, :session)"))
+OverviewState::OverviewState()
+    : m_sessionFromName(Database::prepare("SELECT session FROM accounts WHERE name=:player_name"))
+    , m_nameFromSession(Database::prepare("SELECT name FROM accounts WHERE session=:session"))
+    , m_createUser(Database::prepare("INSERT INTO accounts (name, session) VALUES (:name, :session)"))
 {
 }
 

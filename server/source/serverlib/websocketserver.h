@@ -17,7 +17,7 @@ struct Request
     const QString gameId;
 };
 
-class State
+struct State
 {
     OverviewState overview;
 };
