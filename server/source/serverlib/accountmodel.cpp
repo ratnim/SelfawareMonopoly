@@ -32,10 +32,7 @@ QString AccountModel::createUser(const QString& name)
 QString AccountModel::createSession(const QString& name)
 {
     const auto session = QUuid::createUuid().toString();
-    if (m_sessions.count(session))
-    {
-        throw std::runtime_error("Session is not unique.");
-    }
     m_sessions[session] = name;
+
     return session;
 }

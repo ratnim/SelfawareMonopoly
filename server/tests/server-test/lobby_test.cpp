@@ -67,7 +67,7 @@ TEST_F(LobbyTest, join_game_invalid_player)
 
     auto answer = handle(request, "unregistered_player");
 
-    EXPECT_EQ(answer["error"].toObject()["id"].toInt(), Route::UserError);
+    EXPECT_EQ(answer["error"].toObject()["id"].toInt(), Route::InvalidRequest);
 }
 
 TEST_F(LobbyTest, join_game_valid)
