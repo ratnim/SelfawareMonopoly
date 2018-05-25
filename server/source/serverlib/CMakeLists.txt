@@ -21,6 +21,8 @@ set(headers
     game.h
     lobby.h
     overview.h
+
+    overviewstate.h
 )
 
 set(sources
@@ -33,6 +35,8 @@ set(sources
     game.cpp
     lobby.cpp
     overview.cpp
+
+    overviewstate.cpp
 )
 
 # 

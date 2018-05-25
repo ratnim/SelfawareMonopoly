@@ -6,10 +6,8 @@
 
 #include <database.h>
 
-Overview::Overview()
-    : m_sessionFromName(Database::prepare("SELECT session FROM accounts WHERE name=:player_name"))
-    , m_nameFromSession(Database::prepare("SELECT name FROM accounts WHERE session=:session"))
-    , m_createUser(Database::prepare("INSERT INTO accounts (name, session) VALUES (:name, :session)"))
+Overview::Overview(OverviewState& overviewState)
+    : m_state(overviewState)
 {
 }
 
@@ -48,14 +46,14 @@ QString Overview::handle(const QJsonObject& message)
         return generateError(error, InvalidRequest);
     }
 
-    if (!session(player).isEmpty())
+    if (!m_state.session(player).isEmpty())
     {
         const auto error = QString("User error: There is already a player with the name '%1'.").arg(player);
         return generateError(error, UserError);
     }
 
     const auto userSession = createSession();
-    if (!createUser(player, userSession))
+    if (!m_state.createUser(player, userSession))
     {
         const auto error = QString("Internal error: Could not create user account.");
         return generateError(error, InternalError);
@@ -64,34 +62,15 @@ QString Overview::handle(const QJsonObject& message)
     return createAnswer(userSession);
 }
 
-QString Overview::session(const QString& name)
-{
-    m_sessionFromName.bindValue(":player_name", name);
-    return fetchFromDatabase(m_sessionFromName);
-}
-
-QString Overview::username(const QString& session)
-{
-    m_nameFromSession.bindValue(":session", session);
-    return fetchFromDatabase(m_nameFromSession);
-}
-
 QString Overview::createSession()
 {
     QString userSession;
     do
     {
         userSession = QUuid::createUuid().toString();
-    } while (!username(userSession).isEmpty());
+    } while (!m_state.username(userSession).isEmpty());
 
     return userSession;
-}
-
-bool Overview::createUser(const QString& name, const QString& session)
-{
-    m_createUser.bindValue(":name", name);
-    m_createUser.bindValue(":session", session);
-    return m_createUser.exec();
 }
 
 QString Overview::createAnswer(const QString& userSession)
@@ -100,19 +79,4 @@ QString Overview::createAnswer(const QString& userSession)
     answer["name"] = "enter_lobby";
     answer["data"] = QJsonObject({ { "session", userSession } });
     return QJsonDocument(answer).toJson();
-}
-
-QString Overview::fetchFromDatabase(QSqlQuery& query)
-{
-    auto result = query.exec();
-    if (!result)
-    {
-        throw std::runtime_error("Session query failed.");
-    }
-
-    if (query.next())
-    {
-        return query.value(0).toString();
-    }
-    return QString();
 }

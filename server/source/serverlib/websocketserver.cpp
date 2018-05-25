@@ -31,7 +31,7 @@ WebSocketServer::WebSocketServer()
 {
     connect(this, &QWebSocketServer::newConnection, this, &WebSocketServer::acccept);
 
-    m_routes[""] = std::make_unique<Overview>();
+    m_routes[""] = std::make_unique<Overview>(m_state.overview);
     m_routes["lobby"] = std::make_unique<Lobby>();
     m_routes["game"] = std::make_unique<Game>();
 

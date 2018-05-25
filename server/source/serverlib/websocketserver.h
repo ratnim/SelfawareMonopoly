@@ -4,6 +4,8 @@
 
 #include <QWebSocketServer>
 
+#include <database.h>
+#include <overviewstate.h>
 #include <route.h>
 
 struct Request
@@ -15,6 +17,11 @@ struct Request
     const QString gameId;
 };
 
+class State
+{
+    OverviewState overview;
+};
+
 class WebSocketServer : public QWebSocketServer
 {
 public:
@@ -24,5 +31,6 @@ protected:
     void acccept();
     static void invalidRoute(const QString& route, QWebSocket* socket);
 
+    State m_state;
     std::map<QString, std::unique_ptr<Route>> m_routes;
 };
