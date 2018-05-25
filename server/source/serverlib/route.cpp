@@ -29,7 +29,12 @@ QJsonObject Route::toJson(const QString& message)
     return QJsonObject();
 }
 
-QString Route::generateError(const QString& message, error code)
+QString Route::toString(const QJsonObject& answer)
+{
+    return QJsonDocument(answer).toJson();
+}
+
+QJsonObject Route::generateError(const QString& message, error code)
 {
     QJsonObject answer;
     {
@@ -39,7 +44,7 @@ QString Route::generateError(const QString& message, error code)
 
         answer["error"] = error;
     }
-    return QJsonDocument(answer).toJson();
+    return answer;
 }
 
 QString Route::session(const QString& name)

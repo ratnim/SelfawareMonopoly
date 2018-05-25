@@ -45,8 +45,5 @@ QSqlDatabase Database::createDatabase()
     db.setDatabaseName(dbName);
     db.open();
 
-    QSqlQuery query;
-    query.exec("CREATE TABLE IF NOT EXISTS accounts(name TEXT, session TEXT)");
-
     return db;
 }
