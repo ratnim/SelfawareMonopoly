@@ -12,7 +12,6 @@ public:
     LobbyTest()
         : Lobby(accounts)
     {
-        accounts.createUser("registered_player", "1234567890");
     }
 };
 

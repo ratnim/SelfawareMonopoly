@@ -1,8 +1,6 @@
 #include "overview.h"
 
 #include <QJsonDocument>
-#include <QSqlQuery>
-#include <QUuid>
 
 #include <database.h>
 
@@ -39,19 +37,14 @@ QJsonObject Overview::handle(const QJsonObject& message)
         return generateError(error, InvalidRequest);
     }
 
-    const auto userSession = session();
-    if (!m_state.createUser(player, userSession))
+    const auto userSession = m_state.createUser(player);
+    if (userSession.isEmpty())
     {
         const auto error = QString("User error: Could not create user account. The player name is probably already taken.");
         return generateError(error, UserError);
     }
 
     return answer(userSession);
-}
-
-QString Overview::session()
-{
-    return QUuid::createUuid().toString();
 }
 
 QJsonObject Overview::answer(const QString& userSession)

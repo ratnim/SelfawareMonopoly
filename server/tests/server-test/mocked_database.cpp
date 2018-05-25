@@ -7,4 +7,5 @@ ResetDatabase::ResetDatabase()
 
 MockedDatabase::MockedDatabase()
 {
+    accounts.createUser("registered_player");
 }

@@ -45,7 +45,7 @@ TEST_F(OverviewTest, invalid_request_no_player_name)
 
 TEST_F(OverviewTest, user_error_player_name_taken)
 {
-    EXPECT_TRUE(m_state.createUser("test_user", session()));
+    EXPECT_NE(m_state.createUser("test_user"), QString());
 
     QJsonObject request({ { "request", "enter_lobby" } });
     QJsonObject data({ { "player_name", "test_user" } });
@@ -65,13 +65,11 @@ TEST_F(OverviewTest, correct_request)
     auto answer = handle(request);
 
     EXPECT_EQ(answer["name"].toString(), "enter_lobby");
-    EXPECT_EQ(answer["data"].toObject()["session"].toString(), m_state.session("valid_user"));
+    EXPECT_NE(answer["data"].toObject()["session"].toString(), QString());
 }
 
 TEST_F(OverviewTest, request_user_and_session)
 {
-    EXPECT_TRUE(m_state.createUser("new_user", "secret"));
-
-    EXPECT_EQ(m_state.username("secret"), "new_user");
-    EXPECT_EQ(m_state.session("new_user"), "secret");
+    EXPECT_EQ(m_state.username(m_state.createUser("new_user")), "new_user");
+    EXPECT_NE(m_state.createSession("another_user"), QString());
 }

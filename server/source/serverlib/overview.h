@@ -14,8 +14,6 @@ public:
 
 protected:
     QJsonObject handle(const QJsonObject& message);
-
-    QString session();
     QJsonObject answer(const QString& userSession);
 
     AccountModel& m_state;
