@@ -4,8 +4,7 @@
 
 #include <QWebSocketServer>
 
-#include <database.h>
-#include <overviewstate.h>
+#include <accountmodel.h>
 #include <route.h>
 
 class WebSocketServer : public QWebSocketServer

@@ -3,22 +3,10 @@
 #include <QJsonDocument>
 
 #include <lobby.h>
-#include <websocketserver.h>
+#include <mocked_database.h>
 
-struct DatabaseReseter
-{
-    DatabaseReseter()
-    {
-        // TODO: THIS IS ... todo
-    }
-};
 
-struct State : DatabaseReseter
-{
-    AccountModel accounts;
-};
-
-class LobbyTest : public ::testing::Test, public State, public Lobby
+class LobbyTest : public ::testing::Test, MockedDatabase, public Lobby
 {
 public:
     LobbyTest()

@@ -16,10 +16,12 @@ set(sources
     overview_test.cpp
     request_test.cpp
     
+    mocked_database.cpp
     mocked_server.cpp
 )
 
 set(includes
+    mocked_database.h
     mocked_server.h
 )
 

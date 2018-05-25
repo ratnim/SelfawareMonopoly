@@ -2,16 +2,11 @@
 
 #include <QJsonDocument>
 
-#include <mocked_server.h>
+#include <mocked_database.h>
+
 #include <overview.h>
-#include <websocketserver.h>
 
-struct State
-{
-    AccountModel accounts;
-};
-
-class OverviewTest : public ::testing::Test, public State, public Overview
+class OverviewTest : public ::testing::Test, MockedDatabase, public Overview
 {
 public:
     OverviewTest()

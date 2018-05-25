@@ -1,6 +1,6 @@
 #include "database.h"
 
-#include <QDebug>
+#include <QUuid>
 #include <QFile>
 #include <QSqlError>
 #include <QVariant>
@@ -41,7 +41,7 @@ QSqlDatabase Database::database()
 QSqlDatabase Database::createDatabase()
 {
     QFile::remove(dbName);
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", QUuid::createUuid().toString());
     db.setDatabaseName(dbName);
     db.open();
 
