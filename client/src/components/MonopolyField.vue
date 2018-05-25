@@ -22,8 +22,7 @@ export default {
     y: Number,
     fieldWidth : Number,
     fieldLength : Number,
-    attributes : { type: Object, required: false, default: {"color": "#1d1d1d"}},
-    align : { type: Array, required: false, default: ['top', 'left']}
+    attributes : { type: Object, required: false, default: {"color": "#1d1d1d"}}
   },
   data: function() {
     return {

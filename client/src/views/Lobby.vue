@@ -78,7 +78,6 @@ export default {
     //get list of players
     this.players = players;
     //provide nickname
-    debugger;
     this.nickname = this.$route.query.nickname || this.$store.state.nickname;
 
     //join lobby

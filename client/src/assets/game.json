@@ -7,20 +7,46 @@
         "attributes": {}
       },
       {
-        "id": "s1",
+        "id": "s11",
+        "type": "street",
+        "label": "Mahrzahn",
+        "attributes": {
+          "color": "#6A009B",
+          "houses": 0
+        }
+      },
+      {
+        "id": "s12",
+        "type": "street",
+        "label": "Hellersdorf",
+        "attributes": {
+          "color": "#6A009B",
+          "houses": 0
+        }
+      },
+      {
+        "id": "station1",
+        "type": "station",
+        "label": "Westkreuz",
+        "attributes": {
+          "color": "#555555"
+        }
+      },
+      {
+        "id": "s11",
         "type": "street",
         "label": "Wedding",
         "attributes": {
-          "color": "#D88DBC",
+          "color": "#C7E5FE",
           "houses": 0
         }
       },
       {
         "id": "s2",
         "type": "street",
-        "label": "Lichtenberg",
+        "label": "Lichten-\nberg",
         "attributes": {
-          "color": "#D88DBC",
+          "color": "#C7E5FE",
           "houses": 0
         }
       }
@@ -36,16 +62,42 @@
         "type": "street",
         "label": "Köpenick",
         "attributes": {
-          "color": "#F37336",
+          "color": "#DA009B",
+          "houses": 0
+        }
+      },
+      {
+        "id": "s11",
+        "type": "street",
+        "label": "Hohen-\nschön-\nhausen",
+        "attributes": {
+          "color": "#DA009B",
+          "houses": 0
+        }
+      },
+      {
+        "id": "station2",
+        "type": "station",
+        "label": "Gesund-\nbrunnen",
+        "attributes": {
+          "color": "#555555"
+        }
+      },
+      {
+        "id": "s11",
+        "type": "street",
+        "label": "Pankow",
+        "attributes": {
+          "color": "#F19D00",
           "houses": 0
         }
       },
       {
         "id": "s4",
         "type": "street",
-        "label": "Reinickendorf",
+        "label": "Reinicken-\ndorf",
         "attributes": {
-          "color": "#F37336",
+          "color": "#F19D00",
           "houses": 0
         }
       }
@@ -53,7 +105,7 @@
     [{
         "id": "free",
         "type": "free",
-        "label": "Frei Parken",
+        "label": "Frei\nParken",
         "attributes": {}
       },
       {
@@ -61,7 +113,33 @@
         "type": "street",
         "label": "Moabit",
         "attributes": {
-          "color": "#5ABA4A",
+          "color": "#F20000",
+          "houses": 0
+        }
+      },
+      {
+        "id": "s11",
+        "type": "street",
+        "label": "Steglitz",
+        "attributes": {
+          "color": "#F20000",
+          "houses": 0
+        }
+      },
+      {
+        "id": "station3",
+        "type": "station",
+        "label": "Ost-\nbahnhof",
+        "attributes": {
+          "color": "#555555"
+        }
+      },
+      {
+        "id": "s11",
+        "type": "street",
+        "label": "Zehlendorf",
+        "attributes": {
+          "color": "#ECFF00",
           "houses": 0
         }
       },
@@ -70,7 +148,7 @@
         "type": "street",
         "label": "Neukölln",
         "attributes": {
-          "color": "#5ABA4A",
+          "color": "#ECFF00",
           "houses": 0
         }
       }
@@ -78,7 +156,7 @@
     [{
         "id": "gotoprison",
         "type": "gotoprison",
-        "label": "Gehe ins Gefängnis",
+        "label": "Gehe ins \nGefängnis",
         "attributes": {}
       },
       {
@@ -86,7 +164,7 @@
         "type": "street",
         "label": "Tempelhof",
         "attributes": {
-          "color": "#1E3E72",
+          "color": "#00B167",
           "houses": 0
         }
       },
@@ -95,7 +173,33 @@
         "type": "street",
         "label": "Schöneberg",
         "attributes": {
-          "color": "#1E3E72",
+          "color": "#00B167",
+          "houses": 0
+        }
+      },
+      {
+        "id": "station4",
+        "type": "station",
+        "label": "Friedrich-\nstraße",
+        "attributes": {
+          "color": "#555555"
+        }
+      },
+      {
+        "id": "s11",
+        "type": "street",
+        "label": "Charlotten-\nburg",
+        "attributes": {
+          "color": "#345CB9",
+          "houses": 0
+        }
+      },
+      {
+        "id": "s11",
+        "type": "street",
+        "label": "Kreuzburg",
+        "attributes": {
+          "color": "#345CB9",
           "houses": 0
         }
       }
