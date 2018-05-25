@@ -5,11 +5,16 @@
 
 #include <gamestate.h>
 
+Lobby::Lobby(OverviewState& overviewState)
+    : m_overviewState(overviewState)
+{
+}
+
 void Lobby::mount(QWebSocket* socket, const Request& request)
 {
     connect(socket, &QWebSocket::textMessageReceived, [this, socket, request](const QString& message) {
-        const auto answer = handle(toJson(message), username(request.session));
-        socket->sendTextMessage(answer);
+        const auto answer = handle(toJson(message), m_overviewState.username(request.session));
+        socket->sendTextMessage(toString(answer));
     });
 
     connect(socket, &QWebSocket::readChannelFinished, this, [this, socket] {
@@ -31,7 +36,7 @@ void Lobby::resendGameList()
     // TODO: send list to m_gameListReceivers
 }
 
-QString Lobby::handle(const QJsonObject& message, const QString& playerName)
+QJsonObject Lobby::handle(const QJsonObject& message, const QString& playerName)
 {
     if (!message.contains("request"))
     {
@@ -59,7 +64,7 @@ QString Lobby::handle(const QJsonObject& message, const QString& playerName)
     return generateError(error, UnsupportedAction);
 }
 
-QString Lobby::handleCreate(const QString& playerName)
+QJsonObject Lobby::handleCreate(const QString& playerName)
 {
     const auto gameID = createNewGame();
 
@@ -69,7 +74,7 @@ QString Lobby::handleCreate(const QString& playerName)
     return answer("create_game", gameID);
 }
 
-QString Lobby::handleJoin(const QJsonValue& data, const QString& playerName)
+QJsonObject Lobby::handleJoin(const QJsonValue& data, const QString& playerName)
 {
     if (!data.isObject())
     {
@@ -126,10 +131,10 @@ QString Lobby::handleJoin(const QJsonValue& data, const QString& playerName)
     return answer("join_game", gameID);
 }
 
-QString Lobby::answer(const QString& request, const int gameID)
+QJsonObject Lobby::answer(const QString& request, const int gameID)
 {
     QJsonObject answerObj;
     answerObj["name"] = request;
     answerObj["data"] = QJsonObject({{"game_id", gameID}});
-    return QJsonDocument(answerObj).toJson();
+    return answerObj;
 }
