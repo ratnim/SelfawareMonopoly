@@ -31,18 +31,11 @@ QJsonObject Overview::handle(const QJsonObject& message)
         return generateError(error, UnsupportedAction);
     }
 
-    const auto data = message["data"];
-    if (!data.isObject())
-    {
-        const auto error = QString("Invalid request: Data is not a JSON object.");
-        return generateError(error, InvalidRequest);
-    }
-
-    auto dataObject = data.toObject();
-    const auto player = dataObject["player_name"].toString();
+    auto data = message["data"].toObject();
+    const auto player = data["player_name"].toString();
     if (player.isEmpty())
     {
-        const auto error = QString("Invalid request: 'player_name' is missing.");
+        const auto error = QString("Invalid request: 'data.player_name' is missing.");
         return generateError(error, InvalidRequest);
     }
 
