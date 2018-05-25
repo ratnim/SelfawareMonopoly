@@ -30,7 +30,7 @@ TEST_F(OverviewTest, invalid_request_no_data)
 
     auto answer = handle(request);
 
-    EXPECT_EQ(answer["error"].toObject()["id"].toInt(), Route::InvalidRequest);
+    EXPECT_EQ(answer["error"].toObject()["id"].toInt(), Route::MalformedRequest);
 }
 
 TEST_F(OverviewTest, invalid_request_no_player_name)
@@ -40,7 +40,7 @@ TEST_F(OverviewTest, invalid_request_no_player_name)
 
     auto answer = handle(request);
 
-    EXPECT_EQ(answer["error"].toObject()["id"].toInt(), Route::InvalidRequest);
+    EXPECT_EQ(answer["error"].toObject()["id"].toInt(), Route::MalformedRequest);
 }
 
 TEST_F(OverviewTest, user_error_player_name_taken)
@@ -53,7 +53,7 @@ TEST_F(OverviewTest, user_error_player_name_taken)
 
     auto answer = handle(request);
 
-    EXPECT_EQ(answer["error"].toObject()["id"].toInt(), Route::UserError);
+    EXPECT_EQ(answer["error"].toObject()["id"].toInt(), Route::InvalidRequest);
 }
 
 TEST_F(OverviewTest, correct_request)

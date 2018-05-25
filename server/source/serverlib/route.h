@@ -14,10 +14,11 @@ public:
 
     enum error
     {
+        NoError = 0,
         InvalidRoute,
         UnsupportedAction,
+        MalformedRequest,
         InvalidRequest,
-        UserError,
         InternalError,
     };
     static QJsonObject generateError(const QString& message, error code);

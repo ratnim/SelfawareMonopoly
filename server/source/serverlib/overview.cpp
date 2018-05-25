@@ -34,14 +34,14 @@ QJsonObject Overview::handle(const QJsonObject& message)
     if (player.isEmpty())
     {
         const auto error = QString("Invalid request: 'data.player_name' is missing.");
-        return generateError(error, InvalidRequest);
+        return generateError(error, MalformedRequest);
     }
 
     const auto userSession = m_state.createUser(player);
     if (userSession.isEmpty())
     {
         const auto error = QString("User error: Could not create user account. The player name is probably already taken.");
-        return generateError(error, UserError);
+        return generateError(error, InvalidRequest);
     }
 
     return answer(userSession);
