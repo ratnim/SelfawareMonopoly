@@ -7,13 +7,12 @@
 #include <database.h>
 
 Overview::Overview()
-    : m_sessionFromName(Database::prepare("SELECT session FROM accounts WHERE name=:player_name"))
-    , m_nameFromSession(Database::prepare("SELECT name FROM accounts WHERE session=:session"))
+    : Route()
     , m_createUser(Database::prepare("INSERT INTO accounts (name, session) VALUES (:name, :session)"))
 {
 }
 
-void Overview::mount(QWebSocket* socket)
+void Overview::mount(QWebSocket* socket, const Request& /*request*/)
 {
     connect(socket, &QWebSocket::textMessageReceived, [this, socket](const QString& message) {
         const auto answer = handle(toJson(message));
@@ -64,18 +63,6 @@ QString Overview::handle(const QJsonObject& message)
     return createAnswer(userSession);
 }
 
-QString Overview::session(const QString& name)
-{
-    m_sessionFromName.bindValue(":player_name", name);
-    return fetchFromDatabase(m_sessionFromName);
-}
-
-QString Overview::username(const QString& session)
-{
-    m_nameFromSession.bindValue(":session", session);
-    return fetchFromDatabase(m_nameFromSession);
-}
-
 QString Overview::createSession()
 {
     QString userSession;
@@ -102,17 +89,3 @@ QString Overview::createAnswer(const QString& userSession)
     return QJsonDocument(answer).toJson();
 }
 
-QString Overview::fetchFromDatabase(QSqlQuery& query)
-{
-    auto result = query.exec();
-    if (!result)
-    {
-        throw std::runtime_error("Session query failed.");
-    }
-
-    if (query.next())
-    {
-        return query.value(0).toString();
-    }
-    return QString();
-}

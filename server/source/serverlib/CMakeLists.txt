@@ -15,6 +15,7 @@ set(headers
     configuration.h
     database.h
     gamestate.h
+    request.h
     route.h
     websocketserver.h
     
@@ -27,6 +28,7 @@ set(sources
     configuration.cpp
     database.cpp
     gamestate.cpp
+    request.cpp
     route.cpp
     websocketserver.cpp
     

@@ -1,30 +1,12 @@
 #include "websocketserver.h"
 
 #include <QMetaMethod>
-#include <QUrlQuery>
 #include <QWebSocket>
 
 #include <game.h>
 #include <lobby.h>
 #include <overview.h>
-
-Request Request::fromUrl(const QString& url)
-{
-    QString route, session, game_id;
-    const QString path = url.split('/').back();
-
-    const auto arguments = path.split('?');
-    route = arguments.front();
-
-    if (arguments.size() > 1)
-    {
-        QUrlQuery args(arguments.back());
-        session = args.queryItemValue("session");
-        game_id = args.queryItemValue("game_id");
-    }
-
-    return { route, session, game_id };
-}
+#include <request.h>
 
 WebSocketServer::WebSocketServer()
     : QWebSocketServer("Monopoly", QWebSocketServer::NonSecureMode)
@@ -54,7 +36,7 @@ void WebSocketServer::acccept()
     else
     {
         // TODO it is possible to add the request object here.
-        route->second->mount(socket);
+        route->second->mount(socket, request);
     }
 }
 

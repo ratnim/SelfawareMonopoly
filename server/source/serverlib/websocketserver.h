@@ -6,15 +6,6 @@
 
 #include <route.h>
 
-struct Request
-{
-    static Request fromUrl(const QString& url);
-
-    const QString route;
-    const QString session;
-    const QString gameId;
-};
-
 class WebSocketServer : public QWebSocketServer
 {
 public:
