@@ -49,8 +49,8 @@ QJsonObject Overview::handle(const QJsonObject& message)
 
 QJsonObject Overview::answer(const QString& userSession)
 {
-    QJsonObject answer;
-    answer["name"] = "enter_lobby";
+    QJsonObject answer({ { "name", "enter_lobby" } });
     answer["data"] = QJsonObject({ { "session", userSession } });
+
     return answer;
 }

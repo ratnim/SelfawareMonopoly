@@ -65,11 +65,17 @@ TEST_F(OverviewTest, correct_request)
     auto answer = handle(request);
 
     EXPECT_EQ(answer["name"].toString(), "enter_lobby");
-    EXPECT_NE(answer["data"].toObject()["session"].toString(), QString());
+
+    const auto session = answer["data"].toObject()["session"].toString();
+    EXPECT_NE(session, QString());
+    EXPECT_EQ(m_state.username(session), "valid_user");
 }
 
 TEST_F(OverviewTest, request_user_and_session)
 {
     EXPECT_EQ(m_state.username(m_state.createUser("new_user")), "new_user");
-    EXPECT_NE(m_state.createSession("another_user"), QString());
+
+    const auto session = m_state.createSession("another_user");
+    EXPECT_NE(session, QString());
+    EXPECT_EQ(m_state.username(session), "another_user");
 }
