@@ -1,11 +1,16 @@
 #pragma once
 #include <QJsonObject>
 #include <QWebSocket>
+#include <QSqlQuery>
+
+#include <request.h>
 
 class Route : public QObject
 {
 public:
-    virtual void mount(QWebSocket* socket) = 0;
+    Route();
+
+    virtual void mount(QWebSocket* socket, const Request& request) = 0;
 
     enum error
     {

@@ -11,7 +11,7 @@ Overview::Overview(OverviewState& overviewState)
 {
 }
 
-void Overview::mount(QWebSocket* socket)
+void Overview::mount(QWebSocket* socket, const Request& /*request*/)
 {
     connect(socket, &QWebSocket::textMessageReceived, [this, socket](const QString& message) {
         const auto answer = handle(toJson(message));
