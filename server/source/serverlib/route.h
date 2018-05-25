@@ -10,7 +10,7 @@ class Route : public QObject
 public:
     Route();
 
-    virtual void mount(QWebSocket* socket, const Request& request) = 0;
+    virtual void connectClient(QWebSocket* socket, const Request& request) = 0;
 
     enum error
     {
@@ -26,5 +26,5 @@ public:
     static QString toString(const QJsonObject& answer);
 
 protected:
-    static void unmount(QWebSocket* socket);
+    static void disconnectClient(QWebSocket* socket);
 };

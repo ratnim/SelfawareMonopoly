@@ -5,5 +5,5 @@
 class Game : public Route
 {
 public:
-    void mount(QWebSocket* socket, const Request& request) override;
+    void connectClient(QWebSocket* socket, const Request& request) override;
 };

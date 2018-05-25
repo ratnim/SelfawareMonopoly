@@ -8,7 +8,7 @@ Route::Route()
 {
 }
 
-void Route::unmount(QWebSocket* socket)
+void Route::disconnectClient(QWebSocket* socket)
 {
     socket->flush();
     socket->close();

@@ -10,7 +10,7 @@ Lobby::Lobby(OverviewState& overviewState)
 {
 }
 
-void Lobby::mount(QWebSocket* socket, const Request& request)
+void Lobby::connectClient(QWebSocket* socket, const Request& request)
 {
     connect(socket, &QWebSocket::textMessageReceived, [this, socket, request](const QString& message) {
         const auto answer = handle(toJson(message), m_overviewState.username(request.session));
@@ -18,22 +18,16 @@ void Lobby::mount(QWebSocket* socket, const Request& request)
     });
 
     connect(socket, &QWebSocket::readChannelFinished, this, [this, socket] {
-        unmount(socket);
+        disconnectClient(socket);
     });
 
     m_gameListReceivers.push_back(socket);
 }
 
-void Lobby::unmount(QWebSocket* socket)
+void Lobby::disconnectClient(QWebSocket* socket)
 {
     m_gameListReceivers.erase(std::find(m_gameListReceivers.begin(), m_gameListReceivers.end(), socket));
-    Route::unmount(socket);
-}
-
-void Lobby::resendGameList()
-{
-    // TODO: filter games not yet running
-    // TODO: send list to m_gameListReceivers
+    Route::disconnectClient(socket);
 }
 
 QJsonObject Lobby::handle(const QJsonObject& message, const QString& playerName)

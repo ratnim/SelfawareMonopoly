@@ -36,7 +36,7 @@ void WebSocketServer::acccept()
     else
     {
         // TODO it is possible to add the request object here.
-        route->second->mount(socket, request);
+        route->second->connectClient(socket, request);
     }
 }
 

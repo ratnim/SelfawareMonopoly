@@ -8,12 +8,10 @@ class Lobby : public Route
 public:
     Lobby(OverviewState& overviewState);
 
-    void mount(QWebSocket* socket, const Request& request) override;
+    void connectClient(QWebSocket* socket, const Request& request) override;
 
 protected:
-    void unmount(QWebSocket* socket);
-
-    void resendGameList();
+    void disconnectClient(QWebSocket* socket);
 
     QJsonObject handle(const QJsonObject& message, const QString& playerName);
     QJsonObject handleCreate(const QString& playerName);
