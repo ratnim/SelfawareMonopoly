@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QApplication>
+#include <QCoreApplication>
 #include <QCommandLineParser>
 
 class Configuration

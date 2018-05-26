@@ -1,6 +1,6 @@
 #include <gmock/gmock.h>
 
-#include <mocked_server.h>
+#include <test_utils/mocked_server.h>
 
 int main(int argc, char* argv[])
 {

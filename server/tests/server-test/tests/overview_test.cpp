@@ -2,9 +2,9 @@
 
 #include <QJsonDocument>
 
-#include <mocked_database.h>
+#include <routes/overview.h>
 
-#include <overview.h>
+#include <test_utils/mocked_database.h>
 
 class OverviewTest : public ::testing::Test, MockedDatabase, public Overview
 {

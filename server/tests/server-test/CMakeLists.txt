@@ -12,28 +12,22 @@ message(STATUS "Test ${target}")
 
 set(sources
     main.cpp
-    lobby_test.cpp
-    overview_test.cpp
-    request_test.cpp
-    
-    mocked_database.cpp
-    mocked_server.cpp
+    tests/lobby_test.cpp
+    tests/overview_test.cpp
+    tests/request_test.cpp
+    test_utils/mocked_database.cpp
+    test_utils/mocked_database.h
+    test_utils/mocked_server.cpp
+    test_utils/mocked_server.h
 )
 
-set(includes
-    mocked_database.h
-    mocked_server.h
-)
+source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${sources})
 
 # 
 # Create executable
 # 
 
-# Build executable
-add_executable(${target}
-    ${sources}
-    ${includes}
-)
+add_executable(${target} ${sources})
 
 # 
 # Project options

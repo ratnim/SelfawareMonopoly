@@ -1,7 +1,7 @@
 #pragma once
 
-#include <accountmodel.h>
-#include <route.h>
+#include <models/accountmodel.h>
+#include <routes/route.h>
 
 class Lobby : public Route
 {

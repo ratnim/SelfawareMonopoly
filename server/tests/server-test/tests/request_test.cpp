@@ -1,6 +1,6 @@
 #include <gmock/gmock.h>
 
-#include <websocketserver.h>
+#include <network/websocketserver.h>
 
 TEST(RequestTest, empthy_string)
 {

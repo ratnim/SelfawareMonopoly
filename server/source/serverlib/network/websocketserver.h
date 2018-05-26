@@ -4,8 +4,8 @@
 
 #include <QWebSocketServer>
 
-#include <accountmodel.h>
-#include <route.h>
+#include <models/accountmodel.h>
+#include <routes/route.h>
 
 class WebSocketServer : public QWebSocketServer
 {
@@ -16,6 +16,6 @@ protected:
     void acccept();
     static void invalidRoute(const QString& route, QWebSocket* socket);
 
-    AccountModel m_overview;
+    AccountModel m_accounts;
     std::map<QString, std::unique_ptr<Route>> m_routes;
 };

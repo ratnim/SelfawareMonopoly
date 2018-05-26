@@ -2,8 +2,6 @@
 
 #include <QJsonDocument>
 
-#include <database.h>
-
 Overview::Overview(AccountModel& overviewState)
     : m_state(overviewState)
 {
@@ -33,14 +31,14 @@ QJsonObject Overview::handle(const QJsonObject& message)
     const auto player = data["player_name"].toString();
     if (player.isEmpty())
     {
-        const auto error = QString("Invalid request: 'data.player_name' is missing.");
+        const auto error = QString("Malformed request: 'data.player_name' is missing.");
         return generateError(error, MalformedRequest);
     }
 
     const auto userSession = m_state.createUser(player);
     if (userSession.isEmpty())
     {
-        const auto error = QString("User error: Could not create user account. The player name is probably already taken.");
+        const auto error = QString("Invalid error: Could not create user account. The player name is probably already taken.");
         return generateError(error, InvalidRequest);
     }
 

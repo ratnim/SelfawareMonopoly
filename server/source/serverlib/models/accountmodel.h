@@ -3,8 +3,7 @@
 #include <map>
 
 #include <QSqlQuery>
-
-#include <database.h>
+#include <QString>
 
 class AccountModel
 {

@@ -11,45 +11,36 @@ message(STATUS "Lib ${target}")
 # Sources
 # 
 
-set(headers
-    configuration.h
-    database.h
-	gamestate.h
-    request.h
-    route.h
-    websocketserver.h
-    
-    game.h
-    lobby.h
-    overview.h
-
-    accountmodel.h
-)
-
 set(sources
-    configuration.cpp
-    database.cpp
-	gamestate.cpp
-    request.cpp
-    route.cpp
-    websocketserver.cpp
-    
-    game.cpp
-    lobby.cpp
-    overview.cpp
-
-    accountmodel.cpp
+    models/accountmodel.cpp
+    models/accountmodel.h
+    models/gamestate.cpp
+    models/gamestate.h
+    routes/route.cpp
+    routes/route.h
+    routes/game.cpp
+    routes/game.h
+    routes/lobby.cpp
+    routes/lobby.h
+    routes/overview.cpp
+    routes/overview.h
+    network/request.cpp
+    network/request.h
+    network/websocketserver.cpp
+    network/websocketserver.h
+    utils/configuration.cpp
+    utils/configuration.h
+    utils/database.cpp
+    utils/database.h
 )
+
+source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${sources})
 
 # 
 # Create library
 # 
 
-# Build library
-add_library(${target}
-    ${sources}
-    ${headers}
-)
+add_library(${target} ${sources})
 
 
 # 

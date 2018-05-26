@@ -2,8 +2,8 @@
 
 #include <QSqlQuery>
 
-#include <accountmodel.h>
-#include <route.h>
+#include <models/accountmodel.h>
+#include <routes/route.h>
 
 class Overview : public Route
 {

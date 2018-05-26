@@ -2,8 +2,9 @@
 
 #include <QJsonDocument>
 
-#include <lobby.h>
-#include <mocked_database.h>
+#include <routes/lobby.h>
+
+#include <test_utils/mocked_database.h>
 
 
 class LobbyTest : public ::testing::Test, MockedDatabase, public Lobby

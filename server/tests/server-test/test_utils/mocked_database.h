@@ -1,6 +1,7 @@
 #pragma once
 
-#include <accountmodel.h>
+#include <models/accountmodel.h>
+#include <utils/database.h>
 
 struct ResetDatabase : Database
 {

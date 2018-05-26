@@ -1,13 +1,7 @@
 #include <iostream>
 
-#include <QCoreApplication>
-#include <QCommandLineParser>
-#include <QDebug>
-
-#include <configuration.h>
-#include <websocketserver.h>
-
-#include <thread>
+#include <utils/configuration.h>
+#include <network/websocketserver.h>
 
 int main(int argc, char** argv)
 {

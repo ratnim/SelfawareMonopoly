@@ -1,7 +1,7 @@
 
 #include "lobby.h"
 
-#include <gamestate.h>
+#include <models/gamestate.h>
 
 #include <QJsonDocument>
 

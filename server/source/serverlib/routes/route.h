@@ -1,9 +1,8 @@
 #pragma once
 #include <QJsonObject>
 #include <QWebSocket>
-#include <QSqlQuery>
 
-#include <request.h>
+#include <network/request.h>
 
 class Route : public QObject
 {

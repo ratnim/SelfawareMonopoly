@@ -3,18 +3,19 @@
 #include <QMetaMethod>
 #include <QWebSocket>
 
-#include <game.h>
-#include <lobby.h>
-#include <overview.h>
-#include <request.h>
+#include <network/request.h>
+
+#include <routes/game.h>
+#include <routes/lobby.h>
+#include <routes/overview.h>
 
 WebSocketServer::WebSocketServer()
     : QWebSocketServer("Monopoly", QWebSocketServer::NonSecureMode)
 {
     connect(this, &QWebSocketServer::newConnection, this, &WebSocketServer::acccept);
 
-    m_routes[""] = std::make_unique<Overview>(m_overview);
-    m_routes["lobby"] = std::make_unique<Lobby>(m_overview);
+    m_routes[""] = std::make_unique<Overview>(m_accounts);
+    m_routes["lobby"] = std::make_unique<Lobby>(m_accounts);
     m_routes["game"] = std::make_unique<Game>();
 
     setMaxPendingConnections(1024);

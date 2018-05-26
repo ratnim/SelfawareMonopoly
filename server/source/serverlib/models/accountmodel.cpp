@@ -3,6 +3,8 @@
 #include <QUuid>
 #include <QVariant>
 
+#include <utils/database.h>
+
 AccountModel::AccountModel()
     : m_createTable(Database::execute("CREATE TABLE IF NOT EXISTS accounts(name TEXT UNIQUE NOT NULL)"))
     , m_createUser(Database::prepare("INSERT INTO accounts (name) VALUES (:name)"))
