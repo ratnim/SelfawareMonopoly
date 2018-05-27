@@ -1,3 +1,4 @@
+
 # Server Routes
 ```
 /  
@@ -70,11 +71,11 @@ returns:
 
 Client should redirect to ```/game?game_id=<game_id>&session=<session>```
 
-### Join a game:
+### Open a game:
 expects:
 
     {
-	    "request" : "join_game"
+	    "request" : "open_game"
 	    "data" : 
         { 
             "game_id": <game_id>
@@ -83,7 +84,7 @@ expects:
 returns:
 
     {
-	    "name" : "join_game"
+	    "name" : "open_game"
 	    "data" : 
         { 
             "game_id": <game_id>
@@ -125,6 +126,19 @@ __Incoming Events:__
 ```
 
 __Requests:__
+### Join Game
+Expects:
+
+    {
+	    "request" : "join_game"
+    }
+
+Returns:
+
+    {
+	    "name" : "join_game", 
+        "data" : <player_name>
+    }
 ### Ready
 Expects:
 
