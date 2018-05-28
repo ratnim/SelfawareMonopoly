@@ -71,28 +71,6 @@ returns:
 
 Client should redirect to ```/game?game_id=<game_id>&session=<session>```
 
-### Open a game:
-expects:
-
-    {
-	    "request" : "open_game"
-	    "data" : 
-        { 
-            "game_id": <game_id>
-        }
-    }
-returns:
-
-    {
-	    "name" : "open_game"
-	    "data" : 
-        { 
-            "game_id": <game_id>
-        }
-    }
-
-Client should redirect to ```/game?game_id=<game_id>&session=<session>```
-
 ## Game
 __Route:__ /game
 
