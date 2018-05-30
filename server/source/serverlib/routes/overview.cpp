@@ -2,7 +2,7 @@
 
 #include <QJsonDocument>
 
-Overview::Overview(AccountModel& overviewState)
+Overview::Overview(QWebSocket* socket, const Request& request)
     : m_state(overviewState)
 {
 }

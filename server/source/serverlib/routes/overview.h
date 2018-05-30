@@ -8,7 +8,7 @@
 class Overview : public Route
 {
 public:
-    Overview(AccountModel& overviewState);
+    Overview(QWebSocket* socket, const Request& request);
 
     void connectClient(QWebSocket* socket, const Request& request) override;
 

@@ -11,12 +11,13 @@
 
 WebSocketServer::WebSocketServer()
     : QWebSocketServer("Monopoly", QWebSocketServer::NonSecureMode)
+    , m_routes(this)
 {
     connect(this, &QWebSocketServer::newConnection, this, &WebSocketServer::acccept);
 
-    m_routes[""] = std::make_unique<Overview>(m_accounts);
-    m_routes["lobby"] = std::make_unique<Lobby>(m_accounts);
-    m_routes["game"] = std::make_unique<Game>();
+    //m_routes[""] = std::make_unique<Overview>(m_accounts);
+    //m_routes["lobby"] = std::make_unique<Lobby>(m_accounts);
+    //m_routes["game"] = std::make_unique<Game>();
 
     setMaxPendingConnections(1024);
     listen(QHostAddress::Any, 31415);
@@ -27,17 +28,19 @@ WebSocketServer::WebSocketServer()
 void WebSocketServer::acccept()
 {
     auto socket = nextPendingConnection();
-    auto request = Request::fromUrl(socket->resourceName());
 
-    auto& route = m_routes.find(request.route);
-    if (route == m_routes.end())
-    {
-        invalidRoute(request.route, socket);
-    }
-    else
-    {
-        route->second->connectClient(socket, request);
-    }
+    m_routes.handle(socket);
+    //auto request = Request::fromUrl(socket->resourceName());
+
+    //auto& route = m_routes.find(request.route);
+    //if (route == m_routes.end())
+    //{
+    //    invalidRoute(request.route, socket);
+    //}
+    //else
+    //{
+    //    route->second->connectClient(socket, request);
+    //}
 }
 
 void WebSocketServer::invalidRoute(const QString& route, QWebSocket* socket)

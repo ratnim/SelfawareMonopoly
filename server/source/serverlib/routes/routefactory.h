@@ -13,9 +13,9 @@ public:
     RouteFactory(QObject* server)
         : m_parent(server)
     {
-        m_routes[""] = create<Overview>;
-        m_routes["lobby"] = create<Lobby>;
-        m_routes["game"] = create<Game>;
+        //m_routes[""] = create<Overview>;
+        //m_routes["lobby"] = create<Lobby>;
+        //m_routes["game"] = create<Game>;
     }
 
     void handle(QWebSocket* socket)
@@ -68,29 +68,4 @@ protected:
 
     std::map<QString, Factory> m_routes;
     QObject* m_parent;
-};
-
-class Route : public QObject
-{
-public:
-    Route();
-
-    virtual void connectClient(QWebSocket* socket, const Request& request) = 0;
-
-    enum error
-    {
-        NoError = 0,
-        InvalidRoute,
-        UnsupportedAction,
-        MalformedRequest,
-        InvalidRequest,
-        InternalError,
-    };
-    static QJsonObject generateError(const QString& message, error code);
-
-    static QJsonObject toJson(const QString& message);
-    static QString toString(const QJsonObject& answer);
-
-protected:
-    static void disconnectClient(QWebSocket* socket);
 };

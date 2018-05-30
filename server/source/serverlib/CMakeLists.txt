@@ -18,6 +18,8 @@ set(sources
     models/gamestate.h
     routes/route.cpp
     routes/route.h
+    routes/routefactory.cpp
+    routes/routefactory.h
     routes/game.cpp
     routes/game.h
     routes/lobby.cpp
