@@ -1,13 +1,12 @@
 
 # Server Routes
-```
-/  
+```  
 /lobby  
 /game
 ```
 
 ## overview
-Route: /
+Route: /lobby
 
 ### Enter lobby:
 expects:
