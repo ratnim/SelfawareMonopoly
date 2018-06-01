@@ -27,13 +27,13 @@
 
             <md-list-item v-for="game in games">
               <div class="md-list-item-text">
-                <span>{{game.title}}</span>
+                <span>{{game.game_label}}</span>
                 <span>
-                  <span v-for="(player, index) in game.players">{{player.name}}<span v-if="index < game.players.length-1">, </span>
+                  <span v-for="(player, index) in game.player_list">{{player}}<span v-if="index < game.player_list.length-1">, </span>
                   </span>
                 </span>
               </div>
-              <md-button @click="join(game.id)" class="md-icon-button md-list-action">
+              <md-button @click="join(game.game_id)" class="md-icon-button md-list-action">
                 <md-icon>forward</md-icon>
               </md-button>
             </md-list-item>
@@ -47,10 +47,6 @@
 </template>
 
 <script>
-import {
-  players,
-  games
-} from '@/assets/lobby.mockeddata.js'
 
 import {
   mapGetters
@@ -66,17 +62,17 @@ export default {
         first: false,
         second: false
       },
-      players: [],
-      nickname: '',
-      games: []
+      nickname: ''
     }
   },
-  computed: {},
+  computed: {
+    ...mapGetters({
+      'games': 'getGameList'
+    })
+  },
   created() {
     //get list of games
-    this.games = games;
-    //get list of players
-    this.players = players;
+    //this.games = games;
     //provide nickname
     this.nickname = this.$route.query.nickname || this.$store.state.nickname;
 
@@ -95,7 +91,7 @@ export default {
       this.stepper[id] = true;
       this.stepper.active = active;
       this.$store.dispatch('setNickname', this.nickname);
-      this.$socket.emit("add user", { name: this.nickname }); 
+      //this.$socket.emit("enter_lobby", { player_name: this.nickname });
     },
     join(gameid) {
       this.$router.push({ name: 'monopoly', params: { gameid }})

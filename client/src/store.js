@@ -1,17 +1,15 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-//import vueAuth from './auth'
-import VueAxios from 'vue-axios'
-import {
-  VueAuthenticate
-} from 'vue-authenticate'
-import axios from 'axios';
-
-import VuexPersist from 'vuex-persist';
-
 Vue.use(Vuex)
 
+//OAuth
+import VueAxios from 'vue-axios'
+import { VueAuthenticate } from 'vue-authenticate'
+import axios from 'axios';
 Vue.use(VueAxios, axios)
+
+//Plugin to persist state in local storage
+import VuexPersist from 'vuex-persist';
 
 const vuexLocalStorage = new VuexPersist({
   key: 'vuex', // The key to store the state on in the storage provider.
@@ -22,6 +20,10 @@ const vuexLocalStorage = new VuexPersist({
   // filter: mutation => (true)
 })
 
+import lobbyConnection from  './storePlugins/lobbyConnection'
+
+
+//TODO should be moved to ./auth
 const vueAuth = new VueAuthenticate(Vue.prototype.$http, {
   baseUrl: window.origin,
   providers: {
@@ -58,8 +60,13 @@ const vueAuth = new VueAuthenticate(Vue.prototype.$http, {
 })
 
 export default new Vuex.Store({
-  plugins: [vuexLocalStorage.plugin],
+  plugins: [vuexLocalStorage.plugin, lobbyConnection],
   state: {
+    socket: {
+      isConnected: false,
+      message: '',
+      reconnectError: false,
+    },
     nickname : '',
     isAuthenticated: false,
     tokens: {'instagram' : null, 'facebook' : null, 'google': null}
@@ -73,6 +80,9 @@ export default new Vuex.Store({
     },
     getNickname(state) {
       return state.nickname
+    },
+    getGameList(state) {
+      return state.gameList
     }
   },
   mutations: {
@@ -84,6 +94,9 @@ export default new Vuex.Store({
     },
     setNickname(state, payload) {
       state.nickname = payload
+    },
+    setGameList(state, payload) {
+      state.gameList = payload
     }
   },
   actions: {
