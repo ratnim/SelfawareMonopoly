@@ -1,3 +1,4 @@
+
 # Server Routes
 ```
 /  
@@ -70,28 +71,6 @@ returns:
 
 Client should redirect to ```/game?game_id=<game_id>&session=<session>```
 
-### Join a game:
-expects:
-
-    {
-	    "request" : "join_game"
-	    "data" : 
-        { 
-            "game_id": <game_id>
-        }
-    }
-returns:
-
-    {
-	    "name" : "join_game"
-	    "data" : 
-        { 
-            "game_id": <game_id>
-        }
-    }
-
-Client should redirect to ```/game?game_id=<game_id>&session=<session>```
-
 ## Game
 __Route:__ /game
 
@@ -125,6 +104,19 @@ __Incoming Events:__
 ```
 
 __Requests:__
+### Join Game
+Expects:
+
+    {
+	    "request" : "join_game"
+    }
+
+Returns:
+
+    {
+        "name" : "join_game", 
+        "data" : <player_name>
+    }
 ### Ready
 Expects:
 
@@ -135,7 +127,7 @@ Expects:
 Returns:
 
     {
-	    "name" : "player_ready", 
+        "name" : "player_ready", 
         "data" : <name>
     }
 
@@ -162,7 +154,7 @@ Expects:
 Returns:
 
     {
-	    "name" : "change_turn",
+        "name" : "change_turn",
         "data" : <next_player> 
     }
 
@@ -176,6 +168,6 @@ Expects:
 Returns:
 
     {
-	    "name" : "roll_dice",
+        "name" : "roll_dice",
         "data" : [<eyes>, <eyes>]
     }
