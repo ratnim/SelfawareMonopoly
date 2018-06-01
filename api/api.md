@@ -114,7 +114,7 @@ Expects:
 Returns:
 
     {
-	    "name" : "join_game", 
+        "name" : "join_game", 
         "data" : <player_name>
     }
 ### Ready
@@ -127,7 +127,7 @@ Expects:
 Returns:
 
     {
-	    "name" : "player_ready", 
+        "name" : "player_ready", 
         "data" : <name>
     }
 
@@ -154,7 +154,7 @@ Expects:
 Returns:
 
     {
-	    "name" : "change_turn",
+        "name" : "change_turn",
         "data" : <next_player> 
     }
 
@@ -168,6 +168,6 @@ Expects:
 Returns:
 
     {
-	    "name" : "roll_dice",
+        "name" : "roll_dice",
         "data" : [<eyes>, <eyes>]
     }
