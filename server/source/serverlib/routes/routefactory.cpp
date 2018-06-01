@@ -2,45 +2,44 @@
 
 #include <QJsonDocument>
 
-#include <utils/database.h>
+#include <routes/game.h>
+#include <routes/lobby.h>
+#include <routes/overview.h>
+#include <routes/playercommunication.h>
 
-Route::Route()
+RouteFactory::RouteFactory()
 {
+    m_routes[""] = create<Overview>;
+    m_routes["lobby"] = create<Lobby>;
+    m_routes["game"] = create<Game>;
 }
 
-void Route::disconnectClient(QWebSocket* socket)
+void RouteFactory::handle(QWebSocket* socket)
 {
+    auto request = Request::fromUrl(socket->resourceName());
+
+    auto routeConstructor = routeFactory(request.route);
+    (this->*routeConstructor)(socket, request);
+
+    // TODO catch exceptions here
+}
+
+void RouteFactory::error(QWebSocket* socket, const Request& request)
+{
+    // TODO throw exceptions in here
+    const auto error = QString("Invalid Route: '%1'.").arg(request.route);
+    socket->sendTextMessage(PlayerCommunication::toString(PlayerCommunication::generateError(error, PlayerCommunication::InvalidRoute)));
     socket->flush();
     socket->close();
     socket->deleteLater();
 }
 
-QJsonObject Route::toJson(const QString& message)
+RouteFactory::Factory RouteFactory::routeFactory(const QString& routeName)
 {
-    const auto json = QJsonDocument::fromJson(message.toLatin1());
-    if (json.isObject())
+    auto& route = m_routes.find(routeName);
+    if (route == m_routes.end())
     {
-        return json.object();
+        return error;
     }
-
-    qWarning().noquote() << "Only JSON objects are supported.";
-    return QJsonObject();
-}
-
-QString Route::toString(const QJsonObject& answer)
-{
-    return QJsonDocument(answer).toJson();
-}
-
-QJsonObject Route::generateError(const QString& message, error code)
-{
-    QJsonObject answer;
-    {
-        QJsonObject error;
-        error["id"] = code;
-        error["message"] = message;
-
-        answer["error"] = error;
-    }
-    return answer;
+    return route->second;
 }

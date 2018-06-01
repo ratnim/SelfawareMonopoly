@@ -1,9 +1,9 @@
 #pragma once
 
-#include <routes/route.h>
+#include <routes/playercommunication.h>
 
-class Game : public Route
+class Game : public PlayerCommunication
 {
 public:
-    void connectClient(QWebSocket* socket, const Request& request) override;
+    Game(QWebSocket* socket, const Request& request);
 };

@@ -3,20 +3,8 @@
 #include <QJsonDocument>
 
 Overview::Overview(QWebSocket* socket, const Request& request)
-    : m_state(overviewState)
+    : PlayerCommunication(socket)
 {
-}
-
-void Overview::connectClient(QWebSocket* socket, const Request& /*request*/)
-{
-    connect(socket, &QWebSocket::textMessageReceived, [this, socket](const QString& message) {
-        const auto answer = handle(toJson(message));
-        socket->sendTextMessage(toString(answer));
-    });
-
-    connect(socket, &QWebSocket::readChannelFinished, this, [this, socket] {
-        disconnectClient(socket);
-    });
 }
 
 QJsonObject Overview::handle(const QJsonObject& message)

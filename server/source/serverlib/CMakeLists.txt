@@ -16,8 +16,8 @@ set(sources
     models/accountmodel.h
     models/gamestate.cpp
     models/gamestate.h
-    routes/route.cpp
-    routes/route.h
+    routes/playercommunication.cpp
+    routes/playercommunication.h
     routes/routefactory.cpp
     routes/routefactory.h
     routes/game.cpp

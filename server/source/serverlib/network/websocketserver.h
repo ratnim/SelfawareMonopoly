@@ -5,7 +5,8 @@
 #include <QWebSocketServer>
 
 #include <models/accountmodel.h>
-#include <routes/route.h>
+#include <routes/playercommunication.h>
+#include <routes/routefactory.h>
 
 class WebSocketServer : public QWebSocketServer
 {
@@ -14,9 +15,7 @@ public:
 
 protected:
     void acccept();
-    static void invalidRoute(const QString& route, QWebSocket* socket);
 
     AccountModel m_accounts;
-    //std::map<QString, std::unique_ptr<Route>> m_routes;
-    RouteFactory m_routes;
+    RouteFactory m_connectionFactory;
 };
