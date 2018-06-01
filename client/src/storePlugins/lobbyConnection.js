@@ -13,9 +13,9 @@ export default function(store) {
   socket.on('game_list', data => {
     store.commit('setGameList', data)
   })
-  /*store.subscribe(mutation => {
-    if (mutation.type === 'UPDATE_DATA') {
-      socket.emit("enter_lobby", { player_name: this.nickname });
+  store.subscribe(mutation => {
+    if (mutation.type === 'setNickname') {
+      socket.emit("enter_lobby", { player_name: mutation.payload });
     }
-  })*/
+  })
 }
