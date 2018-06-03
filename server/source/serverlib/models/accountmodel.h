@@ -14,9 +14,11 @@ public:
     QString createUser(const QString& name);
     QString createSession(const QString& name);
 
-protected:
-    QSqlQuery m_createTable;
-    QSqlQuery m_createUser;
+    static AccountModel& instance();
 
-    std::map<QString, QString> m_sessions;
+protected:
+    QSqlQuery s_createTable;
+    QSqlQuery s_createUser;
+
+    std::map<QString, QString> s_sessions;
 };

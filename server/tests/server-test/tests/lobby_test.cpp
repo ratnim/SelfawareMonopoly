@@ -2,16 +2,16 @@
 
 #include <QJsonDocument>
 
-#include <routes/lobby.h>
+#include <routes/lobbyroute.h>
 
 #include <test_utils/mocked_database.h>
 
 
-class LobbyTest : public ::testing::Test, MockedDatabase, public Lobby
+class LobbyTest : public ::testing::Test, MockedDatabase, public LobbyRoute
 {
 public:
     LobbyTest()
-        : Lobby(accounts)
+        : LobbyRoute()
     {
     }
 };
@@ -25,58 +25,58 @@ TEST_F(LobbyTest, unsupported_action)
     EXPECT_EQ(answer["error"].toObject()["id"].toInt(), Route::UnsupportedAction);
 }
 
-TEST_F(LobbyTest, create_game_invalid_player)
+TEST_F(LobbyTest, create_GameRoute_invalid_player)
 {
-    QJsonObject request({ { "request", "create_game" } });
+    QJsonObject request({ { "request", "create_GameRoute" } });
 
     auto answer = handle(request, "unregistered_player");
 
     EXPECT_EQ(answer["error"].toObject()["id"].toInt(), Route::InvalidRequest);
 }
 
-TEST_F(LobbyTest, create_game_valid)
+TEST_F(LobbyTest, create_GameRoute_valid)
 {
-    QJsonObject request({ { "request", "create_game" } });
+    QJsonObject request({ { "request", "create_GameRoute" } });
 
     auto answer = handle(request, "registered_player");
 
-    EXPECT_EQ(answer["name"].toString(), "create_game");
+    EXPECT_EQ(answer["name"].toString(), "create_GameRoute");
     EXPECT_NE(answer["name"].toObject()["game_id"].toInt(-1), -1);
 }
 
-TEST_F(LobbyTest, join_game_invalid_id)
+TEST_F(LobbyTest, join_GameRoute_invalid_id)
 {
-    QJsonObject request({ { "request", "join_game" }, { "data", QJsonObject{ { "game_id", "1" } } } });
+    QJsonObject request({ { "request", "join_GameRoute" }, { "data", QJsonObject{ { "game_id", "1" } } } });
 
     auto answer = handle(request, "registered_player");
 
     EXPECT_EQ(answer["error"].toObject()["id"].toInt(), Route::InvalidRequest);
 }
 
-TEST_F(LobbyTest, join_game_already_started)
+TEST_F(LobbyTest, join_GameRoute_already_started)
 {
-    QJsonObject request({ { "request", "join_game" }, { "data", QJsonObject{ { "game_id", "1" } } } });
+    QJsonObject request({ { "request", "join_GameRoute" }, { "data", QJsonObject{ { "game_id", "1" } } } });
 
     auto answer = handle(request, "registered_player");
 
     EXPECT_EQ(answer["error"].toObject()["id"].toInt(), Route::InvalidRequest);
 }
 
-TEST_F(LobbyTest, join_game_invalid_player)
+TEST_F(LobbyTest, join_GameRoute_invalid_player)
 {
-    QJsonObject request({ { "request", "join_game" }, { "data", QJsonObject{ { "game_id", "1" } } } });
+    QJsonObject request({ { "request", "join_GameRoute" }, { "data", QJsonObject{ { "game_id", "1" } } } });
 
     auto answer = handle(request, "unregistered_player");
 
     EXPECT_EQ(answer["error"].toObject()["id"].toInt(), Route::InvalidRequest);
 }
 
-TEST_F(LobbyTest, join_game_valid)
+TEST_F(LobbyTest, join_GameRoute_valid)
 {
-    QJsonObject request({ { "request", "join_game" }, { "data", QJsonObject{ { "game_id", "1" } } } });
+    QJsonObject request({ { "request", "join_GameRoute" }, { "data", QJsonObject{ { "game_id", "1" } } } });
 
     auto answer = handle(request, "unregistered_player");
 
-    EXPECT_EQ(answer["name"].toString(), "join_game");
+    EXPECT_EQ(answer["name"].toString(), "join_GameRoute");
     EXPECT_NE(answer["name"].toObject()["game_id"].toInt(-1), -1);
 }

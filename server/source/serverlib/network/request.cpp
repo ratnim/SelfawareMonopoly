@@ -4,7 +4,9 @@
 
 Request Request::fromUrl(const QString& url)
 {
-    QString route, session, game_id;
+    QString route, session;
+    int game_id;
+
     const QString path = url.split('/').back();
 
     const auto arguments = path.split('?');
@@ -14,7 +16,7 @@ Request Request::fromUrl(const QString& url)
     {
         QUrlQuery args(arguments.back());
         session = args.queryItemValue("session");
-        game_id = args.queryItemValue("game_id");
+        game_id = args.queryItemValue("game_id").toInt();
     }
 
     return { route, session, game_id };

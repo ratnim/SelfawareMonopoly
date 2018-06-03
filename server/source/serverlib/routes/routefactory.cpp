@@ -2,44 +2,43 @@
 
 #include <QJsonDocument>
 
-#include <routes/game.h>
-#include <routes/lobby.h>
-#include <routes/overview.h>
-#include <routes/playercommunication.h>
+#include <routes/gameroute.h>
+#include <routes/lobbyroute.h>
+#include <routes/overviewroute.h>
+#include <routes/route.h>
+#include <utils/exception.h>
 
 RouteFactory::RouteFactory()
 {
-    m_routes[""] = create<Overview>;
-    m_routes["lobby"] = create<Lobby>;
-    m_routes["game"] = create<Game>;
+    m_routes[""] = &RouteFactory::create<OverviewRoute>;
+    m_routes["LobbyRoute"] = &RouteFactory::create<LobbyRoute>;
+    m_routes["GameRoute"] = &RouteFactory::create<GameRoute>;
 }
 
 void RouteFactory::handle(QWebSocket* socket)
 {
     auto request = Request::fromUrl(socket->resourceName());
 
-    auto routeConstructor = routeFactory(request.route);
-    (this->*routeConstructor)(socket, request);
-
-    // TODO catch exceptions here
+    try
+    {
+        auto routeConstructor = routeFactory(request.route);
+        (this->*routeConstructor)(socket, request);
+    }
+    catch (const Exception &e)
+    {
+        socket->sendTextMessage(e.json());
+        socket->flush();
+        socket->close();
+        socket->deleteLater();
+    }
 }
 
-void RouteFactory::error(QWebSocket* socket, const Request& request)
-{
-    // TODO throw exceptions in here
-    const auto error = QString("Invalid Route: '%1'.").arg(request.route);
-    socket->sendTextMessage(PlayerCommunication::toString(PlayerCommunication::generateError(error, PlayerCommunication::InvalidRoute)));
-    socket->flush();
-    socket->close();
-    socket->deleteLater();
-}
-
-RouteFactory::Factory RouteFactory::routeFactory(const QString& routeName)
+RouteFactory::Factory RouteFactory::routeFactory(const QString& routeName) const
 {
     auto& route = m_routes.find(routeName);
     if (route == m_routes.end())
     {
-        return error;
+        throw Exception(QString("Invalid Route: '%1'.").arg(routeName), Exception::InvalidRoute);
     }
     return route->second;
 }

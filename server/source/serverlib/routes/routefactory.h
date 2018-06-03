@@ -18,13 +18,10 @@ protected:
     template <class Connection>
     void create(QWebSocket* socket, const Request& request)
     {
-        // TODO throw exceptions in here
         new Connection(socket, request);
     }
 
-    void error(QWebSocket* socket, const Request& request);
-    Factory routeFactory(const QString& routeName);
+    Factory routeFactory(const QString& routeName) const;
 
     std::map<QString, Factory> m_routes;
-    QObject* m_parent;
 };

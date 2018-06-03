@@ -8,5 +8,5 @@ struct Request
 
     const QString route;
     const QString session;
-    const QString gameId;
+    const int gameId;
 };

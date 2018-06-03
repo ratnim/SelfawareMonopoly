@@ -12,20 +12,44 @@ message(STATUS "Lib ${target}")
 # 
 
 set(sources
+    actions/action.h
+    actions/gameaction.cpp
+    actions/gameaction.h
+    actions/gamestart.cpp
+    actions/gamestart.h
+    actions/gamewatcher.cpp
+    actions/gamewatcher.h
+    actions/createaccount.cpp
+    actions/createaccount.h
+    actions/creategame.cpp
+    actions/creategame.h
+    actions/joingame.cpp
+    actions/joingame.h
+    actions/playerready.cpp
+    actions/playerready.h
+    actions/endturn.cpp
+    actions/endturn.h
+    actions/rolldice.cpp
+    actions/rolldice.h
+    actions/watcher.h
+    actions/lobbywatcher.cpp
+    actions/lobbywatcher.h
+    game/game.cpp
+    game/game.h
     models/accountmodel.cpp
     models/accountmodel.h
-    models/gamestate.cpp
-    models/gamestate.h
-    routes/playercommunication.cpp
-    routes/playercommunication.h
+    models/gamemodel.cpp
+    models/gamemodel.h
+    routes/route.cpp
+    routes/route.h
     routes/routefactory.cpp
     routes/routefactory.h
-    routes/game.cpp
-    routes/game.h
-    routes/lobby.cpp
-    routes/lobby.h
-    routes/overview.cpp
-    routes/overview.h
+    routes/gameroute.cpp
+    routes/gameroute.h
+    routes/Lobbyroute.cpp
+    routes/Lobbyroute.h
+    routes/overviewroute.cpp
+    routes/overviewroute.h
     network/request.cpp
     network/request.h
     network/websocketserver.cpp
@@ -34,6 +58,8 @@ set(sources
     utils/configuration.h
     utils/database.cpp
     utils/database.h
+    utils/exception.cpp
+    utils/exception.h
 )
 
 source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${sources})

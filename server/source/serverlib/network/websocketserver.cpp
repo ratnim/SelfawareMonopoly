@@ -5,9 +5,9 @@
 
 #include <network/request.h>
 
-#include <routes/game.h>
-#include <routes/lobby.h>
-#include <routes/overview.h>
+#include <routes/gameroute.h>
+#include <routes/lobbyroute.h>
+#include <routes/overviewroute.h>
 
 WebSocketServer::WebSocketServer()
     : QWebSocketServer("Monopoly", QWebSocketServer::NonSecureMode)
