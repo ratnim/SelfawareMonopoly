@@ -18,7 +18,7 @@
       <MonopolyField v-for="(field, index) in game.fields[3].reverse()" :x="10+fieldLength+index*fieldLength" :y="600-10-fieldLength"  :fieldWidth="fieldWidth" :fieldLength="fieldLength" :label="field.label" :attributes="field.attributes"></MonopolyField>
 
       <!--the players -->
-      <MonopolyPlayer color="yellow" :fieldLength="fieldLength" ref="player1"></MonopolyPlayer>
+      <MonopolyPlayer v-for="player in players" :color="player.color" :fieldLength="fieldLength" ref="player1"></MonopolyPlayer>
     </easel-canvas>
   </div>
 </div>
@@ -48,6 +48,7 @@ export default {
       game: game,
       dice1 : null,
       dice2 : null,
+      players : [{currentField: 0, nickname: 'player1', color: 'yellow' }],
       player1 : {currentField : 0}
     }
   },
@@ -62,6 +63,7 @@ export default {
   },
   methods: {
     rollDice : function() {
+      //TODO get dices result from server
       this.dice1 = Math.floor(Math.random()*6)+1,
       this.dice2 = Math.floor(Math.random()*6)+1
     },
