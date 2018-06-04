@@ -1,6 +1,7 @@
 <template>
 <div class="home">
   <h1>Monopoly</h1> Hi {{nickname}}
+  <div v-for="player in players">{{player}}</div>
   <div class="">
     <md-button @click="rollDice()">ROLL THE DICE</md-button>
     <span>{{dice1}}, {{dice2}}</span>
@@ -9,16 +10,16 @@
   <div class="">
     <easel-canvas width="600" height="600" ref="stage">
       <!--from LOS to prison -->
-      <MonopolyField v-for="(field, index) in game.fields[0].reverse()" :x="10" :y="10+fieldLength+index*fieldLength" :fieldWidth="fieldWidth" :fieldLength="fieldLength" :align="['bottom', 'left']" :label="field.label" :attributes="field.attributes"></MonopolyField>
+      <MonopolyField v-for="(field, index) in lane1" :x="10" :y="10+fieldLength+index*fieldLength" :fieldWidth="fieldWidth" :fieldLength="fieldLength" :align="['bottom', 'left']" :label="field.label" :attributes="field.attributes"></MonopolyField>
       <!--from prison to free parking -->
-      <MonopolyField v-for="(field, index) in game.fields[1]" :x="10+index*fieldLength" :y="10" :fieldWidth="fieldWidth" :fieldLength="fieldLength":label="field.label" :attributes="field.attributes"></MonopolyField>
+      <MonopolyField v-for="(field, index) in lane2" :x="10+index*fieldLength" :y="10" :fieldWidth="fieldWidth" :fieldLength="fieldLength":label="field.label" :attributes="field.attributes"></MonopolyField>
       <!-- from free parking to goto prison -->
-      <MonopolyField v-for="(field, index) in game.fields[2]" :x="600-10-fieldLength" :y="10+index*fieldLength" :fieldWidth="fieldWidth" :fieldLength="fieldLength" :align="['bottom', 'right']" :label="field.label" :attributes="field.attributes"></MonopolyField>
+      <MonopolyField v-for="(field, index) in lane3" :x="600-10-fieldLength" :y="10+index*fieldLength" :fieldWidth="fieldWidth" :fieldLength="fieldLength" :align="['bottom', 'right']" :label="field.label" :attributes="field.attributes"></MonopolyField>
       <!-- from goto prision to los -->
-      <MonopolyField v-for="(field, index) in game.fields[3].reverse()" :x="10+fieldLength+index*fieldLength" :y="600-10-fieldLength"  :fieldWidth="fieldWidth" :fieldLength="fieldLength" :label="field.label" :attributes="field.attributes"></MonopolyField>
+      <MonopolyField v-for="(field, index) in lane4" :x="10+fieldLength+index*fieldLength" :y="600-10-fieldLength"  :fieldWidth="fieldWidth" :fieldLength="fieldLength" :label="field.label" :attributes="field.attributes"></MonopolyField>
 
       <!--the players -->
-      <MonopolyPlayer v-for="player in players" :color="player.color" :fieldLength="fieldLength" ref="player1"></MonopolyPlayer>
+      <MonopolyPlayer v-for="player in players" :key="player.nickname" :color="player.color" :fieldLength="fieldLength" ref="players"></MonopolyPlayer>
     </easel-canvas>
   </div>
 </div>
@@ -48,15 +49,18 @@ export default {
       game: game,
       dice1 : null,
       dice2 : null,
-      players : [{currentField: 0, nickname: 'player1', color: 'yellow' }],
-      player1 : {currentField : 0}
+      players : [{currentField: 0, nickname: this.nickname, color: 'yellow' }]
     }
   },
   computed: {
     ...mapGetters({
       'tokens': 'getTokens',
       'nickname': 'getNickname'
-    })
+    }),
+    lane1: () => [].concat(game.fields[0]).reverse(),
+    lane2: () => game.fields[1],
+    lane3: () => game.fields[2],
+    lane4: () => [].concat(game.fields[3]).reverse(),
   },
   mounted() {
 
@@ -64,13 +68,14 @@ export default {
   methods: {
     rollDice : function() {
       //TODO get dices result from server
-      this.dice1 = Math.floor(Math.random()*6)+1,
-      this.dice2 = Math.floor(Math.random()*6)+1
+      this.dice1 = Math.floor(Math.random()*6)+1;
+      this.dice2 = Math.floor(Math.random()*6)+1;
+
     },
     move : function() {
-      this.player1.currentField += this.dice1 + this.dice2
-      this.$refs.player1.move(this.player1.currentField)
-    }
+      this.players[0].currentField += this.dice1 + this.dice2
+      this.$refs.players[0].move(this.players[0].currentField)
+    },
   }
 }
 </script>
