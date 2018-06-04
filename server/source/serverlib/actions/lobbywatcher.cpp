@@ -10,6 +10,19 @@ LobbyWatcher::LobbyWatcher()
     connect(&GameModel::instance(), &GameModel::onCreateGame, this, &LobbyWatcher::watchGame);
 }
 
+QString LobbyWatcher::message()
+{
+    QJsonArray games;
+
+    const auto numberOfGames = GameModel::instance().numberOfGames();
+    for (int i = 0; i < numberOfGames; ++i)
+    {
+        games.push_back(toJson(i));
+    }
+
+    return answer(games);
+}
+
 LobbyWatcher& LobbyWatcher::instance()
 {
     static LobbyWatcher watcher;
@@ -34,15 +47,7 @@ void LobbyWatcher::watchGame(Game& game)
 
 void LobbyWatcher::updateLobby()
 {
-    QJsonArray games;
-
-    const auto numberOfGames = GameModel::instance().numberOfGames();
-    for (int i = 0; i < numberOfGames; ++i)
-    {
-        games.push_back(toJson(i));
-    }
-
-    emit send(answer(games));
+    emit send(message());
 }
 
 QJsonObject LobbyWatcher::toJson(int gameId)

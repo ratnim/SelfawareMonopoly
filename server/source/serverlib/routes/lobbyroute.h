@@ -8,6 +8,8 @@ public:
     LobbyRoute(QWebSocket* socket, const Request& request);
 
 protected:
+    void watchLobby(QWebSocket* socket);
+    
     void createGame(QWebSocket* socket, const QJsonValue& body);
     static QString createGameAnswer(int gameId);
 

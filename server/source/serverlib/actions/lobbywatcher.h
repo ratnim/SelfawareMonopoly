@@ -13,6 +13,8 @@ public:
 
     static LobbyWatcher& instance();
 
+    QString message();
+
 protected:
     void watchAllGames();
     void watchGame(Game& game);

@@ -11,12 +11,19 @@ LobbyRoute::LobbyRoute(QWebSocket* socket, const Request& request)
     : Route(socket)
     , m_playerName(AccountModel::instance().username(request.session))
 {
-    connect(&LobbyWatcher::instance(), &Watcher::send, socket, &QWebSocket::sendTextMessage);
-
     m_actions["create_game"] = [this, socket](const QJsonValue& data) {
         createGame(socket, data);
     };
-    // TODO initial send of data
+
+    watchLobby(socket);
+}
+
+void LobbyRoute::watchLobby(QWebSocket* socket)
+{
+    auto& watcher = LobbyWatcher::instance();
+
+    socket->sendTextMessage(watcher.message());
+    connect(&watcher, &Watcher::send, socket, &QWebSocket::sendTextMessage);
 }
 
 void LobbyRoute::createGame(QWebSocket* socket, const QJsonValue& body)
