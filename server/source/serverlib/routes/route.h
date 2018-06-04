@@ -20,7 +20,7 @@ protected:
     ActionCallback actionHandler(const QString& name) const;
 
     template <typename Handler>
-    ActionCallback makeCallback(QWebSocket* socket, Handler& handler)
+    ActionCallback synchronCallback(QWebSocket* socket, Handler& handler)
     {
         connect(&handler, &Watcher::send, socket, &QWebSocket::sendTextMessage);
         return [this, &handler](const QJsonValue& value) { return handler.handle(value); };

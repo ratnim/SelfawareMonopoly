@@ -13,29 +13,21 @@ message(STATUS "Lib ${target}")
 
 set(sources
     actions/action.h
-    actions/gameaction.cpp
-    actions/gameaction.h
-    actions/gamestart.cpp
-    actions/gamestart.h
     actions/gamewatcher.cpp
     actions/gamewatcher.h
     actions/createaccount.cpp
     actions/createaccount.h
     actions/creategame.cpp
     actions/creategame.h
-    actions/joingame.cpp
-    actions/joingame.h
-    actions/playerready.cpp
-    actions/playerready.h
-    actions/endturn.cpp
-    actions/endturn.h
-    actions/rolldice.cpp
-    actions/rolldice.h
     actions/watcher.h
     actions/lobbywatcher.cpp
     actions/lobbywatcher.h
     game/game.cpp
     game/game.h
+    game/player.cpp
+    game/player.h
+    actions/gamewatcher.cpp
+    actions/gamewatcher.h
     models/accountmodel.cpp
     models/accountmodel.h
     models/gamemodel.cpp

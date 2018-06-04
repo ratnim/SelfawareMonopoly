@@ -11,12 +11,14 @@ class LobbyWatcher : public Watcher
 public:
     LobbyWatcher();
 
+    static LobbyWatcher& instance();
+
 protected:
     void watchAllGames();
     void watchGame(Game& game);
     void updateLobby();
 
     static QJsonObject toJson(int gameId);
-    static QJsonArray toArray(const std::vector<QString>& players);
+    static QJsonArray toArray(const std::map<QString, Player>& players);
     static QString answer(const QJsonArray& games);
 };

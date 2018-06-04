@@ -1,7 +1,6 @@
 #pragma once
 
-#include <actions/lobbywatcher.h>
-#include <models/accountmodel.h>
+#include <actions/creategame.h>
 #include <routes/route.h>
 
 class LobbyRoute : public Route
@@ -11,5 +10,5 @@ public:
 
 protected:
     const QString m_playerName;
-    LobbyWatcher m_watcher;
+    CreateGame m_createGame;
 };

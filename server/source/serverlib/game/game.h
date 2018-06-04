@@ -1,15 +1,22 @@
 #pragma once
 
+#include <map>
 #include <vector>
 
 #include <QObject>
 #include <QString>
+
+#include <actions/gamewatcher.h>
+
+#include <game/player.h>
 
 class Game : public QObject
 {
     Q_OBJECT
 
 public:
+    Game();
+
     enum State
     {
         START,
@@ -17,8 +24,9 @@ public:
         FINISHED
     };
 
-    const std::vector<QString>& players() const;
+    const std::map<QString, Player>& players() const;
     State state() const;
+    GameWatcher& watcher();
 
     void join(const QString& playerName);
     void ready(const QString& playerName);
@@ -28,7 +36,7 @@ public:
     void endTurn(const QString& playerName);
 
 signals:
-    void onPlayerJoin(const QString &playerName);
+    void onPlayerJoin(const QString& playerName);
     void onPlayerReady(const QString& playerName);
 
     void onGameStart();
@@ -40,5 +48,11 @@ signals:
 
 protected:
     State m_state;
-    std::vector<QString> m_players;
+    std::map<QString, Player> m_players;
+    std::vector<QString> m_turnOrder;
+    int m_turn;
+    bool canRoll;
+    int reRollCount;
+
+    GameWatcher m_watcher;
 };

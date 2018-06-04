@@ -10,6 +10,12 @@ LobbyWatcher::LobbyWatcher()
     connect(&GameModel::instance(), &GameModel::onCreateGame, this, &LobbyWatcher::watchGame);
 }
 
+LobbyWatcher& LobbyWatcher::instance()
+{
+    static LobbyWatcher watcher;
+    return watcher;
+}
+
 void LobbyWatcher::watchAllGames()
 {
     auto& model = GameModel::instance();
@@ -50,12 +56,12 @@ QJsonObject LobbyWatcher::toJson(int gameId)
     return description;
 }
 
-QJsonArray LobbyWatcher::toArray(const std::vector<QString>& players)
+QJsonArray LobbyWatcher::toArray(const std::map<QString, Player>& players)
 {
     QJsonArray array;
     for (auto &player : players)
     {
-        array.push_back(player);
+        array.push_back(player.first);
     }
     return array;
 }
