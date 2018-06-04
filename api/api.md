@@ -58,7 +58,12 @@ __Requests:__
 expects:
 
     {
-	    "request" : "create_game"
+	    "request" : "create_game",
+	    "data" : 
+	 	{
+	 	"game_label" : "<title_of_the_game>"
+		}
+	    	
     }
 returns:
 
@@ -66,7 +71,7 @@ returns:
 	    "name" : "create_game"
 	    "data" : 
         { 
-            "game_label": <title of the game>
+            "game_id": <game_id>
         }
     }
 
