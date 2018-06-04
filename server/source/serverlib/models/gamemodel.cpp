@@ -4,7 +4,7 @@
 
 int GameModel::createGame(const QString& label)
 {
-    m_games.push_back(std::make_unique<Game>());
+    m_games.push_back(std::make_unique<Game>(label));
     emit onCreateGame(*m_games.back());
 
     return static_cast<int>(m_games.size() - 1);

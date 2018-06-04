@@ -19,13 +19,6 @@ protected:
     static QJsonObject toJson(const QString& message);
     ActionCallback actionHandler(const QString& name) const;
 
-    template <typename Handler>
-    ActionCallback synchronCallback(QWebSocket* socket, Handler& handler)
-    {
-        connect(&handler, &Watcher::send, socket, &QWebSocket::sendTextMessage);
-        return [this, &handler](const QJsonValue& value) { return handler.handle(value); };
-    }
-
     QWebSocket* m_socket;
     std::map<QString, ActionCallback> m_actions;
 };

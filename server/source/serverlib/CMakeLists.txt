@@ -12,13 +12,8 @@ message(STATUS "Lib ${target}")
 # 
 
 set(sources
-    actions/action.h
     actions/gamewatcher.cpp
     actions/gamewatcher.h
-    actions/createaccount.cpp
-    actions/createaccount.h
-    actions/creategame.cpp
-    actions/creategame.h
     actions/watcher.h
     actions/lobbywatcher.cpp
     actions/lobbywatcher.h
