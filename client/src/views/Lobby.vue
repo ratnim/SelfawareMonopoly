@@ -86,6 +86,9 @@ export default {
   mounted() {
 
   },
+  beforeRouteLeave(to, _from, next) {
+    next();
+  },
   methods: {
     setStepperDone(id, active) {
       this.stepper[id] = true;
@@ -94,7 +97,7 @@ export default {
       //this.$socket.emit("enter_lobby", { player_name: this.nickname });
     },
     join(gameid) {
-      this.$router.push({ name: 'monopoly', params: { gameid }})
+      this.$router.push({ name: 'monopoly', params: { gameid }, query: {test: 1}})
     },
     newGame() {
       console.log("new game");
