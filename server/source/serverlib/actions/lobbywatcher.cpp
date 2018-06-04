@@ -53,6 +53,7 @@ QJsonObject LobbyWatcher::toJson(int gameId)
     description["game_id"] = gameId;
     description["player_list"] = toArray(game.players());
     description["game_status"] = game.state();
+    description["game_label"] = game.label();
     return description;
 }
 

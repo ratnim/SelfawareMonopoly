@@ -4,6 +4,7 @@
 #include <QJsonObject>
 
 #include <models/gamemodel.h>
+#include <utils/exception.h>
 
 CreateGame::CreateGame(const QString& playerName)
     : m_playerName(playerName)
@@ -12,7 +13,13 @@ CreateGame::CreateGame(const QString& playerName)
 
 void CreateGame::handle(const QJsonValue& body)
 {
-    const auto gameId = GameModel::instance().createGame();
+    const auto label = body["game_label"].toString();
+    if (label.isEmpty())
+    {
+        throw Exception("Malformed Request: data.game_label is missing.");
+    }
+
+    const auto gameId = GameModel::instance().createGame(label);
     emit send(answer(gameId));
 }
 

@@ -15,7 +15,7 @@ class Game : public QObject
     Q_OBJECT
 
 public:
-    Game();
+    Game(const QString& label);
 
     enum State
     {
@@ -26,6 +26,7 @@ public:
 
     const std::map<QString, Player>& players() const;
     State state() const;
+    QString label() const;
     GameWatcher& watcher();
 
     void join(const QString& playerName);
@@ -47,6 +48,8 @@ signals:
     void onTurnChange(const QString& newMovingPlayer);
 
 protected:
+    const QString m_label;
+
     State m_state;
     std::map<QString, Player> m_players;
     std::vector<QString> m_turnOrder;

@@ -2,7 +2,7 @@
 
 #include <utils/exception.h>
 
-int GameModel::createGame()
+int GameModel::createGame(const QString& label)
 {
     m_games.push_back(std::make_unique<Game>());
     emit onCreateGame(*m_games.back());

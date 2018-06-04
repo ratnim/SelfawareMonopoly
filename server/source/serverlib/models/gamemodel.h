@@ -11,7 +11,7 @@ class GameModel : public QObject
     Q_OBJECT
 
 public:
-    int createGame();
+    int createGame(const QString& label);
     int numberOfGames() const;
     Game& openGame(int gameId);
 
