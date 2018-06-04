@@ -46,6 +46,7 @@ __Sends frequently:__
         "data" : [
             {
                 "game_id" : <game_id>,
+		"game_label" : <title of the game>
                 "player_list" : [],
                 "game_status" : <game_status>
             }
@@ -57,7 +58,12 @@ __Requests:__
 expects:
 
     {
-	    "request" : "create_game"
+	    "request" : "create_game",
+	    "data" : 
+	 	{
+	 	"game_label" : "<title_of_the_game>"
+		}
+	    	
     }
 returns:
 
