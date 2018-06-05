@@ -15,7 +15,7 @@ WebSocketServer::WebSocketServer()
     connect(this, &QWebSocketServer::newConnection, this, &WebSocketServer::acccept);
 
     setMaxPendingConnections(1024);
-    listen(QHostAddress::Any, 31415);
+    listen(QHostAddress::AnyIPv4, 31415);
 
     qDebug() << "Listen on port 31415";
 }

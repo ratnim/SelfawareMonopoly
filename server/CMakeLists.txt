@@ -46,6 +46,7 @@ find_package(Qt5Core       5.9 REQUIRED)
 find_package(Qt5Gui        5.9 REQUIRED)
 find_package(Qt5Network    5.9 REQUIRED)
 find_package(Qt5Sql        5.9 REQUIRED)
+find_package(Qt5Test       5.9 REQUIRED)
 find_package(Qt5Widgets    5.9 REQUIRED)
 find_package(Qt5WebSockets 5.9 REQUIRED)
 

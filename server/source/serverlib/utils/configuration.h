@@ -8,12 +8,10 @@ class Configuration
 public:
     Configuration(const QCoreApplication& application);
 
-    QString rootDirectory() const;
-    bool encryptConnection() const;
+    uint16_t port() const;
 
 protected:
-    static QCommandLineOption rootDirectoryOption();
-    static QCommandLineOption encryptConnectionOption();
+    static QCommandLineOption portOption();
     
     QCommandLineParser m_parser;
 };

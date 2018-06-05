@@ -2,27 +2,16 @@
 
 Configuration::Configuration(const QCoreApplication& application)
 {
-    m_parser.addOption(rootDirectoryOption());
-    m_parser.addOption(encryptConnectionOption());
+    m_parser.addOption(portOption());
     m_parser.process(application);
 }
 
-QString Configuration::rootDirectory() const
+uint16_t Configuration::port() const
 {
-    return m_parser.value(rootDirectoryOption());
+    return m_parser.value(portOption()).toInt();
 }
 
-bool Configuration::encryptConnection() const
+QCommandLineOption Configuration::portOption()
 {
-    return m_parser.isSet(encryptConnectionOption());
-}
-
-QCommandLineOption Configuration::rootDirectoryOption()
-{
-    return { "root-directory", "The root directory used to serve static files used by the client.", "", "../../../../client" };
-}
-
-QCommandLineOption Configuration::encryptConnectionOption()
-{
-    return { "encrypt-conection", "Use encryption for all client-server communication." };
+    return { "port", "The port used to listen for websocket connections.", "", "31415" };
 }

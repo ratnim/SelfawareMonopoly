@@ -11,8 +11,8 @@
 RouteFactory::RouteFactory()
 {
     m_routes[""] = &RouteFactory::create<OverviewRoute>;
-    m_routes["LobbyRoute"] = &RouteFactory::create<LobbyRoute>;
-    m_routes["GameRoute"] = &RouteFactory::create<GameRoute>;
+    m_routes["lobby"] = &RouteFactory::create<LobbyRoute>;
+    m_routes["game"] = &RouteFactory::create<GameRoute>;
 }
 
 void RouteFactory::handle(QWebSocket* socket)

@@ -12,10 +12,10 @@ message(STATUS "Test ${target}")
 
 set(sources
     main.cpp
+    tests/configuration_test.cpp
     tests/exception_test.cpp
-    tests/lobby_test.cpp
-    tests/overview_test.cpp
     tests/request_test.cpp
+    tests/websocketserver_test.cpp
     test_utils/mocked_database.cpp
     test_utils/mocked_database.h
     test_utils/mocked_server.cpp
@@ -62,6 +62,7 @@ target_link_libraries(${target}
     ${DEFAULT_LIBRARIES}
     serverlib
     gmock-dev
+    Qt5::Test
 )
 
 # 

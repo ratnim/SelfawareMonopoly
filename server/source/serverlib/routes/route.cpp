@@ -43,7 +43,7 @@ QJsonObject Route::toJson(const QString& message)
         return json.object();
     }
 
-    throw Exception("Malformed Request: Only JSON objects are supported", Exception::MalformedRequest);
+    throw Exception("Malformed Request: Only JSON objects are supported.", Exception::MalformedRequest);
 }
 
 Route::ActionCallback Route::actionHandler(const QString& name) const
