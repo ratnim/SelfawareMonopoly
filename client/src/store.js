@@ -20,7 +20,7 @@ const vuexLocalStorage = new VuexPersist({
   // filter: mutation => (true)
 })
 
-import lobbyConnection from  './storePlugins/lobbyConnection'
+import homeConnection from  './storePlugins/homeConnection'
 
 
 //TODO should be moved to ./auth
@@ -60,7 +60,7 @@ const vueAuth = new VueAuthenticate(Vue.prototype.$http, {
 })
 
 export default new Vuex.Store({
-  plugins: [vuexLocalStorage.plugin, lobbyConnection],
+  plugins: [vuexLocalStorage.plugin, homeConnection],
   state: {
     socket: {
       isConnected: false,

@@ -20,9 +20,9 @@ function disconnect() {
   socket.close();
 }
 
-function createGame(name) {
-  var request = 'create_game';
-  var data = { 'game_label' : name };
+function createAccount(name) {
+  var request = 'enter_lobby';
+  var data = { 'player_name' : name };
 
   socket.send(createJSON(request, data));
 }
@@ -30,9 +30,7 @@ function createGame(name) {
 
 // Read functions
 function parseResponse(JSONObject) {
-  if (JSONObject.name == 'game_list') {
-    store.commit('setGameList', JSONObject.data);
-  } else if (JSONObject.name == 'create_game') {
+  if (JSONObject.name == 'enter_lobby') {
     //store.commit('TODO', JSONObject.data);
   } else if (JSONObject.name == 'error') {
     //store.commit('TODO', JSONObject.data);
@@ -49,9 +47,9 @@ socket.onmessage = function(event) {
 
 // Store connections
 export default function(store) {
-  /*store.subscribe(mutation => {
-    if (mutation.type === 'TODO') {
-      createGame(mutation.payload);
+  store.subscribe(mutation => {
+    if (mutation.type === 'setNickname') {
+      createAccount(mutation.payload);
     }
-  })*/
+  })
 }
