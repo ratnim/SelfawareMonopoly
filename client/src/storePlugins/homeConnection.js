@@ -1,7 +1,8 @@
-//websocket
-var socket = new WebSocket('ws://localhost:31415/');
+var socket = undefined;
+var joinLobbyCallback = undefined;
+var errorCallback = undefined;
 
-// Helper
+
 function createJSON(request, data) {
   var JSONObject = {
     'request' : request,
@@ -10,46 +11,39 @@ function createJSON(request, data) {
   return JSON.stringify(JSONObject, null, '\t');
 }
 
-
-// Write functions
-function connect() {
-  socket = new WebSocket('ws://localhost:31415');
+function parseResponse(JSONObject) {
+  if (JSONObject.name == 'enter_lobby') {
+    joinLobbyCallback(JSONObject.data.session);
+  } else if (JSONObject.error) {
+    errorCallback(JSONObject.error.message);
+  }
 }
 
-function disconnect() {
+
+export function connect() {
+  socket = new WebSocket('ws://localhost:31415');
+
+  socket.onmessage = function(event) {
+    var JSONObject = JSON.parse(event.data);
+    parseResponse(JSONObject);
+  }
+}
+
+export function disconnect() {
   socket.close();
 }
 
-function createAccount(name) {
+export function createAccount(name) {
   var request = 'enter_lobby';
   var data = { 'player_name' : name };
 
   socket.send(createJSON(request, data));
 }
 
-
-// Read functions
-function parseResponse(JSONObject) {
-  if (JSONObject.name == 'enter_lobby') {
-    //store.commit('TODO', JSONObject.data);
-  } else if (JSONObject.name == 'error') {
-    //store.commit('TODO', JSONObject.data);
-  }
+export function onJoinLobby(callback) {
+  joinLobbyCallback = callback;
 }
 
-
-// Callback
-socket.onmessage = function(event) {
-  var JSONObject = JSON.parse(event.data);
-  parseResponse(JSONObject);
-}
-
-
-// Store connections
-export default function(store) {
-  store.subscribe(mutation => {
-    if (mutation.type === 'setNickname') {
-      createAccount(mutation.payload);
-    }
-  })
+export function onError(callback) {
+  errorCallback = callback;
 }

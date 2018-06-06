@@ -1,5 +1,7 @@
 //websocket
-var socket = new WebSocket('ws://localhost:31415/');
+var socket = undefined;
+var createGameCallback = undefined;
+var errorCallback = undefined;
 
 // Helper
 function createJSON(request, data) {
@@ -10,48 +12,42 @@ function createJSON(request, data) {
   return JSON.stringify(JSONObject, null, '\t');
 }
 
-
-// Write functions
-function connect() {
-  socket = new WebSocket('ws://localhost:31415');
+function parseResponse(JSONObject) {
+  if (JSONObject.name == 'game_list') {
+    store.commit('setGameList', JSONObject.data);
+  } else if (JSONObject.name == 'create_game') {
+    createGameCallback(JSONObject.data.game_id);
+  } else if (JSONObject.error) {
+    errorCallback(JSONObject.error.message);
+  }
 }
 
-function disconnect() {
+
+// Write functions
+export function connect() {
+  socket = new WebSocket('ws://localhost:31415');
+
+  socket.onmessage = function(event) {
+    var JSONObject = JSON.parse(event.data);
+    parseResponse(JSONObject);
+  }
+}
+
+export function disconnect() {
   socket.close();
 }
 
-function createGame(name) {
+export function createGame(name) {
   var request = 'create_game';
   var data = { 'game_label' : name };
 
   socket.send(createJSON(request, data));
 }
 
-
-// Read functions
-function parseResponse(JSONObject) {
-  if (JSONObject.name == 'game_list') {
-    store.commit('setGameList', JSONObject.data);
-  } else if (JSONObject.name == 'create_game') {
-    //store.commit('TODO', JSONObject.data);
-  } else if (JSONObject.name == 'error') {
-    //store.commit('TODO', JSONObject.data);
-  }
+export function onCreateGame(callback) {
+  createGameCallback = callback;
 }
 
-
-// Callback
-socket.onmessage = function(event) {
-  var JSONObject = JSON.parse(event.data);
-  parseResponse(JSONObject);
-}
-
-
-// Store connections
-export default function(store) {
-  /*store.subscribe(mutation => {
-    if (mutation.type === 'TODO') {
-      createGame(mutation.payload);
-    }
-  })*/
+export function onError(callback) {
+  errorCallback = callback;
 }

@@ -25,7 +25,7 @@ export default new Router({
       component: Lobby
     },
     {
-      path: '/monopoly/:gameid',
+      path: '/game',
       name: 'monopoly',
       component: Monopoly
     }

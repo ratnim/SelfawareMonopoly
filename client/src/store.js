@@ -20,8 +20,6 @@ const vuexLocalStorage = new VuexPersist({
   // filter: mutation => (true)
 })
 
-import homeConnection from  './storePlugins/homeConnection'
-
 
 //TODO should be moved to ./auth
 const vueAuth = new VueAuthenticate(Vue.prototype.$http, {
@@ -60,7 +58,7 @@ const vueAuth = new VueAuthenticate(Vue.prototype.$http, {
 })
 
 export default new Vuex.Store({
-  plugins: [vuexLocalStorage.plugin, homeConnection],
+  plugins: [vuexLocalStorage.plugin],
   state: {
     socket: {
       isConnected: false,
@@ -119,8 +117,8 @@ export default new Vuex.Store({
         })
       })
     },
-    setNickname(context, nickname) {
+    createAccount(context, nickname) {
       context.commit('setNickname', nickname);
-    }
+    },
   }
 })
