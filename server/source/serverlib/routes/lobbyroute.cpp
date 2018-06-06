@@ -7,26 +7,26 @@
 #include <models/gamemodel.h>
 #include <utils/exception.h>
 
-LobbyRoute::LobbyRoute(QWebSocket* socket, const Request& request)
-    : Route(socket)
+LobbyRoute::LobbyRoute(QObject* parent, const Request& request)
+    : Route(parent)
     , m_playerName(AccountModel::instance().username(request.session))
 {
-    m_actions["create_game"] = [this, socket](const QJsonValue& data) {
-        createGame(socket, data);
+    m_actions["create_game"] = [this](const QJsonValue& data) {
+        createGame(data);
     };
 
-    watchLobby(socket);
+    watchLobby();
 }
 
-void LobbyRoute::watchLobby(QWebSocket* socket)
+void LobbyRoute::watchLobby()
 {
     auto& watcher = LobbyWatcher::instance();
 
-    socket->sendTextMessage(watcher.message());
-    connect(&watcher, &Watcher::send, socket, &QWebSocket::sendTextMessage);
+    emit send(watcher.message());
+    connect(&watcher, &Watcher::send, this, &Watcher::send);
 }
 
-void LobbyRoute::createGame(QWebSocket* socket, const QJsonValue& body)
+void LobbyRoute::createGame(const QJsonValue& body)
 {
     const auto label = body["game_label"].toString();
     if (label.isEmpty())
@@ -35,7 +35,7 @@ void LobbyRoute::createGame(QWebSocket* socket, const QJsonValue& body)
     }
 
     const auto gameId = GameModel::instance().createGame(label);
-    socket->sendTextMessage(createGameAnswer(gameId));
+    emit send(createGameAnswer(gameId));
 }
 
 QString LobbyRoute::createGameAnswer(int gameId)

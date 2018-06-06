@@ -14,6 +14,7 @@ message(STATUS "Lib ${target}")
 set(sources
     actions/gamewatcher.cpp
     actions/gamewatcher.h
+    actions/watcher.cpp
     actions/watcher.h
     actions/lobbywatcher.cpp
     actions/lobbywatcher.h

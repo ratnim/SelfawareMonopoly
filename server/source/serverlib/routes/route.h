@@ -1,16 +1,18 @@
 #pragma once
-#include <QJsonObject>
-#include <QString>
-#include <QWebSocket>
 
+#include <functional>
+
+#include <QJsonObject>
+
+#include <actions/watcher.h>
 #include <network/request.h>
 
-class Route : public QObject
+class Route : public Watcher
 {
 public:
     using ActionCallback = std::function<void(const QJsonValue&)>;
 
-    Route(QWebSocket* socket);
+    Route(QObject* parent);
 
     void incommingMessage(const QString& message);
     void disconnectClient();
@@ -19,6 +21,5 @@ protected:
     static QJsonObject toJson(const QString& message);
     ActionCallback actionHandler(const QString& name) const;
 
-    QWebSocket* m_socket;
     std::map<QString, ActionCallback> m_actions;
 };

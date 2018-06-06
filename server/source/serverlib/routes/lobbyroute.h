@@ -5,12 +5,12 @@
 class LobbyRoute : public Route
 {
 public:
-    LobbyRoute(QWebSocket* socket, const Request& request);
+    LobbyRoute(QObject* parent, const Request& request);
 
 protected:
-    void watchLobby(QWebSocket* socket);
+    void watchLobby();
     
-    void createGame(QWebSocket* socket, const QJsonValue& body);
+    void createGame(const QJsonValue& body);
     static QString createGameAnswer(int gameId);
 
     const QString m_playerName;

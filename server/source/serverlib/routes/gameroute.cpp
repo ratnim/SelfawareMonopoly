@@ -3,8 +3,8 @@
 #include <models/accountmodel.h>
 #include <models/gamemodel.h>
 
-GameRoute::GameRoute(QWebSocket* socket, const Request& request)
-    : Route(socket)
+GameRoute::GameRoute(QObject* parent, const Request& request)
+    : Route(parent)
     , m_playerName(AccountModel::instance().username(request.session))
 {
     auto& game = GameModel::instance().openGame(request.gameId);
@@ -15,14 +15,14 @@ GameRoute::GameRoute(QWebSocket* socket, const Request& request)
     m_actions["roll_dice"] = [&game, this](const QJsonValue&) { game.rollDice(m_playerName); };
     m_actions["end_turn"] = [&game, this](const QJsonValue&) { game.endTurn(m_playerName); };
 
-    watchGame(socket, game.watcher());
+    watchGame(game.watcher());
 }
 
-void GameRoute::watchGame(QWebSocket* socket, GameWatcher& watcher)
+void GameRoute::watchGame(GameWatcher& watcher)
 {
     for (const auto& message : watcher.messages())
     {
-        socket->sendTextMessage(message);
+        emit send(message);
     }
-    connect(&watcher, &Watcher::send, socket, &QWebSocket::sendTextMessage);
+    connect(&watcher, &Watcher::send, this, &Watcher::send);
 }

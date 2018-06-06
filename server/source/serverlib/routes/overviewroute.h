@@ -5,9 +5,9 @@
 class OverviewRoute : public Route
 {
 public:
-    OverviewRoute(QWebSocket* socket, const Request& request);
+    OverviewRoute(QObject* parent, const Request& request);
 
 protected:
-    void enterLobby(QWebSocket* socket, const QJsonValue& data);
+    void enterLobby(const QJsonValue& data);
     static QString enterLobbyAnswer(const QString& userSession);
 };

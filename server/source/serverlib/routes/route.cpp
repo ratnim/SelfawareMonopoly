@@ -4,12 +4,9 @@
 
 #include <utils/exception.h>
 
-Route::Route(QWebSocket* socket)
-    : QObject(socket)
-    , m_socket(socket)
+Route::Route(QObject* parent)
+    : Watcher(parent)
 {
-    connect(socket, &QWebSocket::textMessageReceived, this, &Route::incommingMessage);
-    connect(socket, &QWebSocket::readChannelFinished, this, &Route::disconnectClient);
 }
 
 void Route::incommingMessage(const QString& message)
@@ -24,15 +21,8 @@ void Route::incommingMessage(const QString& message)
     }
     catch (const Exception &e)
     {
-        m_socket->sendTextMessage(e.json());
+        emit send(e.json());
     }
-}
-
-void Route::disconnectClient()
-{
-    m_socket->flush();
-    m_socket->close();
-    m_socket->deleteLater();
 }
 
 QJsonObject Route::toJson(const QString& message)

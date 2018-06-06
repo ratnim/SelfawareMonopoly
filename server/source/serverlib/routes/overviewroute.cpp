@@ -6,15 +6,15 @@
 #include <models/accountmodel.h>
 #include <utils/exception.h>
 
-OverviewRoute::OverviewRoute(QWebSocket* socket, const Request& request)
-    : Route(socket)
+OverviewRoute::OverviewRoute(QObject* parent, const Request& request)
+    : Route(parent)
 {
-    m_actions["enter_lobby"] = [this, socket](const QJsonValue& data) {
-        enterLobby(socket, data);
+    m_actions["enter_lobby"] = [this](const QJsonValue& data) {
+        enterLobby(data);
     };
 }
 
-void OverviewRoute::enterLobby(QWebSocket* socket, const QJsonValue& data)
+void OverviewRoute::enterLobby(const QJsonValue& data)
 {
     const auto player = data["player_name"].toString();
     if (player.isEmpty())
@@ -28,7 +28,7 @@ void OverviewRoute::enterLobby(QWebSocket* socket, const QJsonValue& data)
         throw Exception("Internal error: Could not create session.", Exception::InternalError);
     }
 
-    socket->sendTextMessage(enterLobbyAnswer(userSession));
+    emit send(enterLobbyAnswer(userSession));
 }
 
 QString OverviewRoute::enterLobbyAnswer(const QString& userSession)

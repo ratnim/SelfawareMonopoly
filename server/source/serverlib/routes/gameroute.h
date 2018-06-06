@@ -6,9 +6,9 @@
 class GameRoute : public Route
 {
 public:
-    GameRoute(QWebSocket* socket, const Request& request);
+    GameRoute(QObject* parent, const Request& request);
 
-    void watchGame(QWebSocket* socket, GameWatcher& watcher);
+    void watchGame(GameWatcher& watcher);
 
 protected:
     const QString m_playerName;

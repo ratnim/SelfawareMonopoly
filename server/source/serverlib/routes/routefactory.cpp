@@ -27,10 +27,15 @@ void RouteFactory::handle(QWebSocket* socket)
     catch (const Exception &e)
     {
         socket->sendTextMessage(e.json());
-        socket->flush();
-        socket->close();
-        socket->deleteLater();
+        disconnect(socket);
     }
+}
+
+void RouteFactory::disconnect(QWebSocket* socket)
+{
+    socket->flush();
+    socket->close();
+    socket->deleteLater();
 }
 
 RouteFactory::Factory RouteFactory::routeFactory(const QString& routeName) const

@@ -1,5 +1,6 @@
 #pragma once
 #include <QJsonObject>
+#include <QObject>
 #include <QString>
 #include <QWebSocket>
 
@@ -13,12 +14,17 @@ public:
     RouteFactory();
 
     void handle(QWebSocket* socket);
+    static void disconnect(QWebSocket* socket);
 
 protected:
-    template <class Connection>
+    template <class ConnectionHandler>
     void create(QWebSocket* socket, const Request& request)
     {
-        new Connection(socket, request);
+        auto handler = new ConnectionHandler(socket, request);
+
+        QObject::connect(socket, &QWebSocket::textMessageReceived, handler, &Route::incommingMessage);
+        QObject::connect(socket, &QWebSocket::readChannelFinished, [socket] { disconnect(socket); });
+        QObject::connect(handler, &Watcher::send, socket, &QWebSocket::sendTextMessage);
     }
 
     Factory routeFactory(const QString& routeName) const;
