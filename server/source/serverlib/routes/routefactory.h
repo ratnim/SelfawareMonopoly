@@ -24,7 +24,6 @@ protected:
 
         QObject::connect(socket, &QWebSocket::textMessageReceived, handler, &Route::incommingMessage);
         QObject::connect(socket, &QWebSocket::readChannelFinished, [socket] { disconnect(socket); });
-        QObject::connect(handler, &Watcher::send, socket, &QWebSocket::sendTextMessage);
     }
 
     Factory routeFactory(const QString& routeName) const;

@@ -5,7 +5,7 @@
 class LobbyRoute : public Route
 {
 public:
-    LobbyRoute(QObject* parent, const Request& request);
+    LobbyRoute(QWebSocket* parent, const Request& request);
 
 protected:
     void watchLobby();

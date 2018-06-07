@@ -6,7 +6,7 @@
 #include <models/accountmodel.h>
 #include <utils/exception.h>
 
-OverviewRoute::OverviewRoute(QObject* parent, const Request& request)
+OverviewRoute::OverviewRoute(QWebSocket* parent, const Request& request)
     : Route(parent)
 {
     m_actions["enter_lobby"] = [this](const QJsonValue& data) {
