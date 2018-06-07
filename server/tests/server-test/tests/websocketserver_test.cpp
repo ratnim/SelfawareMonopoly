@@ -40,9 +40,10 @@ TEST(WebSocketServerTest, connect_overview_route)
     QSignalSpy connected_spy(&client, &QWebSocket::connected);
     QSignalSpy message_spy(&client, &QWebSocket::textMessageReceived);
 
-    client.open(QUrl("ws://localhost:31415/lobby"));
+    client.open(QUrl("ws://localhost:31415/"));
 
     EXPECT_TRUE(connected_spy.size() || connected_spy.wait());
+    EXPECT_EQ(message_spy.size(), 0);
 
     client.sendTextMessage("invalid message format.");
 
@@ -54,7 +55,7 @@ TEST(WebSocketServerTest, connect_overview_route)
     const auto string = message_spy.at(0).at(0).toString();
     const auto json = QJsonDocument::fromJson(string.toUtf8());
     EXPECT_TRUE(json["error"].isObject());
-    EXPECT_NE(json["error"]["id"].toInt(), Exception::InvalidRoute);
+    EXPECT_EQ(json["error"]["id"].toInt(), Exception::MalformedRequest);
 
     EXPECT_TRUE(client.isValid());
 }
