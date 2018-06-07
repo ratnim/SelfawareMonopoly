@@ -44,8 +44,8 @@ export default {
 
   created() {
     homeConnection.connect();
-    homeConnection.onJoinLobby(this.joinLobby);
-    homeConnection.onError(this.error);
+    homeConnection.onJoinLobby(this.onJoinLobby);
+    homeConnection.onError(this.onError);
   },
   beforeRouteLeave(to, from, next) {
     homeConnection.disconnect();
@@ -62,11 +62,11 @@ export default {
       homeConnection.createAccount(this.nickname);
       this.$store.dispatch('createAccount', this.nickname);
     },
-    joinLobby: function(sessionId) {
+    onJoinLobby: function(sessionId) {
       this.$router.push({ name: 'lobby' });
       this.$store.commit('setSessionId', sessionId);
     },
-    error: function(message) {
+    onError: function(message) {
       console.log(message);
     }
   }

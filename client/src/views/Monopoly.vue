@@ -30,6 +30,7 @@ import {
   mapGetters
 } from 'vuex'
 
+import * as gameConnection from '../storePlugins/gameConnection'
 
 import MonopolyField from '@/components/MonopolyField'
 import MonopolyPlayer from '@/components/MonopolyPlayer'
@@ -54,17 +55,28 @@ export default {
   },
   computed: {
     ...mapGetters({
-      'tokens': 'getTokens',
-      'nickname': 'getNickname'
+      tokens: 'getTokens',
+      nickname: 'getNickname',
+      sessionId: 'getSessionId'
     }),
     lane1: () => [].concat(game.fields[0]).reverse(),
     lane2: () => game.fields[1],
     lane3: () => game.fields[2],
     lane4: () => [].concat(game.fields[3]).reverse(),
   },
-  mounted() {
 
+  created() {
+    gameConnection.connect(this.$route.query.game_id, this.sessionId);
+    gameConnection.joinGame();
+
+    gameConnection.onPlayerJoined(this.onPlayerJoined);
+    gameConnection.onError(this.onError);
   },
+  beforeRouteLeave(to, from, next) {
+    gameConnection.disconnect();
+    next();
+  },
+
   methods: {
     rollDice : function() {
       //TODO get dices result from server
@@ -76,6 +88,13 @@ export default {
       this.players[0].currentField += this.dice1 + this.dice2
       this.$refs.players[0].move(this.players[0].currentField)
     },
+    onPlayerJoined : function(playerName) {
+      console.log(playerName);
+      players.push({currentField: 0, nickname: playerName, color: 'yellow'});
+    },
+    onError : function(message) {
+      console.log(message);
+    }
   }
 }
 </script>

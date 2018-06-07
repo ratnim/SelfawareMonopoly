@@ -1,6 +1,7 @@
 //websocket
 var socket = undefined;
 var createGameCallback = undefined;
+var getGameListCallback = undefined;
 var errorCallback = undefined;
 
 // Helper
@@ -14,7 +15,7 @@ function createJSON(request, data) {
 
 function parseResponse(JSONObject) {
   if (JSONObject.name == 'game_list') {
-    store.commit('setGameList', JSONObject.data);
+    getGameListCallback(JSONObject.data);
   } else if (JSONObject.name == 'create_game') {
     createGameCallback(JSONObject.data.game_id);
   } else if (JSONObject.error) {
@@ -46,6 +47,10 @@ export function createGame(name) {
 
 export function onCreateGame(callback) {
   createGameCallback = callback;
+}
+
+export function onGetGameList(callback) {
+  getGameListCallback = callback;
 }
 
 export function onError(callback) {

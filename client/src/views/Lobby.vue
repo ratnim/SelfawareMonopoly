@@ -13,7 +13,7 @@
             </span>
           </span>
         </div>
-        <md-button @click="joinGame(game.game_id)" class="md-icon-button md-list-action">
+        <md-button @click="onJoinGame(game.game_id)" class="md-icon-button md-list-action">
           <md-icon>forward</md-icon>
         </md-button>
       </md-list-item>
@@ -53,8 +53,9 @@ export default {
 
   created() {
     lobbyConnection.connect(this.sessionId);
-    lobbyConnection.onCreateGame(this.joinGame);
-    lobbyConnection.onError(this.error);
+    lobbyConnection.onCreateGame(this.onJoinGame);
+    lobbyConnection.onGetGameList(this.setGameList);
+    lobbyConnection.onError(this.onError);
   },
   beforeRouteLeave(to, from, next) {
     lobbyConnection.disconnect();
@@ -62,13 +63,16 @@ export default {
   },
 
   methods: {
-    joinGame(gameId) {
+    onJoinGame(gameId) {
       this.$router.push({ name: 'monopoly', query: { game_id: gameId } })
     },
     createGame(name) {
       lobbyConnection.createGame('test');
     },
-    error: function(message) {
+    setGameList(gameList) {
+      this.$store.commit('setGameList', gameList);
+    },
+    onError: function(message) {
       console.log(message);
     }
   }
