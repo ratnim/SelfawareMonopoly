@@ -5,7 +5,6 @@
   <div class="">
     <md-button @click="rollDice()">ROLL THE DICE</md-button>
     <span>{{dice1}}, {{dice2}}</span>
-    <md-button @click="move()">MOVE</md-button>
   </div>
   <div class="">
     <easel-canvas width="600" height="600" ref="stage">
@@ -21,6 +20,11 @@
       <!--the players -->
       <MonopolyPlayer v-for="player in players" :key="player.nickname" :color="player.color" :fieldLength="fieldLength" ref="players"></MonopolyPlayer>
     </easel-canvas>
+  </div>
+  <div class="">
+    <md-button @click="setReady()">READY</md-button>
+    <md-button @click="endTurn()">END TURN</md-button>
+    <md-button @click="startGame()">START GAME</md-button>
   </div>
 </div>
 </template>
@@ -50,7 +54,7 @@ export default {
       game: game,
       dice1 : null,
       dice2 : null,
-      players : [{currentField: 0, nickname: this.nickname, color: 'yellow' }]
+      players : []
     }
   },
   computed: {
@@ -69,7 +73,13 @@ export default {
     gameConnection.connect(this.$route.query.game_id, this.sessionId);
     gameConnection.joinGame();
 
+    gameConnection.onDiceRolled(this.onDiceRolled);
     gameConnection.onPlayerJoined(this.onPlayerJoined);
+    gameConnection.onPlayerMoved(this.onPlayerMoved);
+    gameConnection.onPlayerReady(this.onPlayerReady);
+    gameConnection.onGameStarted(this.onGameStarted);
+    gameConnection.onGameEnded(this.onGameEnded);
+    gameConnection.onTurnChanged(this.onTurnChanged);
     gameConnection.onError(this.onError);
   },
   beforeRouteLeave(to, from, next) {
@@ -79,18 +89,45 @@ export default {
 
   methods: {
     rollDice : function() {
-      //TODO get dices result from server
-      this.dice1 = Math.floor(Math.random()*6)+1;
-      this.dice2 = Math.floor(Math.random()*6)+1;
-
+      gameConnection.rollDice();
     },
-    move : function() {
-      this.players[0].currentField += this.dice1 + this.dice2
-      this.$refs.players[0].move(this.players[0].currentField)
+    setReady : function() {
+      gameConnection.setReady();
+    },
+    startGame : function() {
+      gameConnection.startGame();
+    },
+    endTurn : function() {
+      gameConnection.endTurn();
+    },
+
+    onDiceRolled : function(dice) {
+      dice1 = dice[0];
+      dice2 = dice[1];
     },
     onPlayerJoined : function(playerName) {
       console.log(playerName);
       players.push({currentField: 0, nickname: playerName, color: 'yellow'});
+    },
+    onPlayerMoved : function(playerName, distance) {
+      for (var i = 0; i < this.players.length; i++) {
+        if (players[i].nickname == playerName) {
+          players[i].currentField = (players[i].currentField + distance) % 24;
+          this.$refs.players[i].move(this.players[0].currentField);
+        }
+      }
+    },
+    onPlayerReady : function(playerName) {
+      console.log(playername + ' is now ready!');
+    },
+    onGameStarted : function() {
+      console.log('Game started!');
+    },
+    onGameEnded : function() {
+      console.log('Game ended');
+    },
+    onTurnChanged : function(playerName) {
+      console.log('It\'s ' + playerName + ' turn!');
     },
     onError : function(message) {
       console.log(message);
