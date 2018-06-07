@@ -2,6 +2,7 @@
 
 Configuration::Configuration(const QCoreApplication& application)
 {
+    auto args = QCoreApplication::arguments();
     m_parser.addOption(portOption());
     m_parser.process(application);
 }

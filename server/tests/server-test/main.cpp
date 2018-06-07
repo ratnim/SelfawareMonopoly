@@ -4,8 +4,7 @@
 
 int main(int argc, char* argv[])
 {
-    MockedServer::constructServer(argc, argv);
-
     ::testing::InitGoogleMock(&argc, argv);
+    MockedServer::constructServer(argc, argv);
     return RUN_ALL_TESTS();
 }

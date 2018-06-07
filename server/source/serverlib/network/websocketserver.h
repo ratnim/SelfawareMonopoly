@@ -1,7 +1,6 @@
 #pragma once
 
-#include <set>
-
+#include <QHostAddress>
 #include <QWebSocketServer>
 
 #include <models/accountmodel.h>
@@ -11,7 +10,7 @@
 class WebSocketServer : public QWebSocketServer
 {
 public:
-    WebSocketServer();
+    WebSocketServer(QHostAddress::SpecialAddress host = QHostAddress::AnyIPv4);
 
 protected:
     void acccept();

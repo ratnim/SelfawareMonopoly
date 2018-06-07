@@ -1,5 +1,6 @@
 #include <gmock/gmock.h>
 
+#include <QJsonDocument>
 #include <QSignalSpy>
 #include <QUrl>
 #include <QWebSocket>
@@ -8,26 +9,85 @@
 
 #include <test_utils/mocked_server.h>
 
-TEST(WebSocketServerTest, construct_simple)
+TEST(WebSocketServerTest, connect_invalid_route)
 {
-    /*
-    WebSocketServer server;
-
-    QString text;
-
     QWebSocket client;
-    QObject::connect(&client, &QWebSocket::textMessageReceived, [&text](const QString msg) { text = msg; });
-    //QSignalSpy client_spy(&client, &QWebSocket::textMessageReceived);
-    client.open(QUrl("ws://localhost:31415/invalid_route"));
 
+    QSignalSpy disconnected_spy(&client, &QWebSocket::disconnected);
+    QSignalSpy message_spy(&client, &QWebSocket::textMessageReceived);
 
-    int x = 1000;
-    while (--x)
-    {
-        MockedServer::application().processEvents();
-        std::this_thread::sleep_for(std::chrono::milliseconds(2));
-    }
+    client.open(QUrl("ws://localhost:31415/invalid"));
 
-    EXPECT_EQ(text.toStdString(), "yolo");
-    */
+    EXPECT_TRUE(disconnected_spy.size() || disconnected_spy.wait());
+    EXPECT_TRUE(message_spy.size() || message_spy.wait());
+
+    EXPECT_EQ(disconnected_spy.size(), 1);
+    ASSERT_EQ(message_spy.size(), 1);
+
+    const auto string = message_spy.at(0).at(0).toString();
+    const auto json = QJsonDocument::fromJson(string.toUtf8());
+    EXPECT_TRUE(json["error"].isObject());
+}
+
+TEST(WebSocketServerTest, connect_overview_route)
+{
+    QWebSocket client;
+
+    QSignalSpy connected_spy(&client, &QWebSocket::connected);
+    QSignalSpy message_spy(&client, &QWebSocket::textMessageReceived);
+
+    client.open(QUrl("ws://localhost:31415/lobby"));
+
+    EXPECT_TRUE(connected_spy.size() || connected_spy.wait());
+
+    client.sendTextMessage("invalid message format.");
+
+    EXPECT_TRUE(message_spy.size() || message_spy.wait());
+
+    EXPECT_EQ(connected_spy.size(), 1);
+    ASSERT_EQ(message_spy.size(), 1);
+
+    const auto string = message_spy.at(0).at(0).toString();
+    const auto json = QJsonDocument::fromJson(string.toUtf8());
+    EXPECT_TRUE(json["error"].isObject());
+}
+
+TEST(WebSocketServerTest, connect_lobby_route_no_auth)
+{
+    QWebSocket client;
+
+    QSignalSpy disconnected_spy(&client, &QWebSocket::disconnected);
+    QSignalSpy message_spy(&client, &QWebSocket::textMessageReceived);
+
+    client.open(QUrl("ws://localhost:31415/lobby"));
+
+    EXPECT_TRUE(disconnected_spy.size() || disconnected_spy.wait());
+    EXPECT_TRUE(message_spy.size() || message_spy.wait());
+
+    EXPECT_EQ(disconnected_spy.size(), 1);
+    ASSERT_EQ(message_spy.size(), 1);
+
+    const auto string = message_spy.at(0).at(0).toString();
+    const auto json = QJsonDocument::fromJson(string.toUtf8());
+    EXPECT_TRUE(json["error"].isObject());
+}
+
+TEST(WebSocketServerTest, connect_game_route_no_auth)
+{
+    QWebSocket client;
+
+    QSignalSpy disconnected_spy(&client, &QWebSocket::disconnected);
+    QSignalSpy message_spy(&client, &QWebSocket::textMessageReceived);
+
+    client.open(QUrl("ws://localhost:31415/game"));
+
+    EXPECT_TRUE(disconnected_spy.size() || disconnected_spy.wait());
+    EXPECT_TRUE(message_spy.size() || message_spy.wait());
+
+    EXPECT_EQ(disconnected_spy.size(), 1);
+    ASSERT_EQ(message_spy.size(), 1);
+
+    const auto string = message_spy.at(0).at(0).toString();
+    const auto json = QJsonDocument::fromJson(string.toUtf8());
+    EXPECT_TRUE(json["error"].isObject());
 }
