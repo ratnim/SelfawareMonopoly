@@ -63,7 +63,8 @@ export default {
       this.$store.dispatch('createAccount', this.nickname);
     },
     joinLobby: function(sessionId) {
-      this.$router.push({ name: 'lobby', query: {session: sessionId}});
+      this.$router.push({ name: 'lobby' });
+      this.$store.commit('setSessionId', sessionId);
     },
     error: function(message) {
       console.log(message);

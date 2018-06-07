@@ -46,12 +46,13 @@ export default {
   },
   computed: {
     ...mapGetters({
-      'games': 'getGameList'
+      games: 'getGameList',
+      sessionId: 'getSessionId'
     })
   },
 
   created() {
-    lobbyConnection.connect();
+    lobbyConnection.connect(this.sessionId);
     lobbyConnection.onCreateGame(this.joinGame);
     lobbyConnection.onError(this.error);
   },
@@ -62,7 +63,7 @@ export default {
 
   methods: {
     joinGame(gameId) {
-      this.$router.push({ name: 'monopoly', query: { game_id: gameId, session: this.$route.query.session } })
+      this.$router.push({ name: 'monopoly', query: { game_id: gameId } })
     },
     createGame(name) {
       lobbyConnection.createGame('test');

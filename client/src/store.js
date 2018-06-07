@@ -65,6 +65,7 @@ export default new Vuex.Store({
       message: '',
       reconnectError: false,
     },
+    sessionId: '',
     nickname : '',
     isAuthenticated: false,
     tokens: {'instagram' : null, 'facebook' : null, 'google': null}
@@ -81,6 +82,9 @@ export default new Vuex.Store({
     },
     getGameList(state) {
       return state.gameList
+    },
+    getSessionId(state) {
+      return state.sessionId;
     }
   },
   mutations: {
@@ -95,6 +99,9 @@ export default new Vuex.Store({
     },
     setGameList(state, payload) {
       state.gameList = payload
+    },
+    setSessionId(state, payload) {
+      state.sessionId = payload;
     }
   },
   actions: {
