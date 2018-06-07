@@ -22,6 +22,17 @@ set(sources
     game/game.h
     game/player.cpp
     game/player.h
+	game/jail.cpp
+	game/jail.h
+    game/state/state.h
+    game/state/active.cpp
+    game/state/active.h
+    game/state/passive.cpp
+    game/state/passive.h
+    game/state/dead.cpp
+    game/state/dead.h
+    game/state/enter.cpp
+    game/state/enter.h
     actions/gamewatcher.cpp
     actions/gamewatcher.h
     models/accountmodel.cpp
