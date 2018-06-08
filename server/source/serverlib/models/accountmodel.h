@@ -5,7 +5,9 @@
 #include <QSqlQuery>
 #include <QString>
 
-class AccountModel
+#include <utils/staticstorage.h>
+
+class AccountModel : public StaticStorage<AccountModel>
 {
 public:
     AccountModel();
@@ -14,11 +16,9 @@ public:
     QString createUser(const QString& name);
     QString createSession(const QString& name);
 
-    static AccountModel& instance();
-
 protected:
-    QSqlQuery s_createTable;
-    QSqlQuery s_createUser;
+    QSqlQuery m_createTable;
+    QSqlQuery m_createUser;
 
-    std::map<QString, QString> s_sessions;
+    std::map<QString, QString> m_sessions;
 };

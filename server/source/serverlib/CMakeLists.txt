@@ -22,8 +22,8 @@ set(sources
     game/game.h
     game/player.cpp
     game/player.h
-	game/jail.cpp
-	game/jail.h
+    game/jail.cpp
+    game/jail.h
     game/state/state.h
     game/state/active.cpp
     game/state/active.h
@@ -59,6 +59,9 @@ set(sources
     utils/database.h
     utils/exception.cpp
     utils/exception.h
+    utils/program.cpp
+    utils/program.h
+    utils/staticstorage.h
 )
 
 source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${sources})

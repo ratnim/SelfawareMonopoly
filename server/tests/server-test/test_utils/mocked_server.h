@@ -3,6 +3,7 @@
 #include <QCoreApplication>
 
 #include <network/websocketserver.h>
+#include <utils/program.h>
 
 class MockedServer
 {
@@ -18,4 +19,5 @@ public:
 protected:
     static std::unique_ptr<QCoreApplication> app;
     static std::unique_ptr<WebSocketServer> srv;
+    static std::unique_ptr<Program> prog;
 };

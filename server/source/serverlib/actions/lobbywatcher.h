@@ -5,8 +5,9 @@
 
 #include <actions/watcher.h>
 #include <game/game.h>
+#include <utils/staticstorage.h>
 
-class LobbyWatcher : public Watcher
+class LobbyWatcher : public StaticStorage<LobbyWatcher>, public Watcher
 {
 public:
     LobbyWatcher();

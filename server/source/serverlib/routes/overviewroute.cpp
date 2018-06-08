@@ -16,18 +16,20 @@ OverviewRoute::OverviewRoute(QWebSocket* parent, const Request& request)
 
 void OverviewRoute::enterLobby(const QJsonValue& data)
 {
-    const auto player = data["player_name"].toString();
+    const auto rawPlayer = data["player_name"].toString();
+    const auto player = rawPlayer.simplified().toHtmlEscaped();
     if (player.isEmpty())
     {
         throw Exception("Malformed request: 'data.player_name' is missing.", Exception::MalformedRequest);
     }
 
-    const auto userSession = AccountModel::instance().createUser(player);
-    if (userSession.isEmpty())
+    static const int maxNameLength = 32;
+    if (player.size() > maxNameLength)
     {
-        throw Exception("Internal error: Could not create session.", Exception::InternalError);
+        throw Exception("Invalid Request: The name is too long.");
     }
 
+    const auto userSession = AccountModel::instance().createUser(player);
     emit send(enterLobbyAnswer(userSession));
 }
 

@@ -2,6 +2,8 @@
 
 #include <utils/exception.h>
 
+std::unique_ptr<GameModel> StaticStorage<GameModel>::s_model;
+
 int GameModel::createGame(const QString& label)
 {
     m_games.push_back(std::make_unique<Game>(label));
@@ -22,10 +24,4 @@ Game& GameModel::openGame(int gameId)
         return *m_games[gameId];
     }
     throw Exception("Invalid Request: The game id is not valid.");
-}
-
-GameModel& GameModel::instance()
-{
-    static GameModel model;
-    return model;
 }
