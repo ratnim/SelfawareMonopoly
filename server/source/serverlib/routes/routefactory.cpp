@@ -34,7 +34,6 @@ void RouteFactory::handle(QWebSocket* socket)
 void RouteFactory::disconnect(QWebSocket* socket)
 {
     socket->flush();
-    socket->close();
     socket->deleteLater();
 }
 

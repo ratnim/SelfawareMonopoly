@@ -4,9 +4,10 @@
 
 #include <utils/exception.h>
 
-Route::Route(QObject* parent)
+Route::Route(QWebSocket* parent)
     : Watcher(parent)
 {
+    connect(this, &Watcher::send, parent, &QWebSocket::sendTextMessage);
 }
 
 void Route::incommingMessage(const QString& message)

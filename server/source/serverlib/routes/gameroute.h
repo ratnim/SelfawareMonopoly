@@ -6,7 +6,7 @@
 class GameRoute : public Route
 {
 public:
-    GameRoute(QObject* parent, const Request& request);
+    GameRoute(QWebSocket* parent, const Request& request);
 
     void watchGame(GameWatcher& watcher);
 

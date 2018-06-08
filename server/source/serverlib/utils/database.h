@@ -4,13 +4,18 @@
 #include <QSqlQuery>
 #include <QString>
 
-class Database
+#include <utils/staticstorage.h>
+
+class Database : public StaticStorage<Database>
 {
 public:
-    static QSqlQuery execute(const QString &queryString);
-    static QSqlQuery prepare(const QString &queryString);
-    static QSqlDatabase database();
+    Database(const QString& databaseName = ":memory:");
+
+    QSqlQuery execute(const QString &queryString);
+    QSqlQuery prepare(const QString &queryString);
 
 protected:
-    static QSqlDatabase createDatabase();
+    static QSqlDatabase createDatabase(const QString& databaseName);
+
+    QSqlDatabase m_db;
 };

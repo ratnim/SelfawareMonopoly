@@ -3,6 +3,7 @@
 #include <functional>
 
 #include <QJsonObject>
+#include <QWebSocket>
 
 #include <actions/watcher.h>
 #include <network/request.h>
@@ -12,7 +13,7 @@ class Route : public Watcher
 public:
     using ActionCallback = std::function<void(const QJsonValue&)>;
 
-    Route(QObject* parent);
+    Route(QWebSocket* parent);
 
     void incommingMessage(const QString& message);
     void disconnectClient();

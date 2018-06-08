@@ -5,7 +5,7 @@
 class OverviewRoute : public Route
 {
 public:
-    OverviewRoute(QObject* parent, const Request& request);
+    OverviewRoute(QWebSocket* parent, const Request& request);
 
 protected:
     void enterLobby(const QJsonValue& data);

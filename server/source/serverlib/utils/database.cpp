@@ -5,14 +5,16 @@
 #include <QSqlError>
 #include <QVariant>
 
-namespace
+std::unique_ptr<Database> StaticStorage<Database>::s_model;
+
+Database::Database(const QString& databaseName)
+    : m_db(createDatabase(databaseName))
 {
-static const QString dbName("monopoly.db3");
 }
 
 QSqlQuery Database::execute(const QString& queryString)
 {
-    QSqlQuery query = QSqlQuery(database());
+    QSqlQuery query = QSqlQuery(m_db);
     if (!query.exec(queryString))
     {
         throw std::runtime_error(query.lastError().text().toStdString());
@@ -23,7 +25,7 @@ QSqlQuery Database::execute(const QString& queryString)
 
 QSqlQuery Database::prepare(const QString& queryString)
 {
-    QSqlQuery query = QSqlQuery(database());
+    QSqlQuery query = QSqlQuery(m_db);
     if (!query.prepare(queryString))
     {
         throw std::runtime_error(query.lastError().text().toStdString());
@@ -32,17 +34,11 @@ QSqlQuery Database::prepare(const QString& queryString)
     return query;
 }
 
-QSqlDatabase Database::database()
+QSqlDatabase Database::createDatabase(const QString& databaseName)
 {
-    static QSqlDatabase db = createDatabase();
-    return db;
-}
-
-QSqlDatabase Database::createDatabase()
-{
-    QFile::remove(dbName);
+    QFile::remove(databaseName);
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", QUuid::createUuid().toString());
-    db.setDatabaseName(dbName);
+    db.setDatabaseName(databaseName);
     db.open();
 
     return db;

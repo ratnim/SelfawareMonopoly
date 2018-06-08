@@ -7,7 +7,7 @@
 #include <models/gamemodel.h>
 #include <utils/exception.h>
 
-LobbyRoute::LobbyRoute(QObject* parent, const Request& request)
+LobbyRoute::LobbyRoute(QWebSocket* parent, const Request& request)
     : Route(parent)
     , m_playerName(AccountModel::instance().username(request.session))
 {

@@ -9,14 +9,14 @@
 #include <routes/lobbyroute.h>
 #include <routes/overviewroute.h>
 
-WebSocketServer::WebSocketServer()
+WebSocketServer::WebSocketServer(QHostAddress::SpecialAddress host)
     : QWebSocketServer("Monopoly", QWebSocketServer::NonSecureMode)
 {
     connect(this, &QWebSocketServer::newConnection, this, &WebSocketServer::acccept);
 
     setMaxPendingConnections(1024);
-    listen(QHostAddress::AnyIPv4, 31415);
-
+    listen(host, 31415);
+    
     qDebug() << "Listen on port 31415";
 }
 

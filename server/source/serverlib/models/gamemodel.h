@@ -5,8 +5,9 @@
 #include <QObject>
 
 #include <game/game.h>
+#include <utils/staticstorage.h>
 
-class GameModel : public QObject
+class GameModel : public QObject, public StaticStorage<GameModel>
 {
     Q_OBJECT
 
@@ -14,8 +15,6 @@ public:
     int createGame(const QString& label);
     int numberOfGames() const;
     Game& openGame(int gameId);
-
-    static GameModel& instance();
 
 signals:
     void onCreateGame(Game& game);

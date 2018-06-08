@@ -3,7 +3,7 @@
 #include <models/accountmodel.h>
 #include <models/gamemodel.h>
 
-GameRoute::GameRoute(QObject* parent, const Request& request)
+GameRoute::GameRoute(QWebSocket* parent, const Request& request)
     : Route(parent)
     , m_playerName(AccountModel::instance().username(request.session))
 {
