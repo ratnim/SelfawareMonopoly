@@ -1,8 +1,8 @@
 
 # Server Routes
 ```
-/  
-/lobby  
+/
+/lobby
 /game
 ```
 
@@ -13,44 +13,48 @@ Route: /
 expects:
 
     {
-	    "request" : "enter_lobby"
-	    "data" : 
-        { 
+        "request" : "enter_lobby"
+        "data" :
+        {
             "player_name": <player_name>
         }
     }
 returns:
 
     {
-	    "name" : "enter_lobby"
-	    "data" : 
-        { 
+        "name" : "enter_lobby"
+        "data" :
+        {
             "session": <session>
         }
     }
 
 Client should redirect to ```/lobby?session=<session>```
 
-Some kind of overview page. Shows highscore, register and login players. 
+Some kind of overview page. Shows highscore, register and login players.
 
-### login 
-A session key is generated and it is stored locally inside the URL as get parameter `?session=@@@@@@@` .
+### login
+A session key is generated and it is stored locally inside the URL as get parameter `?session=@@@@@@@`.
 
-## lobby 
+## lobby
 __Route:__ /lobby
 
 __Sends frequently:__
 
     {
         "name" : "game_list",
-        "data" : [
-            {
-                "game_id" : <game_id>,
-		"game_label" : <title of the game>
-                "player_list" : [],
-                "game_status" : <game_status>
-            }
-        ]
+        "data" :
+        {
+            games :
+            [
+                {
+                    "game_id" : <game_id>,
+                    "game_label" : <title of the game>
+                    "player_list" : [],
+                    "game_status" : <game_status>
+                }
+            ]
+        }
     }
 
 __Requests:__
@@ -58,19 +62,18 @@ __Requests:__
 expects:
 
     {
-	    "request" : "create_game",
-	    "data" : 
-	 	{
-	 	"game_label" : "<title_of_the_game>"
-		}
-	    	
+        "request" : "create_game",
+        "data" :
+        {
+            "game_label" : "<title_of_the_game>"
+        }
     }
 returns:
 
     {
-	    "name" : "create_game"
-	    "data" : 
-        { 
+        "name" : "create_game"
+        "data" :
+        {
             "game_id": <game_id>
         }
     }
@@ -84,13 +87,16 @@ __Incoming Events:__
 ```
     {
         "name" : "possible_actions",
-        "data" : [{name:<name>}]
+        "data" :
+        {
+            names : [{name : <name>}]
+        }
     }
 ```
 ```
     {
         "name" : "error",
-        "data" : 
+        "data" :
         {
             "id" : <id>,
             "message" : <message>
@@ -100,7 +106,10 @@ __Incoming Events:__
 ```
     {
         "name" : "player_move",
-        "data" : <distance>
+        "data" :
+        {
+            distance : <distance>
+        }
     }
 ```
 ```
@@ -114,66 +123,78 @@ __Requests:__
 Expects:
 
     {
-	    "request" : "join_game"
+        "request" : "join_game"
     }
 
 Returns:
 
     {
-        "name" : "join_game", 
-        "data" : <player_name>
+        "name" : "join_game",
+        "data" :
+        {
+            player_name : <player_name>
+        }
     }
 ### Ready
 Expects:
 
     {
-	    "request" : "player_ready", 
+        "request" : "player_ready",
     }
 
 Returns:
 
     {
-        "name" : "player_ready", 
-        "data" : <name>
+        "name" : "player_ready",
+        "data" :
+        {
+            player_name : <player_name>
+        }
     }
 
 ### Start a game:
 Expects:
 
     {
-	    "request" : "game_start", 
+        "request" : "game_start",
     }
 
 Returns:
 
     {
-	    "name" : "game_start" 
+        "name" : "game_start"
     }
 
 ### End turn:
 Expects:
 
     {
-	    "request" : "end_turn", 
+        "request" : "end_turn",
     }
 
 Returns:
 
     {
         "name" : "change_turn",
-        "data" : <next_player> 
+        "data" :
+        {
+            next_player : <player_name>
+        }
     }
 
 ### Roll dice:
 Expects:
 
     {
-	    "request" : "roll_dice", 
+        "request" : "roll_dice",
     }
 
 Returns:
 
     {
         "name" : "roll_dice",
-        "data" : [<eyes>, <eyes>]
+        "data" :
+        {
+            eyes : [<eye1>, <eye2>]
+        }
     }
