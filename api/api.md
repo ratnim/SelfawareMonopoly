@@ -1,8 +1,8 @@
 
 # Server Routes
 ```
-/  
-/lobby  
+/
+/lobby
 /game
 ```
 
@@ -36,21 +36,25 @@ Some kind of overview page. Shows highscore, register and login players.
 ### login
 A session key is generated and it is stored locally inside the URL as get parameter `?session=@@@@@@@`.
 
-## lobby 
+## lobby
 __Route:__ /lobby
 
 __Sends frequently:__
 
     {
         "name" : "game_list",
-        "data" : [
-            {
-                "game_id" : <game_id>,
-                "game_label" : <title of the game>
-                "player_list" : [],
-                "game_status" : <game_status>
-            }
-        ]
+        "data" :
+        {
+            games :
+            [
+                {
+                    "game_id" : <game_id>,
+                    "game_label" : <label of the game>
+                    "player_list" : [],
+                    "game_status" : <game_status>
+                }
+            ]
+        }
     }
 
 __Requests:__
@@ -61,7 +65,7 @@ expects:
         "request" : "create_game",
         "data" :
         {
-            "game_label" : "<title_of_the_game>"
+            "game_label" : "<label_of_the_game>"
         }
     }
 returns:
@@ -83,7 +87,10 @@ __Incoming Events:__
 ```
     {
         "name" : "possible_actions",
-        "data" : [{name:<name>}]
+        "data" :
+        {
+            names : [{name : <name>}]
+        }
     }
 ```
 ```
@@ -124,7 +131,10 @@ Returns:
 
     {
         "name" : "join_game",
-        "data" : <player_name>
+        "data" :
+        {
+            player_name : <player_name>
+        }
     }
 ### Ready
 Expects:
@@ -137,7 +147,10 @@ Returns:
 
     {
         "name" : "player_ready",
-        "data" : <name>
+        "data" :
+        {
+            player_name : <player_name>
+        }
     }
 
 ### Start a game:
@@ -164,7 +177,10 @@ Returns:
 
     {
         "name" : "change_turn",
-        "data" : <next_player>
+        "data" :
+        {
+            player_name : <player_name>
+        }
     }
 
 ### Roll dice:
@@ -178,5 +194,8 @@ Returns:
 
     {
         "name" : "roll_dice",
-        "data" : [<eyes>, <eyes>]
+        "data" :
+        {
+            eyes : [<eye1>, <eye2>]
+        }
     }
