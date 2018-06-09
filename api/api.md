@@ -49,7 +49,7 @@ __Sends frequently:__
             [
                 {
                     "game_id" : <game_id>,
-                    "game_label" : <title of the game>
+                    "game_label" : <label of the game>
                     "player_list" : [],
                     "game_status" : <game_status>
                 }
@@ -65,7 +65,7 @@ expects:
         "request" : "create_game",
         "data" :
         {
-            "game_label" : "<title_of_the_game>"
+            "game_label" : "<label_of_the_game>"
         }
     }
 returns:
@@ -178,7 +178,7 @@ Returns:
         "name" : "change_turn",
         "data" :
         {
-            next_player : <player_name>
+            player_name : <player_name>
         }
     }
 
