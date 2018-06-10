@@ -17,7 +17,7 @@ TEST(RebornTest, reborn_initalize)
 
     std::unique_ptr<Buddhist> buddhist = std::make_unique<Reborn>(player, jail);
 
-    EXPECT_TRUE(nullptr != dynamic_cast<Reborn*>(buddhist.get()));
+    EXPECT_TRUE(dynamic_cast<Reborn*>(buddhist.get()));
 }
 
 TEST(RebornTest, reborn_transition_to_roll)
@@ -29,7 +29,7 @@ TEST(RebornTest, reborn_transition_to_roll)
 
     buddhist.reset(buddhist->die());
 
-    EXPECT_TRUE(nullptr != dynamic_cast<Roll*>(buddhist.get()));
+    EXPECT_TRUE(dynamic_cast<Roll*>(buddhist.get()));
 }
 
 TEST(RebornTest, reborn_transition_to_pay)
@@ -37,16 +37,23 @@ TEST(RebornTest, reborn_transition_to_pay)
     Player player;
     Jail jail;
     {  // 1. Turn
+        std::unique_ptr<Buddhist> buddhist = std::make_unique<Reborn>(player, jail);
+        buddhist.reset(buddhist->die());
+
+        EXPECT_TRUE(dynamic_cast<Roll*>(buddhist.get()));
+
         jail.jail();
     }
     {  // 2. Turn
         std::unique_ptr<Buddhist> buddhist = std::make_unique<Reborn>(player, jail);
         buddhist.reset(buddhist->die());
-        EXPECT_TRUE(nullptr != dynamic_cast<Roll*>(buddhist.get()));
+
+        EXPECT_TRUE(dynamic_cast<Roll*>(buddhist.get()));
     }
     {  // 3. Turn
         std::unique_ptr<Buddhist> buddhist = std::make_unique<Reborn>(player, jail);
         buddhist.reset(buddhist->die());
-        EXPECT_TRUE(nullptr != dynamic_cast<Pay*>(buddhist.get()));
+
+        EXPECT_TRUE(dynamic_cast<Pay*>(buddhist.get()));
     }
 }
