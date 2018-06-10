@@ -15,8 +15,8 @@ set(sources
     tests/configuration_test.cpp
     tests/exception_test.cpp
     tests/request_test.cpp
-	tests/turn_test.cpp
     tests/websocketserver_test.cpp
+    tests/state/reborn_test.cpp
     test_utils/mocked_database.cpp
     test_utils/mocked_database.h
     test_utils/mocked_server.cpp

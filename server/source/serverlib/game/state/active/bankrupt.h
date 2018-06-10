@@ -1,16 +1,18 @@
-#pragma once 
+#pragma once
 
-#include <game/state/active/buddhist.h>
 #include <game/jail.h>
+#include <game/state/active/buddhist.h>
 
-class Reborn : public Buddhist
+class Bankrupt : public Buddhist
 {
 public:
-    Reborn(Player& player, Jail& jail);
+    Bankrupt(Player& player, Jail& jail);
 
 protected:
     Player& m_player;
     Jail& m_jail;
+
+    bool m_payed = false;
 
     Buddhist* die() override;
     void handle(ActiveAction) override;

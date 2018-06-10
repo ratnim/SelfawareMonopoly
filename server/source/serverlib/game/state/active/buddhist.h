@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 
 #include <vector>
 
@@ -8,11 +8,7 @@
 class Buddhist
 {
 public:
-    Buddhist die();
-    void handle(ActiveAction action);
-    std::vector<ActiveAction> possibleActions();
-
-protected:
-	Buddhist(Player& player) : m_player(player){};
-    Player& m_player;
+    virtual Buddhist* die() = 0;
+    virtual void handle(ActiveAction action) = 0;
+    virtual std::vector<ActiveAction> possibleActions() const = 0;
 };

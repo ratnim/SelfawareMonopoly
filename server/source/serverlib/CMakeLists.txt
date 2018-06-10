@@ -18,18 +18,20 @@ set(sources
     actions/watcher.h
     actions/lobbywatcher.cpp
     actions/lobbywatcher.h
-	game/state/active/activeaction.h
-	game/state/active/buddhist.h
-	game/state/active/free.cpp
-	game/state/active/free.h
-	game/state/active/pay.cpp
-	game/state/active/pay.h
-	game/state/active/reborn.cpp
-	game/state/active/reborn.h
-	game/state/active/roll.cpp
-	game/state/active/roll.h
-	game/dices.cpp
-	game/dices.h
+    game/state/active/activeaction.h
+    game/state/active/bankrupt.cpp
+    game/state/active/bankrupt.h
+    game/state/active/buddhist.h
+    game/state/active/free.cpp
+    game/state/active/free.h
+    game/state/active/pay.cpp
+    game/state/active/pay.h
+    game/state/active/reborn.cpp
+    game/state/active/reborn.h
+    game/state/active/roll.cpp
+    game/state/active/roll.h
+    game/dices.cpp
+    game/dices.h
     game/game.cpp
     game/game.h
     game/player.cpp
