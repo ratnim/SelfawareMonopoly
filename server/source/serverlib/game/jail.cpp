@@ -5,7 +5,7 @@
 void Jail::jail()
 {
     m_jailed = true;
-    m_turns = 3;
+    m_turns = 2;
 }
 
 bool Jail::inJail()
@@ -15,7 +15,10 @@ bool Jail::inJail()
 
 bool Jail::needToPay()
 {
-    return m_turns > 3;
+    if (m_jailed)
+		return m_turns <= 0;
+
+	return false;
 }
 
 bool Jail::escape(const Dices& dices)
@@ -35,5 +38,5 @@ bool Jail::escape(const Dices& dices)
 void Jail::nextTurn()
 {
     if (m_jailed)
-        ++m_turns;
+        --m_turns;
 }

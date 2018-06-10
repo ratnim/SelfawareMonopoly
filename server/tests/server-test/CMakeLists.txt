@@ -16,6 +16,10 @@ set(sources
     tests/exception_test.cpp
     tests/request_test.cpp
     tests/websocketserver_test.cpp
+    tests/state/field_test.cpp
+    tests/state/reborn_test.cpp
+    tests/state/pay_test.cpp
+    tests/state/roll_test.cpp
     test_utils/mocked_database.cpp
     test_utils/mocked_database.h
     test_utils/mocked_server.cpp
