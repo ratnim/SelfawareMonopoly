@@ -22,6 +22,8 @@ set(sources
     game/state/active/bankrupt.cpp
     game/state/active/bankrupt.h
     game/state/active/buddhist.h
+    game/state/active/field.cpp
+    game/state/active/field.h
     game/state/active/free.cpp
     game/state/active/free.h
     game/state/active/pay.cpp

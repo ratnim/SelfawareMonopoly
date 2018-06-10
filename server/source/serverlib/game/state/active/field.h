@@ -3,10 +3,10 @@
 #include <game/jail.h>
 #include <game/state/active/buddhist.h>
 
-class Free : public Buddhist
+class Field : public Buddhist
 {
 public:
-    Free(Player& player, Jail& jail);
+    Field(Player& player, Jail& jail);
 
     Buddhist* die() override;
     void handle(ActiveAction) override;

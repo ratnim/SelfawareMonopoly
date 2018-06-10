@@ -6,4 +6,7 @@ struct Player
 {
     bool ready = false;
     bool inJail = false;
+    bool canRoll = true;
+
+	int rolled = 0;
 };

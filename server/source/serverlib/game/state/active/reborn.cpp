@@ -8,14 +8,16 @@ Reborn::Reborn(Player& player, Jail& jail)
     , m_jail(jail)
 {
     m_jail.nextTurn();
+    player.canRoll = true;
+    player.rolled = 0;
 }
 
 Buddhist* Reborn::die()
 {
     if (m_jail.needToPay())
         return new Pay(m_player, m_jail);
-
-    return new Roll(m_player, m_jail);
+	
+	return new Roll(m_player, m_jail);
 }
 
 void Reborn::handle(ActiveAction)
