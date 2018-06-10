@@ -19,7 +19,6 @@ set(sources
     actions/lobbywatcher.cpp
     actions/lobbywatcher.h
 	game/state/active/activeaction.h
-	game/state/active/buddhist.cpp
 	game/state/active/buddhist.h
 	game/state/active/free.cpp
 	game/state/active/free.h
