@@ -1,5 +1,6 @@
 #include "field.h"
 
+#include <game/state/active/bankrupt.h>
 #include <game/state/active/free.h>
 #include <game/state/active/roll.h>
 
@@ -11,6 +12,9 @@ Field::Field(Player& player, Jail& jail)
 
 Buddhist* Field::die()
 {
+    if (m_player.position >= BOARD_SIZE)
+        return new Bankrupt(m_player, m_jail);
+
     if (m_player.canRoll)
 		return new Roll(m_player, m_jail);
 
