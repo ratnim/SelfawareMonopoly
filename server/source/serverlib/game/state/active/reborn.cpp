@@ -3,21 +3,19 @@
 #include <game/state/active/pay.h>
 #include <game/state/active/roll.h>
 
-Reborn::Reborn(Player& player, Jail& jail)
+Reborn::Reborn(Player& player)
     : m_player(player)
-    , m_jail(jail)
+
 {
-    m_jail.nextTurn();
-    player.canRoll = true;
-    player.rolled = 0;
+    player.nextTurn();
 }
 
 Buddhist* Reborn::die()
 {
-    if (m_jail.needToPay())
-        return new Pay(m_player, m_jail);
-	
-	return new Roll(m_player, m_jail);
+    if (m_player.jail().needToPay())
+        return new Pay(m_player);
+
+    return new Roll(m_player);
 }
 
 void Reborn::handle(ActiveAction)

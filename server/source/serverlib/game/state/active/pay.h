@@ -6,11 +6,10 @@
 class Pay : public Buddhist
 {
 public:
-    Pay(Player& player, Jail& jail);
+    Pay(Player& player);
 
 protected:
     Player& m_player;
-    Jail& m_jail;
 
 	bool m_payed = false;
 

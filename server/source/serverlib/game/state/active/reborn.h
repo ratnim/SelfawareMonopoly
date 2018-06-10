@@ -6,11 +6,10 @@
 class Reborn : public Buddhist
 {
 public:
-    Reborn(Player& player, Jail& jail);
+    Reborn(Player& player);
 
 protected:
     Player& m_player;
-    Jail& m_jail;
 
     Buddhist* die() override;
     void handle(ActiveAction) override;

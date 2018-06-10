@@ -3,20 +3,20 @@
 #include <game/state/active/field.h>
 #include <game/state/active/free.h>
 
-Roll::Roll(Player& player, Jail& jail)
+Roll::Roll(Player& player)
     : m_player(player)
-    , m_jail(jail)
+
 {
 }
 
 Buddhist* Roll::die()
 {
     if (m_moved)
-        return new Field(m_player, m_jail);
+        return new Field(m_player);
     if (m_rolled)
-        return new Free(m_player, m_jail);
+        return new Free(m_player);
 
-    return new Roll(m_player, m_jail);
+    return new Roll(m_player);
 }
 
 void Roll::handle(ActiveAction action)
@@ -48,9 +48,9 @@ void Roll::handleResult(const Dices& dices)
     m_rolled = true;
     ++m_player.rolled;
 
-    if (m_jail.inJail())
+    if (m_player.jail().inJail())
     {
-        if (m_jail.escape(dices))
+        if (m_player.jail().escape(dices))
         {
             // move
             m_moved = true;
@@ -60,7 +60,7 @@ void Roll::handleResult(const Dices& dices)
     {
         if (dices.isDouble() && m_player.rolled == 3)
         {
-            m_jail.jail();
+            m_player.jail().jail();
         }
         else
         {

@@ -6,11 +6,10 @@
 class Bankrupt : public Buddhist
 {
 public:
-    Bankrupt(Player& player, Jail& jail);
+    Bankrupt(Player& player);
 
 protected:
     Player& m_player;
-    Jail& m_jail;
 
     bool m_payed = false;
 

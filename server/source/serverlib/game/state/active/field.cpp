@@ -4,21 +4,20 @@
 #include <game/state/active/free.h>
 #include <game/state/active/roll.h>
 
-Field::Field(Player& player, Jail& jail)
+Field::Field(Player& player)
     : m_player(player)
-    , m_jail(jail)
 {
 }
 
 Buddhist* Field::die()
 {
     if (m_player.position >= BOARD_SIZE)
-        return new Bankrupt(m_player, m_jail);
+        return new Bankrupt(m_player);
 
     if (m_player.canRoll)
-		return new Roll(m_player, m_jail);
+        return new Roll(m_player);
 
-	return new Free(m_player, m_jail);
+    return new Free(m_player);
 }
 
 void Field::handle(ActiveAction action)

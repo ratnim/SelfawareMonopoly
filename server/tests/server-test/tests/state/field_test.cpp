@@ -13,9 +13,9 @@
 TEST(FieldTest, field_to_free)
 {
     Player player;
-    Jail jail;
     player.canRoll = false;
-	std::unique_ptr<Buddhist> buddhist = std::make_unique<Field>(player, jail);
+
+	std::unique_ptr<Buddhist> buddhist = std::make_unique<Field>(player);
 
 	buddhist.reset(buddhist->die());
 
@@ -24,9 +24,7 @@ TEST(FieldTest, field_to_free)
 
 TEST(FieldTest, field_to_roll)
 {
-    Player player;
-    Jail jail;
-    std::unique_ptr<Buddhist> buddhist = std::make_unique<Field>(player, jail);
+    std::unique_ptr<Buddhist> buddhist = std::make_unique<Field>(Player{});
 
     buddhist.reset(buddhist->die());
 
@@ -36,9 +34,9 @@ TEST(FieldTest, field_to_roll)
 TEST(FieldTest, field_to_bankrupt)
 {
     Player player;
-    Jail jail;
     player.position = BOARD_SIZE + 1;
-    std::unique_ptr<Buddhist> buddhist = std::make_unique<Field>(player, jail);
+
+    std::unique_ptr<Buddhist> buddhist = std::make_unique<Field>(player);
 
     buddhist.reset(buddhist->die());
 

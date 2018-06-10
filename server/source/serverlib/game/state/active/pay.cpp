@@ -3,18 +3,18 @@
 #include <game/state/active/roll.h>
 #include <game/state/active/bankrupt.h>
 
-Pay::Pay(Player& player, Jail& jail)
+Pay::Pay(Player& player)
     : m_player(player)
-    , m_jail(jail)
+
 {
 }
 
 Buddhist* Pay::die()
 {
     if (m_payed)
-        return new Roll(m_player, m_jail);
+        return new Roll(m_player);
 
-    return new Bankrupt(m_player, m_jail);
+    return new Bankrupt(m_player);
 }
 
 void Pay::handle(ActiveAction action)

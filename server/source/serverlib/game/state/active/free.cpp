@@ -1,14 +1,14 @@
 #include "free.h"
 
-Free::Free(Player& player, Jail& jail)
+Free::Free(Player& player)
     : m_player(player)
-    , m_jail(jail)
+
 {
 }
 
 Buddhist* Free::die()
 {
-    return new Free(m_player, m_jail);
+    return new Free(m_player);
 }
 
 void Free::handle(ActiveAction action)

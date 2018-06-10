@@ -12,9 +12,7 @@
 
 TEST(PayTest, pay_to_bankrupt)
 {
-    Player player;
-    Jail jail;
-	std::unique_ptr<Buddhist> buddhist = std::make_unique<Pay>(player, jail);
+	std::unique_ptr<Buddhist> buddhist = std::make_unique<Pay>(Player{});
 
 	buddhist.reset(buddhist->die());
 
@@ -23,9 +21,7 @@ TEST(PayTest, pay_to_bankrupt)
 
 TEST(PayTest, pay_to_roll)
 {
-    Player player;
-    Jail jail;
-    std::unique_ptr<Buddhist> buddhist = std::make_unique<Pay>(player, jail);
+    std::unique_ptr<Buddhist> buddhist = std::make_unique<Pay>(Player{});
 
 	buddhist->handle(ActiveAction::PAY);
     buddhist.reset(buddhist->die());

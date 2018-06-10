@@ -8,7 +8,7 @@
 class Roll : public Buddhist
 {
 public:
-    Roll(Player& player, Jail& jail);
+    Roll(Player& player);
 
     Buddhist* die() override;
     void handle(ActiveAction) override;
@@ -18,7 +18,7 @@ public:
 
 protected:
     Player& m_player;
-    Jail& m_jail;
+
     bool m_moved = false;
     bool m_rolled = false;
 

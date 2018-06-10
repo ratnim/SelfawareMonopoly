@@ -6,7 +6,7 @@
 class Free : public Buddhist
 {
 public:
-    Free(Player& player, Jail& jail);
+    Free(Player& player);
 
     Buddhist* die() override;
     void handle(ActiveAction) override;
@@ -14,5 +14,4 @@ public:
 
 protected:
     Player& m_player;
-    Jail& m_jail;
 };

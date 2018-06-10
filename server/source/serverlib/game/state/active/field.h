@@ -6,7 +6,7 @@
 class Field : public Buddhist
 {
 public:
-    Field(Player& player, Jail& jail);
+    Field(Player& player);
 
     Buddhist* die() override;
     void handle(ActiveAction) override;
@@ -14,5 +14,4 @@ public:
 
 protected:
     Player& m_player;
-    Jail& m_jail;
 };

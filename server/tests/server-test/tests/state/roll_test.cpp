@@ -12,9 +12,7 @@
 
 TEST(RollTest, roll_to_roll)
 {
-    Player player;
-    Jail jail;
-    std::unique_ptr<Buddhist> buddhist = std::make_unique<Roll>(player, jail);
+    std::unique_ptr<Buddhist> buddhist = std::make_unique<Roll>(Player{});
 
     buddhist.reset(buddhist->die());
 
@@ -23,11 +21,37 @@ TEST(RollTest, roll_to_roll)
 
 TEST(RollTest, roll_to_field)
 {
-    Player player;
-    Jail jail;
-    std::unique_ptr<Buddhist> buddhist = std::make_unique<Roll>(player, jail);
+    std::unique_ptr<Buddhist> buddhist = std::make_unique<Roll>(Player{});
 
     buddhist->handle(ActiveAction::ROLL_DICE);
+    buddhist.reset(buddhist->die());
+
+    EXPECT_TRUE(dynamic_cast<Field*>(buddhist.get()));
+}
+
+TEST(RollTest, roll_to_free_from_jail)
+{
+    Player player;
+    player.jail().jail();
+
+    std::unique_ptr<Buddhist> buddhist = std::make_unique<Roll>(player);
+
+	auto roll = dynamic_cast<Roll*>(buddhist.get());
+    roll->watsonRoll(Dices{ 6, 1 });
+    buddhist.reset(buddhist->die());
+
+    EXPECT_TRUE(dynamic_cast<Free*>(buddhist.get()));
+}
+
+TEST(RollTest, roll_to_field_from_jail)
+{
+    Player player;
+    player.jail().jail();
+
+    std::unique_ptr<Buddhist> buddhist = std::make_unique<Roll>(player);
+
+    auto roll = dynamic_cast<Roll*>(buddhist.get());
+    roll->watsonRoll(Dices{ 6, 6 });
     buddhist.reset(buddhist->die());
 
     EXPECT_TRUE(dynamic_cast<Field*>(buddhist.get()));
@@ -36,10 +60,8 @@ TEST(RollTest, roll_to_field)
 TEST(RollTest, roll_to_free)
 {
     Player player;
-    Jail jail;
-
     {
-        std::unique_ptr<Buddhist> buddhist = std::make_unique<Roll>(player, jail);
+        std::unique_ptr<Buddhist> buddhist = std::make_unique<Roll>(player);
         auto roll = dynamic_cast<Roll*>(buddhist.get());
         roll->watsonRoll(Dices{ 6, 6 });
         buddhist.reset(buddhist->die());
@@ -47,7 +69,7 @@ TEST(RollTest, roll_to_free)
 		EXPECT_TRUE(dynamic_cast<Field*>(buddhist.get()));
     }
     {
-        std::unique_ptr<Buddhist> buddhist = std::make_unique<Roll>(player, jail);
+        std::unique_ptr<Buddhist> buddhist = std::make_unique<Roll>(player);
         auto roll = dynamic_cast<Roll*>(buddhist.get());
         roll->watsonRoll(Dices{ 6, 6 });
         buddhist.reset(buddhist->die());
@@ -55,12 +77,12 @@ TEST(RollTest, roll_to_free)
 		EXPECT_TRUE(dynamic_cast<Field*>(buddhist.get()));
     }
     {
-        std::unique_ptr<Buddhist> buddhist = std::make_unique<Roll>(player, jail);
+        std::unique_ptr<Buddhist> buddhist = std::make_unique<Roll>(player);
         auto roll = dynamic_cast<Roll*>(buddhist.get());
         roll->watsonRoll(Dices{ 6, 6 });
         buddhist.reset(buddhist->die());
 
-		EXPECT_TRUE(jail.inJail());
+		EXPECT_TRUE(player.jail().inJail());
         EXPECT_TRUE(dynamic_cast<Free*>(buddhist.get()));
     }
 }

@@ -2,14 +2,24 @@
 
 #include <QString>
 
+#include <game/jail.h>
+
 const int BOARD_SIZE = 36;
 
-struct Player
+class Player
 {
+public:
+
+
     bool ready = false;
-    bool inJail = false;
     bool canRoll = true;
 
-	int position = 0;
-	int rolled = 0;
+    int position = 0;
+    int rolled = 0;
+
+    void nextTurn();
+    Jail& jail();
+
+protected:
+    Jail m_jail;
 };
