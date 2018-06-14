@@ -108,6 +108,7 @@ __Incoming Events:__
         "name" : "player_move",
         "data" :
         {
+            player_name : <player_name>,
             distance : <distance>
         }
     }
