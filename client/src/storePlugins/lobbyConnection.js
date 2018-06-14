@@ -15,7 +15,7 @@ function createJSON(request, data) {
 
 function parseResponse(JSONObject) {
   if (JSONObject.name == 'game_list') {
-    getGameListCallback(JSONObject.data);
+    getGameListCallback(JSONObject.data.games);
   } else if (JSONObject.name == 'create_game') {
     createGameCallback(JSONObject.data.game_id);
   } else if (JSONObject.error) {

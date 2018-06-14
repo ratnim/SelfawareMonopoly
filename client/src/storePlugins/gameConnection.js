@@ -26,15 +26,15 @@ function parseResponse(JSONObject) {
   } else if (JSONObject.name == 'end_game') {
     gameEndedCallback();
   } else if (JSONObject.name == 'join_game') {
-    playerJoinedCallback(JSONObject.data);
+    playerJoinedCallback(JSONObject.data.player_name);
   } else if (JSONObject.name == 'player_ready') {
-    playerReadyCallback(JSONObject.data);
+    playerReadyCallback(JSONObject.data.player_name);
   } else if (JSONObject.name == 'game_start') {
     gameStartedCallback();
   } else if (JSONObject.name == 'change_turn') {
-    turnChangedCallback(JSONObject.data);
+    turnChangedCallback(JSONObject.data.player_name);
   } else if (JSONObject.name == 'roll_dice') {
-    diceRolledCallback(JSONObject.data);
+    diceRolledCallback(JSONObject.data.eyes);
   } else if (JSONObject.error) {
     errorCallback(JSONObject.error.message);
   }
