@@ -48,6 +48,9 @@ signals:
     void onTurnChange(const QString& newMovingPlayer);
 
 protected:
+
+    void goToJail(Player& player);
+
     const QString m_label;
 
     State m_state;

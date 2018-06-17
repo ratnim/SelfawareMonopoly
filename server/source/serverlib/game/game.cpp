@@ -11,6 +11,7 @@ int maximumPlayers = 6;
 Game::Game(const QString& label)
     : m_watcher(*this)
     , m_label(label)
+    , m_state(START)
 {
 }
 
@@ -122,25 +123,51 @@ void Game::rollDice(const QString& playerName)
         throw Exception("Invalid Request: You can not roll anymore.");
     }
 
+    auto player = m_players[playerName];
+
     int d1 = rand() % 6 + 1;
     int d2 = rand() % 6 + 1;
+    emit onRollDice(d1, d2);
+
     if (d1 == d2)
     {
         ++reRollCount;
+        if (player.inJail)
+        {
+            player.inJail = false;
+            canRoll = false;
+        }
     }
     else
     {
         canRoll = false;
     }
 
+    const int goToJailPosition = 30;
+    const int gameEndField = 40;
+
     if (reRollCount == 3)
     {
-        //move to jail
+        goToJail(player);
     }
     else
     {
-        emit onRollDice(d1, d2);
-        emit onPlayerMove(d1 + d2);
+        auto sum = d1 + d2;
+        player.position += sum;
+        emit onPlayerMove(sum);
+
+        // handle go to jail field
+        if (player.position == goToJailPosition)
+        {
+            goToJail(player);
+        }
+
+        // handle game end
+        if (player.position >= gameEndField)
+        {
+            m_state = FINISHED;
+            emit onGameEnd();
+        }
     }
 }
 
@@ -164,6 +191,29 @@ void Game::endTurn(const QString& playerName)
     canRoll = true;
     reRollCount = 0;
 
-    m_turn = (m_turn+1) % m_players.size();
+    m_turn = (m_turn + 1) % m_players.size();
     emit onTurnChange(m_turnOrder[m_turn]);
+
+    auto player = m_players[m_turnOrder[m_turn]];
+
+    if (player.inJail)
+    {
+        ++player.jailTurns;
+        if (player.jailTurns >= 3)
+        {
+            player.inJail = false;
+        }
+    }
+}
+
+void Game::goToJail(Player& player)
+{
+    const int jailPosition = 10;
+
+    auto distance = jailPosition - player.position;
+    player.position = jailPosition;
+    emit onPlayerMove(distance);
+
+    player.inJail = true;
+    player.jailTurns = 0;
 }
