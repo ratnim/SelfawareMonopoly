@@ -123,7 +123,7 @@ void Game::rollDice(const QString& playerName)
         throw Exception("Invalid Request: You can not roll anymore.");
     }
 
-    auto player = m_players[playerName];
+    auto& player = m_players[playerName];
 
     int d1 = rand() % 6 + 1;
     int d2 = rand() % 6 + 1;
