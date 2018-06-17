@@ -77,7 +77,7 @@ QJsonArray LobbyWatcher::toArray(const std::map<QString, Player>& players)
 QString LobbyWatcher::answer(const QJsonArray& games)
 {
     QJsonObject answer({ { "name", "game_list" } });
-    answer["data"] = games;
+    answer["data"] = QJsonObject{ { "games", games } };
 
     return QJsonDocument(answer).toJson();
 }

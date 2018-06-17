@@ -33,7 +33,7 @@ void GameWatcher::event(const QString& message)
 void GameWatcher::playerJoin(const QString& playerName)
 {
     QJsonObject answer({ { "name", "join_game" } });
-    answer["data"] = playerName;
+    answer["data"] = QJsonObject{ { "player_name", playerName } };
 
     event(toString(answer));
 }
@@ -41,7 +41,7 @@ void GameWatcher::playerJoin(const QString& playerName)
 void GameWatcher::playerReady(const QString& playerName)
 {
     QJsonObject answer({ { "name", "player_ready" } });
-    answer["data"] = playerName;
+    answer["data"] = QJsonObject{ { "player_name", playerName } };
 
     event(toString(answer));
 }
@@ -49,15 +49,18 @@ void GameWatcher::playerReady(const QString& playerName)
 void GameWatcher::rollDice(int d1, int d2)
 {
     QJsonObject answer({ { "name", "roll_dice" } });
-    answer["data"] = QJsonArray({ d1, d2 });
+    answer["data"] = QJsonObject{ { "eyes", QJsonArray({ d1, d2 }) } };
 
     event(toString(answer));
 }
 
-void GameWatcher::playerMove(int distance)
+void GameWatcher::playerMove(const QString& playerName, int distance)
 {
     QJsonObject answer({ { "name", "player_move" } });
-    answer["data"] = distance;
+    QJsonObject data;
+    data["player_name"] = playerName;
+    data["distance"] = distance;
+    answer["data"] = data;
 
     event(toString(answer));
 }
@@ -65,14 +68,14 @@ void GameWatcher::playerMove(int distance)
 void GameWatcher::changeTurn(const QString& movingPlayer)
 {
     QJsonObject answer({ { "name", "change_turn" } });
-    answer["data"] = movingPlayer;
+    answer["data"] = QJsonObject{ { "player_name", movingPlayer } };
 
     event(toString(answer));
 }
 
 void GameWatcher::gameStart()
 {
-    QJsonObject answer({ { "name", "player_ready" } });
+    QJsonObject answer({ { "name", "game_start" } });
 
     event(toString(answer));
 }

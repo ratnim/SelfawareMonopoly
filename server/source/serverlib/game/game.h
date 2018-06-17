@@ -44,7 +44,7 @@ signals:
     void onGameEnd();
 
     void onRollDice(int d1, int d2);
-    void onPlayerMove(int distance);
+    void onPlayerMove(const QString& playerName, int distance);
     void onTurnChange(const QString& newMovingPlayer);
 
 protected:

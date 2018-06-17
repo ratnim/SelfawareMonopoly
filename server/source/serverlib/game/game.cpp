@@ -154,7 +154,7 @@ void Game::rollDice(const QString& playerName)
     {
         auto sum = d1 + d2;
         player.position += sum;
-        emit onPlayerMove(sum);
+        emit onPlayerMove(playerName, sum);
 
         // handle go to jail field
         if (player.position == goToJailPosition)
@@ -212,7 +212,7 @@ void Game::goToJail(Player& player)
 
     auto distance = jailPosition - player.position;
     player.position = jailPosition;
-    emit onPlayerMove(distance);
+    emit onPlayerMove("", distance);
 
     player.inJail = true;
     player.jailTurns = 0;

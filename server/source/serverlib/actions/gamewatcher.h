@@ -21,7 +21,7 @@ protected:
     void playerReady(const QString& playerName);
 
     void rollDice(int d1, int d2);
-    void playerMove(int distance);
+    void playerMove(const QString& playerName, int distance);
     void changeTurn(const QString& movingPlayer);
 
     void gameStart();
