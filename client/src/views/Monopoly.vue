@@ -102,23 +102,25 @@ export default {
     },
 
     onDiceRolled : function(dice) {
-      dice1 = dice[0];
-      dice2 = dice[1];
+      this.dice1 = dice[0];
+      this.dice2 = dice[1];
     },
     onPlayerJoined : function(playerName) {
       console.log(playerName);
-      players.push({currentField: 0, nickname: playerName, color: 'yellow'});
+      this.players.push({currentField: 0, nickname: playerName, color: 'yellow'});
     },
     onPlayerMoved : function(playerName, distance) {
       for (var i = 0; i < this.players.length; i++) {
-        if (players[i].nickname == playerName) {
-          players[i].currentField = (players[i].currentField + distance) % 24;
-          this.$refs.players[i].move(this.players[0].currentField);
+        if (this.players[i].nickname == playerName) {
+          console.log(this.players[i].currentField);
+          this.players[i].currentField = (this.players[i].currentField + distance) % 24;
+          console.log(this.players[i].currentField);
+          this.$refs.players[i].move(this.players[i].currentField);
         }
       }
     },
     onPlayerReady : function(playerName) {
-      console.log(playername + ' is now ready!');
+      console.log(playerName + ' is now ready!');
     },
     onGameStarted : function() {
       console.log('Game started!');
