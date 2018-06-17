@@ -10,7 +10,7 @@ class Active : public State
     friend Passive;
 
 public:
-    Active(Passive old);
+    Active(Passive& old);
 
 	void rollDice();
     void endTurn();
@@ -20,5 +20,4 @@ protected:
 
     bool m_canRoll;
     int m_rolled;
-
 };
