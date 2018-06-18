@@ -15,7 +15,7 @@ class Game : public QObject
     Q_OBJECT
 
 public:
-    Game(const QString& label);
+    Game();
 
     enum State
     {
@@ -23,11 +23,6 @@ public:
         RUNNING,
         FINISHED
     };
-
-    const std::map<QString, Player>& players() const;
-    State state() const;
-    QString label() const;
-    GameWatcher& watcher();
 
     void join(const QString& playerName);
     void ready(const QString& playerName);
@@ -58,6 +53,4 @@ protected:
     int m_turn;
     bool canRoll;
     int reRollCount;
-
-    GameWatcher m_watcher;
 };

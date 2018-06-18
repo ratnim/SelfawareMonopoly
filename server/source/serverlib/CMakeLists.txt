@@ -18,10 +18,12 @@ set(sources
     actions/watcher.h
     actions/lobbywatcher.cpp
     actions/lobbywatcher.h
-	game/dices.cpp
-	game/dices.h
+    game/dices.cpp
+    game/dices.h
     game/game.cpp
     game/game.h
+    game/gameinfo.cpp
+    game/gameinfo.h
     game/player.cpp
     game/player.h
     game/jail.cpp

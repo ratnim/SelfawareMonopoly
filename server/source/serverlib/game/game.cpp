@@ -8,31 +8,9 @@ int minimumPlayers = 2;
 int maximumPlayers = 6;
 }
 
-Game::Game(const QString& label)
-    : m_watcher(*this)
-    , m_label(label)
-    , m_state(START)
+Game::Game()
+    : m_state(START)
 {
-}
-
-const std::map<QString, Player>& Game::players() const
-{
-    return m_players;
-}
-
-Game::State Game::state() const
-{
-    return m_state;
-}
-
-QString Game::label() const
-{
-    return m_label;
-}
-
-GameWatcher& Game::watcher()
-{
-    return m_watcher;
 }
 
 void Game::join(const QString& playerName)

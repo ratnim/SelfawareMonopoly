@@ -1,24 +1,28 @@
 #pragma once
 
-#include <vector>
-
-#include <QObject>
-
-#include <game/game.h>
+#include <game/gameinfo.h>
 #include <utils/staticstorage.h>
+
+struct GameObject
+{
+    GameObject(const QString& label);
+
+    Game game;
+    GameWatcher watcher;
+    GameInfo info;
+};
 
 class GameModel : public QObject, public StaticStorage<GameModel>
 {
     Q_OBJECT
-
 public:
     int createGame(const QString& label);
     int numberOfGames() const;
-    Game& openGame(int gameId);
+    GameObject& open(int gameId);
 
 signals:
-    void onCreateGame(Game& game);
+    void onCreateGame(const GameInfo& info);
 
 protected:
-    std::vector<std::unique_ptr<Game>> m_games;
+    std::vector<std::unique_ptr<GameObject>> m_games;
 };

@@ -4,7 +4,7 @@
 #include <QJsonObject>
 
 #include <actions/watcher.h>
-#include <game/game.h>
+#include <game/gameinfo.h>
 #include <utils/staticstorage.h>
 
 class LobbyWatcher : public StaticStorage<LobbyWatcher>, public Watcher
@@ -18,10 +18,10 @@ public:
 
 protected:
     void watchAllGames();
-    void watchGame(Game& game);
+    void watchGame(const GameInfo& info);
     void updateLobby();
 
     static QJsonObject toJson(int gameId);
-    static QJsonArray toArray(const std::map<QString, Player>& players);
+    static QJsonArray toArray(const std::vector<QString>& players);
     static QString answer(const QJsonArray& games);
 };

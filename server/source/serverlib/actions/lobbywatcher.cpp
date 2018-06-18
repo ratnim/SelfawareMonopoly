@@ -36,15 +36,13 @@ void LobbyWatcher::watchAllGames()
     auto& model = GameModel::instance();
     for (int i = 0; i < model.numberOfGames(); ++i)
     {
-        watchGame(model.openGame(i));
+        watchGame(model.open(i).info);
     }
 }
 
-void LobbyWatcher::watchGame(Game& game)
+void LobbyWatcher::watchGame(const GameInfo& info)
 {
-    connect(&game, &Game::onPlayerJoin, this, &LobbyWatcher::updateLobby);
-    connect(&game, &Game::onGameStart, this, &LobbyWatcher::updateLobby);
-    connect(&game, &Game::onGameEnd, this, &LobbyWatcher::updateLobby);
+    connect(&info, &GameInfo::change, this, &LobbyWatcher::updateLobby);
 }
 
 void LobbyWatcher::updateLobby()
@@ -54,7 +52,7 @@ void LobbyWatcher::updateLobby()
 
 QJsonObject LobbyWatcher::toJson(int gameId)
 {
-    auto& game = GameModel::instance().openGame(gameId);
+    auto& game = GameModel::instance().open(gameId).info;
 
     QJsonObject description;
     description["game_id"] = gameId;
@@ -64,12 +62,12 @@ QJsonObject LobbyWatcher::toJson(int gameId)
     return description;
 }
 
-QJsonArray LobbyWatcher::toArray(const std::map<QString, Player>& players)
+QJsonArray LobbyWatcher::toArray(const std::vector<QString>& players)
 {
     QJsonArray array;
     for (auto &player : players)
     {
-        array.push_back(player.first);
+        array.push_back(player);
     }
     return array;
 }
