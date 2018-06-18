@@ -1,9 +1,11 @@
 #pragma once
 
+#include <QObject>
 #include <QString>
 
-class Exception
+class ErrorStringConverter : QObject
 {
+    Q_OBJECT
 public:
     enum error
     {
@@ -14,12 +16,21 @@ public:
         InvalidRequest,
         InternalError,
     };
+    Q_ENUM(error)
+};
 
-    Exception(const QString& message, error code = InvalidRequest);
+using error = ErrorStringConverter::error;
+
+class Exception
+{
+public:
+    Exception(const QString& message, error code = error::InvalidRequest);
 
     QString json() const;
 
 protected:
+    static QString errorString(error code);
+
     const QString m_message;
     const error m_code;
 };

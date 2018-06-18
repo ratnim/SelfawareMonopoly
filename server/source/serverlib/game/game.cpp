@@ -39,17 +39,17 @@ void Game::join(const QString& playerName)
 {
     if (m_state != START)
     {
-        throw Exception("Invalid Request: The game already started.");
+        throw Exception("The game already started.");
     }
 
     if (m_players.size() >= maximumPlayers)
     {
-        throw Exception("Invalid Request: The maximum number of players is already joined.");
+        throw Exception("The maximum number of players is already joined.");
     }
 
     if (m_players.find(playerName) != m_players.end())
     {
-        throw Exception("Invalid Request: The player is already in the game.");
+        throw Exception("The player is already in the game.");
     }
 
     m_players[playerName];
@@ -60,12 +60,12 @@ void Game::ready(const QString& playerName)
 {
     if (m_state != START)
     {
-        throw Exception("Invalid Request: The game already started.");
+        throw Exception("The game already started.");
     }
 
     if (m_players[playerName].ready)
     {
-        throw Exception("Invalid Request: The player is already ready.");
+        throw Exception("The player is already ready.");
     }
 
     m_players[playerName].ready = true;
@@ -76,19 +76,19 @@ void Game::start()
 {
     if (m_state != START)
     {
-        throw Exception("Invalid Request: The game already started.");
+        throw Exception("The game already started.");
     }
 
     if (m_players.size() < minimumPlayers)
     {
-        throw Exception("Invalid Request: The minimum amount of players is not reached.");
+        throw Exception("The minimum amount of players is not reached.");
     }
 
     for (const auto& elem : m_players)
     {
         if (!elem.second.ready)
         {
-            throw Exception("Invalid Request: Not every player is ready.");
+            throw Exception("Not every player is ready.");
         }
     }
 
@@ -110,17 +110,17 @@ void Game::rollDice(const QString& playerName)
 {
     if (m_state != RUNNING)
     {
-        throw Exception("Invalid Request: The game did not start.");
+        throw Exception("The game did not start.");
     }
 
     if (m_turnOrder[m_turn] != playerName)
     {
-        throw Exception("Invalid Request: Not your turn.");
+        throw Exception("Not your turn.");
     }
 
     if (!canRoll)
     {
-        throw Exception("Invalid Request: You can not roll anymore.");
+        throw Exception("You can not roll anymore.");
     }
 
     auto& player = m_players[playerName];
@@ -177,17 +177,17 @@ void Game::endTurn(const QString& playerName)
 {
     if (m_state != RUNNING)
     {
-        throw Exception("Invalid Request: The game did not start.");
+        throw Exception("The game did not start.");
     }
 
     if (m_turnOrder[m_turn] != playerName)
     {
-        throw Exception("Invalid Request: Not your turn.");
+        throw Exception("Not your turn.");
     }
 
     if (canRoll)
     {
-        throw Exception("Invalid Request: You have to roll first.");
+        throw Exception("You have to roll first.");
     }
 
     canRoll = true;

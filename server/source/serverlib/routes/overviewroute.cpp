@@ -20,13 +20,13 @@ void OverviewRoute::enterLobby(const QJsonValue& data)
     const auto player = rawPlayer.simplified().toHtmlEscaped();
     if (player.isEmpty())
     {
-        throw Exception("Malformed request: 'data.player_name' is missing.", Exception::MalformedRequest);
+        throw Exception("'data.player_name' is missing.", error::MalformedRequest);
     }
 
     static const int maxNameLength = 32;
     if (player.size() > maxNameLength)
     {
-        throw Exception("Invalid Request: The name is too long.");
+        throw Exception("The name is too long.");
     }
 
     const auto userSession = AccountModel::instance().createUser(player);

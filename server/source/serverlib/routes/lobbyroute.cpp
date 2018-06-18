@@ -31,7 +31,7 @@ void LobbyRoute::createGame(const QJsonValue& body)
     const auto label = body["game_label"].toString();
     if (label.isEmpty())
     {
-        throw Exception("Malformed Request: data.game_label is missing.");
+        throw Exception("data.game_label is missing.", error::MalformedRequest);
     }
 
     const auto gameId = GameModel::instance().createGame(label);

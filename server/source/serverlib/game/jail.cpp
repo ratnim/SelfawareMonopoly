@@ -21,7 +21,7 @@ bool Jail::needToPay()
 bool Jail::escape(const Dices& dices)
 {
     if (m_jailed == false)
-        throw Exception("Internal Error: Player is not in jail.", Exception::InternalError);
+        throw Exception("Player is not in jail.", error::InternalError);
 
 	if (dices.isDouble())
 	{

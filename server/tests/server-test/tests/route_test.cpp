@@ -41,7 +41,7 @@ TEST_F(SubRouteTest, non_json_message)
     EXPECT_TRUE(data.isNull());
 
     auto json = toJson(socket_spy.at(0).at(0).toString());
-    EXPECT_EQ(json["error"].toObject()["id"].toInt(), Exception::MalformedRequest);
+    EXPECT_EQ(json["error"].toObject()["id"].toInt(), error::MalformedRequest);
 }
 
 TEST_F(SubRouteTest, unknown_action)
@@ -56,7 +56,7 @@ TEST_F(SubRouteTest, unknown_action)
     EXPECT_TRUE(data.isNull());
 
     auto json = toJson(socket_spy.at(0).at(0).toString());
-    EXPECT_EQ(json["error"].toObject()["id"].toInt(), Exception::UnsupportedAction);
+    EXPECT_EQ(json["error"].toObject()["id"].toInt(), error::UnsupportedAction);
 }
 
 TEST_F(SubRouteTest, valid_message)

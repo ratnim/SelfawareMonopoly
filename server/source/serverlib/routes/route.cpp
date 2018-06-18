@@ -28,13 +28,13 @@ void Route::incommingMessage(const QString& message)
 
 QJsonObject Route::toJson(const QString& message)
 {
-    const auto json = QJsonDocument::fromJson(message.toLatin1());
+    const auto json = QJsonDocument::fromJson(message.toUtf8());
     if (json.isObject())
     {
         return json.object();
     }
 
-    throw Exception("Malformed Request: Only JSON objects are supported.", Exception::MalformedRequest);
+    throw Exception("Only JSON objects are supported.", error::MalformedRequest);
 }
 
 Route::ActionCallback Route::actionHandler(const QString& name) const
@@ -42,7 +42,7 @@ Route::ActionCallback Route::actionHandler(const QString& name) const
     auto& action = m_actions.find(name);
     if (action == m_actions.end())
     {
-        throw Exception(QString("Unsupported Action: '%1'.").arg(name), Exception::UnsupportedAction);
+        throw Exception(QString("'%1' is not valid.").arg(name), error::UnsupportedAction);
     }
     return action->second;
 }

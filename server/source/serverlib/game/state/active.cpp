@@ -19,7 +19,7 @@ void Active::rollDice()
 {
     if (!m_canRoll)
     {
-        throw Exception("Invalide Request: Player can't roll dice.");
+        throw Exception("Player can't roll dice.");
     }
 
     Dices dices;

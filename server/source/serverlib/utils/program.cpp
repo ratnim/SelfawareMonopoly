@@ -7,7 +7,7 @@
 
 Program::Program(const QString& databaseName)
 {
-    Database::reset();
+    Database::reset(databaseName);
     AccountModel::reset();
     GameModel::reset();
     LobbyWatcher::reset();

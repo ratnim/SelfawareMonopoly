@@ -20,7 +20,7 @@ QString AccountModel::username(const QString& session)
     {
         return m_sessions[session];
     }
-    throw Exception("Invalid Request: Session is not valid.");
+    throw Exception("Session is not valid.");
 }
 
 QString AccountModel::createUser(const QString& name)
@@ -28,7 +28,7 @@ QString AccountModel::createUser(const QString& name)
     m_createUser.bindValue(":name", name);
     if (!m_createUser.exec())
     {
-        throw Exception("Invalid request: Could not create user account. The player name is probably already taken.", Exception::InvalidRequest);
+        throw Exception("Could not create user account. The player name is probably already taken.");
     }
 
     return createSession(name);

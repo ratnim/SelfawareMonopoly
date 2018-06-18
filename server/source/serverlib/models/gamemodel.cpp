@@ -23,5 +23,5 @@ Game& GameModel::openGame(int gameId)
     {
         return *m_games[gameId];
     }
-    throw Exception("Invalid Request: The game id is not valid.");
+    throw Exception("The game id is not valid.");
 }

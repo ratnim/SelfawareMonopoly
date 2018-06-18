@@ -13,16 +13,16 @@ TEST(ExceptionTest, construct_simple)
     auto obj = QJsonDocument::fromJson(json.toUtf8()).object();
     auto error = obj["error"].toObject();
 
-    EXPECT_EQ(error["id"].toInt(), Exception::InvalidRequest);
-    EXPECT_EQ(error["message"].toString(), "error message");
+    EXPECT_EQ(error["id"].toInt(), error::InvalidRequest);
+    EXPECT_EQ(error["message"].toString().toStdString(), "InvalidRequest: error message");
 }
 
 TEST(ExceptionTest, api_compatibility)
 {
-    EXPECT_EQ(Exception::error::NoError, 0);
-    EXPECT_EQ(Exception::error::InvalidRoute, 1);
-    EXPECT_EQ(Exception::error::UnsupportedAction, 2);
-    EXPECT_EQ(Exception::error::MalformedRequest, 3);
-    EXPECT_EQ(Exception::error::InvalidRequest, 4);
-    EXPECT_EQ(Exception::error::InternalError, 5);
+    EXPECT_EQ(error::NoError, 0);
+    EXPECT_EQ(error::InvalidRoute, 1);
+    EXPECT_EQ(error::UnsupportedAction, 2);
+    EXPECT_EQ(error::MalformedRequest, 3);
+    EXPECT_EQ(error::InvalidRequest, 4);
+    EXPECT_EQ(error::InternalError, 5);
 }
