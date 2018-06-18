@@ -28,5 +28,7 @@ protected:
 
     Factory routeFactory(const QString& routeName) const;
 
-    std::map<QString, Factory> m_routes;
+    static std::map<QString, Factory> routes();
+
+    const std::map<QString, Factory> m_routes;
 };

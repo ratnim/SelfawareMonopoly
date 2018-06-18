@@ -16,7 +16,6 @@ public:
     Route(QWebSocket* parent);
 
     void incommingMessage(const QString& message);
-    void disconnectClient();
 
 protected:
     static QJsonObject toJson(const QString& message);

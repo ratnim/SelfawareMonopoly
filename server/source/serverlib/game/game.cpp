@@ -148,7 +148,7 @@ void Game::rollDice(const QString& playerName)
 
     if (reRollCount == 3)
     {
-        goToJail(player);
+        goToJail(playerName);
     }
     else
     {
@@ -156,10 +156,12 @@ void Game::rollDice(const QString& playerName)
         player.position += sum;
         emit onPlayerMove(playerName, sum);
 
+        // handle every field + auto pay if possible
+
         // handle go to jail field
         if (player.position == goToJailPosition)
         {
-            goToJail(player);
+            goToJail(playerName);
         }
 
         // handle game end
@@ -206,13 +208,15 @@ void Game::endTurn(const QString& playerName)
     }
 }
 
-void Game::goToJail(Player& player)
+void Game::goToJail(const QString& playerName)
 {
     const int jailPosition = 10;
 
+    auto& player = m_players[playerName];
+
     auto distance = jailPosition - player.position;
     player.position = jailPosition;
-    emit onPlayerMove("", distance);
+    emit onPlayerMove(playerName, distance);
 
     player.inJail = true;
     player.jailTurns = 0;

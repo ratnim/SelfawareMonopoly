@@ -57,10 +57,7 @@ void GameWatcher::rollDice(int d1, int d2)
 void GameWatcher::playerMove(const QString& playerName, int distance)
 {
     QJsonObject answer({ { "name", "player_move" } });
-    QJsonObject data;
-    data["player_name"] = playerName;
-    data["distance"] = distance;
-    answer["data"] = data;
+    answer["data"] = QJsonObject({ { "player_name", playerName }, { "distance", distance } });
 
     event(toString(answer));
 }

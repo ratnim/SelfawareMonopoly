@@ -9,10 +9,8 @@
 #include <utils/exception.h>
 
 RouteFactory::RouteFactory()
+    : m_routes(routes())
 {
-    m_routes[""] = &RouteFactory::create<OverviewRoute>;
-    m_routes["lobby"] = &RouteFactory::create<LobbyRoute>;
-    m_routes["game"] = &RouteFactory::create<GameRoute>;
 }
 
 void RouteFactory::handle(QWebSocket* socket)
@@ -45,4 +43,14 @@ RouteFactory::Factory RouteFactory::routeFactory(const QString& routeName) const
         throw Exception(QString("Invalid Route: '%1'.").arg(routeName), Exception::InvalidRoute);
     }
     return route->second;
+}
+
+std::map<QString, RouteFactory::Factory> RouteFactory::routes()
+{
+    std::map<QString, RouteFactory::Factory> routes;
+    routes[""] = &RouteFactory::create<OverviewRoute>;
+    routes["lobby"] = &RouteFactory::create<LobbyRoute>;
+    routes["game"] = &RouteFactory::create<GameRoute>;
+
+    return routes;
 }

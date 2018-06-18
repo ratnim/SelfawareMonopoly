@@ -49,7 +49,7 @@ signals:
 
 protected:
 
-    void goToJail(Player& player);
+    void goToJail(const QString& playerName);
 
     const QString m_label;
 
