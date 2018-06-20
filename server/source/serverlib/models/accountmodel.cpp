@@ -6,6 +6,7 @@
 #include <utils/database.h>
 #include <utils/exception.h>
 
+template<>
 std::unique_ptr<AccountModel> StaticStorage<AccountModel>::s_model;
 
 AccountModel::AccountModel()
