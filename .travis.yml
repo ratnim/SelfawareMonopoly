@@ -32,7 +32,8 @@ addons:
     - g++-5
     - clang-3.9
     - cppcheck
-    - qt59-meta-full
+    - qt59-meta-minimal
+    - qt59websockets
 
 os:
   - linux
