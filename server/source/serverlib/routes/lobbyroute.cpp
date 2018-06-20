@@ -28,8 +28,7 @@ void LobbyRoute::watchLobby()
 
 void LobbyRoute::createGame(const QJsonValue& body)
 {
-    const QString gameLabelKey("game_label");
-    const auto label = body[&gameLabelKey].toString();
+    const auto label = body[QString("game_label")].toString();
     if (label.isEmpty())
     {
         throw Exception("data.game_label is missing.", error::MalformedRequest);
