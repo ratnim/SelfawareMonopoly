@@ -47,9 +47,9 @@ RouteFactory::Factory RouteFactory::routeFactory(const QString& routeName) const
 std::map<QString, RouteFactory::Factory> RouteFactory::routes()
 {
     std::map<QString, RouteFactory::Factory> routes;
-    routes[""] = &RouteFactory::create<OverviewRoute>;
-    routes["lobby"] = &RouteFactory::create<LobbyRoute>;
-    routes["game"] = &RouteFactory::create<GameRoute>;
+    routes[QString("")] = &RouteFactory::create<OverviewRoute>;
+    routes[QString("lobby")] = &RouteFactory::create<LobbyRoute>;
+    routes[QString("game")] = &RouteFactory::create<GameRoute>;
 
     return routes;
 }

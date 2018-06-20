@@ -15,10 +15,10 @@ void Route::incommingMessage(const QString& message)
     try
     {
         const auto json = toJson(message);
-        const auto actionName = json["request"].toString();
+        const auto actionName = json[QString("request")].toString();
 
         const auto handler = actionHandler(actionName);
-        handler(json["data"]);
+        handler(json[QString("data")]);
     }
     catch (const Exception &e)
     {
