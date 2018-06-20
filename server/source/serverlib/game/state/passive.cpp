@@ -1,6 +1,6 @@
 #include "passive.h"
 
-#include <game/state/State.h>
+#include <game/state/state.h>
 #include <game/state/active.h>
 
 Passive::Passive(Enter old)
