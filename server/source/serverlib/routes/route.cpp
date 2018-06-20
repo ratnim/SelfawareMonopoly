@@ -39,7 +39,7 @@ QJsonObject Route::toJson(const QString& message)
 
 Route::ActionCallback Route::actionHandler(const QString& name) const
 {
-    auto& action = m_actions.find(name);
+    const auto& action = m_actions.find(name);
     if (action == m_actions.end())
     {
         throw Exception(QString("'%1' is not valid.").arg(name), error::UnsupportedAction);
