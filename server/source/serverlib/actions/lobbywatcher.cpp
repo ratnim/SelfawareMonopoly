@@ -4,6 +4,7 @@
 
 #include <models/gamemodel.h>
 
+template<>
 std::unique_ptr<LobbyWatcher> StaticStorage<LobbyWatcher>::s_model;
 
 LobbyWatcher::LobbyWatcher()
