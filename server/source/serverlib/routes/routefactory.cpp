@@ -5,7 +5,6 @@
 #include <routes/gameroute.h>
 #include <routes/lobbyroute.h>
 #include <routes/overviewroute.h>
-#include <routes/route.h>
 #include <utils/exception.h>
 
 RouteFactory::RouteFactory()
@@ -37,7 +36,7 @@ void RouteFactory::disconnect(QWebSocket* socket)
 
 RouteFactory::Factory RouteFactory::routeFactory(const QString& routeName) const
 {
-    auto& route = m_routes.find(routeName);
+    const auto& route = m_routes.find(routeName);
     if (route == m_routes.end())
     {
         throw Exception(QString("'%1' is not valid.").arg(routeName), error::InvalidRoute);
