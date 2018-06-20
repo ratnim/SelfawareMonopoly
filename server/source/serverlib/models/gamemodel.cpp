@@ -2,6 +2,7 @@
 
 #include <utils/exception.h>
 
+template<>
 std::unique_ptr<GameModel> StaticStorage<GameModel>::s_model;
 
 int GameModel::createGame(const QString& label)
