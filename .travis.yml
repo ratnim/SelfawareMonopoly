@@ -22,15 +22,13 @@ addons:
   apt:
     sources:
     - ubuntu-toolchain-r-test
-    - llvm-toolchain-precise-3.9
     - george-edison55-precise-backports
     - sourceline: 'ppa:beineri/opt-qt-5.10.1-trusty'
     packages:
     - cmake
     - cmake-data
-    - gcc-5
-    - g++-5
-    - clang-3.9
+    - gcc-7
+    - g++-7
     - cppcheck
     - qt510-meta-minimal
     - qt510websockets

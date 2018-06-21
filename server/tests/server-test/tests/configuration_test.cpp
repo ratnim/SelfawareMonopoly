@@ -4,12 +4,12 @@
 
 #include <test_utils/mocked_server.h>
 
-TEST(ConfigurationTest, DISABLED_construct_simple)
+TEST(ConfigurationTest, construct_simple)
 {
     Configuration conf(MockedServer::application());
 }
 
-TEST(ConfigurationTest, DISABLED_server_port)
+TEST(ConfigurationTest, server_port)
 {
     Configuration conf(MockedServer::application());
     EXPECT_EQ(conf.port(), 31415);
