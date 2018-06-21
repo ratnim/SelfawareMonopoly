@@ -22,3 +22,6 @@ protected:
 
     std::map<QString, QString> m_sessions;
 };
+
+template <>
+std::unique_ptr<AccountModel> StaticStorage<AccountModel>::s_model;

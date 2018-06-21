@@ -25,3 +25,6 @@ protected:
     static QJsonArray toArray(const std::map<QString, Player>& players);
     static QString answer(const QJsonArray& games);
 };
+
+template <>
+std::unique_ptr<LobbyWatcher> StaticStorage<LobbyWatcher>::s_model;

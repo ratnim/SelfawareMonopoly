@@ -22,3 +22,6 @@ signals:
 protected:
     std::vector<std::unique_ptr<Game>> m_games;
 };
+
+template <>
+std::unique_ptr<GameModel> StaticStorage<GameModel>::s_model;

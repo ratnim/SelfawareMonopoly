@@ -5,9 +5,6 @@
 #include <QUuid>
 #include <QVariant>
 
-template <>
-std::unique_ptr<Database> StaticStorage<Database>::s_model;
-
 Database::Database(const QString& databaseName)
     : m_db(createDatabase(databaseName))
 {

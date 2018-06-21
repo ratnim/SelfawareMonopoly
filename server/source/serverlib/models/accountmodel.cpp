@@ -6,9 +6,6 @@
 #include <utils/database.h>
 #include <utils/exception.h>
 
-template<>
-std::unique_ptr<AccountModel> StaticStorage<AccountModel>::s_model;
-
 AccountModel::AccountModel()
 {
     m_createTable = Database::instance().execute("CREATE TABLE IF NOT EXISTS accounts(name TEXT UNIQUE NOT NULL)");
