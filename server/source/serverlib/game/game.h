@@ -3,26 +3,15 @@
 #include <map>
 #include <vector>
 
-#include <QObject>
-#include <QString>
+#include <game/state/initstate.h>
+#include <utils/budhist.h>
 
-#include <actions/gamewatcher.h>
-
-#include <game/player.h>
-
-class Game : public QObject
+class Game : public QObject, public Budhist<GameState>
 {
     Q_OBJECT
 
 public:
     Game();
-
-    enum State
-    {
-        START,
-        RUNNING,
-        FINISHED
-    };
 
     void join(const QString& playerName);
     void ready(const QString& playerName);
@@ -42,15 +31,6 @@ signals:
     void onPlayerMove(const QString& playerName, int distance);
     void onTurnChange(const QString& newMovingPlayer);
 
-protected:
-    void goToJail(const QString& playerName);
-
-    const QString m_label;
-
-    State m_state;
-    std::map<QString, Player> m_players;
-    std::vector<QString> m_turnOrder;
-    int m_turn;
-    bool canRoll;
-    int reRollCount;
+    void onEnterJail(const QString& playerName);
+    void onLeaveJail(const QString& playerName);
 };

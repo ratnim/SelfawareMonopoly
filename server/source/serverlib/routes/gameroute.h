@@ -1,6 +1,7 @@
 #pragma once
 
 #include <game/game.h>
+#include <actions/gamewatcher.h>
 #include <routes/route.h>
 
 class GameRoute : public Route

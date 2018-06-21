@@ -26,17 +26,24 @@ set(sources
     game/gameinfo.h
     game/player.cpp
     game/player.h
-    game/jail.cpp
-    game/jail.h
-    game/state/state.h
-    game/state/active.cpp
-    game/state/active.h
-    game/state/passive.cpp
-    game/state/passive.h
-    game/state/dead.cpp
-    game/state/dead.h
-    game/state/enter.cpp
-    game/state/enter.h
+    game/state/gamestate.cpp
+    game/state/gamestate.h
+    game/state/endstate.cpp
+    game/state/endstate.h
+    game/state/initstate.cpp
+    game/state/initstate.h
+    game/state/runstate.cpp
+    game/state/runstate.h
+    game/state/active/freestate.cpp
+    game/state/active/freestate.h
+    game/state/active/jailstate.cpp
+    game/state/active/jailstate.h
+    game/state/active/movestate.cpp
+    game/state/active/movestate.h
+    game/state/active/playerstate.cpp
+    game/state/active/playerstate.h
+    game/state/active/rollstate.cpp
+    game/state/active/rollstate.h
     actions/gamewatcher.cpp
     actions/gamewatcher.h
     models/accountmodel.cpp
@@ -57,6 +64,7 @@ set(sources
     network/request.h
     network/websocketserver.cpp
     network/websocketserver.h
+    utils/budhist.h
     utils/configuration.cpp
     utils/configuration.h
     utils/database.cpp
@@ -65,6 +73,7 @@ set(sources
     utils/exception.h
     utils/program.cpp
     utils/program.h
+    utils/ringbuffer.h
     utils/staticstorage.h
 )
 

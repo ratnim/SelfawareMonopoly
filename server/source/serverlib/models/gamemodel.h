@@ -1,6 +1,7 @@
 #pragma once
 
 #include <game/gameinfo.h>
+#include <actions/gamewatcher.h>
 #include <utils/staticstorage.h>
 
 struct GameObject
