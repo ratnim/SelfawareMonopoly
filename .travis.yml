@@ -24,7 +24,7 @@ addons:
     - ubuntu-toolchain-r-test
     - llvm-toolchain-precise-3.9
     - george-edison55-precise-backports
-    - sourceline: 'ppa:beineri/opt-qt593-trusty'
+    - sourceline: 'ppa:beineri/opt-qt-5.10.1-trusty'
     packages:
     - cmake
     - cmake-data
@@ -32,8 +32,8 @@ addons:
     - g++-5
     - clang-3.9
     - cppcheck
-    - qt59-meta-minimal
-    - qt59websockets
+    - qt510-meta-minimal
+    - qt510websockets
 
 os:
   - linux
