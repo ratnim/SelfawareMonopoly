@@ -5,7 +5,7 @@
 
 #include <utils/exception.h>
 
-TEST(ExceptionTest, construct_simple)
+TEST(ExceptionTest, DISABLED_construct_simple)
 {
     Exception except("error message");
     const auto json = except.json();
