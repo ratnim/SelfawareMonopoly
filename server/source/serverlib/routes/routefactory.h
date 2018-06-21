@@ -5,6 +5,7 @@
 #include <QWebSocket>
 
 #include <network/request.h>
+#include <routes/route.h>
 
 class RouteFactory
 {

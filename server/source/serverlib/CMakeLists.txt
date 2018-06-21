@@ -56,8 +56,8 @@ set(sources
     routes/routefactory.h
     routes/gameroute.cpp
     routes/gameroute.h
-    routes/Lobbyroute.cpp
-    routes/Lobbyroute.h
+    routes/lobbyroute.cpp
+    routes/lobbyroute.h
     routes/overviewroute.cpp
     routes/overviewroute.h
     network/request.cpp

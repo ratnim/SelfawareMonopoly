@@ -2,8 +2,6 @@
 
 #include <utils/exception.h>
 
-std::unique_ptr<GameModel> StaticStorage<GameModel>::s_model;
-
 GameObject::GameObject(const QString& label)
     : watcher(game)
     , info(game, label)

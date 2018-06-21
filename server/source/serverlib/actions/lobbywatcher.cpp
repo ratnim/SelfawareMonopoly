@@ -4,8 +4,6 @@
 
 #include <models/gamemodel.h>
 
-std::unique_ptr<LobbyWatcher> StaticStorage<LobbyWatcher>::s_model;
-
 LobbyWatcher::LobbyWatcher()
 {
     watchAllGames();
@@ -65,7 +63,7 @@ QJsonObject LobbyWatcher::toJson(int gameId)
 QJsonArray LobbyWatcher::toArray(const std::vector<QString>& players)
 {
     QJsonArray array;
-    for (auto &player : players)
+    for (auto& player : players)
     {
         array.push_back(player);
     }

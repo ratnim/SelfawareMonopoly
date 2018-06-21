@@ -11,8 +11,8 @@ class Database : public StaticStorage<Database>
 public:
     Database(const QString& databaseName = ":memory:");
 
-    QSqlQuery execute(const QString &queryString);
-    QSqlQuery prepare(const QString &queryString);
+    QSqlQuery execute(const QString& queryString);
+    QSqlQuery prepare(const QString& queryString);
 
 protected:
     static QSqlDatabase createDatabase(const QString& databaseName);

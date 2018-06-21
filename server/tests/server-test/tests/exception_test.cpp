@@ -11,10 +11,10 @@ TEST(ExceptionTest, construct_simple)
     const auto json = except.json();
 
     auto obj = QJsonDocument::fromJson(json.toUtf8()).object();
-    auto error = obj["error"].toObject();
+    auto err = obj["error"].toObject();
 
-    EXPECT_EQ(error["id"].toInt(), error::InvalidRequest);
-    EXPECT_EQ(error["message"].toString().toStdString(), "InvalidRequest: error message");
+    EXPECT_EQ(err["id"].toInt(), error::InvalidRequest);
+    EXPECT_EQ(err["message"].toString().toStdString(), "InvalidRequest: error message");
 }
 
 TEST(ExceptionTest, api_compatibility)

@@ -9,14 +9,14 @@
 OverviewRoute::OverviewRoute(QWebSocket* parent, const Request& request)
     : Route(parent)
 {
-    m_actions["enter_lobby"] = [this](const QJsonValue& data) {
+    m_actions[QString("enter_lobby")] = [this](const QJsonValue& data) {
         enterLobby(data);
     };
 }
 
 void OverviewRoute::enterLobby(const QJsonValue& data)
 {
-    const auto rawPlayer = data["player_name"].toString();
+    const auto rawPlayer = data[QString("player_name")].toString();
     const auto player = rawPlayer.simplified().toHtmlEscaped();
     if (player.isEmpty())
     {
@@ -36,7 +36,7 @@ void OverviewRoute::enterLobby(const QJsonValue& data)
 QString OverviewRoute::enterLobbyAnswer(const QString& userSession)
 {
     QJsonObject answer({ { "name", "enter_lobby" } });
-    answer["data"] = QJsonObject({ { "session", userSession } });
+    answer[QString("data")] = QJsonObject({ { "session", userSession } });
 
     return QJsonDocument(answer).toJson();
 }

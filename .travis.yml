@@ -6,7 +6,7 @@ dist: trusty
 install:
 - if [ "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
 - if [ $TRAVIS_OS_NAME = linux ]; then
-       source /opt/qt59/bin/qt59-env.sh
+       source /opt/qt510/bin/qt510-env.sh
     ;
   else
        QTDIR="/usr/local/opt/qt5"
@@ -24,7 +24,7 @@ addons:
     - ubuntu-toolchain-r-test
     - llvm-toolchain-precise-3.9
     - george-edison55-precise-backports
-    - sourceline: 'ppa:beineri/opt-qt593-trusty'
+    - sourceline: 'ppa:beineri/opt-qt-5.10.1-trusty'
     packages:
     - cmake
     - cmake-data
@@ -32,7 +32,8 @@ addons:
     - g++-5
     - clang-3.9
     - cppcheck
-    - qt59-meta-minimal
+    - qt510-meta-minimal
+    - qt510websockets
 
 os:
   - linux
@@ -51,7 +52,7 @@ script:
   - mkdir build
   - cd build
   - cmake .. && make
-  - cmake --build . --target test
+  - ./server-test
 
 notifications:
   email: false

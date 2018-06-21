@@ -4,23 +4,20 @@
 
 #include <QWebSocket>
 
-std::unique_ptr<QCoreApplication> MockedServer::app;
-std::unique_ptr<WebSocketServer> MockedServer::srv;
-std::unique_ptr<Program> MockedServer::prog;
+namespace
+{
+QCoreApplication* s_app;
+}
 
 QCoreApplication& MockedServer::application()
 {
-    return *app;
+    return *s_app;
 }
 
-WebSocketServer& MockedServer::server()
+MockedServer::MockedServer(int argc, char** argv)
+    : m_app(argc, argv)
+    , m_srv(QHostAddress::LocalHost)
+    , m_prog()
 {
-    return *srv;
-}
-
-void MockedServer::constructServer(int argc, char** argv)
-{
-    app = std::make_unique<QCoreApplication>(argc, argv);
-    srv = std::make_unique<WebSocketServer>(QHostAddress::LocalHost);
-    prog = std::make_unique<Program>();
+    s_app = &m_app;
 }
