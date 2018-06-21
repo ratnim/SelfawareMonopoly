@@ -2,7 +2,7 @@
 
 #include <memory>
 
-template<typename stored>
+template <typename stored>
 class StaticStorage
 {
 public:
@@ -11,7 +11,7 @@ public:
         return *s_model;
     }
 
-    template<typename... parameter>
+    template <typename... parameter>
     static void reset(parameter&&... parameters)
     {
         s_model = std::make_unique<stored>(std::forward<parameter>(parameters)...);
@@ -20,3 +20,6 @@ public:
 protected:
     static std::unique_ptr<stored> s_model;
 };
+
+template <typename stored>
+std::unique_ptr<stored> StaticStorage<stored>::s_model;

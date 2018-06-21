@@ -19,6 +19,3 @@ protected:
 
     QSqlDatabase m_db;
 };
-
-template <>
-std::unique_ptr<Database> StaticStorage<Database>::s_model;
