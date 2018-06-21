@@ -8,16 +8,12 @@
 class MockedServer
 {
 public:
-    using WebSocket = std::unique_ptr<QWebSocket>;
-    using Connection = std::pair<WebSocket, WebSocket>;
+    MockedServer(int arg, char** argv);
 
     static QCoreApplication& application();
-    static WebSocketServer& server();
-
-    static void constructServer(int argc, char** argv);
 
 protected:
-    static std::unique_ptr<QCoreApplication> app;
-    static std::unique_ptr<WebSocketServer> srv;
-    static std::unique_ptr<Program> prog;
+    QCoreApplication m_app;
+    WebSocketServer m_srv;
+    Program m_prog;
 };
