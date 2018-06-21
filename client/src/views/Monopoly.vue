@@ -113,7 +113,7 @@ export default {
       for (var i = 0; i < this.players.length; i++) {
         if (this.players[i].nickname == playerName) {
           console.log(this.players[i].currentField);
-          this.players[i].currentField = (this.players[i].currentField + distance) % 24;
+          this.players[i].currentField = (this.players[i].currentField + distance) % 40;
           console.log(this.players[i].currentField);
           this.$refs.players[i].move(this.players[i].currentField);
         }

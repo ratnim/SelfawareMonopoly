@@ -16,9 +16,27 @@
         }
       },
       {
+        "id": "s11",
+        "type": "street",
+        "label": "Mahrzahn2",
+        "attributes": {
+          "color": "#6A009B",
+          "houses": 0
+        }
+      },
+      {
         "id": "s12",
         "type": "street",
         "label": "Hellersdorf",
+        "attributes": {
+          "color": "#6A009B",
+          "houses": 0
+        }
+      },
+      {
+        "id": "s12",
+        "type": "street",
+        "label": "Hellersdorf2",
         "attributes": {
           "color": "#6A009B",
           "houses": 0
@@ -36,6 +54,24 @@
         "id": "s11",
         "type": "street",
         "label": "Wedding",
+        "attributes": {
+          "color": "#C7E5FE",
+          "houses": 0
+        }
+      },
+      {
+        "id": "s11",
+        "type": "street",
+        "label": "Wedding2",
+        "attributes": {
+          "color": "#C7E5FE",
+          "houses": 0
+        }
+      },
+      {
+        "id": "s2",
+        "type": "street",
+        "label": "Lichten-\nberg",
         "attributes": {
           "color": "#C7E5FE",
           "houses": 0
@@ -67,9 +103,27 @@
         }
       },
       {
+        "id": "s3",
+        "type": "street",
+        "label": "Köpenick2",
+        "attributes": {
+          "color": "#DA009B",
+          "houses": 0
+        }
+      },
+      {
         "id": "s11",
         "type": "street",
         "label": "Hohen-\nschön-\nhausen",
+        "attributes": {
+          "color": "#DA009B",
+          "houses": 0
+        }
+      },
+      {
+        "id": "s11",
+        "type": "street",
+        "label": "Hohen-\nschön-\nhausen2",
         "attributes": {
           "color": "#DA009B",
           "houses": 0
@@ -93,9 +147,27 @@
         }
       },
       {
+        "id": "s11",
+        "type": "street",
+        "label": "Pankow2",
+        "attributes": {
+          "color": "#F19D00",
+          "houses": 0
+        }
+      },
+      {
         "id": "s4",
         "type": "street",
         "label": "Reinicken-\ndorf",
+        "attributes": {
+          "color": "#F19D00",
+          "houses": 0
+        }
+      },
+      {
+        "id": "s4",
+        "type": "street",
+        "label": "Reinicken-\ndorf2",
         "attributes": {
           "color": "#F19D00",
           "houses": 0
@@ -118,9 +190,27 @@
         }
       },
       {
+        "id": "s5",
+        "type": "street",
+        "label": "Moabit2",
+        "attributes": {
+          "color": "#F20000",
+          "houses": 0
+        }
+      },
+      {
         "id": "s11",
         "type": "street",
         "label": "Steglitz",
+        "attributes": {
+          "color": "#F20000",
+          "houses": 0
+        }
+      },
+      {
+        "id": "s11",
+        "type": "street",
+        "label": "Steglitz2",
         "attributes": {
           "color": "#F20000",
           "houses": 0
@@ -144,9 +234,27 @@
         }
       },
       {
+        "id": "s11",
+        "type": "street",
+        "label": "Zehlendorf2",
+        "attributes": {
+          "color": "#ECFF00",
+          "houses": 0
+        }
+      },
+      {
         "id": "s6",
         "type": "street",
         "label": "Neukölln",
+        "attributes": {
+          "color": "#ECFF00",
+          "houses": 0
+        }
+      },
+      {
+        "id": "s6",
+        "type": "street",
+        "label": "Neukölln2",
         "attributes": {
           "color": "#ECFF00",
           "houses": 0
@@ -169,9 +277,27 @@
         }
       },
       {
+        "id": "s7",
+        "type": "street",
+        "label": "Tempelhof2",
+        "attributes": {
+          "color": "#00B167",
+          "houses": 0
+        }
+      },
+      {
         "id": "s8",
         "type": "street",
         "label": "Schöneberg",
+        "attributes": {
+          "color": "#00B167",
+          "houses": 0
+        }
+      },
+      {
+        "id": "s8",
+        "type": "street",
+        "label": "Schöneberg2",
         "attributes": {
           "color": "#00B167",
           "houses": 0
@@ -197,7 +323,25 @@
       {
         "id": "s11",
         "type": "street",
+        "label": "Charlotten-\nburg2",
+        "attributes": {
+          "color": "#345CB9",
+          "houses": 0
+        }
+      },
+      {
+        "id": "s11",
+        "type": "street",
         "label": "Kreuzburg",
+        "attributes": {
+          "color": "#345CB9",
+          "houses": 0
+        }
+      },
+      {
+        "id": "s11",
+        "type": "street",
+        "label": "Kreuzburg2",
         "attributes": {
           "color": "#345CB9",
           "houses": 0
