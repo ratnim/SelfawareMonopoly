@@ -6,7 +6,7 @@ dist: trusty
 install:
 - if [ "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
 - if [ $TRAVIS_OS_NAME = linux ]; then
-       source /opt/qt59/bin/qt59-env.sh
+       source /opt/qt510/bin/qt510-env.sh
     ;
   else
        QTDIR="/usr/local/opt/qt5"
