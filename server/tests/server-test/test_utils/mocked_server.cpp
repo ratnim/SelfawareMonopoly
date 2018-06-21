@@ -21,6 +21,6 @@ WebSocketServer& MockedServer::server()
 void MockedServer::constructServer(int argc, char** argv)
 {
     app = std::make_unique<QCoreApplication>(argc, argv);
-    srv = std::make_unique<WebSocketServer>(QHostAddress::LocalHost);
+    //srv = std::make_unique<WebSocketServer>(QHostAddress::LocalHost);
     prog = std::make_unique<Program>();
 }
