@@ -1,11 +1,11 @@
 #pragma once
 
-#include <game/state/active/movestate.h>
+#include <game/state/turn/movestate.h>
 
 class JailState : public MoveState
 {
 public:
-    JailState(PlayerState* state);
+    JailState(TurnState* state);
 
     void rollDice() override;
 };

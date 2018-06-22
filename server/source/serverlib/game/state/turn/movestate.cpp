@@ -1,8 +1,8 @@
 #include "movestate.h"
 
 #include <game/game.h>
-#include <game/state/active/freestate.h>
-#include <game/state/active/rollstate.h>
+#include <game/state/turn/freestate.h>
+#include <game/state/turn/rollstate.h>
 #include <game/state/endstate.h>
 #include <game/state/runstate.h>
 
@@ -13,8 +13,8 @@ const int goToJailPosition = 30;
 const int gameEndField = 40;
 }
 
-MoveState::MoveState(PlayerState* state)
-    : PlayerState(*state)
+MoveState::MoveState(TurnState* state)
+    : TurnState(*state)
 {
 }
 

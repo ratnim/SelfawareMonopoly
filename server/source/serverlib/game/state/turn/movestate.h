@@ -1,12 +1,12 @@
 #pragma once
 
 #include <game/dices.h>
-#include <game/state/active/playerstate.h>
+#include <game/state/turn/turnstate.h>
 
-class MoveState : public PlayerState
+class MoveState : public TurnState
 {
 public:
-    MoveState(PlayerState* state);
+    MoveState(TurnState* state);
 
 protected:
     void goToJail();

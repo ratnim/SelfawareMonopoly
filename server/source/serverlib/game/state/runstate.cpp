@@ -1,7 +1,7 @@
 #include "runstate.h"
 
 #include <game/game.h>
-#include <game/state/active/rollstate.h>
+#include <game/state/turn/rollstate.h>
 #include <utils/exception.h>
 
 RunState::RunState(Game* game, std::vector<Player> order)
@@ -11,7 +11,7 @@ RunState::RunState(Game* game, std::vector<Player> order)
     emit m_game->onGameStart();
     emit m_game->onTurnChange(m_players().name);
 
-    PlayerState state(game, this, m_players);
+    TurnState state(game, this, m_players);
     stateChange<RollState>(&state);
 }
 

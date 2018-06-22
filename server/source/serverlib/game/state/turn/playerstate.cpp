@@ -1,29 +1,29 @@
-#include "playerstate.h"
+#include "turnstate.h"
 
 #include <game/game.h>
 #include <game/state/runstate.h>
-#include <game/state/active/jailstate.h>
-#include <game/state/active/rollstate.h>
+#include <game/state/turn/jailstate.h>
+#include <game/state/turn/rollstate.h>
 #include <utils/exception.h>
 
-PlayerState::PlayerState(Game* game, RunState* state, RingBuffer<Player>& player)
+TurnState::TurnState(Game* game, RunState* state, RingBuffer<Player>& player)
     : m_game(game)
     , m_state(state)
     , m_players(player)
 {
 }
 
-void PlayerState::rollDice()
+void TurnState::rollDice()
 {
     InvalidRequest();
 }
 
-void PlayerState::endTurn()
+void TurnState::endTurn()
 {
     InvalidRequest();
 }
 
-void PlayerState::end()
+void TurnState::end()
 {
     m_players.next();
     emit m_game->onTurnChange(m_players().name);
@@ -39,7 +39,7 @@ void PlayerState::end()
     }
 }
 
-void PlayerState::InvalidRequest()
+void TurnState::InvalidRequest()
 {
     throw Exception("You are not allowed to perform this action.", error::InvalidRequest);
 }

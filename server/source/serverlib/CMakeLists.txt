@@ -12,12 +12,12 @@ message(STATUS "Lib ${target}")
 # 
 
 set(sources
-    actions/gamewatcher.cpp
-    actions/gamewatcher.h
-    actions/watcher.cpp
-    actions/watcher.h
-    actions/lobbywatcher.cpp
-    actions/lobbywatcher.h
+    watchers/gamewatcher.cpp
+    watchers/gamewatcher.h
+    watchers/watcher.cpp
+    watchers/watcher.h
+    watchers/lobbywatcher.cpp
+    watchers/lobbywatcher.h
     game/dices.cpp
     game/dices.h
     game/game.cpp
@@ -34,18 +34,16 @@ set(sources
     game/state/initstate.h
     game/state/runstate.cpp
     game/state/runstate.h
-    game/state/active/freestate.cpp
-    game/state/active/freestate.h
-    game/state/active/jailstate.cpp
-    game/state/active/jailstate.h
-    game/state/active/movestate.cpp
-    game/state/active/movestate.h
-    game/state/active/playerstate.cpp
-    game/state/active/playerstate.h
-    game/state/active/rollstate.cpp
-    game/state/active/rollstate.h
-    actions/gamewatcher.cpp
-    actions/gamewatcher.h
+    game/state/turn/freestate.cpp
+    game/state/turn/freestate.h
+    game/state/turn/jailstate.cpp
+    game/state/turn/jailstate.h
+    game/state/turn/movestate.cpp
+    game/state/turn/movestate.h
+    game/state/turn/turnstate.cpp
+    game/state/turn/turnstate.h
+    game/state/turn/rollstate.cpp
+    game/state/turn/rollstate.h
     models/accountmodel.cpp
     models/accountmodel.h
     models/gamemodel.cpp

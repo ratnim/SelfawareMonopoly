@@ -6,10 +6,10 @@
 class Game;
 class RunState;
 
-class PlayerState
+class TurnState
 {
 public:
-    PlayerState(Game* game, RunState* state, RingBuffer<Player>& player);
+    TurnState(Game* game, RunState* state, RingBuffer<Player>& player);
 
     virtual void rollDice();
     virtual void endTurn();

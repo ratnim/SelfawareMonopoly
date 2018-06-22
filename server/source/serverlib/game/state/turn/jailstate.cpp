@@ -1,9 +1,9 @@
 #include "jailstate.h"
 
 #include <game/state/runstate.h>
-#include <game/state/active/freestate.h>
+#include <game/state/turn/freestate.h>
 
-JailState::JailState(PlayerState* state)
+JailState::JailState(TurnState* state)
     : MoveState(state)
 {
 }

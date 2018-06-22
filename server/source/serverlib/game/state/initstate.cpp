@@ -17,39 +17,39 @@ InitState::InitState(Game* game)
 
 void InitState::join(const QString& playerName)
 {
-    if (m_status.size() >= maximumPlayers)
+    if (m_playersReady.size() >= maximumPlayers)
     {
         throw Exception("The maximum number of players is already joined.");
     }
 
-    if (m_status.find(playerName) != m_status.end())
+    if (m_playersReady.find(playerName) != m_playersReady.end())
     {
         throw Exception("The player is already in the game.");
     }
 
-    m_status[playerName] = false;
+    m_playersReady[playerName] = false;
     emit m_game->onPlayerJoin(playerName);
 }
 
 void InitState::ready(const QString& playerName)
 {
-    if (m_status[playerName])
+    if (m_playersReady[playerName])
     {
         throw Exception("The player is already ready.");
     }
 
-    m_status[playerName] = true;
+    m_playersReady[playerName] = true;
     emit m_game->onPlayerReady(playerName);
 }
 
 void InitState::start()
 {
-    if (m_status.size() < minimumPlayers)
+    if (m_playersReady.size() < minimumPlayers)
     {
         throw Exception("The minimum amount of players is not reached.");
     }
 
-    for (const auto& elem : m_status)
+    for (const auto& elem : m_playersReady)
     {
         if (!elem.second)
         {
@@ -63,7 +63,7 @@ void InitState::start()
 std::vector<Player> InitState::turnOrder()
 {
     std::vector<Player> order;
-    for (auto& player : m_status)
+    for (auto& player : m_playersReady)
     {
         order.push_back(player.first);
     }

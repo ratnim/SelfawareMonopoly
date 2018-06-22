@@ -3,7 +3,7 @@
 #include <game/dices.h>
 #include <game/game.h>
 
-RollState::RollState(PlayerState* state, int rollCount)
+RollState::RollState(TurnState* state, int rollCount)
     : MoveState(state)
     , m_rollCount(rollCount)
 {

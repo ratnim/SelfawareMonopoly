@@ -1,11 +1,11 @@
 #pragma once
 
-#include <game/state/active/movestate.h>
+#include <game/state/turn/movestate.h>
 
 class RollState : public MoveState
 {
 public:
-    RollState(PlayerState* state, int rollCount = 0);
+    RollState(TurnState* state, int rollCount = 0);
 
     void rollDice() override;
 
