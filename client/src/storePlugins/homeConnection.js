@@ -21,7 +21,7 @@ function parseResponse(JSONObject) {
 
 
 export function connect() {
-  socket = new WebSocket('ws://localhost:31415');
+  socket = new WebSocket(process.env.VUE_APP_WEBSOCKET_URL);
 
   socket.onmessage = function(event) {
     var JSONObject = JSON.parse(event.data);
