@@ -7,14 +7,18 @@
 #include <routes/route.h>
 #include <utils/exception.h>
 
+namespace
+{
+QWebSocket dummy;
+}
+
 class SubRouteTest : public ::testing::Test, public Route
 {
 public:
     SubRouteTest()
-        : Route(nullptr)
+        : Route(&dummy)
     {
-        m_actions["test"] = [this](const QJsonValue& input)
-        {
+        m_actions["test"] = [this](const QJsonValue& input) {
             data = input;
             send("ok");
         };
@@ -48,7 +52,7 @@ TEST_F(SubRouteTest, unknown_action)
 {
     QSignalSpy socket_spy(this, &Watcher::send);
 
-    QJsonObject in({{"request", "someaction"}});
+    QJsonObject in({ { "request", "someaction" } });
 
     incommingMessage(QJsonDocument(in).toJson());
 
