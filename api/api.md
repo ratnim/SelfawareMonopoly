@@ -51,7 +51,7 @@ __Sends frequently:__
                     "game_id" : <game_id>,
                     "game_label" : <label of the game>
                     "player_list" : [],
-                    "game_status" : <game_status>
+                    "game_status" : <initialized | started | finished>
                 }
             ]
         }
