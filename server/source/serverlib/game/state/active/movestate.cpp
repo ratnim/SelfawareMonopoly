@@ -20,18 +20,18 @@ MoveState::MoveState(PlayerState* state)
 
 void MoveState::movePlayer(int distance, bool canRollAgain, int rollCount)
 {
-    m_player().position += distance;
-    emit m_game->onPlayerMove(m_player().name, distance);
+    m_players().position += distance;
+    emit m_game->onPlayerMove(m_players().name, distance);
 
     // handle game end
-    if (m_player().position >= gameEndField)
+    if (m_players().position >= gameEndField)
     {
         m_game->stateChange<EndState>(m_game);
         return;
     }
 
     // handle go to jail field
-    if (m_player().position == goToJailPosition)
+    if (m_players().position == goToJailPosition)
     {
         goToJail();
         return;
@@ -49,12 +49,12 @@ void MoveState::movePlayer(int distance, bool canRollAgain, int rollCount)
 
 void MoveState::goToJail()
 {
-    auto distance = jailPosition - m_player().position;
-    m_player().position = jailPosition;
-    emit m_game->onPlayerMove(m_player().name, distance);
-    emit m_game->onEnterJail(m_player().name);
+    auto distance = jailPosition - m_players().position;
+    m_players().position = jailPosition;
+    emit m_game->onPlayerMove(m_players().name, distance);
+    emit m_game->onEnterJail(m_players().name);
 
-    m_player().jailTurns = 3;
+    m_players().jailTurns = 3;
 
     end();
 }

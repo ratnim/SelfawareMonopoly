@@ -15,5 +15,5 @@ public:
 
 protected:
     Game* m_game;
-    RingBuffer<Player> m_player;
+    RingBuffer<Player> m_players;
 };

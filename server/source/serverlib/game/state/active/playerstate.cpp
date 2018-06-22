@@ -9,7 +9,7 @@
 PlayerState::PlayerState(Game* game, RunState* state, RingBuffer<Player>& player)
     : m_game(game)
     , m_state(state)
-    , m_player(player)
+    , m_players(player)
 {
 }
 
@@ -25,11 +25,11 @@ void PlayerState::endTurn()
 
 void PlayerState::end()
 {
-    m_player.next();
-    emit m_game->onTurnChange(m_player().name);
+    m_players.next();
+    emit m_game->onTurnChange(m_players().name);
 
-    --m_player().jailTurns;
-    if (m_player().jailTurns)
+    --m_players().jailTurns;
+    if (m_players().jailTurns)
     {
         m_state->stateChange<JailState>(this);
     }

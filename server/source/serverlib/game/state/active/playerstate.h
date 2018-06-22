@@ -19,7 +19,7 @@ protected:
 
     Game* m_game;
     RunState* m_state;
-    RingBuffer<Player>& m_player;
+    RingBuffer<Player>& m_players;
 
 private:
     static void InvalidRequest();
