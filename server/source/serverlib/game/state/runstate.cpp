@@ -11,8 +11,8 @@ RunState::RunState(Game* game, std::vector<Player> order)
     emit m_game->onGameStart();
     emit m_game->onTurnChange(m_player().name);
 
-    PlayerState initialState(game, this, m_player);
-    stateChange<RollState>(&initialState);
+    PlayerState state(game, this, m_player);
+    stateChange<RollState>(&state);
 }
 
 void RunState::rollDice(const QString& playerName)
