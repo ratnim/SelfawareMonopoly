@@ -1,8 +1,8 @@
 #pragma once
 
-#include <game/state/active/movestate.h>
+#include <game/state/active/playerstate.h>
 
-class JailState : public MoveState
+class JailState : public PlayerState
 {
 public:
     JailState(PlayerState* state);

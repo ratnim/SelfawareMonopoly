@@ -2,7 +2,7 @@
 
 GameInfo::GameInfo(const Game& game, const QString& label)
     : m_label(label)
-    , m_state("Initialized")
+    , m_state("initialized")
 {
     connect(&game, &Game::onGameStart, this, &GameInfo::gameStart);
     connect(&game, &Game::onGameEnd, this, &GameInfo::gameEnd);
@@ -32,12 +32,12 @@ void GameInfo::playerJoin(const QString& playerName)
 
 void GameInfo::gameStart()
 {
-    m_state = "Started";
+    m_state = "started";
     emit change();
 }
 
 void GameInfo::gameEnd()
 {
-    m_state = "Finished";
+    m_state = "finished";
     emit change();
 }

@@ -1,8 +1,8 @@
 #pragma once
 
-#include <game/state/active/movestate.h>
+#include <game/state/active/playerstate.h>
 
-class RollState : public MoveState
+class RollState : public PlayerState
 {
 public:
     RollState(PlayerState* state, int rollCount = 0);

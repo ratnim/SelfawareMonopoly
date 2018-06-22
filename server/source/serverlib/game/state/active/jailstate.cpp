@@ -4,7 +4,7 @@
 #include <game/state/active/freestate.h>
 
 JailState::JailState(PlayerState* state)
-    : MoveState(state)
+    : PlayerState(*state)
 {
 }
 

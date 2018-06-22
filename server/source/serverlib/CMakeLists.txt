@@ -38,8 +38,6 @@ set(sources
     game/state/active/freestate.h
     game/state/active/jailstate.cpp
     game/state/active/jailstate.h
-    game/state/active/movestate.cpp
-    game/state/active/movestate.h
     game/state/active/playerstate.cpp
     game/state/active/playerstate.h
     game/state/active/rollstate.cpp

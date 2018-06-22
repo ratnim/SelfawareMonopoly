@@ -17,20 +17,20 @@ RunState::RunState(Game* game, std::vector<Player> order)
 
 void RunState::rollDice(const QString& playerName)
 {
-    if (m_player().name != playerName)
-    {
-        throw Exception("Not your turn.");
-    }
-
+    checkPlayer(playerName);
     m_state->rollDice();
 }
 
 void RunState::endTurn(const QString& playerName)
 {
+    checkPlayer(playerName);
+    m_state->endTurn();
+}
+
+void RunState::checkPlayer(const QString& playerName)
+{
     if (m_player().name != playerName)
     {
         throw Exception("Not your turn.");
     }
-
-    m_state->endTurn();
 }

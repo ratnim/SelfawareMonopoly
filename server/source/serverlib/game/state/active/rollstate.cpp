@@ -4,7 +4,7 @@
 #include <game/game.h>
 
 RollState::RollState(PlayerState* state, int rollCount)
-    : MoveState(state)
+    : PlayerState(*state)
     , m_rollCount(rollCount)
 {
 }

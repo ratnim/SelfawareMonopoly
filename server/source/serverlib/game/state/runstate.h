@@ -14,6 +14,8 @@ public:
     void endTurn(const QString& playerName) override;
 
 protected:
+    void checkPlayer(const QString& playerName);
+
     Game* m_game;
     RingBuffer<Player> m_player;
 };
