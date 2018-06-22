@@ -29,6 +29,5 @@ protected:
 
     static QString toString(const QJsonObject& object);
 
-    const Game& m_game;
     std::vector<QString> m_messages;
 };

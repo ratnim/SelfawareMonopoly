@@ -6,7 +6,6 @@
 #include <models/gamemodel.h>
 
 GameWatcher::GameWatcher(const Game& game)
-    : m_game(game)
 {
     connect(&game, &Game::onPlayerJoin, this, &GameWatcher::playerJoin);
     connect(&game, &Game::onPlayerReady, this, &GameWatcher::playerReady);
