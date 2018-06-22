@@ -18,5 +18,5 @@ protected:
     std::vector<Player> turnOrder();
 
     Game* m_game;
-    std::map<QString, bool> m_status;
+    std::map<QString, bool> m_playersReady;
 };
