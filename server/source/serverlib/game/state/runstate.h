@@ -2,10 +2,10 @@
 
 #include <game/gamelogic.h>
 #include <game/state/gamestate.h>
-#include <game/state/active/playerstate.h>
+#include <game/state/turn/turnstate.h>
 #include <utils/budhist.h>
 
-class RunState : public GameState, public Budhist<PlayerState>
+class RunState : public GameState, public Budhist<TurnState>
 {
 public:
     RunState(GameState* old, Game* game, std::vector<Player> players);
@@ -16,6 +16,6 @@ public:
 protected:
     void checkPlayer(const QString& playerName);
 
-    RingBuffer<Player> m_player;
+    RingBuffer<Player> m_players;
     GameLogic m_logic;
 };

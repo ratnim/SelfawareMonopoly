@@ -2,8 +2,8 @@
 
 #include <game/game.h>
 
-FreeState::FreeState(PlayerState* state)
-    : PlayerState(*state)
+FreeState::FreeState(TurnState* state)
+    : TurnState(*state)
 {
 }
 

@@ -3,7 +3,7 @@
 #include <QJsonArray>
 #include <QJsonObject>
 
-#include <actions/watcher.h>
+#include <watchers/watcher.h>
 
 class Game;
 

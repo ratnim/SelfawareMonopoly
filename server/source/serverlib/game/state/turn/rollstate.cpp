@@ -3,14 +3,13 @@
 #include <game/dices.h>
 #include <game/game.h>
 
-RollState::RollState(PlayerState* state, GameLogic* logic)
-    : PlayerState(logic)
+RollState::RollState(TurnState* state, GameLogic* logic)
+    : TurnState(logic)
 {
 }
 
-RollState::RollState(PlayerState* state, int rollCount)
-    : PlayerState(*state)
-    , m_rollCount(rollCount)
+RollState::RollState(TurnState* state, int rollCount)
+    : TurnState(*state)
 {
 }
 

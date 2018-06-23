@@ -14,6 +14,7 @@ set(sources
     main.cpp
     tests/configuration_test.cpp
     tests/exception_test.cpp
+    tests/game_test.cpp
     tests/gamemodel_test.cpp
     tests/gameinfo_test.cpp
     tests/request_test.cpp

@@ -1,8 +1,8 @@
 #include "gamelogic.h"
 
-#include <game/state/active/freestate.h>
-#include <game/state/active/jailstate.h>
-#include <game/state/active/rollstate.h>
+#include <game/state/turn/freestate.h>
+#include <game/state/turn/jailstate.h>
+#include <game/state/turn/rollstate.h>
 #include <game/state/endstate.h>
 #include <game/state/runstate.h>
 #include <utils/exception.h>

@@ -3,10 +3,10 @@
 #include <game/dices.h>
 #include <game/gamelogic.h>
 
-class PlayerState
+class TurnState
 {
 public:
-    PlayerState(GameLogic* logic);
+    TurnState(GameLogic* logic);
 
     virtual void rollDice();
     virtual void endTurn();

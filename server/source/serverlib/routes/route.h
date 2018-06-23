@@ -5,7 +5,7 @@
 #include <QJsonObject>
 #include <QWebSocket>
 
-#include <actions/watcher.h>
+#include <watchers/watcher.h>
 #include <network/request.h>
 
 class Route : public Watcher
