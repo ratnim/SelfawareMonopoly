@@ -4,7 +4,7 @@
 #include <game/state/turn/rollstate.h>
 #include <utils/exception.h>
 
-RunState::RunState(GameState* old, Game* game, std::vector<Player> players)
+RunState::RunState(Game* game, std::vector<Player> players)
     : m_players(std::move(players))
     , m_logic(game, this, m_players)
 {

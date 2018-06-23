@@ -5,5 +5,5 @@
 class EndState : public GameState
 {
 public:
-    EndState(GameState* old, Game* game);
+    EndState(Game* game);
 };

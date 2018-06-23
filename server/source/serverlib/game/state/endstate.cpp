@@ -2,7 +2,7 @@
 
 #include <game/game.h>
 
-EndState::EndState(GameState* old, Game* game)
+EndState::EndState(Game* game)
 {
     emit game->onGameEnd();
 }

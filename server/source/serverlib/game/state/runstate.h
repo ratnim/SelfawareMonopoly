@@ -8,7 +8,7 @@
 class RunState : public GameState, public Budhist<TurnState>
 {
 public:
-    RunState(GameState* old, Game* game, std::vector<Player> players);
+    RunState(Game* game, std::vector<Player> players);
 
     void rollDice(const QString& playerName) override;
     void endTurn(const QString& playerName) override;
