@@ -5,11 +5,13 @@
 
 RollState::RollState(TurnState* state, GameLogic* logic)
     : TurnState(logic)
+    , m_rollCount(0)
 {
 }
 
 RollState::RollState(TurnState* state, int rollCount)
     : TurnState(*state)
+    , m_rollCount(rollCount)
 {
 }
 
