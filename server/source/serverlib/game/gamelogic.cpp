@@ -14,27 +14,27 @@ const int goToJailPosition = 30;
 const int gameEndField = 40;
 }
 
-GameLogic::GameLogic(Game* game, RunState* state, RingBuffer<Player>& player)
+GameLogic::GameLogic(Game* game, RunState* state, RingBuffer<Player>& players)
     : m_game(game)
     , m_state(state)
-    , m_player(player)
+    , m_players(players)
 {
 }
 
 void GameLogic::movePlayer(int distance, bool canRollAgain, int rollCount)
 {
-    m_player().position += distance;
-    emit m_game->onPlayerMove(m_player().name, distance);
+    m_players().position += distance;
+    emit m_game->onPlayerMove(m_players().name, distance);
 
     // handle game end
-    if (m_player().position >= gameEndField)
+    if (m_players().position >= gameEndField)
     {
         m_game->stateChange<EndState>(m_game);
         return;
     }
 
     // handle go to jail field
-    if (m_player().position == goToJailPosition)
+    if (m_players().position == goToJailPosition)
     {
         goToJail();
         return;
@@ -52,12 +52,12 @@ void GameLogic::movePlayer(int distance, bool canRollAgain, int rollCount)
 
 void GameLogic::goToJail()
 {
-    auto distance = jailPosition - m_player().position;
-    m_player().position = jailPosition;
-    emit m_game->onPlayerMove(m_player().name, distance);
-    emit m_game->onEnterJail(m_player().name);
+    auto distance = jailPosition - m_players().position;
+    m_players().position = jailPosition;
+    emit m_game->onPlayerMove(m_players().name, distance);
+    emit m_game->onEnterJail(m_players().name);
 
-    m_player().jailTurns = 3;
+    m_players().jailTurns = 3;
 
     end();
 }
@@ -66,7 +66,7 @@ Dices GameLogic::roll()
 {
     // TODO get dices from watson
     Dices d;
-    emit m_game->onRollDice(d.first, d.second);
+    emit m_game->onRollDice(m_players().name, d.first, d.second);
     return d;
 }
 
@@ -77,11 +77,11 @@ void GameLogic::free()
 
 void GameLogic::end()
 {
-    m_player.next();
-    emit m_game->onTurnChange(m_player().name);
+    m_players.next();
+    emit m_game->onTurnChange(m_players().name);
 
-    --m_player().jailTurns;
-    if (m_player().jailTurns)
+    --m_players().jailTurns;
+    if (m_players().jailTurns)
     {
         m_state->stateChange<JailState>();
     }

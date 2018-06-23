@@ -10,7 +10,7 @@ class RunState;
 class GameLogic
 {
 public:
-    GameLogic(Game* game, RunState* state, RingBuffer<Player>& player);
+    GameLogic(Game* game, RunState* state, RingBuffer<Player>& players);
 
     void goToJail();
     void movePlayer(int distance, bool canRollAgain = false, int rollCount = 1);
@@ -22,5 +22,5 @@ public:
 protected:
     Game* m_game;
     RunState* m_state;
-    RingBuffer<Player>& m_player;
+    RingBuffer<Player>& m_players;
 };
