@@ -4,15 +4,14 @@
 #include <game/state/active/rollstate.h>
 #include <utils/exception.h>
 
-RunState::RunState(Game* game, std::vector<Player> order)
-    : m_game(game)
-    , m_player(std::move(order))
+RunState::RunState(GameState* old, Game* game, std::vector<Player> order)
+    : m_player(std::move(order))
+    , m_logic(game, this, m_player)
 {
-    emit m_game->onGameStart();
-    emit m_game->onTurnChange(m_player().name);
+    emit game->onGameStart();
+    emit game->onTurnChange(m_player().name);
 
-    PlayerState initialState(game, this, m_player);
-    stateChange<RollState>(&initialState);
+    stateChange<RollState>(&m_logic);
 }
 
 void RunState::rollDice(const QString& playerName)

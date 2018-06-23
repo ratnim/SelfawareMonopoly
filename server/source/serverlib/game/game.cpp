@@ -1,5 +1,7 @@
 #include "game.h"
 
+#include <game/state/initstate.h>
+
 Game::Game()
 {
     stateChange<InitState>(this);

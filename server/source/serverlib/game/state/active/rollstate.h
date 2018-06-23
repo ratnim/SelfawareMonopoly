@@ -5,6 +5,7 @@
 class RollState : public PlayerState
 {
 public:
+    RollState(PlayerState* state, GameLogic* logic);
     RollState(PlayerState* state, int rollCount = 0);
 
     void rollDice() override;

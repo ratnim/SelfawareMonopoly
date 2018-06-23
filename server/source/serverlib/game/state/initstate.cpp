@@ -10,7 +10,7 @@ int minimumPlayers = 2;
 int maximumPlayers = 6;
 }
 
-InitState::InitState(Game* game)
+InitState::InitState(GameState* old, Game* game)
     : m_game(game)
 {
 }

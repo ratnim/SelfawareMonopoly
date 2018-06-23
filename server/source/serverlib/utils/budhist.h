@@ -9,7 +9,7 @@ public:
     template <typename State, typename... args>
     void stateChange(args&&... parameters)
     {
-        m_state = std::make_unique<State>(std::forward<args>(parameters)...);
+        m_state = std::make_unique<State>(m_state.get(), std::forward<args>(parameters)...);
     }
 
 protected:

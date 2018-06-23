@@ -8,7 +8,7 @@
 class InitState : public GameState
 {
 public:
-    InitState(Game* game);
+    InitState(GameState* state, Game* game);
 
     void join(const QString& playerName) override;
     void ready(const QString& playerName) override;

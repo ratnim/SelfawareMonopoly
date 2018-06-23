@@ -1,9 +1,6 @@
 #pragma once
 
-#include <map>
-#include <vector>
-
-#include <game/state/initstate.h>
+#include <game/state/gamestate.h>
 #include <utils/budhist.h>
 
 class Game : public QObject, public Budhist<GameState>

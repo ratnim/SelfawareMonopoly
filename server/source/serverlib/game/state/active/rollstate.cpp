@@ -3,6 +3,11 @@
 #include <game/dices.h>
 #include <game/game.h>
 
+RollState::RollState(PlayerState* state, GameLogic* logic)
+    : PlayerState(logic)
+{
+}
+
 RollState::RollState(PlayerState* state, int rollCount)
     : PlayerState(*state)
     , m_rollCount(rollCount)
@@ -11,15 +16,15 @@ RollState::RollState(PlayerState* state, int rollCount)
 
 void RollState::rollDice()
 {
-    auto d = roll();
+    auto d = m_logic->roll();
 
     ++m_rollCount;
     if (m_rollCount == 3)
     {
-        goToJail();
+        m_logic->goToJail();
     }
     else
     {
-        movePlayer(d.sum(), d.isDouble(), m_rollCount);
+        m_logic->movePlayer(d.sum(), d.isDouble(), m_rollCount);
     }
 }

@@ -10,14 +10,14 @@ JailState::JailState(PlayerState* state)
 
 void JailState::rollDice()
 {
-    auto d = roll();
+    auto d = m_logic->roll();
     
     if (d.isDouble())
     {
-        movePlayer(d.sum());
+        m_logic->movePlayer(d.sum());
     }
     else
     {
-        m_state->stateChange<FreeState>(this);
+        m_logic->free();
     }
 }

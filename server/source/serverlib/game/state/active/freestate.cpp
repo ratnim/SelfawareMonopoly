@@ -9,5 +9,5 @@ FreeState::FreeState(PlayerState* state)
 
 void FreeState::endTurn()
 {
-    end();
+    m_logic->end();
 }
