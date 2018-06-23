@@ -27,7 +27,7 @@ TEST_F(GameInfoTest, store_state)
     auto id = instance.createGame("label");
     auto& gameWrapper = instance.open(id);
 
-    QSignalSpy socket_spy(&gameWrapper.info, &GameInfo::change);
+    QSignalSpy change_spy(&gameWrapper.info, &GameInfo::change);
 
     EXPECT_EQ(gameWrapper.info.state(), "initialized");
     gameWrapper.game.onGameStart();
@@ -35,7 +35,7 @@ TEST_F(GameInfoTest, store_state)
     gameWrapper.game.onGameEnd();
     EXPECT_EQ(gameWrapper.info.state(), "finished");
 
-    EXPECT_EQ(socket_spy.size(), 2);
+    EXPECT_EQ(change_spy.size(), 2);
 }
 
 TEST_F(GameInfoTest, store_players)
@@ -45,7 +45,7 @@ TEST_F(GameInfoTest, store_players)
     auto id = instance.createGame("label");
     auto& gameWrapper = instance.open(id);
 
-    QSignalSpy socket_spy(&gameWrapper.info, &GameInfo::change);
+    QSignalSpy change_spy(&gameWrapper.info, &GameInfo::change);
 
     EXPECT_EQ(gameWrapper.info.players().size(), 0);
     gameWrapper.game.onPlayerJoin("player0");
@@ -55,5 +55,5 @@ TEST_F(GameInfoTest, store_players)
     EXPECT_EQ(gameWrapper.info.players().size(), 2);
     EXPECT_EQ(gameWrapper.info.players()[1], "player1");
 
-    EXPECT_EQ(socket_spy.size(), 2);
+    EXPECT_EQ(change_spy.size(), 2);
 }

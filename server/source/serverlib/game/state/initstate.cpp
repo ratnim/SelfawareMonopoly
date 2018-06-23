@@ -33,6 +33,11 @@ void InitState::join(const QString& playerName)
 
 void InitState::ready(const QString& playerName)
 {
+    if (m_playersReady.find(playerName) == m_playersReady.end())
+    {
+        throw Exception("The player is not in the game.");
+    }
+
     if (m_playersReady[playerName])
     {
         throw Exception("The player is already ready.");
