@@ -43,7 +43,7 @@ function parseResponse(JSONObject) {
 
 // Write functions
 export function connect(gameId, sessionId) {
-  socket = new WebSocket('ws://localhost:31415/game?game_id=' + gameId + '&session=' + sessionId);
+  socket = new WebSocket(process.env.VUE_APP_WEBSOCKET_URL + '/game?game_id=' + gameId + '&session=' + sessionId);
 
   socket.onmessage = function(event) {
     var JSONObject = JSON.parse(event.data);
