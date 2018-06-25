@@ -6,12 +6,22 @@
 
 RunState::RunState(Game* game, std::vector<Player> players)
     : m_players(std::move(players))
-    , m_logic(game, this, m_players)
+    , m_logic(game, this)
 {
     emit game->onGameStart();
     emit game->onTurnChange(m_players().name);
 
     stateChange<RollState>(&m_logic);
+}
+
+RingBuffer<Player>& RunState::players()
+{
+    return m_players;
+}
+
+Watson& RunState::watson()
+{
+    return m_watson;
 }
 
 void RunState::rollDice(const QString& playerName)

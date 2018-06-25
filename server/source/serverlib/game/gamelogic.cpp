@@ -14,10 +14,11 @@ const int goToJailPosition = 30;
 const int gameEndField = 40;
 }
 
-GameLogic::GameLogic(Game* game, RunState* state, RingBuffer<Player>& players)
+GameLogic::GameLogic(Game* game, RunState* state)
     : m_game(game)
     , m_state(state)
-    , m_players(players)
+    , m_players(state->players())
+    , m_watson(state->watson())
 {
 }
 
@@ -64,8 +65,7 @@ void GameLogic::goToJail()
 
 Dices GameLogic::roll()
 {
-    // TODO get dices from watson
-    Dices d;
+    auto d = m_watson.roll();
     emit m_game->onRollDice(m_players().name, d.first, d.second);
     return d;
 }

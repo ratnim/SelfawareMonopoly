@@ -27,7 +27,9 @@ set(sources
     game/gamelogic.cpp
     game/gamelogic.h
     game/player.cpp
-    game/player.h
+    game/player.h   
+    game/watson.cpp
+    game/watson.h
     game/state/gamestate.cpp
     game/state/gamestate.h
     game/state/endstate.cpp
