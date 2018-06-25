@@ -3,6 +3,7 @@
 #include <game/dices.h>
 #include <game/game.h>
 #include <game/player.h>
+#include <game/watson.h>
 #include <utils/ringbuffer.h>
 
 class RunState;
