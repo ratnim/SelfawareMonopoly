@@ -14,6 +14,11 @@ RunState::RunState(Game* game, std::vector<Player> players)
     stateChange<RollState>(&m_logic);
 }
 
+Player& RunState::player()
+{
+    return m_players();
+}
+
 RingBuffer<Player>& RunState::players()
 {
     return m_players;

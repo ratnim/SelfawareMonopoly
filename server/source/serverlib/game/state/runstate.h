@@ -11,6 +11,7 @@ class RunState : public GameState, public Budhist<TurnState>
 public:
     RunState(Game* game, std::vector<Player> players);
 
+    Player& player();
     RingBuffer<Player>& players();
     Watson& watson();
 

@@ -23,6 +23,4 @@ public:
 protected:
     Game* m_game;
     RunState* m_state;
-    RingBuffer<Player>& m_players;
-    Watson& m_watson;
 };
