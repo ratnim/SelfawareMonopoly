@@ -13,7 +13,7 @@ Route: /
 expects:
 
     {
-        "request" : "enter_lobby"
+        "request" : "enter_lobby",
         "data" :
         {
             "player_name": <player_name>
@@ -22,7 +22,7 @@ expects:
 returns:
 
     {
-        "name" : "enter_lobby"
+        "name" : "enter_lobby",
         "data" :
         {
             "session": <session>
@@ -49,7 +49,7 @@ __Sends frequently:__
             [
                 {
                     "game_id" : <game_id>,
-                    "game_label" : <label of the game>
+                    "game_label" : <label of the game>,
                     "player_list" : [],
                     "game_status" : <initialized | started | finished>
                 }
@@ -71,7 +71,7 @@ expects:
 returns:
 
     {
-        "name" : "create_game"
+        "name" : "create_game",
         "data" :
         {
             "game_id": <game_id>
@@ -140,7 +140,7 @@ Returns:
 Expects:
 
     {
-        "request" : "player_ready",
+        "request" : "player_ready"
     }
 
 Returns:
@@ -157,7 +157,7 @@ Returns:
 Expects:
 
     {
-        "request" : "game_start",
+        "request" : "game_start"
     }
 
 Returns:
@@ -170,7 +170,7 @@ Returns:
 Expects:
 
     {
-        "request" : "end_turn",
+        "request" : "end_turn"
     }
 
 Returns:
@@ -187,7 +187,7 @@ Returns:
 Expects:
 
     {
-        "request" : "roll_dice",
+        "request" : "roll_dice"
     }
 
 Returns:
@@ -196,6 +196,7 @@ Returns:
         "name" : "roll_dice",
         "data" :
         {
+            player_name : <player_name>,
             eyes : [<eye1>, <eye2>]
         }
     }
