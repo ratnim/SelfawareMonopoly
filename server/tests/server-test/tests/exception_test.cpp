@@ -11,8 +11,9 @@ TEST(ExceptionTest, construct_simple)
     const auto json = except.json();
 
     auto obj = QJsonDocument::fromJson(json.toUtf8()).object();
-    auto err = obj["error"].toObject();
+    auto err = obj["data"].toObject();
 
+    EXPECT_EQ(obj["name"].toString().toStdString(), "error");
     EXPECT_EQ(err["id"].toInt(), error::InvalidRequest);
     EXPECT_EQ(err["message"].toString().toStdString(), "InvalidRequest: error message");
 }

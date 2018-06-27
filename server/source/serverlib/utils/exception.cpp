@@ -12,11 +12,13 @@ Exception::Exception(const QString& message, error code)
 
 QString Exception::json() const
 {
+    QJsonObject answer({ { "name", "error" } });
+
     QJsonObject error;
     error["id"] = static_cast<int>(m_code);
     error["message"] = errorString(m_code) + ": " + m_message;
 
-    QJsonObject answer({ { "error", error } });
+    answer["data"] = error;
     return QJsonDocument(answer).toJson();
 }
 
