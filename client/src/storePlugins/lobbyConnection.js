@@ -18,8 +18,8 @@ function parseResponse(JSONObject) {
     getGameListCallback(JSONObject.data.games);
   } else if (JSONObject.name == 'create_game') {
     createGameCallback(JSONObject.data.game_id);
-  } else if (JSONObject.error) {
-    errorCallback(JSONObject.error.message);
+  } else if (JSONObject.name == 'error') {
+    errorCallback(JSONObject.data.message);
   }
 }
 
