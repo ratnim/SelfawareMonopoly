@@ -18,6 +18,8 @@ set(sources
     watchers/watcher.h
     watchers/lobbywatcher.cpp
     watchers/lobbywatcher.h
+    game/board.cpp
+    game/board.h
     game/dices.cpp
     game/dices.h
     game/game.cpp

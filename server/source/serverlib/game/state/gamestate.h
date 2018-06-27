@@ -8,6 +8,8 @@ class Game;
 class GameState
 {
 public:
+    virtual ~GameState() = default;
+
     virtual void join(const QString& playerName);
     virtual void ready(const QString& playerName);
     virtual void start();

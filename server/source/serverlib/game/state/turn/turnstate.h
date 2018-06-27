@@ -7,6 +7,7 @@ class TurnState
 {
 public:
     TurnState(GameLogic* logic);
+    virtual ~TurnState() = default;
 
     virtual void rollDice();
     virtual void endTurn();
