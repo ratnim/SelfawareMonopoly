@@ -19,6 +19,10 @@
 
       <!--the players -->
       <MonopolyPlayer v-for="player in players" :key="player.nickname" :color="player.color" :fieldLength="fieldLength" ref="players"></MonopolyPlayer>
+
+      <Dice :x="300-30" :y="300" ref="dice1"></Dice>
+        <Dice :x="300+30" :y="300" ref="dice2"></Dice>
+
     </easel-canvas>
   </div>
   <div class="">
@@ -38,6 +42,7 @@ import * as gameConnection from '../storePlugins/gameConnection'
 
 import MonopolyField from '@/components/MonopolyField'
 import MonopolyPlayer from '@/components/MonopolyPlayer'
+import Dice from '@/components/Dice'
 
 import game from '@/assets/game.json'
 
@@ -45,7 +50,8 @@ export default {
   name: 'monopoly',
   components: {
     MonopolyField,
-    MonopolyPlayer
+    MonopolyPlayer,
+    Dice
   },
   data: function() {
     return {
@@ -89,6 +95,9 @@ export default {
 
   methods: {
     rollDice : function() {
+      this.$refs.dice1.animate();
+      this.$refs.dice2.animate();
+
       gameConnection.rollDice();
     },
     setReady : function() {
@@ -102,6 +111,8 @@ export default {
     },
 
     onDiceRolled : function(dice) {
+      this.$refs.dice1.show(dice[0]);
+      this.$refs.dice2.show(dice[1]);
       this.dice1 = dice[0];
       this.dice2 = dice[1];
     },
