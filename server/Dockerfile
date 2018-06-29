@@ -1,5 +1,7 @@
 FROM ubuntu:xenial
 
+MAINTAINER martin.fischer@student.hpi.de
+
 # Install Cpp Dependecies
 RUN apt-get -y update && apt-get install -y --no-install-recommends \
   software-properties-common\
@@ -13,13 +15,17 @@ RUN apt-get -y update && apt-get install -y --no-install-recommends \
 
 # Install QT 5.10 Xenial
 RUN apt-add-repository ppa:beineri/opt-qt-5.10.0-xenial
-RUN apt-get update --fix-missing && apt-get install -y --fix-missing qt510-meta-minimal \
+RUN apt-get update --fix-missing \
+  && apt-get install -y --fix-missing --no-install-recommends \
+  qt510-meta-minimal \
   qt510websockets \
   && apt-get autoremove
 RUN /bin/bash -c "source /opt/qt510/bin/qt510-env.sh"
 
 # Install sudo and create user
-RUN apt-get update && apt-get install sudo
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends \
+  sudo
 RUN adduser --disabled-password --gecos '' docker
 RUN adduser docker sudo
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
@@ -33,18 +39,18 @@ RUN sudo ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake
 RUN cmake --version
 
 # Prepare files
-WORKDIR /usr/src/app
-COPY ./source ./server/source
-COPY ./cmake ./server/cmake
-COPY ./tests ./server/tests
-COPY ./CMakeLists.txt ./server/CMakeLists.txt
+WORKDIR /usr/src/app/server
+COPY ./source ./source
+COPY ./cmake ./cmake
+COPY ./tests ./tests
+COPY ./CMakeLists.txt ./CMakeLists.txt
 
 # Build Server
-RUN sudo mkdir ./server/build
-RUN cd ./server/build \
-  && sudo cmake -DCMAKE_PREFIX_PATH=/opt/qt510 .. \
+WORKDIR /usr/src/app/server/build
+RUN sudo cmake -DCMAKE_PREFIX_PATH=/opt/qt510 .. \
   && sudo make
 
 # Prepare Run
+WORKDIR /usr/src/app
 EXPOSE 31415
 ENTRYPOINT [ "./server/build/server" ]
