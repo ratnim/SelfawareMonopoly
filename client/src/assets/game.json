@@ -18,7 +18,16 @@
       {
         "id": "s11",
         "type": "street",
-        "label": "Mahrzahn2",
+        "label": "Mahlsdorf",
+        "attributes": {
+          "color": "#6A009B",
+          "houses": 0
+        }
+      },
+      {
+        "id": "s12",
+        "type": "street",
+        "label": "Kaulsdorf",
         "attributes": {
           "color": "#6A009B",
           "houses": 0
@@ -28,15 +37,6 @@
         "id": "s12",
         "type": "street",
         "label": "Hellersdorf",
-        "attributes": {
-          "color": "#6A009B",
-          "houses": 0
-        }
-      },
-      {
-        "id": "s12",
-        "type": "street",
-        "label": "Hellersdorf2",
         "attributes": {
           "color": "#6A009B",
           "houses": 0

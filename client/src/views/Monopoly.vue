@@ -1,30 +1,43 @@
 <template>
 <div class="home">
-  <h1>Monopoly</h1> Hi {{nickname}}
-  <div v-for="player in players">{{player}}</div>
-  <div class="">
-    <md-button @click="rollDice()">ROLL THE DICE</md-button>
-    <span>{{dice1}}, {{dice2}}</span>
-  </div>
-  <div class="">
-    <easel-canvas width="600" height="600" ref="stage">
-      <!--from LOS to prison -->
-      <MonopolyField v-for="(field, index) in lane1" :x="10" :y="10+fieldLength+index*fieldLength" :fieldWidth="fieldWidth" :fieldLength="fieldLength" :align="['bottom', 'left']" :label="field.label" :attributes="field.attributes"></MonopolyField>
-      <!--from prison to free parking -->
-      <MonopolyField v-for="(field, index) in lane2" :x="10+index*fieldLength" :y="10" :fieldWidth="fieldWidth" :fieldLength="fieldLength":label="field.label" :attributes="field.attributes"></MonopolyField>
-      <!-- from free parking to goto prison -->
-      <MonopolyField v-for="(field, index) in lane3" :x="600-10-fieldLength" :y="10+index*fieldLength" :fieldWidth="fieldWidth" :fieldLength="fieldLength" :align="['bottom', 'right']" :label="field.label" :attributes="field.attributes"></MonopolyField>
-      <!-- from goto prision to los -->
-      <MonopolyField v-for="(field, index) in lane4" :x="10+fieldLength+index*fieldLength" :y="600-10-fieldLength"  :fieldWidth="fieldWidth" :fieldLength="fieldLength" :label="field.label" :attributes="field.attributes"></MonopolyField>
+  <div class="md-layout">
+    <div class="md-layout-item md-size-15">
+      <div>
+        Du bist {{nickname}}
+      </div>
+      <div>
+        Deine Gegner sind
+        <div v-for="player in players">
+          {{player.nickname}}
+        </div>
+      </div>
+    </div>
 
-      <!--the players -->
-      <MonopolyPlayer v-for="player in players" :key="player.nickname" :color="player.color" :fieldLength="fieldLength" ref="players"></MonopolyPlayer>
-    </easel-canvas>
-  </div>
-  <div class="">
-    <md-button @click="setReady()">READY</md-button>
-    <md-button @click="endTurn()">END TURN</md-button>
-    <md-button @click="startGame()">START GAME</md-button>
+    <div class="md-layout-item">
+      <div class="">
+        <easel-canvas width="600" height="600" ref="stage">
+          <!--from LOS to prison -->
+          <MonopolyField v-for="(field, index) in lane1" :x="10" :y="10+fieldWidth+index*fieldWidth" :fieldWidth="fieldLength" :fieldLength="fieldWidth" :align="['bottom', 'left']" :label="field.label" :attributes="field.attributes"></MonopolyField>
+          <!--from prison to free parking -->
+          <MonopolyField v-for="(field, index) in lane2" :x="10+index*fieldWidth" :y="10" :fieldWidth="fieldWidth" :fieldLength="fieldLength" :label="field.label" :attributes="field.attributes"></MonopolyField>
+          <!-- from free parking to goto prison -->
+          <MonopolyField v-for="(field, index) in lane3" :x="600-10-fieldWidth" :y="10+index*fieldWidth" :fieldWidth="fieldLength" :fieldLength="fieldWidth" :align="['bottom', 'right']" :label="field.label" :attributes="field.attributes"></MonopolyField>
+          <!-- from goto prision to los -->
+          <MonopolyField v-for="(field, index) in lane4" :x="10+fieldWidth+index*fieldWidth" :y="600-10-fieldWidth" :fieldWidth="fieldWidth" :fieldLength="fieldLength" :label="field.label" :attributes="field.attributes"></MonopolyField>
+
+          <!--the players -->
+          <MonopolyPlayer v-for="player in players" :key="player.nickname" :color="player.color" :fieldLength="fieldLength" ref="players"></MonopolyPlayer>
+        </easel-canvas>
+      </div>
+
+    </div>
+    <div class="md-layout-item md-size-15">
+      <h2>Handle weise</h2>
+      <md-button @click="rollDice()">ROLL THE DICE</md-button>
+      <md-button @click="setReady()">READY</md-button>
+      <md-button @click="endTurn()">END TURN</md-button>
+      <md-button @click="startGame()">START GAME</md-button>
+    </div>
   </div>
 </div>
 </template>
@@ -49,12 +62,12 @@ export default {
   },
   data: function() {
     return {
-      fieldWidth: (600-10-10)/(game.fields[0].length+1),
-      fieldLength: (600-10-10)/(game.fields[0].length+1),
+      fieldWidth: (600 - 10 - 10) / (game.fields[0].length + 1),
+      fieldLength: (600 - 10 - 10) / (game.fields[0].length + 1) * 1.5,
       game: game,
-      dice1 : null,
-      dice2 : null,
-      players : []
+      dice1: null,
+      dice2: null,
+      players: []
     }
   },
   computed: {
@@ -88,28 +101,32 @@ export default {
   },
 
   methods: {
-    rollDice : function() {
+    rollDice: function() {
       gameConnection.rollDice();
     },
-    setReady : function() {
+    setReady: function() {
       gameConnection.setReady();
     },
-    startGame : function() {
+    startGame: function() {
       gameConnection.startGame();
     },
-    endTurn : function() {
+    endTurn: function() {
       gameConnection.endTurn();
     },
 
-    onDiceRolled : function(dice) {
+    onDiceRolled: function(dice) {
       this.dice1 = dice[0];
       this.dice2 = dice[1];
     },
-    onPlayerJoined : function(playerName) {
+    onPlayerJoined: function(playerName) {
       console.log(playerName);
-      this.players.push({currentField: 0, nickname: playerName, color: 'yellow'});
+      this.players.push({
+        currentField: 0,
+        nickname: playerName,
+        color: 'yellow'
+      });
     },
-    onPlayerMoved : function(playerName, distance) {
+    onPlayerMoved: function(playerName, distance) {
       for (var i = 0; i < this.players.length; i++) {
         if (this.players[i].nickname == playerName) {
           console.log(this.players[i].currentField);
@@ -119,19 +136,19 @@ export default {
         }
       }
     },
-    onPlayerReady : function(playerName) {
+    onPlayerReady: function(playerName) {
       console.log(playerName + ' is now ready!');
     },
-    onGameStarted : function() {
+    onGameStarted: function() {
       console.log('Game started!');
     },
-    onGameEnded : function() {
+    onGameEnded: function() {
       console.log('Game ended');
     },
-    onTurnChanged : function(playerName) {
+    onTurnChanged: function(playerName) {
       console.log('It\'s ' + playerName + ' turn!');
     },
-    onError : function(message) {
+    onError: function(message) {
       console.log(message);
     }
   }

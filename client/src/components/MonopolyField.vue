@@ -4,7 +4,7 @@
   </easel-shape>
   <easel-text
        :text="label"
-       font="15px 'Times New Roman'"
+       font="15px 'Helvetica'"
        align="['center', 'left']"
        :y="fieldLength/2"
        :x="10"
