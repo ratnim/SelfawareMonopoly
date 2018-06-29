@@ -1,25 +1,50 @@
-FROM ubuntu:14.04
+FROM ubuntu:xenial
 
-ENV DEBIAN_FRONTEND=noninteractive
+# Install Cpp Dependecies
+RUN apt-get -y update && apt-get install -y --no-install-recommends \
+  software-properties-common\
+  build-essential \
+  gcc-5 \
+  g++-5 \
+  libx11-dev \
+  mesa-common-dev \
+  libglu1-mesa-dev \
+  && apt-get autoremove
 
-RUN sudo apt-get update
-RUN sudo apt-get -y upgrade
-RUN sudo apt-get install -y software-properties-common curl
-RUN sudo -E apt-add-repository -y "ppa:ubuntu-toolchain-r/test"
-RUN curl -sSL "http://apt.llvm.org/llvm-snapshot.gpg.key" | sudo -E apt-key add -
-RUN echo "deb http://apt.llvm.org/precise/ llvm-toolchain-precise-3.9 main" | sudo tee -a /etc/apt/sources.list > /dev/null
-RUN sudo -E apt-add-repository -y "ppa:george-edison55/precise-backports"
-RUN sudo -E apt-add-repository -y "ppa:beineri/opt-qt-5.10.1-trusty"
+# Install QT 5.10 Xenial
+RUN apt-add-repository ppa:beineri/opt-qt-5.10.0-xenial
+RUN apt-get update --fix-missing && apt-get install -y --fix-missing qt510-meta-minimal \
+  qt510websockets \
+  && apt-get autoremove
+RUN /bin/bash -c "source /opt/qt510/bin/qt510-env.sh"
 
+# Install sudo and create user
+RUN apt-get update && apt-get install sudo
+RUN adduser --disabled-password --gecos '' docker
+RUN adduser docker sudo
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+USER docker
 
-RUN sudo -E apt-get -yq update &>> ~/apt-get-update.log
-RUN sudo -E apt-get -yq --no-install-suggests --no-install-recommends --force-yes install cmake cmake-data gcc-5 g++-5 qt510-meta-minimal qt510websockets
-RUN source /opt/qt510/bin/qt510-env.sh
+# Install cmake
+ADD https://cmake.org/files/v3.11/cmake-3.11.4-Linux-x86_64.sh /cmake-3.11.4-Linux-x86_64.sh
+RUN sudo mkdir /opt/cmake
+RUN sudo sh /cmake-3.11.4-Linux-x86_64.sh --prefix=/opt/cmake --skip-license
+RUN sudo ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake
+RUN cmake --version
 
-COPY . ~/server
+# Prepare files
+WORKDIR /usr/src/app
+COPY ./source ./server/source
+COPY ./cmake ./server/cmake
+COPY ./tests ./server/tests
+COPY ./CMakeLists.txt ./server/CMakeLists.txt
 
-RUN mkdir build
-RUN cd build
-RUN cmake .. && make
+# Build Server
+RUN sudo mkdir ./server/build
+RUN cd ./server/build \
+  && sudo cmake -DCMAKE_PREFIX_PATH=/opt/qt510 .. \
+  && sudo make
 
-RUN ./server
+# Prepare Run
+EXPOSE 31415
+ENTRYPOINT [ "./server/build/server" ]
