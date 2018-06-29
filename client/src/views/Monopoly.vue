@@ -17,13 +17,13 @@
       <div class="">
         <easel-canvas width="600" height="600" ref="stage">
           <!--from LOS to prison -->
-          <MonopolyField v-for="(field, index) in lane1" :x="10" :y="10+fieldWidth+index*fieldWidth" :fieldWidth="fieldLength" :fieldLength="fieldWidth" :align="['bottom', 'left']" :label="field.label" :attributes="field.attributes"></MonopolyField>
+          <MonopolyField v-for="(field, index) in lane1" :x="10" :y="10+fieldWidth+index*fieldWidth" :fieldWidth="fieldLength" :fieldLength="((index == 0) ? fieldLength : fieldWidth)" :align="['bottom', 'left']" :label="field.label" :attributes="field.attributes"></MonopolyField>
           <!--from prison to free parking -->
-          <MonopolyField v-for="(field, index) in lane2" :x="10+index*fieldWidth" :y="10" :fieldWidth="fieldWidth" :fieldLength="fieldLength" :label="field.label" :attributes="field.attributes"></MonopolyField>
+          <MonopolyField v-for="(field, index) in lane2" :x="10+index*fieldWidth" :y="10" :fieldWidth="((index == 0) ? fieldLength : fieldWidth)" :fieldLength="fieldLength" :label="field.label" :attributes="field.attributes"></MonopolyField>
           <!-- from free parking to goto prison -->
-          <MonopolyField v-for="(field, index) in lane3" :x="600-10-fieldWidth" :y="10+index*fieldWidth" :fieldWidth="fieldLength" :fieldLength="fieldWidth" :align="['bottom', 'right']" :label="field.label" :attributes="field.attributes"></MonopolyField>
+          <MonopolyField v-for="(field, index) in lane3" :x="600-10-fieldWidth" :y="10+index*fieldWidth" :fieldWidth="fieldLength" :fieldLength="((index == 0) ? fieldLength : fieldWidth)" :align="['bottom', 'right']" :label="field.label" :attributes="field.attributes"></MonopolyField>
           <!-- from goto prision to los -->
-          <MonopolyField v-for="(field, index) in lane4" :x="10+fieldWidth+index*fieldWidth" :y="600-10-fieldWidth" :fieldWidth="fieldWidth" :fieldLength="fieldLength" :label="field.label" :attributes="field.attributes"></MonopolyField>
+          <MonopolyField v-for="(field, index) in lane4" :x="10+fieldWidth+index*fieldWidth" :y="600-10-fieldWidth" :fieldWidth="((index == 0) ? fieldLength : fieldWidth)" :fieldLength="fieldLength" :label="field.label" :attributes="field.attributes"></MonopolyField>
 
           <!--the players -->
           <MonopolyPlayer v-for="player in players" :key="player.nickname" :color="player.color" :fieldLength="fieldLength" ref="players"></MonopolyPlayer>
@@ -62,12 +62,12 @@ export default {
   },
   data: function() {
     return {
-      fieldWidth: (600 - 10 - 10) / (game.fields[0].length + 1),
-      fieldLength: (600 - 10 - 10) / (game.fields[0].length + 1) * 1.5,
+
       game: game,
       dice1: null,
       dice2: null,
-      players: []
+      players: [],
+      canvas: {margin: 2}
     }
   },
   computed: {
@@ -80,6 +80,8 @@ export default {
     lane2: () => game.fields[1],
     lane3: () => game.fields[2],
     lane4: () => [].concat(game.fields[3]).reverse(),
+    fieldWidth: () => (600 - 10 - 10) / (game.fields[0].length + 1),
+    fieldLength: () => (600 - 10 - 10) / (game.fields[0].length + 1) * 1.5,
   },
 
   created() {
