@@ -35,8 +35,8 @@ function parseResponse(JSONObject) {
     turnChangedCallback(JSONObject.data.player_name);
   } else if (JSONObject.name == 'roll_dice') {
     diceRolledCallback(JSONObject.data.eyes);
-  } else if (JSONObject.error) {
-    errorCallback(JSONObject.error.message);
+  } else if (JSONObject.name == 'error') {
+    errorCallback(JSONObject.data.message);
   }
 }
 
