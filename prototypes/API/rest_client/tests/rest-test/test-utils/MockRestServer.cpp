@@ -36,13 +36,7 @@ void MockRestServer::reply(QTcpSocket* connection)
     if (requestPath != "/")
     {
         // 404
-        connection->write(
-R"(HTTP/1.0 404 Not Found
-Connection: close
-
-)");
-//        connection->close();
-        connection->deleteLater();
+        connection->write("HTTP/1.0 404 Not Found\n\n");
         return;
     }
 
@@ -51,23 +45,10 @@ Connection: close
     if (acceptedTypes.count(requestType) != 1)
     {
         // 400
-        connection->write(
-R"(HTTP/1.0 400 Bad Request
-Connection: close
-
-)");
-//        connection->close();
-        connection->deleteLater();
+        connection->write("HTTP/1.0 400 Bad Request\n\n");
         return;
     }
 
     // 200
-    connection->write(QString(
-R"(HTTP/1.0 200 OK
-Connection: close
-Content-Length: %1
-
-%2)").arg(QString(std::to_string(requestType.length()).c_str()), requestType).toStdString().c_str());
-//    connection->close();
-    connection->deleteLater();
+    connection->write((QString("HTTP/1.0 200 OK\nContent-Length: %1\nContent-Type: text/plain; charset=us-ascii\n\n").arg(requestType.size()) + requestType).toStdString().c_str());
 }
