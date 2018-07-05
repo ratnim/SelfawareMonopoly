@@ -19,17 +19,17 @@
           <easel-canvas width="600" height="600" ref="stage">
             <!--from LOS to prison -->
             <MonopolyField :x="10" :y="600-10-fieldLength" :fieldWidth="fieldLength" :fieldLength="fieldLength" :align="['bottom', 'left']" :label="lane1[lane1.length-1].label" :attributes="lane1[lane1.length-1].attributes"></MonopolyField>
-            <MonopolyField v-for="(field, index) in lane1" v-if="index != lane1.length-1" :x="10+index*2" :y="10+fieldLength+index*fieldWidth" :fieldWidth="fieldLength" :fieldLength="fieldWidth" :align="['bottom', 'left']" :label="field.label" :attributes="field.attributes"></MonopolyField>
+            <MonopolyField v-for="(field, index) in lane1" v-if="index != lane1.length-1" :x="10+index*1" :y="10+fieldLength+index*fieldWidth" :fieldWidth="fieldLength" :fieldLength="fieldWidth" :align="['bottom', 'left']" :label="field.label" :attributes="field.attributes"></MonopolyField>
             <!--from prison to free parking -->
             <MonopolyField :x="10" :y="10" :fieldWidth="fieldLength" :fieldLength="fieldLength" :align="['bottom', 'left']" :label="lane2[0].label" :attributes="lane2[0].attributes"></MonopolyField>
-            <MonopolyField v-for="(field, index) in lane2" v-if="index != 0" :x="10+fieldLength+index*fieldWidth" :y="10+index*2" :fieldWidth="fieldLength" :fieldLength="fieldWidth" :label="field.label" :attributes="field.attributes" :rotation="90"></MonopolyField>
+            <MonopolyField v-for="(field, index) in lane2" v-if="index != 0" :x="10+fieldLength+index*fieldWidth" :y="10+index*1" :fieldWidth="fieldLength" :fieldLength="fieldWidth" :label="field.label" :attributes="field.attributes" :rotation="90"></MonopolyField>
             <!-- from free parking to goto prison -->
             <MonopolyField :x="600-10-fieldLength" :y="10" :fieldWidth="fieldLength" :fieldLength="fieldLength" :align="['bottom', 'left']" :label="lane3[0].label" :attributes="lane3[0].attributes"></MonopolyField>
-            <MonopolyField v-for="(field, index) in lane3" v-if="index != 0" :x="600-10-index*2" :y="10+index*fieldWidth+fieldLength" :fieldWidth="fieldLength" :fieldLength="fieldWidth"  :align="['bottom', 'right']"
+            <MonopolyField v-for="(field, index) in lane3" v-if="index != 0" :x="600-10-index*1" :y="10+index*fieldWidth+fieldLength" :fieldWidth="fieldLength" :fieldLength="fieldWidth"  :align="['bottom', 'right']"
               :label="field.label" :attributes="field.attributes" :rotation="180"></MonopolyField>
             <!-- from goto prision to los -->
             <MonopolyField :x="600-10-fieldLength" :y="600-10-fieldLength" :fieldWidth="fieldLength" :fieldLength="fieldLength" :align="['bottom', 'left']" :label="lane4[lane4.length-1].label" :attributes="lane4[lane4.length-1].attributes"></MonopolyField>
-            <MonopolyField v-for="(field, index) in lane4" v-if="index != lane4.length-1" :x="10+fieldLength+index*fieldWidth" :y="600-10-index*2" :fieldWidth="fieldLength" :fieldLength="fieldWidth" :label="field.label" :attributes="field.attributes" :rotation="270"></MonopolyField>
+            <MonopolyField v-for="(field, index) in lane4" v-if="index != lane4.length-1" :x="10+fieldLength+index*fieldWidth" :y="600-10-index*1" :fieldWidth="fieldLength" :fieldLength="fieldWidth" :label="field.label" :attributes="field.attributes" :rotation="270"></MonopolyField>
 
             <!--the players -->
             <MonopolyPlayer v-for="player in players" :key="player.nickname" :color="player.color" :fieldLength="fieldLength" ref="players"></MonopolyPlayer>
@@ -72,7 +72,6 @@ export default {
   },
   data: function() {
     return {
-
       game: game,
       dice1: null,
       dice2: null,
@@ -141,7 +140,7 @@ export default {
       this.players.push({
         currentField: 0,
         nickname: playerName,
-        color: 'yellow'
+        color: this.getRandomColor()
       });
     },
     onPlayerMoved: function(playerName, distance) {
@@ -168,6 +167,10 @@ export default {
     },
     onError: function(message) {
       console.log(message);
+    },
+    getRandomColor: function() {
+      return "rgb(" + Math.round(Math.random()*255) + ", " + Math.round(Math.random()*255) + ", " + Math.round(Math.random()*255) + ")";
+
     }
   }
 }
