@@ -15,9 +15,7 @@
     </div>
 
 
-    <div class="">
       <div class="md-layout-item">
-        <div class="">
           <easel-canvas width="600" height="600" ref="stage">
             <!--from LOS to prison -->
             <MonopolyField :x="10" :y="600-10-fieldLength" :fieldWidth="fieldLength" :fieldLength="fieldLength" :align="['bottom', 'left']" :label="lane1[lane1.length-1].label" :attributes="lane1[lane1.length-1].attributes"></MonopolyField>
@@ -35,16 +33,11 @@
 
             <!--the players -->
             <MonopolyPlayer v-for="player in players" :key="player.nickname" :color="player.color" :fieldLength="fieldLength" ref="players"></MonopolyPlayer>
-          </easel-canvas>
-        </div>
-
 
         <Dice :x="300-30" :y="300" ref="dice1"></Dice>
         <Dice :x="300+30" :y="300" ref="dice2"></Dice>
 
         </easel-canvas>
-      </div>
-
     </div>
     <div class="md-layout-item md-size-15">
       <h2>Handle weise</h2>
