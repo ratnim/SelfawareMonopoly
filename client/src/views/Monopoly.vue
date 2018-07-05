@@ -27,10 +27,11 @@
             <MonopolyField v-for="(field, index) in lane2" v-if="index != 0" :x="10+fieldLength+index*fieldWidth" :y="10+index*2" :fieldWidth="fieldLength" :fieldLength="fieldWidth" :label="field.label" :attributes="field.attributes" rotation="90"></MonopolyField>
             <!-- from free parking to goto prison -->
             <MonopolyField :x="600-10-fieldLength" :y="10" :fieldWidth="fieldLength" :fieldLength="fieldLength" :align="['bottom', 'left']" :label="lane3[0].label" :attributes="lane3[0].attributes"></MonopolyField>
-            <MonopolyField v-for="(field, index) in lane3" v-if="index != 0" :x="600-10-fieldLength-index*2" :y="10+index*fieldWidth+fieldLength-fieldWidth" :fieldWidth="fieldLength" :fieldLength="((index == 0) ? fieldLength : fieldWidth)" :align="['bottom', 'right']" :label="field.label" :attributes="field.attributes"></MonopolyField>
+            <MonopolyField v-for="(field, index) in lane3" v-if="index != 0" :x="600-10-fieldLength-index*2" :y="10+index*fieldWidth+fieldLength-fieldWidth" :fieldWidth="fieldLength" :fieldLength="((index == 0) ? fieldLength : fieldWidth)" :align="['bottom', 'right']"
+              :label="field.label" :attributes="field.attributes"></MonopolyField>
             <!-- from goto prision to los -->
             <MonopolyField :x="600-10-fieldLength" :y="600-10-fieldLength" :fieldWidth="fieldLength" :fieldLength="fieldLength" :align="['bottom', 'left']" :label="lane4[lane4.length-1].label" :attributes="lane4[lane4.length-1].attributes"></MonopolyField>
-            <MonopolyField v-for="(field, index) in lane4" v-if="index != lane4.length-1" :x="10+fieldLength+index*fieldWidth" :y="600-10-index*2" :fieldWidth="fieldLength" :fieldLength="fieldWidth" :label="field.label" :attributes="field.attributes"rotation="270"></MonopolyField>
+            <MonopolyField v-for="(field, index) in lane4" v-if="index != lane4.length-1" :x="10+fieldLength+index*fieldWidth" :y="600-10-index*2" :fieldWidth="fieldLength" :fieldLength="fieldWidth" :label="field.label" :attributes="field.attributes" rotation="270"></MonopolyField>
 
             <!--the players -->
             <MonopolyPlayer v-for="player in players" :key="player.nickname" :color="player.color" :fieldLength="fieldLength" ref="players"></MonopolyPlayer>
@@ -121,60 +122,60 @@ export default {
   },
 
   methods: {
-      rollDice: function() {
-          this.$refs.dice1.animate();
-          this.$refs.dice2.animate();
-          gameConnection.rollDice();
-        },
-        setReady: function() {
-          gameConnection.setReady();
-        },
-        startGame: function() {
-          gameConnection.startGame();
-        },
-        endTurn: function() {
-          gameConnection.endTurn();
-        },
+    rollDice: function() {
+      this.$refs.dice1.animate();
+      this.$refs.dice2.animate();
+      gameConnection.rollDice();
+    },
+    setReady: function() {
+      gameConnection.setReady();
+    },
+    startGame: function() {
+      gameConnection.startGame();
+    },
+    endTurn: function() {
+      gameConnection.endTurn();
+    },
 
-        onDiceRolled: function(dice) {
-          this.$refs.dice1.show(dice[0]);
-          this.$refs.dice2.show(dice[1]);
-          this.dice1 = dice[0];
-          this.dice2 = dice[1];
-        },
-        onPlayerJoined: function(playerName) {
-          console.log(playerName);
-          this.players.push({
-            currentField: 0,
-            nickname: playerName,
-            color: 'yellow'
-          });
-        },
-        onPlayerMoved: function(playerName, distance) {
-          for (var i = 0; i < this.players.length; i++) {
-            if (this.players[i].nickname == playerName) {
-              console.log(this.players[i].currentField);
-              this.players[i].currentField = (this.players[i].currentField + distance) % 40;
-              console.log(this.players[i].currentField);
-              this.$refs.players[i].move(this.players[i].currentField);
-            }
-          }
-        },
-        onPlayerReady: function(playerName) {
-          console.log(playerName + ' is now ready!');
-        },
-        onGameStarted: function() {
-          console.log('Game started!');
-        },
-        onGameEnded: function() {
-          console.log('Game ended');
-        },
-        onTurnChanged: function(playerName) {
-          console.log('It\'s ' + playerName + ' turn!');
-        },
-        onError: function(message) {
-          console.log(message);
+    onDiceRolled: function(dice) {
+      this.$refs.dice1.show(dice[0]);
+      this.$refs.dice2.show(dice[1]);
+      this.dice1 = dice[0];
+      this.dice2 = dice[1];
+    },
+    onPlayerJoined: function(playerName) {
+      console.log(playerName);
+      this.players.push({
+        currentField: 0,
+        nickname: playerName,
+        color: 'yellow'
+      });
+    },
+    onPlayerMoved: function(playerName, distance) {
+      for (var i = 0; i < this.players.length; i++) {
+        if (this.players[i].nickname == playerName) {
+          console.log(this.players[i].currentField);
+          this.players[i].currentField = (this.players[i].currentField + distance) % 40;
+          console.log(this.players[i].currentField);
+          this.$refs.players[i].move(this.players[i].currentField);
         }
+      }
+    },
+    onPlayerReady: function(playerName) {
+      console.log(playerName + ' is now ready!');
+    },
+    onGameStarted: function() {
+      console.log('Game started!');
+    },
+    onGameEnded: function() {
+      console.log('Game ended');
+    },
+    onTurnChanged: function(playerName) {
+      console.log('It\'s ' + playerName + ' turn!');
+    },
+    onError: function(message) {
+      console.log(message);
     }
   }
+}
 </script>
