@@ -15,6 +15,9 @@ public:
     void start();
 
     void rollDice(const QString& playerName);
+    void pay(const QString& playerName);
+    void ignore(const QString& playerName);
+    void draw(const QString& playerName);
     void endTurn(const QString& playerName);
 
 signals:
