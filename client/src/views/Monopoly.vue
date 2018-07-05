@@ -13,6 +13,11 @@
       </div>
     </div>
 
+
+  <div class="">
+    <md-button @click="setReady()">READY</md-button>
+    <md-button @click="endTurn()">END TURN</md-button>
+    <md-button @click="startGame()">START GAME</md-button>
     <div class="md-layout-item">
       <div class="">
         <easel-canvas width="600" height="600" ref="stage">
@@ -29,6 +34,13 @@
           <MonopolyPlayer v-for="player in players" :key="player.nickname" :color="player.color" :fieldLength="fieldLength" ref="players"></MonopolyPlayer>
         </easel-canvas>
       </div>
+
+
+      <Dice :x="300-30" :y="300" ref="dice1"></Dice>
+      <Dice :x="300+30" :y="300" ref="dice2"></Dice>
+
+    </easel-canvas>
+  </div>
 
     </div>
     <div class="md-layout-item md-size-15">
@@ -51,6 +63,7 @@ import * as gameConnection from '../storePlugins/gameConnection'
 
 import MonopolyField from '@/components/MonopolyField'
 import MonopolyPlayer from '@/components/MonopolyPlayer'
+import Dice from '@/components/Dice'
 
 import game from '@/assets/game.json'
 
@@ -58,7 +71,8 @@ export default {
   name: 'monopoly',
   components: {
     MonopolyField,
-    MonopolyPlayer
+    MonopolyPlayer,
+    Dice
   },
   data: function() {
     return {
@@ -103,7 +117,14 @@ export default {
   },
 
   methods: {
+<<<<<<< HEAD
     rollDice: function() {
+=======
+    rollDice : function() {
+      this.$refs.dice1.animate();
+      this.$refs.dice2.animate();
+
+>>>>>>> dockerize
       gameConnection.rollDice();
     },
     setReady: function() {
@@ -116,7 +137,13 @@ export default {
       gameConnection.endTurn();
     },
 
+<<<<<<< HEAD
     onDiceRolled: function(dice) {
+=======
+    onDiceRolled : function(dice) {
+      this.$refs.dice1.show(dice[0]);
+      this.$refs.dice2.show(dice[1]);
+>>>>>>> dockerize
       this.dice1 = dice[0];
       this.dice2 = dice[1];
     },
