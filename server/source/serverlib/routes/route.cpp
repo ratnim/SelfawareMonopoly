@@ -34,7 +34,7 @@ QJsonObject Route::toJson(const QString& message)
         return json.object();
     }
 
-    throw Exception("Only JSON objects are supported.", error::MalformedRequest);
+    throw Exception("Only JSON objects are supported.", Error::MalformedRequest);
 }
 
 Route::ActionCallback Route::actionHandler(const QString& name) const
@@ -42,7 +42,7 @@ Route::ActionCallback Route::actionHandler(const QString& name) const
     const auto& action = m_actions.find(name);
     if (action == m_actions.end())
     {
-        throw Exception(QString("'%1' is not valid.").arg(name), error::UnsupportedAction);
+        throw Exception(QString("'%1' is not valid.").arg(name), Error::UnsupportedAction);
     }
     return action->second;
 }

@@ -23,5 +23,5 @@ void TurnState::endTurn()
 
 void TurnState::InvalidRequest()
 {
-    throw Exception("You are not allowed to perform this action.", error::InvalidRequest);
+    throw Exception("You are not allowed to perform this action.", Error::InvalidRequest);
 }

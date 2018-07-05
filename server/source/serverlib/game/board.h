@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <vector>
 
 #include <QObject>
@@ -68,6 +69,15 @@ public:
 
 protected:
     Player* m_owner;
+};
+
+class StreetInfo
+{
+public:
+protected:
+    QString m_name;
+    int m_group;
+    std::array<int, 6> m_prices;
 };
 
 class Board

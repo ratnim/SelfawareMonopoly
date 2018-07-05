@@ -29,5 +29,5 @@ void GameState::endTurn(const QString& playerName)
 
 void GameState::InvalidRequest()
 {
-    throw Exception("This action is currently not allowed by the game.", error::InvalidRequest);
+    throw Exception("This action is currently not allowed by the game.", Error::InvalidRequest);
 }

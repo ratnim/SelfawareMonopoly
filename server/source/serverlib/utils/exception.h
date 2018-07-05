@@ -29,8 +29,8 @@ public:
     QString json() const;
 
 protected:
-    static QString errorString(error code);
+    static QString errorString(Error code);
 
     const QString m_message;
-    const error m_code;
+    const Error m_code;
 };
