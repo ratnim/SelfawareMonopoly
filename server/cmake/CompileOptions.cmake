@@ -4,7 +4,7 @@
 
 set(DEFAULT_PROJECT_OPTIONS
     DEBUG_POSTFIX             "d"
-    CXX_STANDARD              14
+    CXX_STANDARD              17
     LINKER_LANGUAGE           "CXX"
     POSITION_INDEPENDENT_CODE ON
     CXX_VISIBILITY_PRESET     "hidden"
