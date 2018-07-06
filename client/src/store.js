@@ -67,6 +67,7 @@ export default new Vuex.Store({
     },
     sessionId: '',
     nickname : '',
+    gameList: [],
     isAuthenticated: false,
     tokens: {'instagram' : null, 'facebook' : null, 'google': null}
   },

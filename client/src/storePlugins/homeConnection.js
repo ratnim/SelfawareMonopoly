@@ -14,8 +14,8 @@ function createJSON(request, data) {
 function parseResponse(JSONObject) {
   if (JSONObject.name == 'enter_lobby') {
     joinLobbyCallback(JSONObject.data.session);
-  } else if (JSONObject.error) {
-    errorCallback(JSONObject.error.message);
+  } else if (JSONObject.name == 'error') {
+    errorCallback(JSONObject.data.message);
   }
 }
 

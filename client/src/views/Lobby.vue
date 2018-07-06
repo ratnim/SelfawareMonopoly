@@ -8,6 +8,7 @@
       <md-list-item v-for="game in games">
         <div class="md-list-item-text">
           <span>{{game.game_label}}</span>
+          <span>{{statusMap[game.game_status]}}</span>
           <span>
             <span v-for="(player, index) in game.player_list">{{player}}<span v-if="index < game.player_list.length-1">, </span>
             </span>
@@ -41,7 +42,8 @@ export default {
         first: false,
         second: false
       },
-      nickname: ''
+      nickname: '',
+      statusMap: ["Open", "Started", "Ended"]
     }
   },
   computed: {
