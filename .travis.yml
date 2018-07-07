@@ -16,8 +16,9 @@ jobs:
 
   - stage: test
     script: 
-      - ./Server/test
-      - ./client/test
+      - docker run -d --entrypoint ./Server/test.sh
+      - docker run -d --entrypoint ./client/test.sh
+
   - stage: deploy
     script: echo " ... deploy ... "
 
