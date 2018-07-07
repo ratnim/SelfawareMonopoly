@@ -1,0 +1,17 @@
+version: '3'
+services:
+
+  selfaware-monopoly-client:
+    build: ./client
+    image: selfaware-monopoly-client
+    container_name: selfaware-monopoly-client
+
+    ports:
+      - 8080:8080
+
+  selfaware-monopoly-server:
+    build: ./server
+    image: selfaware-monopoly-server
+    container_name: selfaware-monopoly-server
+    ports:
+      - 31415:31415
