@@ -2,7 +2,7 @@ sudo: false
 
 services: docker
 
-jobs:
+stages:
  - build 
  - test
  - name: deploy
