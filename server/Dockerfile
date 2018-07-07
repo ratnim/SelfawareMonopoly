@@ -45,13 +45,13 @@ COPY ./cmake ./cmake
 COPY ./tests ./tests
 COPY ./CMakeLists.txt ./CMakeLists.txt
 
+# CI test file
+COPY ./test.sh ./test.sh
+
 # Build Server
 WORKDIR /usr/src/app/server/build
 RUN sudo cmake -DCMAKE_PREFIX_PATH=/opt/qt510 .. \
   && sudo make
-
-# CI test file
-COPY ./test.sh ./test.sh
 
 # Prepare Run
 WORKDIR /usr/src/app
