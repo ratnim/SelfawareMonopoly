@@ -1,61 +1,31 @@
-language: cpp
+sudo: false
 
-sudo: required
-dist: trusty
+services: docker
 
-install:
-- if [ "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
-- if [ $TRAVIS_OS_NAME = linux ]; then
-       source /opt/qt510/bin/qt510-env.sh
-    ;
-  else
-       QTDIR="/usr/local/opt/qt5"
-    && PATH="$QTDIR/bin:$PATH"
-    && LDFLAGS=-L$QTDIR/lib
-    && CPPFLAGS=-I$QTDIR/include
-    ;
-  fi
-- echo ${PATH}
-- ${CXX} --version
+before_install:
+  # Check commit matches expected commit (because of Travis bug)
+  - |
+    if [[ "$TRAVIS_COMMIT" != "$(git rev-parse HEAD)" ]]; then
+      echo "Commit $(git rev-parse HEAD) doesn't match expected commit $TRAVIS_COMMIT"
+    fi
 
-addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    - llvm-toolchain-precise-3.9
-    - george-edison55-precise-backports
-    - sourceline: 'ppa:beineri/opt-qt-5.10.1-trusty'
-    packages:
-    - cmake
-    - cmake-data
-    - gcc-5
-    - g++-5
-    - clang-3.9
-    - cppcheck
-    - qt510-meta-minimal
-    - qt510websockets
+stages:
+ - build 
+ - test
+ - name: deploy
+    if: branch = master
 
-os:
-  - linux
-  
-compiler:
-  - gcc
-  - clang
+jobs:
+  include:
+  - stage: build
+    script: docker-compose build
 
-env:
-  matrix:
-    - CMAKE_CONFIGURATION=release BUILD_DIR=build_release
-    - CMAKE_CONFIGURATION=debug BUILD_DIR=build_debug
-
-script:
-  - cd server
-  - mkdir build
-  - cd build
-  - cmake .. && make
-  - ./server-test
-
-notifications:
-  email: false
+  - stage: test
+    script: 
+      - ./Server/test
+      - ./client/test
+  - stage: deploy
+    script: echo "... deploy ... "
 
 branches:
   only:
