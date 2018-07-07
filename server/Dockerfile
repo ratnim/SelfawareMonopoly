@@ -50,6 +50,9 @@ WORKDIR /usr/src/app/server/build
 RUN sudo cmake -DCMAKE_PREFIX_PATH=/opt/qt510 .. \
   && sudo make
 
+# CI test file
+COPY ./test.sh ./test.sh
+
 # Prepare Run
 WORKDIR /usr/src/app
 EXPOSE 31415

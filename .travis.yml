@@ -16,8 +16,7 @@ jobs:
 
   - stage: test
     script: 
-      - docker run -d --entrypoint ./Server/test.sh
-      - docker run -d --entrypoint ./client/test.sh
+      - docker run selfaware-monopoly-server ./test.sh
 
   - stage: deploy
     script: echo " ... deploy ... "
