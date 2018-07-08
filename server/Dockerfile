@@ -46,6 +46,7 @@ COPY ./tests ./tests
 COPY ./CMakeLists.txt ./CMakeLists.txt
 
 # CI test file
+CMD [ "ls" ]
 COPY ./test.sh ./test.sh
 
 # Build Server
