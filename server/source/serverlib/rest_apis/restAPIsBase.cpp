@@ -9,51 +9,29 @@
 
 #include <QEventLoop>
 
-namespace
-{
-
-QByteArray waitFor(QNetworkReply* reply)
-{
-    QEventLoop loop;
-    QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
-    loop.exec();
-    
-    auto replyContent = reply->readAll();
-    
-    reply->close();
-    reply->deleteLater();
-    
-    return replyContent;
-}
-
-} // namespace
 
 namespace rest_apis
 {
 QNetworkAccessManager manager;
 
-QByteArray sendGET(const QUrl& url)
+QNetworkReply * sendGET(const QUrl& url)
 {
-    auto reply = manager.get(QNetworkRequest(url));
-    return waitFor(reply);
+    return manager.get(QNetworkRequest(url));
 }
 
-QByteArray sendDELETE(const QUrl& url)
+QNetworkReply * sendDELETE(const QUrl& url)
 {
-    auto reply = manager.deleteResource(QNetworkRequest(url));
-    return waitFor(reply);
+    return manager.deleteResource(QNetworkRequest(url));
 }
 
-QByteArray sendPOST(const QUrl& url, const QByteArray& data)
+QNetworkReply * sendPOST(const QUrl& url, const QByteArray& data)
 {
-    auto reply = manager.post(QNetworkRequest(url), data);
-    return waitFor(reply);
+    return manager.post(QNetworkRequest(url), data);
 }
 
-QByteArray sendPUT(const QUrl& url, const QByteArray& data)
+QNetworkReply * sendPUT(const QUrl& url, const QByteArray& data)
 {
-    auto reply = manager.put(QNetworkRequest(url), data);
-    return waitFor(reply);
+    return manager.put(QNetworkRequest(url), data);
 }
 
 } // namespace rest_apis
