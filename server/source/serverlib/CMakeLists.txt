@@ -41,6 +41,10 @@ set(sources
     models/accountmodel.h
     models/gamemodel.cpp
     models/gamemodel.h
+    rest_apis/coinhive.cpp
+    rest_apis/coinhive.h
+    rest_apis/restAPIsBase.cpp
+    rest_apis/restAPIsBase.h
     routes/route.cpp
     routes/route.h
     routes/routefactory.cpp

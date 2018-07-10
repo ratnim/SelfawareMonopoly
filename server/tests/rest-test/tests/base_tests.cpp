@@ -1,7 +1,7 @@
 
 #include <gmock/gmock.h>
 
-#include <restAPIsBase.h>
+#include <rest_apis/restAPIsBase.h>
 
 TEST(BaseTest, get)
 {

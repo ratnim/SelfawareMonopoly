@@ -1,7 +1,7 @@
 
-#include <coinhive.h>
+#include <rest_apis/coinhive.h>
 
-#include <restAPIsBase.h>
+#include <rest_apis/restAPIsBase.h>
 
 #include <QUrl>
 #include <QUrlQuery>
