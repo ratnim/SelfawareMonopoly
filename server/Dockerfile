@@ -46,8 +46,7 @@ COPY ./tests ./tests
 COPY ./CMakeLists.txt ./CMakeLists.txt
 
 # CI test file
-CMD [ "ls" ]
-COPY ./test.sh ./test.sh
+COPY ./ci_test.sh ./ci_test.sh
 
 # Build Server
 WORKDIR /usr/src/app/server/build

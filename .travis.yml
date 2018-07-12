@@ -16,7 +16,7 @@ jobs:
 
   - stage: test
     script: 
-      - docker run selfaware-monopoly-server ./test.sh
+      - docker run selfaware-monopoly-server ./ci_test.sh
 
   - stage: deploy
     script: echo " ... deploy ... "
