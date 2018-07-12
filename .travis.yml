@@ -11,11 +11,9 @@ stages:
 
 jobs:
   include:
-  - stage: build
-    script: docker-compose build
-
-  - stage: test
+  - stage: build & test
     script: 
+      - docker-compose build 
       - docker run selfaware-monopoly-server ./ci_test.sh
 
   - stage: deploy
