@@ -5,8 +5,7 @@ services: docker
 language: cpp
 
 stages:
- - build 
- - test
+ - build & test
  - deploy
 
 jobs:
