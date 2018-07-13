@@ -4,4 +4,4 @@ set -e # return on any error
 
 echo "Run Selfaware-Monopoly-Server tests ..."
 
-exit -1
+./server/build/server
