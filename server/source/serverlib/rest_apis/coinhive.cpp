@@ -16,14 +16,21 @@ namespace rest_apis
 namespace coinhive
 {
 
-const QString urlBegin("https://api.coinhive.com");
-const size_t withdrawBlockSize(1024);
-
-MiningSupervisor::MiningSupervisor(const size_t interval)
+MiningSupervisor::MiningSupervisor(const size_t interval, const size_t blockSize, const QString& host)
 : m_timer()
+, m_host(host)
+, m_blockSize(blockSize)
 {
     QObject::connect(&m_timer, &QTimer::timeout, this, &MiningSupervisor::onTimer);
     m_timer.start(interval * 1000);
+
+    const auto env = QProcessEnvironment::systemEnvironment();
+    const auto m_key = env.value("CoinhivePrivateKey", "");
+
+    if (m_key.isEmpty())
+    {
+        qWarning() << "Coinhive secret key not provided. Requests will probably fail.";
+    }
 }
 
 void MiningSupervisor::onTimer()
@@ -53,15 +60,15 @@ void MiningSupervisor::onTopReply(QNetworkReply * reply)
         const auto userObj = entry.toObject();
         const auto name = userObj["name"].toString();
         const auto balance = userObj["balance"].toInt();
-        const auto blocks = balance / withdrawBlockSize;
+        const auto blocks = balance / m_blockSize;
 
         if (blocks < 1)
             break; // Others will only have lower balance
 
-        const auto withdraw = blocks * withdrawBlockSize;
+        const auto withdraw = blocks * m_blockSize;
 
-        auto reply = requestWithdraw(name, withdraw);
-        QObject::connect(reply, &QNetworkReply::finished, [reply, this](){onWithdrawReply(reply);});
+        auto request = requestWithdraw(name, withdraw);
+        QObject::connect(request, &QNetworkReply::finished, [request, this](){onWithdrawReply(request);});
     }
 }
 
@@ -83,51 +90,31 @@ void MiningSupervisor::onWithdrawReply(QNetworkReply * reply)
 
     const auto name = json["name"].toString();
     const auto amount = json["amount"].toInt();
-    const auto blocks = amount / withdrawBlockSize;
+    const auto blocks = amount / m_blockSize;
 
     emit userMined(name, blocks);
 }
 
-QNetworkReply * requestTop()
+QNetworkReply * MiningSupervisor::requestTop()
 {
-    static const auto env = QProcessEnvironment::systemEnvironment();
-    static const auto secretKey = env.value("CoinhivePrivateKey", "");
-    static bool warnedKey = false;
-
-    if (secretKey.isEmpty() && !warnedKey)
-    {
-        qDebug() << "Coinhive secret key not provided";
-        warnedKey = true;
-    }
-
     QUrlQuery query;
-    query.addQueryItem("secret", secretKey);
+    query.addQueryItem("secret", m_key);
     query.addQueryItem("order", "balance");
 
-    QUrl request(urlBegin + "/user/top");
+    QUrl request(m_host + "/user/top");
     request.setQuery(query);
 
     return sendGET(request);
 }
 
-QNetworkReply * requestWithdraw(const QString& userName, const size_t amount)
+QNetworkReply * MiningSupervisor::requestWithdraw(const QString& userName, const size_t amount)
 {
-    static const auto env = QProcessEnvironment::systemEnvironment();
-    static const auto secretKey = env.value("CoinhivePrivateKey", "");
-    static bool warnedKey = false;
-
-    if (secretKey.isEmpty() && !warnedKey)
-    {
-        qDebug() << "Coinhive secret key not provided";
-        warnedKey = true;
-    }
-
     QUrlQuery query;
-    query.addQueryItem("secret", secretKey);
+    query.addQueryItem("secret", m_key);
     query.addQueryItem("name", userName);
     query.addQueryItem("amount", QString::number(amount));
 
-    QUrl request(urlBegin + "/user/withdraw");
+    QUrl request(m_host + "/user/withdraw");
     request.setQuery(query);
 
     return sendPOST(request, QByteArray());

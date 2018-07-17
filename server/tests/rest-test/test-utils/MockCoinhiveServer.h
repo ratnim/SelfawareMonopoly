@@ -2,13 +2,13 @@
 #include <QTcpServer>
 #include <QTcpSocket>
 
-class MockRestServer
+class MockCoinhiveServer
 {
 
 public:
-    MockRestServer();
+    MockCoinhiveServer();
 
-    ~MockRestServer();
+    ~MockCoinhiveServer();
 
 protected:
     void connected();

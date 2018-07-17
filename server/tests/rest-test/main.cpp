@@ -3,14 +3,13 @@
 
 #include <QApplication>
 
-#include <test-utils/MockRestServer.h>
+#include <rest_apis/coinhive.h>
 
 int main(int argc, char** argv)
 {
     ::testing::InitGoogleMock(&argc, argv);
 
     QApplication app(argc, argv);
-    MockRestServer server;
 
     return RUN_ALL_TESTS();
 }

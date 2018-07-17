@@ -13,10 +13,13 @@ message(STATUS "Test ${target}")
 set(sources
     main.cpp
     
-    tests/base_tests.cpp
+    tests/base_test.cpp
+    tests/coinhiveMiner_test.cpp
     
-    test-utils/MockRestServer.cpp
-    test-utils/MockRestServer.h
+    test-utils/MockBasicRestServer.cpp
+    test-utils/MockBasicRestServer.h
+    test-utils/MockCoinhiveServer.cpp
+    test-utils/MockCoinhiveServer.h
 )
 
 source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${sources})

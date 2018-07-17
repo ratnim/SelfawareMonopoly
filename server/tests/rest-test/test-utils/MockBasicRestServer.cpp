@@ -1,27 +1,27 @@
 
 #include <gmock/gmock.h>
 
-#include "MockRestServer.h"
+#include "MockBasicRestServer.h"
 
-MockRestServer::MockRestServer()
+MockBasicRestServer::MockBasicRestServer()
 : m_tcpServer()
 {
     m_tcpServer.listen(QHostAddress::LocalHost, 80);
     QObject::connect(&m_tcpServer, &QTcpServer::newConnection, [this](){connected();});
 }
 
-MockRestServer::~MockRestServer()
+MockBasicRestServer::~MockBasicRestServer()
 {
     m_tcpServer.close();
 }
 
-void MockRestServer::connected()
+void MockBasicRestServer::connected()
 {
     auto connection = m_tcpServer.nextPendingConnection();
     QObject::connect(connection, &QTcpSocket::readyRead, [this, connection](){reply(connection);});
 }
 
-void MockRestServer::reply(QTcpSocket* connection)
+void MockBasicRestServer::reply(QTcpSocket* connection)
 {
     auto request = QString(connection->readAll());
 
