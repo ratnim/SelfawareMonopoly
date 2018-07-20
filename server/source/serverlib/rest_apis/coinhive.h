@@ -20,6 +20,7 @@ public:
 
 public slots:
     void onTimer();
+    void onReplyError(QNetworkReply::NetworkError error);
 
 signals:
     void userMined(const QString& userName, int amount);

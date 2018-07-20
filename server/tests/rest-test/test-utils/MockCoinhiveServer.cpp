@@ -30,11 +30,22 @@ const QString topAnswer = R"({
     ]
 })";
 
-const QString withdrawAnswer = R"({
+const QString withdrawAnswerSuccess = R"({
     "success": true,
     "name": "%1",
     "amount": %2
 })";
+
+const QString answerFailure = R"({
+    "success": false,
+    "error": "%2"
+})";
+
+const QString headerOK = R"(HTTP/1.0 200 OK
+Content-Length: %1
+Content-Type: text/plain; charset=us-ascii
+
+)";
 
 MockCoinhiveServer::MockCoinhiveServer()
 : m_tcpServer()
@@ -72,7 +83,15 @@ void MockCoinhiveServer::reply(QTcpSocket* connection)
 
     if (resourcePath == "/user/top")
     {
-        const auto header = QString("HTTP/1.0 200 OK\nContent-Length: %1\nContent-Type: text/plain; charset=us-ascii\n\n").arg(topAnswer.size());
+        if (requestType != "GET")
+        {
+            const auto body = answerFailure.arg("wrong_method");
+            const auto header = headerOK.arg(body.size());
+            connection->write((header+body).toLocal8Bit());
+            return;
+        }
+
+        const auto header = headerOK.arg(topAnswer.size());
         const auto body = topAnswer;
 
         connection->write((header+body).toStdString().c_str());
@@ -81,16 +100,69 @@ void MockCoinhiveServer::reply(QTcpSocket* connection)
 
     if (resourcePath == "/user/withdraw")
     {
+        if (requestType != "POST")
+        {
+            const auto body = answerFailure.arg("wrong_method");
+            const auto header = headerOK.arg(body.size());
+            connection->write((header+body).toLocal8Bit());
+            return;
+        }
+
+        if (!parameters.hasQueryItem("name") || !parameters.hasQueryItem("amount"))
+        {
+            const auto body = answerFailure.arg("missing_input");
+            const auto header = headerOK.arg(body.size());
+            connection->write((header+body).toLocal8Bit());
+            return;
+        }
+
         const auto user = parameters.queryItemValue("name");
         const auto amount = parameters.queryItemValue("amount");
 
-        const auto body = withdrawAnswer.arg(user, amount);
-        const auto header = QString("HTTP/1.0 200 OK\nContent-Length: %1\nContent-Type: text/plain; charset=us-ascii\n\n").arg(body.size());
+        if (amount.toInt() < 0)
+        {
+            const auto body = answerFailure.arg("invalid_amount");
+            const auto header = headerOK.arg(body.size());
+            connection->write((header+body).toLocal8Bit());
+            return;
+        }
 
-        connection->write((header+body).toStdString().c_str());
+        bool valid = false;
+        QString error = "unknown_user";
+
+        if (user == "Rich Guy")
+        {
+            if (amount.toInt() <= 4096)
+                valid = true;
+            else
+                error = "insufficent_funds";
+        }
+        if (user == "Poor Guy")
+        {
+            if (amount.toInt() <= 1050)
+                valid = true;
+            else
+                error = "insufficent_funds";
+        }
+        if (user == "Broke Bloke")
+        {
+            if (amount.toInt() == 0)
+                valid = true;
+            else
+                error = "insufficent_funds";
+        }
+
+        const auto body = valid
+                        ? withdrawAnswerSuccess.arg(user, amount)
+                        : answerFailure.arg(error);
+        const auto header = headerOK.arg(body.size());
+
+        connection->write((header+body).toLocal8Bit());
         return;
     }
 
-    connection->write("HTTP/1.0 400 Bad Request\n\n");
+    const auto body = answerFailure.arg("not_found");
+    const auto header = headerOK.arg(body.size());
+    connection->write((header+body).toLocal8Bit());
     return;
 }

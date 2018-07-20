@@ -29,7 +29,7 @@ MiningSupervisor::MiningSupervisor(const size_t interval, const size_t blockSize
 
     if (m_key.isEmpty())
     {
-        qWarning() << "Coinhive secret key not provided. Requests will probably fail.";
+        qWarning() << "[coinhive] Secret key not provided. Requests will probably fail.";
     }
 }
 
@@ -37,10 +37,22 @@ void MiningSupervisor::onTimer()
 {
     auto reply = requestTop();
     QObject::connect(reply, &QNetworkReply::finished, [reply, this](){onTopReply(reply);});
+    QObject::connect(reply, static_cast<void(QNetworkReply::*)(QNetworkReply::NetworkError)>(&QNetworkReply::error), this, &MiningSupervisor::onReplyError);
+}
+
+void MiningSupervisor::onReplyError(QNetworkReply::NetworkError error)
+{
+    qWarning() << "[coinhive] Network error during request: " << error;
 }
 
 void MiningSupervisor::onTopReply(QNetworkReply * reply)
 {
+    if (reply->error() != QNetworkReply::NoError)
+    {
+        qWarning() << "[coinhive] Network error requesting top: " << reply->errorString();
+        return;
+    }
+
     const auto json = QJsonDocument::fromJson(reply->readAll());
 
     if (!json.isObject())
@@ -51,7 +63,7 @@ void MiningSupervisor::onTopReply(QNetworkReply * reply)
 
     if (!json["success"].toBool())
     {
-        qDebug() << "[coinhive] Error requesting top: " << json["error"].toString();
+        qDebug() << "[coinhive] API error requesting top: " << json["error"].toString();
         return;
     }
 
@@ -69,11 +81,18 @@ void MiningSupervisor::onTopReply(QNetworkReply * reply)
 
         auto request = requestWithdraw(name, withdraw);
         QObject::connect(request, &QNetworkReply::finished, [request, this](){onWithdrawReply(request);});
+        QObject::connect(request, static_cast<void(QNetworkReply::*)(QNetworkReply::NetworkError)>(&QNetworkReply::error), this, &MiningSupervisor::onReplyError);
     }
 }
 
 void MiningSupervisor::onWithdrawReply(QNetworkReply * reply)
 {
+    if (reply->error() != QNetworkReply::NoError)
+    {
+        qWarning() << "[coinhive] Network error requesting withdraw: " << reply->errorString();
+        return;
+    }
+
     const auto json = QJsonDocument::fromJson(reply->readAll());
 
     if (!json.isObject())
@@ -84,7 +103,7 @@ void MiningSupervisor::onWithdrawReply(QNetworkReply * reply)
 
     if (!json["success"].toBool())
     {
-        qDebug() << "[coinhive] Error requesting withdraw: " << json["error"].toString();
+        qDebug() << "[coinhive] API error requesting withdraw: " << json["error"].toString();
         return;
     }
 

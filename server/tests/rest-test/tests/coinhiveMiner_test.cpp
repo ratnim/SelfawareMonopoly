@@ -37,3 +37,15 @@ TEST(CoinhiveMinerTest, fullRun)
     EXPECT_EQ(secondBlocks.toInt(), 1);
     // "Broke Bloke" has not enough to withdraw, so he doesn't create a withdraw request or a mining signal
 }
+
+TEST(CoinhiveMinerTest, error)
+{
+    // coinhive does not use HTTP errors, everything is handled via the "success" and "error" fields in the JSONs
+    MockCoinhiveServer server;
+
+    rest_apis::coinhive::MiningSupervisor tested(1, 1024, "http://localhost:80/invalid");
+
+    QSignalSpy miningSpy(&tested, &rest_apis::coinhive::MiningSupervisor::userMined);
+
+    ASSERT_FALSE(miningSpy.wait(2500)); // expect no signals, timeout 1/2 sec + 2x 1 sec supervisor interval
+}
