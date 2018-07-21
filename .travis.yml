@@ -17,7 +17,3 @@ jobs:
 
   - stage: deploy
     script: echo " ... deploy ... "
-
-branches:
-  only:
-    - master
