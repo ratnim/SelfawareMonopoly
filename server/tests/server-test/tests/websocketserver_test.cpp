@@ -28,7 +28,7 @@ TEST(WebSocketServerTest, connect_invalid_route)
     const auto string = message_spy.at(0).at(0).toString();
     const auto json = QJsonDocument::fromJson(string.toUtf8());
     EXPECT_TRUE(json["data"].isObject());
-    EXPECT_EQ(json["data"]["id"].toInt(), error::InvalidRoute);
+    EXPECT_EQ(json["data"]["id"].toInt(), Error::InvalidRoute);
 
     EXPECT_FALSE(client.isValid());
 }
@@ -55,7 +55,7 @@ TEST(WebSocketServerTest, connect_overview_route)
     const auto string = message_spy.at(0).at(0).toString();
     const auto json = QJsonDocument::fromJson(string.toUtf8());
     EXPECT_TRUE(json["data"].isObject());
-    EXPECT_EQ(json["data"]["id"].toInt(), error::MalformedRequest);
+    EXPECT_EQ(json["data"]["id"].toInt(), Error::MalformedRequest);
 
     EXPECT_TRUE(client.isValid());
 }
@@ -78,7 +78,7 @@ TEST(WebSocketServerTest, connect_lobby_route_no_auth)
     const auto string = message_spy.at(0).at(0).toString();
     const auto json = QJsonDocument::fromJson(string.toUtf8());
     EXPECT_TRUE(json["data"].isObject());
-    EXPECT_NE(json["data"]["id"].toInt(), error::InvalidRoute);
+    EXPECT_NE(json["data"]["id"].toInt(), Error::InvalidRoute);
 
     EXPECT_FALSE(client.isValid());
 }
@@ -101,7 +101,7 @@ TEST(WebSocketServerTest, connect_game_route_no_auth)
     const auto string = message_spy.at(0).at(0).toString();
     const auto json = QJsonDocument::fromJson(string.toUtf8());
     EXPECT_TRUE(json["data"].isObject());
-    EXPECT_NE(json["data"]["id"].toInt(), error::InvalidRoute);
+    EXPECT_NE(json["data"]["id"].toInt(), Error::InvalidRoute);
 
     EXPECT_FALSE(client.isValid());
 }

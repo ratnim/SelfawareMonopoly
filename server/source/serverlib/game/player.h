@@ -4,8 +4,9 @@
 
 struct Player
 {
-    bool ready = false;
-    bool inJail = false;
+    Player(const QString& playerName);
+
+    const QString name;
     int jailTurns = 0;
     int position = 0;
 };

@@ -14,8 +14,12 @@ set(sources
     main.cpp
     tests/configuration_test.cpp
     tests/exception_test.cpp
+    tests/game_test.cpp
+    tests/gamemodel_test.cpp
+    tests/gameinfo_test.cpp
     tests/request_test.cpp
     tests/route_test.cpp
+    tests/runstate_test.cpp
     tests/websocketserver_test.cpp
     test_utils/mocked_database.cpp
     test_utils/mocked_database.h

@@ -6,7 +6,6 @@
 #include <models/gamemodel.h>
 
 GameWatcher::GameWatcher(const Game& game)
-    : m_game(game)
 {
     connect(&game, &Game::onPlayerJoin, this, &GameWatcher::playerJoin);
     connect(&game, &Game::onPlayerReady, this, &GameWatcher::playerReady);
@@ -46,10 +45,10 @@ void GameWatcher::playerReady(const QString& playerName)
     event(toString(answer));
 }
 
-void GameWatcher::rollDice(int d1, int d2)
+void GameWatcher::rollDice(const QString& playerName, int d1, int d2)
 {
     QJsonObject answer({ { "name", "roll_dice" } });
-    answer["data"] = QJsonObject{ { "eyes", QJsonArray({ d1, d2 }) } };
+    answer["data"] = QJsonObject({ { "eyes", QJsonArray({ d1, d2 }) }, { "player_name", playerName } });
 
     event(toString(answer));
 }
