@@ -6,12 +6,15 @@ MAINTAINER martin.fischer@student.hpi.de
 RUN apt-get -y update && apt-get install -y --no-install-recommends \
   software-properties-common\
   build-essential \
-  gcc-5 \
-  g++-5 \
   libx11-dev \
   mesa-common-dev \
   libglu1-mesa-dev \
   && apt-get autoremove
+RUN add-apt-repository ppa:ubuntu-toolchain-r/test
+RUN apt-get -y update && apt-get install -y g++-7
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 60 \
+                         --slave /usr/bin/g++ g++ /usr/bin/g++-7 
+RUN update-alternatives --config gcc
 
 # Install QT 5.10 Xenial
 RUN apt-add-repository ppa:beineri/opt-qt-5.10.0-xenial
