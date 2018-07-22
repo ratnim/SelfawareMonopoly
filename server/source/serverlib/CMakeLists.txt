@@ -32,7 +32,10 @@ set(sources
     game/watson.h
     game/board/board.cpp
     game/board/board.h
+    game/board/field.cpp
     game/board/field.h
+    game/board/fieldfactory.cpp
+    game/board/fieldfactory.h
     game/board/street.h
     game/board/taxfield.h
     game/state/gamestate.cpp

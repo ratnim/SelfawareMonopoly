@@ -22,14 +22,17 @@ public:
         SocietyCard
     };
     Q_ENUM(FieldType)
+
+    static FieldTypeStringConverter::FieldType typeByName(const QString& string);
 };
 
 using FieldType = FieldTypeStringConverter::FieldType;
 
+
 class Field
 {
 public:
-    Field(const QString& name, FieldType type);
+    Field(const QString& name, const FieldType type);
 
     QString name() const;
     FieldType type() const;
