@@ -83,14 +83,9 @@ protected:
 class Board
 {
 public:
-    Board(Board& prototype);
-
-    static Board& prototype();
+    int size() const;
 
     Field* operator[](size_t index);
-
-    std::vector<Field> m_fields;
-
 protected:
-    Board();
+    std::vector<Field> m_fields;
 };
