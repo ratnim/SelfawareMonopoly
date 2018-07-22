@@ -18,8 +18,6 @@ set(sources
     watchers/watcher.h
     watchers/lobbywatcher.cpp
     watchers/lobbywatcher.h
-    game/board.cpp
-    game/board.h
     game/dices.cpp
     game/dices.h
     game/game.cpp
@@ -32,6 +30,11 @@ set(sources
     game/player.h   
     game/watson.cpp
     game/watson.h
+    game/board/board.cpp
+    game/board/board.h
+    game/board/field.h
+    game/board/street.h
+    game/board/taxfield.h
     game/state/gamestate.cpp
     game/state/gamestate.h
     game/state/endstate.cpp
