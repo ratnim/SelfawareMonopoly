@@ -83,7 +83,7 @@ protected:
 class Board
 {
 public:
-    int size() const;
+    size_t size() const;
 
     Field* operator[](size_t index);
 protected:
