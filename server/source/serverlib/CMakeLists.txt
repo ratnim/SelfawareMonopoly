@@ -50,6 +50,8 @@ set(sources
     game/state/turn/rollstate.h
     models/accountmodel.cpp
     models/accountmodel.h
+    models/boardmodel.cpp
+    models/boardmodel.h
     models/gamemodel.cpp
     models/gamemodel.h
     routes/route.cpp
