@@ -1,16 +1,27 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-//import vueAuth from './auth'
-import VueAxios from 'vue-axios'
-import {
-  VueAuthenticate
-} from 'vue-authenticate'
-import axios from 'axios';
-
 Vue.use(Vuex)
 
+//OAuth
+import VueAxios from 'vue-axios'
+import { VueAuthenticate } from 'vue-authenticate'
+import axios from 'axios';
 Vue.use(VueAxios, axios)
 
+//Plugin to persist state in local storage
+import VuexPersist from 'vuex-persist';
+
+const vuexLocalStorage = new VuexPersist({
+  key: 'vuex', // The key to store the state on in the storage provider.
+  storage: window.localStorage, // or window.sessionStorage or localForage
+  // Function that passes the state and returns the state with only the objects you want to store.
+  // reducer: state => state,
+  // Function that passes a mutation and lets you decide if it should update the state in localStorage.
+  // filter: mutation => (true)
+})
+
+
+//TODO should be moved to ./auth
 const vueAuth = new VueAuthenticate(Vue.prototype.$http, {
   baseUrl: window.origin,
   providers: {
@@ -47,8 +58,16 @@ const vueAuth = new VueAuthenticate(Vue.prototype.$http, {
 })
 
 export default new Vuex.Store({
+  plugins: [vuexLocalStorage.plugin],
   state: {
+    socket: {
+      isConnected: false,
+      message: '',
+      reconnectError: false,
+    },
+    sessionId: '',
     nickname : '',
+    gameList: [],
     isAuthenticated: false,
     tokens: {'instagram' : null, 'facebook' : null, 'google': null}
   },
@@ -61,6 +80,12 @@ export default new Vuex.Store({
     },
     getNickname(state) {
       return state.nickname
+    },
+    getGameList(state) {
+      return state.gameList
+    },
+    getSessionId(state) {
+      return state.sessionId;
     }
   },
   mutations: {
@@ -72,6 +97,12 @@ export default new Vuex.Store({
     },
     setNickname(state, payload) {
       state.nickname = payload
+    },
+    setGameList(state, payload) {
+      state.gameList = payload
+    },
+    setSessionId(state, payload) {
+      state.sessionId = payload;
     }
   },
   actions: {
@@ -94,8 +125,8 @@ export default new Vuex.Store({
         })
       })
     },
-    setNickname(context, nickname) {
+    createAccount(context, nickname) {
       context.commit('setNickname', nickname);
-    }
+    },
   }
 })

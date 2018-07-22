@@ -2,59 +2,35 @@
 <div class="md-content">
   <h1>The Lobby</h1>
   <div class="md-layout md-alignment-top-center">
-    <md-steppers :md-active-step.sync="stepper.active" md-linear>
-      <md-step id="first" md-label="Enter your Nickname" :md-done.sync="stepper.first">
-        <div class="md-layout-item md-size-50 md-small-size-100 md-alignment-top-center">
-          <form novalidate class="md-layout">
-            <div class="md-layout md-gutter md-alignment-center-center">
-              <div class="md-layout-item md-alignment-center-center">
-                <md-field>
-                  <label for="nickname">Nickname</label>
-                  <md-input name="nickname" v-model="nickname" />
-                </md-field>
-              </div>
-            </div>
-          </form>
-          <md-button class="md-raised md-primary" :disabled="!nickname" @click="setStepperDone('first', 'second')">join</md-button>
+    <md-list class="md-double-line">
+      <md-subheader>Open Games</md-subheader>
+
+      <md-list-item v-for="game in games">
+        <div class="md-list-item-text">
+          <span>{{game.game_label}}</span>
+          <span>{{statusMap[game.game_status]}}</span>
+          <span>
+            <span v-for="(player, index) in game.player_list">{{player}}<span v-if="index < game.player_list.length-1">, </span>
+            </span>
+          </span>
         </div>
-
-      </md-step>
-
-      <md-step id="second" md-label="Join a Game" :md-done.sync="stepper.second">
-        <div class="md-layout-item md-size-50 md-small-size-100 md-alignment-top-center">
-          <md-list class="md-double-line">
-            <md-subheader>Open Games</md-subheader>
-
-            <md-list-item v-for="game in games">
-              <div class="md-list-item-text">
-                <span>{{game.title}}</span>
-                <span>
-                  <span v-for="(player, index) in game.players">{{player.name}}<span v-if="index < game.players.length-1">, </span>
-                  </span>
-                </span>
-              </div>
-              <md-button @click="join(game.id)" class="md-icon-button md-list-action">
-                <md-icon>forward</md-icon>
-              </md-button>
-            </md-list-item>
-          </md-list>
-          <md-button @click="newGame()" class="md-primary">create new game</md-button>
-        </div>
-      </md-step>
-    </md-steppers>
+        <md-button @click="onJoinGame(game.game_id)" class="md-icon-button md-list-action">
+          <md-icon>forward</md-icon>
+        </md-button>
+      </md-list-item>
+    </md-list>
+    <md-button @click="createGame()" class="md-primary">create new game</md-button>
   </div>
 </div>
 </template>
 
 <script>
-import {
-  players,
-  games
-} from '@/assets/lobby.mockeddata.js'
 
 import {
   mapGetters
 } from 'vuex'
+
+import * as lobbyConnection from '../storePlugins/lobbyConnection'
 
 
 export default {
@@ -66,42 +42,40 @@ export default {
         first: false,
         second: false
       },
-      players: [],
       nickname: '',
-      games: []
+      statusMap: ["Open", "Started", "Ended"]
     }
   },
-  computed: {},
+  computed: {
+    ...mapGetters({
+      games: 'getGameList',
+      sessionId: 'getSessionId'
+    })
+  },
+
   created() {
-    //get list of games
-    this.games = games;
-    //get list of players
-    this.players = players;
-    //provide nickname
-    this.nickname = this.$route.query.nickname || this.$store.state.nickname;
-
-    //join lobby
-
-    //button: create a new game
-
-    //button: join game
-
+    lobbyConnection.connect(this.sessionId);
+    lobbyConnection.onCreateGame(this.onJoinGame);
+    lobbyConnection.onGetGameList(this.setGameList);
+    lobbyConnection.onError(this.onError);
   },
-  mounted() {
-
+  beforeRouteLeave(to, from, next) {
+    lobbyConnection.disconnect();
+    next();
   },
+
   methods: {
-    setStepperDone(id, active) {
-      this.stepper[id] = true;
-      this.stepper.active = active;
-      this.$store.dispatch('setNickname', this.nickname);
+    onJoinGame(gameId) {
+      this.$router.push({ name: 'monopoly', query: { game_id: gameId } })
     },
-    join(gameid) {
-      this.$router.push({ name: 'monopoly', params: { gameid }})
+    createGame(name) {
+      lobbyConnection.createGame('test');
     },
-    newGame() {
-      console.log("new game");
-
+    setGameList(gameList) {
+      this.$store.commit('setGameList', gameList);
+    },
+    onError: function(message) {
+      console.log(message);
     }
   }
 }
