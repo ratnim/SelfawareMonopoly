@@ -41,7 +41,7 @@ Board BoardModel::new_board(const QString& filename) const
     auto jObject = parseBoardFile(json);
     auto fields = createFields(jObject);
 
-    return Board(fields);
+    return {std::move(fields)};
 }
 
 QString BoardModel::getPath(const QString& filename) const
@@ -70,16 +70,16 @@ QJsonObject BoardModel::parseBoardFile(const QString& json)
     return jsonDoc.object();
 }
 
-std::vector<Field> BoardModel::createFields(const QJsonObject& jObject)
+std::vector<std::unique_ptr<Field>> BoardModel::createFields(const QJsonObject& jObject)
 {
     auto field_specification = jObject["fields"].toArray();
-    std::vector<Field> fields;
+    std::vector<std::unique_ptr<Field>> fields;
 
     foreach (const QJsonValue& specification, field_specification)
     {
         QJsonObject obj = specification.toObject();
         auto field = FieldFactory::create(obj);
-        fields.push_back(field);
+        fields.push_back(std::move(field));
     }
     return fields;
 }

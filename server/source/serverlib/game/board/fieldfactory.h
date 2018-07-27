@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QJsonObject>
+#include <memory>
 
 #include <game/board/field.h>
 
@@ -11,6 +12,6 @@ class FieldFactory
 
 public:
    
-	static Field create(const QJsonObject& specification);
+	static std::unique_ptr<Field> create(const QJsonObject& specification);
 
 };

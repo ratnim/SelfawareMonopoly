@@ -1,7 +1,7 @@
 #include "board.h"
 
-Board::Board(std::vector<Field> fields)
-	: m_fields(fields)
+Board::Board(std::vector<std::unique_ptr<Field>> fields)
+	: m_fields(std::move(fields))
 {
 }
 
@@ -12,5 +12,5 @@ size_t Board::size() const
 
 Field* Board::operator[](size_t index)
 {
-    return &m_fields[index];
+    return m_fields[index].get();
 }

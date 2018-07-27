@@ -13,8 +13,8 @@ TEST(FieldFactoryTest, construct_field_start)
 
     auto field = FieldFactory::create(specification);
 
-	EXPECT_EQ(FieldType::start, field.type());
-    EXPECT_EQ("Start", field.name());
+	EXPECT_EQ(FieldType::start, field->type());
+    EXPECT_EQ("Start", field->name());
 }
 
 TEST(FieldFactoryTest, construct_field_street)
@@ -26,8 +26,8 @@ TEST(FieldFactoryTest, construct_field_street)
 
     auto field = FieldFactory::create(specification);
 
-    EXPECT_EQ(FieldType::street, field.type());
-    EXPECT_EQ("TestStreet", field.name());
+    EXPECT_EQ(FieldType::street, field->type());
+    EXPECT_EQ("TestStreet", field->name());
 }
 
 TEST(FieldFactoryTest, construct_field_station)
@@ -39,8 +39,8 @@ TEST(FieldFactoryTest, construct_field_station)
 
     auto field = FieldFactory::create(specification);
 
-    EXPECT_EQ(FieldType::station, field.type());
-    EXPECT_EQ("TestStation", field.name());
+    EXPECT_EQ(FieldType::station, field->type());
+    EXPECT_EQ("TestStation", field->name());
 }
 
 TEST(FieldFactoryTest, construct_field_event_card)
@@ -52,8 +52,8 @@ TEST(FieldFactoryTest, construct_field_event_card)
 
     auto field = FieldFactory::create(specification);
 
-    EXPECT_EQ(FieldType::event_card, field.type());
-    EXPECT_EQ("TestEventCard", field.name());
+    EXPECT_EQ(FieldType::event_card, field->type());
+    EXPECT_EQ("TestEventCard", field->name());
 }
 
 TEST(FieldFactoryTest, construct_field_society_card)
@@ -65,8 +65,8 @@ TEST(FieldFactoryTest, construct_field_society_card)
 
     auto field = FieldFactory::create(specification);
 
-    EXPECT_EQ(FieldType::society_card, field.type());
-    EXPECT_EQ("TestSocietyCard", field.name());
+    EXPECT_EQ(FieldType::society_card, field->type());
+    EXPECT_EQ("TestSocietyCard", field->name());
 }
 
 TEST(FieldFactoryTest, construct_field_prison)
@@ -78,8 +78,8 @@ TEST(FieldFactoryTest, construct_field_prison)
 
     auto field = FieldFactory::create(specification);
 
-    EXPECT_EQ(FieldType::prison, field.type());
-    EXPECT_EQ("Prison", field.name());
+    EXPECT_EQ(FieldType::prison, field->type());
+    EXPECT_EQ("Prison", field->name());
 }
 
 TEST(FieldFactoryTest, construct_field_free_parking)
@@ -91,8 +91,8 @@ TEST(FieldFactoryTest, construct_field_free_parking)
 
     auto field = FieldFactory::create(specification);
 
-    EXPECT_EQ(FieldType::free, field.type());
-    EXPECT_EQ("Free Parking", field.name());
+    EXPECT_EQ(FieldType::free, field->type());
+    EXPECT_EQ("Free Parking", field->name());
 }
 
 TEST(FieldFactoryTest, construct_field_go_to_prison)
@@ -104,8 +104,8 @@ TEST(FieldFactoryTest, construct_field_go_to_prison)
 
     auto field = FieldFactory::create(specification);
 
-    EXPECT_EQ(FieldType::go_to_prison, field.type());
-    EXPECT_EQ("Go to Prison", field.name());
+    EXPECT_EQ(FieldType::go_to_prison, field->type());
+    EXPECT_EQ("Go to Prison", field->name());
 }
 
 TEST(FieldFactoryTest, construct_field_tax)
@@ -117,8 +117,8 @@ TEST(FieldFactoryTest, construct_field_tax)
 
     auto field = FieldFactory::create(specification);
 
-    EXPECT_EQ(FieldType::tax, field.type());
-    EXPECT_EQ("TestTax", field.name());
+    EXPECT_EQ(FieldType::tax, field->type());
+    EXPECT_EQ("TestTax", field->name());
 }
 
 TEST(FieldFactoryTest, construct_field_utility)
@@ -130,6 +130,6 @@ TEST(FieldFactoryTest, construct_field_utility)
 
     auto field = FieldFactory::create(specification);
 
-    EXPECT_EQ(FieldType::utility, field.type());
-    EXPECT_EQ("TestUtility", field.name());
+    EXPECT_EQ(FieldType::utility, field->type());
+    EXPECT_EQ("TestUtility", field->name());
 }

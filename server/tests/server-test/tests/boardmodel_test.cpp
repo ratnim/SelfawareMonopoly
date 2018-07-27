@@ -32,7 +32,7 @@ TEST_F(BoardModelTest, load_board)
 {
     BoardModel::setBoardDir("./../../../assets/boards");
     auto& instance = BoardModel::instance();
-    auto board = instance.new_board("berlin.json");
+    auto board = std::move(instance.new_board("berlin.json"));
 
 	EXPECT_EQ(40, board.size());
 }

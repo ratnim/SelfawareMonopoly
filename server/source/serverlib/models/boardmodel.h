@@ -20,5 +20,5 @@ protected:
     QString loadBoardFile(QString& path) const;
     
 	static QJsonObject parseBoardFile(const QString& json);
-    static std::vector<Field> createFields(const QJsonObject& jObject);
+    static std::vector<std::unique_ptr<Field>> createFields(const QJsonObject& jObject);
 };
