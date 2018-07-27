@@ -7,6 +7,7 @@
 class Board
 {
 public:
+    Board(std::vector<Field> fields);
     size_t size() const;
 
     Field* operator[](size_t index);

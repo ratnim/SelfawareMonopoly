@@ -1,5 +1,10 @@
 #include "board.h"
 
+Board::Board(std::vector<Field> fields)
+	: m_fields(fields)
+{
+}
+
 size_t Board::size() const
 {
     return m_fields.size();

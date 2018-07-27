@@ -6,8 +6,11 @@
 
 class FieldFactory
 {
+
     FieldFactory() = delete;
 
-	public:
-    static Field create(const QJsonObject& specification);
+public:
+   
+	static Field create(const QJsonObject& specification);
+
 };
