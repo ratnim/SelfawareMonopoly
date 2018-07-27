@@ -20,4 +20,7 @@ protected:
     
 	static QJsonObject parseBoardFile(const QString& json);
     static std::vector<Field> createFields(const QJsonObject& jObject);
+
+	void setDir(const QString& path);
+    void checkDir();
 };

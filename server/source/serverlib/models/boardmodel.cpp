@@ -18,8 +18,15 @@ BoardModel::BoardModel(const QString& boardDir)
 
 void BoardModel::setBoardDir(const QString& path)
 {
-    auto& instance = BoardModel::instance();
-    instance.reset(path);
+    {
+		auto& instance = BoardModel::instance();
+		instance.reset(path);
+	}
+	{
+		auto& instance = BoardModel::instance();
+		if (!instance.m_boardDir.exists())
+			throw std::runtime_error("Board directory does not exists.");
+	}
 }
 
 Board BoardModel::new_board(const QString& filename) const
