@@ -1,34 +1,55 @@
 #include "boardmodel.h"
 
+#include <QDebug>
+#include <QDir>
 #include <QFile>
+#include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QJsonArray>
-#include <QDebug>
+#include <string>
 
 #include <game/board/fieldfactory.h>
 
-Board BoardModel::new_board() const
+BoardModel::BoardModel(const QString& boardDir)
+	: m_boardDir(QDir(boardDir))
 {
-    QString filename = "./assets/boards/berlin.json";
-    
-	auto json = loadBoardFile(filename);
+}
+
+
+void BoardModel::setBoardDir(const QString& path)
+{
+    auto& instance = BoardModel::instance();
+    instance.reset(path);
+}
+
+Board BoardModel::new_board(const QString& filename) const
+{
+	auto path = getPath(filename);
+    auto json = loadBoardFile(path);
     auto jObject = parseBoardFile(json);
     auto fields = createFields(jObject);
 
     return Board(fields);
 }
 
-QString BoardModel::loadBoardFile(const QString& filename)
+QString BoardModel::getPath(const QString& filename) const
 {
-    QString json;
+    auto absolutePath = m_boardDir.absoluteFilePath(filename);
     QFile file;
-    file.setFileName(filename);
+    file.setFileName(absolutePath);
+    if (!file.exists())
+        throw std::runtime_error("Board file does not exists.");
+    return absolutePath;
+}
+
+QString BoardModel::loadBoardFile(QString& path) const
+{
+    QFile file(path);
     file.open(QIODevice::ReadOnly | QIODevice::Text);
-    json = file.readAll();
+    auto json = file.readAll();
     file.close();
 
-	return json;
+    return json;
 }
 
 QJsonObject BoardModel::parseBoardFile(const QString& json)
