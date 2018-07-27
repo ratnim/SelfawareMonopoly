@@ -9,17 +9,16 @@ class FieldTypeStringConverter : QObject
 public:
     enum FieldType
     {
-        Start,
-        Prison,
-        Free,
-        GotoPrison,
-        IncomeTax,
-        SalesTax,
-        Street,
-        Station,
-        Plant,
-        EventCard,
-        SocietyCard
+        start,
+        street,
+        station,
+        event_card,
+        society_card,
+        prison,
+        free,
+        go_to_prison,
+        tax,
+        utility
     };
     Q_ENUM(FieldType)
 
