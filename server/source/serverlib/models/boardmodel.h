@@ -7,6 +7,7 @@
 class BoardModel : public StaticStorage<BoardModel>
 {
 public:
+    BoardModel();
     BoardModel(const QString& boradDir);
     static void setBoardDir(const QString& path);
 

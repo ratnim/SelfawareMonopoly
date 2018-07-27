@@ -10,6 +10,10 @@
 
 #include <game/board/fieldfactory.h>
 
+BoardModel::BoardModel()
+{
+    m_boardDir = QDir::current();
+}
 
 BoardModel::BoardModel(const QString& boardDir)
 	: m_boardDir(QDir(boardDir))
