@@ -7,6 +7,14 @@ class BoardModelTest : public ::testing::Test
 public:
 };
 
+
+TEST_F(BoardModelTest, board_dir_not_set)
+{
+    auto& instance = BoardModel::instance();
+
+    EXPECT_THROW(instance.new_board("berlin.json"), std::runtime_error);
+}
+
 TEST_F(BoardModelTest, board_dir_not_exists)
 {
     EXPECT_THROW(BoardModel::setBoardDir("./not/there"), std::runtime_error);
@@ -17,14 +25,7 @@ TEST_F(BoardModelTest, board_file_not_exists)
     BoardModel::setBoardDir("./../../../assets/boards");
     auto& instance = BoardModel::instance();
 
-    EXPECT_THROW(instance.new_board("berlin.json"), std::runtime_error);
-}
-
-TEST_F(BoardModelTest, board_dir_not_set)
-{
-    auto& instance = BoardModel::instance();
-
-    EXPECT_THROW(instance.new_board("berlin.json"), std::runtime_error);
+    EXPECT_THROW(instance.new_board("not_there.json"), std::runtime_error);
 }
 
 TEST_F(BoardModelTest, load_board)

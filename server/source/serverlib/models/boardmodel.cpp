@@ -10,6 +10,7 @@
 
 #include <game/board/fieldfactory.h>
 
+
 BoardModel::BoardModel(const QString& boardDir)
 	: m_boardDir(QDir(boardDir))
 {
