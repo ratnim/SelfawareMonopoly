@@ -23,6 +23,7 @@ public:
     Q_ENUM(FieldType)
 
     static FieldTypeStringConverter::FieldType typeByName(const QString& string);
+    static QString nameByType(FieldType type);
 };
 
 using FieldType = FieldTypeStringConverter::FieldType;

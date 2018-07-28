@@ -11,6 +11,12 @@ FieldTypeStringConverter::FieldType FieldTypeStringConverter::typeByName(const Q
     return static_cast<FieldTypeStringConverter::FieldType>(result);
 }
 
+QString FieldTypeStringConverter::nameByType(FieldType type)
+{
+    QMetaEnum metaEnum = QMetaEnum::fromType<FieldTypeStringConverter::FieldType>();
+    return metaEnum.valueToKey(type);
+}
+
 Field::Field(const QString& name, const FieldType type) : 
 	m_name(name)
 	, m_type(type)
@@ -29,5 +35,8 @@ FieldType Field::type() const
 
 QJsonObject Field::description() const
 {
-    return {};
+    return {
+        { "name", m_name },
+        { "type", FieldTypeStringConverter::nameByType(m_type) }
+	};
 }

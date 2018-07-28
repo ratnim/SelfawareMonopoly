@@ -16,6 +16,7 @@ set(sources
     tests/configuration_test.cpp
     tests/exception_test.cpp
     tests/fieldfactory_test.cpp
+	tests/field_test.cpp
     tests/game_test.cpp
     tests/gamemodel_test.cpp
     tests/gameinfo_test.cpp
