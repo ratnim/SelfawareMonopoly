@@ -11,6 +11,8 @@ public:
     Board(std::vector<std::unique_ptr<Field>> fields);
     size_t size() const;
 
+	QJsonObject description() const;
+
     Field* operator[](size_t index);
 
 protected:
