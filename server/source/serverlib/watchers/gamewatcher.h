@@ -18,6 +18,7 @@ protected:
     void event(const QString &message);
 
     void playerJoin(const QString& playerName);
+    void boardRequest(const QJsonObject& board);
     void playerReady(const QString& playerName);
 
     void rollDice(const QString& playerName, int d1, int d2);
