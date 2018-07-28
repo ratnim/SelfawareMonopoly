@@ -1,6 +1,7 @@
 #include "field.h"
 
 #include <QMetaEnum>
+#include <QJsonObject>
 
 FieldTypeStringConverter::FieldType FieldTypeStringConverter::typeByName(const QString& string)
 {
@@ -24,4 +25,9 @@ QString Field::name() const
 FieldType Field::type() const
 {
     return m_type;
+}
+
+QJsonObject Field::description() const
+{
+    return {};
 }

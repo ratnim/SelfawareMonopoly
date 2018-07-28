@@ -8,11 +8,9 @@
 
 class Player;
 
-class PropertyField : public Field
+class Street : public Field
 {
 public:
-    PropertyField();
-
     int group();
 
     int price();

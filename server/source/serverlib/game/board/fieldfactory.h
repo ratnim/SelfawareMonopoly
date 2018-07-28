@@ -11,7 +11,6 @@ class FieldFactory
     FieldFactory() = delete;
 
 public:
-   
+    
 	static std::unique_ptr<Field> create(const QJsonObject& specification);
-
 };

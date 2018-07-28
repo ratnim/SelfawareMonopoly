@@ -1,19 +1,20 @@
 #include <gmock/gmock.h>
 
-#include <QJsonObject>;
+#include <QJsonObject>
 
 #include <game/board/fieldfactory.h>
+#include <game/board/street.h>
 
 TEST(FieldFactoryTest, construct_field_start)
 {
     QJsonObject specification{
         { "name", "Start" },
-        { "type",  "start"}
+        { "type", "start" }
     };
 
     auto field = FieldFactory::create(specification);
 
-	EXPECT_EQ(FieldType::start, field->type());
+    EXPECT_EQ(FieldType::start, field->type());
     EXPECT_EQ("Start", field->name());
 }
 
@@ -28,6 +29,8 @@ TEST(FieldFactoryTest, construct_field_street)
 
     EXPECT_EQ(FieldType::street, field->type());
     EXPECT_EQ("TestStreet", field->name());
+    auto a = new Field("a", FieldType::street);
+    auto street = dynamic_cast<Street *>(a);
 }
 
 TEST(FieldFactoryTest, construct_field_station)
