@@ -29,7 +29,7 @@ export default {
   },
   methods : {
     move(fieldIndex) {
-      var fieldsPerLine = 6;
+      var fieldsPerLine = 10;
       var linesPerGame = 4;
 
       var line = Math.floor(fieldIndex / fieldsPerLine) % linesPerGame;
