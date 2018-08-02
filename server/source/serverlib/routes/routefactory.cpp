@@ -39,7 +39,7 @@ RouteFactory::Factory RouteFactory::routeFactory(const QString& routeName) const
     const auto& route = m_routes.find(routeName);
     if (route == m_routes.end())
     {
-        throw Exception(QString("'%1' is not valid.").arg(routeName), error::InvalidRoute);
+        throw Exception(QString("'%1' is not valid.").arg(routeName), Error::InvalidRoute);
     }
     return route->second;
 }

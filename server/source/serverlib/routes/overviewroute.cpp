@@ -20,7 +20,7 @@ void OverviewRoute::enterLobby(const QJsonValue& data)
     const auto player = rawPlayer.simplified().toHtmlEscaped();
     if (player.isEmpty())
     {
-        throw Exception("'data.player_name' is missing.", error::MalformedRequest);
+        throw Exception("'data.player_name' is missing.", Error::MalformedRequest);
     }
 
     static const int maxNameLength = 32;

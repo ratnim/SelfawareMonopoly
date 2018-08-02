@@ -7,14 +7,18 @@
 #include <routes/route.h>
 #include <utils/exception.h>
 
+namespace
+{
+QWebSocket dummy;
+}
+
 class SubRouteTest : public ::testing::Test, public Route
 {
 public:
     SubRouteTest()
-        : Route(nullptr)
+        : Route(&dummy)
     {
-        m_actions["test"] = [this](const QJsonValue& input)
-        {
+        m_actions["test"] = [this](const QJsonValue& input) {
             data = input;
             send("ok");
         };
@@ -41,14 +45,14 @@ TEST_F(SubRouteTest, non_json_message)
     EXPECT_TRUE(data.isNull());
 
     auto json = toJson(socket_spy.at(0).at(0).toString());
-    EXPECT_EQ(json["data"].toObject()["id"].toInt(), error::MalformedRequest);
+    EXPECT_EQ(json["data"].toObject()["id"].toInt(), Error::MalformedRequest);
 }
 
 TEST_F(SubRouteTest, unknown_action)
 {
     QSignalSpy socket_spy(this, &Watcher::send);
 
-    QJsonObject in({{"request", "someaction"}});
+    QJsonObject in({ { "request", "someaction" } });
 
     incommingMessage(QJsonDocument(in).toJson());
 
@@ -56,7 +60,7 @@ TEST_F(SubRouteTest, unknown_action)
     EXPECT_TRUE(data.isNull());
 
     auto json = toJson(socket_spy.at(0).at(0).toString());
-    EXPECT_EQ(json["data"].toObject()["id"].toInt(), error::UnsupportedAction);
+    EXPECT_EQ(json["data"].toObject()["id"].toInt(), Error::UnsupportedAction);
 }
 
 TEST_F(SubRouteTest, valid_message)

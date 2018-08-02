@@ -4,7 +4,7 @@ sudo: required
 dist: trusty
 
 install:
-- if [ "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
+- if [ "$CXX" = "g++" ]; then export CXX="g++-7" CC="gcc-7"; fi
 - if [ $TRAVIS_OS_NAME = linux ]; then
        source /opt/qt510/bin/qt510-env.sh
     ;
@@ -22,15 +22,13 @@ addons:
   apt:
     sources:
     - ubuntu-toolchain-r-test
-    - llvm-toolchain-precise-3.9
     - george-edison55-precise-backports
     - sourceline: 'ppa:beineri/opt-qt-5.10.1-trusty'
     packages:
     - cmake
     - cmake-data
-    - gcc-5
-    - g++-5
-    - clang-3.9
+    - gcc-7
+    - g++-7
     - cppcheck
     - qt510-meta-minimal
     - qt510websockets

@@ -12,31 +12,42 @@ message(STATUS "Lib ${target}")
 # 
 
 set(sources
-    actions/gamewatcher.cpp
-    actions/gamewatcher.h
-    actions/watcher.cpp
-    actions/watcher.h
-    actions/lobbywatcher.cpp
-    actions/lobbywatcher.h
-	game/dices.cpp
-	game/dices.h
+    watchers/gamewatcher.cpp
+    watchers/gamewatcher.h
+    watchers/watcher.cpp
+    watchers/watcher.h
+    watchers/lobbywatcher.cpp
+    watchers/lobbywatcher.h
+    game/board.cpp
+    game/board.h
+    game/dices.cpp
+    game/dices.h
     game/game.cpp
     game/game.h
+    game/gameinfo.cpp
+    game/gameinfo.h
+    game/gamelogic.cpp
+    game/gamelogic.h
     game/player.cpp
-    game/player.h
-    game/jail.cpp
-    game/jail.h
-    game/state/state.h
-    game/state/active.cpp
-    game/state/active.h
-    game/state/passive.cpp
-    game/state/passive.h
-    game/state/dead.cpp
-    game/state/dead.h
-    game/state/enter.cpp
-    game/state/enter.h
-    actions/gamewatcher.cpp
-    actions/gamewatcher.h
+    game/player.h   
+    game/watson.cpp
+    game/watson.h
+    game/state/gamestate.cpp
+    game/state/gamestate.h
+    game/state/endstate.cpp
+    game/state/endstate.h
+    game/state/initstate.cpp
+    game/state/initstate.h
+    game/state/runstate.cpp
+    game/state/runstate.h
+    game/state/turn/freestate.cpp
+    game/state/turn/freestate.h
+    game/state/turn/jailstate.cpp
+    game/state/turn/jailstate.h
+    game/state/turn/turnstate.cpp
+    game/state/turn/turnstate.h
+    game/state/turn/rollstate.cpp
+    game/state/turn/rollstate.h
     models/accountmodel.cpp
     models/accountmodel.h
     models/gamemodel.cpp
@@ -55,6 +66,7 @@ set(sources
     network/request.h
     network/websocketserver.cpp
     network/websocketserver.h
+    utils/budhist.h
     utils/configuration.cpp
     utils/configuration.h
     utils/database.cpp
@@ -63,6 +75,7 @@ set(sources
     utils/exception.h
     utils/program.cpp
     utils/program.h
+    utils/ringbuffer.h
     utils/staticstorage.h
 )
 
