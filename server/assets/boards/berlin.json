@@ -77,7 +77,7 @@
             "rent" : [10,50,150,450,625,750]
         },
         {
-            "name" : "Electric Company",
+            "name" : "Brandenburger Tor",
             "type" : "utility",
             "group" : 9,
             "price" : 150,
@@ -190,7 +190,7 @@
             "rent" : [22,110,330,800,975,1150]
         },
         {
-            "name" : "Water Works",
+            "name" : "Fernsehturm",
             "type" : "utility",
             "group" : 9,
             "price" : 150,

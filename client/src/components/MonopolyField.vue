@@ -1,10 +1,10 @@
 <template>
-<easel-container flip="" :x="x" :y="y" :align="['bottom', 'left']">
+<easel-container flip="" :x="x" :y="y" :align="['bottom', 'left']" :rotation="rotation">
   <easel-shape :x="0" :y="0" form="rect" :align="['bottom', 'left']" :fill="attributes.color" stroke="black" :dimensions="[fieldWidth, fieldLength]">
   </easel-shape>
   <easel-text
        :text="label"
-       font="15px 'Times New Roman'"
+       font="15px 'Helvetica'"
        align="['center', 'left']"
        :y="fieldLength/2"
        :x="10"
@@ -22,6 +22,7 @@ export default {
     y: Number,
     fieldWidth : Number,
     fieldLength : Number,
+    rotation : { type: Number, required: false, default: 0},
     attributes : { type: Object, required: false, default: {"color": "#1d1d1d"}}
   },
   data: function() {
