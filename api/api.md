@@ -120,6 +120,34 @@ __Incoming Events:__
 ```
 
 __Requests:__
+
+### Game Board
+Expects: 
+
+    {
+        "request" : "game_board"
+    }
+
+Returns:
+
+    {
+        "name" : "game_board",
+        "data" : {
+            fields : 
+            [
+                {
+                    name : <field_name>,
+                    type : < start | street | station | event_card | society_card | prison | free | go_to_prison | tax | utility >,
+                    group : < 0 | 1 | ... | 9 >,
+                    price : <price>,
+                    house_price : <price>,
+                    rent : [ <base_rent>, <one_house_rent>, ..., <hotel_rent> ]
+                },
+                ...
+            ]
+        } 
+    }
+
 ### Join Game
 Expects:
 
@@ -136,6 +164,7 @@ Returns:
             player_name : <player_name>
         }
     }
+
 ### Ready
 Expects:
 
