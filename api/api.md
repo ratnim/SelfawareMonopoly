@@ -133,7 +133,6 @@ Returns:
     {
         "name" : "game_board",
         "data" : {
-            board_name : <board_name>,
             fields : 
             [
                 {
