@@ -5,12 +5,9 @@
 #include <game/state/initstate.h>
 #include <models/boardmodel.h>
 
-Game::Game()
-    : m_board({})
+Game::Game(Board board)
+    : m_board(std::move(board))
 {
-    BoardModel::setBoardDir("./assets/boards");
-    auto& instance = BoardModel::instance();
-    m_board = std::move(instance.new_board("berlin.json"));
 	stateChange<InitState>(this);
 }
 

@@ -9,7 +9,7 @@ class Game : public QObject, public Budhist<GameState>
     Q_OBJECT
 
 public:
-    Game();
+    Game(Board board = Board({}));
 
     void join(const QString& playerName);
     void board();
