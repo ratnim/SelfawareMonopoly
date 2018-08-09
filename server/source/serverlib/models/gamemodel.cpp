@@ -1,16 +1,22 @@
 #include "gamemodel.h"
 
+#include <models/boardmodel.h>
 #include <utils/exception.h>
 
-GameObject::GameObject(const QString& label)
-    : watcher(game)
+GameObject::GameObject(const QString& label, Board board)
+    : game(std::move(board))
+	, watcher(game)
     , info(game, label)
 {
 }
 
-int GameModel::createGame(const QString& label)
+int GameModel::createGame(const QString& label, const QString& boardfile)
 {
-    m_games.emplace_back(std::make_unique<GameObject>(label));
+    Board board({});
+    if (!boardfile.isEmpty())
+		auto board = std::move(BoardModel::instance().newBoard(boardfile));
+
+    m_games.emplace_back(std::make_unique<GameObject>(label, std::move(board)));
     emit onCreateGame(m_games.back()->info);
     return static_cast<int>(m_games.size() - 1);
 }

@@ -27,7 +27,7 @@ void BoardModel::setBoardDir(const QString& path)
 	instance.reset(path);
 }
 
-Board BoardModel::new_board(const QString& filename) const
+Board BoardModel::newBoard(const QString& filename) const
 {
 	auto path = getPath(filename);
     auto json = loadBoardFile(path);

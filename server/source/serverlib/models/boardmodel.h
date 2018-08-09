@@ -11,7 +11,7 @@ public:
     BoardModel(const QString& boradDir);
     static void setBoardDir(const QString& path);
 
-    Board new_board(const QString& filename) const;
+    Board newBoard(const QString& filename) const;
 
 protected:
     QDir m_boardDir;
