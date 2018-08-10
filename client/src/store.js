@@ -81,9 +81,6 @@ export default new Vuex.Store({
     getNickname(state) {
       return state.nickname
     },
-    getGameList(state) {
-      return state.gameList
-    },
     getSessionId(state) {
       return state.sessionId;
     }
@@ -97,9 +94,6 @@ export default new Vuex.Store({
     },
     setNickname(state, payload) {
       state.nickname = payload
-    },
-    setGameList(state, payload) {
-      state.gameList = payload
     },
     setSessionId(state, payload) {
       state.sessionId = payload;

@@ -21,7 +21,7 @@ import {
   mapGetters
 } from 'vuex'
 
-import * as homeConnection from '../storePlugins/homeConnection'
+import * as homeConnection from '../sockets/homeConnection'
 
 
 export default {
