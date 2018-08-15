@@ -11,28 +11,29 @@ namespace
 const QString player("Heinz");
 }
 
-class RunStateTest : public ::testing::Test, public Program
+TEST(RunStateTest, start_game)
 {
-public:
-    std::unique_ptr<RunState> construct()
-    {
-        return std::make_unique<RunState>(&game, std::vector<Player>({ { player } }));
-    }
-
-protected:
     Game game;
-};
 
-TEST_F(RunStateTest, start_game)
-{
     QSignalSpy start_spy(&game, &Game::onGameStart);
     QSignalSpy turn_spy(&game, &Game::onTurnChange);
 
-    auto state = construct();
-
-    EXPECT_EQ(state->player().name, player);
+	game.stateChange<RunState>(&game, std::vector<Player>({ { player } }));
 
     EXPECT_EQ(start_spy.size(), 1);
     EXPECT_EQ(turn_spy.size(), 1);
-    EXPECT_EQ(turn_spy.at(0).at(0).toString(), player);
+}
+
+TEST(RunStateTest, roll_dice)
+{
+    Game game;
+    game.stateChange<RunState>(&game, std::vector<Player>({ { player } }));
+
+    QSignalSpy roll_spy(&game, &Game::onRollDice);
+    QSignalSpy move_spy(&game, &Game::onPlayerMove);
+
+    game.rollDice(player);
+
+    EXPECT_EQ(roll_spy.size(), 1);
+    EXPECT_EQ(move_spy.size(), 1);
 }
