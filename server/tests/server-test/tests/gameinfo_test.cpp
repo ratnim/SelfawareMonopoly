@@ -29,11 +29,11 @@ TEST_F(GameInfoTest, store_state)
 
     QSignalSpy change_spy(&gameWrapper.info, &GameInfo::change);
 
-    EXPECT_EQ(gameWrapper.info.state(), "initialized");
+    EXPECT_EQ(gameWrapper.info.state(), GameInfo::GameState::INTIALIZED);
     gameWrapper.game.onGameStart();
-    EXPECT_EQ(gameWrapper.info.state(), "started");
+    EXPECT_EQ(gameWrapper.info.state(), GameInfo::GameState::STARTED);
     gameWrapper.game.onGameEnd();
-    EXPECT_EQ(gameWrapper.info.state(), "finished");
+    EXPECT_EQ(gameWrapper.info.state(), GameInfo::GameState::FINISHED);
 
     EXPECT_EQ(change_spy.size(), 2);
 }

@@ -6,10 +6,17 @@ class GameInfo : public QObject
 {
     Q_OBJECT
 public:
+    enum GameState
+    {
+        INTIALIZED,
+        STARTED,
+        FINISHED
+    };
+
     GameInfo(const Game& game, const QString& label);
 
     QString label() const;
-    QString state() const;
+    GameState state() const;
     std::vector<QString> players() const;
 
 signals:
@@ -21,6 +28,6 @@ protected:
     void gameEnd();
 
     const QString m_label;
-    QString m_state;
+    GameState m_state;
     std::vector<QString> m_players;
 };

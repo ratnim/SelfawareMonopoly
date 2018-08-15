@@ -79,7 +79,7 @@ enum PriceCategory
     HOUSE_3 = 3,
     HOUSE_4 = 4,
     HOTEL = 5,
-}
+};
 
 class StreetInfo
 {
