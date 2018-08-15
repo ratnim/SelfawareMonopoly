@@ -32,7 +32,7 @@
                   <div class="md-layout-item md-alignment-center-center">
                     <md-field>
                       <label for="nickname">Nickname</label>
-                      <md-input name="nickname" v-model="nickname" />
+                      <md-input ref="nickname" name="nickname" v-model="nickname" />
                     </md-field>
                   </div>
                 </div>
@@ -78,7 +78,7 @@ import {
   mapGetters
 } from 'vuex'
 
-import LobbyConnection from '../sockets/lobbyConnection';
+import LobbyConnection from '@/sockets/lobbyConnection';
 import HomeConnection from '@/sockets/homeConnection';
 
 
@@ -93,29 +93,38 @@ export default {
         first: false,
         second: false
       },
-      nickname: '',
       statusMap: ["Open", "Started", "Ended"],
       showNewGameName: false,
       newGameName: '',
       games: [],
       showError: false,
-      errorMessage: ''
+      errorMessage: '',
+      nickname: ''
     }
   },
   computed: {
     ...mapGetters({
       sessionId: 'getSessionId'
     })
+    // nickname: {
+    //   get: function() {
+    //     return this.$store.getNickname();
+    //   },
+    //   set: function(newName) {
+    //     this.$store.commit("setNickname", newName);
+    //   }
+    // }
   },
 
   created() {
-
+    this.nickname = this.$route.query.nickname || this.$store.state.nickname;
     this.homeConnection = new HomeConnection({
       enter_lobby: this.onAccountCreated,
       error: this.onError
     });
-
-    //lobbyConnection.onError(this.onError);
+    if (this.nickname && this.sessionId) { //skip the first step
+      this.onAccountCreated({data: {session: this.sessionId}});
+    }
   },
   beforeRouteLeave(to, from, next) {
     if (this.lobbyConnection) {
@@ -127,6 +136,7 @@ export default {
 
   methods: {
     createAccount() {
+      console.log(this.nickname);
       this.homeConnection.createAccount(this.nickname);
     },
     onAccountCreated(data) {

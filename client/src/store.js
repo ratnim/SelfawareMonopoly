@@ -60,14 +60,8 @@ const vueAuth = new VueAuthenticate(Vue.prototype.$http, {
 export default new Vuex.Store({
   plugins: [vuexLocalStorage.plugin],
   state: {
-    socket: {
-      isConnected: false,
-      message: '',
-      reconnectError: false,
-    },
     sessionId: '',
     nickname : '',
-    gameList: [],
     isAuthenticated: false,
     tokens: {'instagram' : null, 'facebook' : null, 'google': null}
   },

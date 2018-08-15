@@ -55,7 +55,7 @@ import {
   mapGetters
 } from 'vuex'
 
-import * as gameConnection from '../storePlugins/gameConnection'
+import GameConnection from '@/sockets/gameConnection'
 
 import MonopolyField from '@/components/MonopolyField'
 import MonopolyPlayer from '@/components/MonopolyPlayer'
@@ -72,10 +72,14 @@ export default {
   },
   data: function() {
     return {
+      gameConnection: null,
       game: game,
       dice1: null,
       dice2: null,
       players: [],
+      possible_actions: {
+
+      },
       canvas: {
         margin: 2
       }
@@ -97,20 +101,21 @@ export default {
   },
 
   created() {
-    gameConnection.connect(this.$route.query.game_id, this.sessionId);
-    gameConnection.joinGame();
-
-    gameConnection.onDiceRolled(this.onDiceRolled);
-    gameConnection.onPlayerJoined(this.onPlayerJoined);
-    gameConnection.onPlayerMoved(this.onPlayerMoved);
-    gameConnection.onPlayerReady(this.onPlayerReady);
-    gameConnection.onGameStarted(this.onGameStarted);
-    gameConnection.onGameEnded(this.onGameEnded);
-    gameConnection.onTurnChanged(this.onTurnChanged);
-    gameConnection.onError(this.onError);
+    debugger;
+    this.gameConnection = new GameConnection(this.$route.query.game_id, this.sessionId, {});
+    // gameConnection.joinGame();
+    //
+    // gameConnection.onDiceRolled(this.onDiceRolled);
+    // gameConnection.onPlayerJoined(this.onPlayerJoined);
+    // gameConnection.onPlayerMoved(this.onPlayerMoved);
+    // gameConnection.onPlayerReady(this.onPlayerReady);
+    // gameConnection.onGameStarted(this.onGameStarted);
+    // gameConnection.onGameEnded(this.onGameEnded);
+    // gameConnection.onTurnChanged(this.onTurnChanged);
+    // gameConnection.onError(this.onError);
   },
   beforeRouteLeave(to, from, next) {
-    gameConnection.disconnect();
+    //gameConnection.disconnect();
     next();
   },
 
@@ -118,7 +123,7 @@ export default {
     rollDice: function() {
       this.$refs.dice1.animate();
       this.$refs.dice2.animate();
-      gameConnection.rollDice();
+      this.gameConnection.rollDice();
     },
     setReady: function() {
       gameConnection.setReady();
