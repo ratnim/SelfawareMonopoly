@@ -2,7 +2,7 @@
 
 #include <QJsonDocument>
 
-#include <actions/lobbywatcher.h>
+#include <watchers/lobbywatcher.h>
 #include <models/accountmodel.h>
 #include <models/gamemodel.h>
 #include <utils/exception.h>
@@ -31,7 +31,7 @@ void LobbyRoute::createGame(const QJsonValue& body)
     const auto label = body[QString("game_label")].toString();
     if (label.isEmpty())
     {
-        throw Exception("data.game_label is missing.", error::MalformedRequest);
+        throw Exception("data.game_label is missing.", Error::MalformedRequest);
     }
 
     const auto gameId = GameModel::instance().createGame(label);

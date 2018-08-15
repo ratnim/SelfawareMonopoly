@@ -3,7 +3,7 @@
 #include <QJsonArray>
 #include <QJsonObject>
 
-#include <actions/watcher.h>
+#include <watchers/watcher.h>
 
 class Game;
 
@@ -20,7 +20,7 @@ protected:
     void playerJoin(const QString& playerName);
     void playerReady(const QString& playerName);
 
-    void rollDice(int d1, int d2);
+    void rollDice(const QString& playerName, int d1, int d2);
     void playerMove(const QString& playerName, int distance);
     void changeTurn(const QString& movingPlayer);
 
@@ -29,6 +29,5 @@ protected:
 
     static QString toString(const QJsonObject& object);
 
-    const Game& m_game;
     std::vector<QString> m_messages;
 };

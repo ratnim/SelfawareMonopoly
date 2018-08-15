@@ -3,6 +3,7 @@
 #include <QJsonDocument>
 
 #include <models/gamemodel.h>
+#include <game/gameinfo.h>
 
 LobbyWatcher::LobbyWatcher()
 {
@@ -34,15 +35,13 @@ void LobbyWatcher::watchAllGames()
     auto& model = GameModel::instance();
     for (int i = 0; i < model.numberOfGames(); ++i)
     {
-        watchGame(model.openGame(i));
+        watchGame(model.open(i).info);
     }
 }
 
-void LobbyWatcher::watchGame(Game& game)
+void LobbyWatcher::watchGame(const GameInfo& info)
 {
-    connect(&game, &Game::onPlayerJoin, this, &LobbyWatcher::updateLobby);
-    connect(&game, &Game::onGameStart, this, &LobbyWatcher::updateLobby);
-    connect(&game, &Game::onGameEnd, this, &LobbyWatcher::updateLobby);
+    connect(&info, &GameInfo::change, this, &LobbyWatcher::updateLobby);
 }
 
 void LobbyWatcher::updateLobby()
@@ -52,22 +51,22 @@ void LobbyWatcher::updateLobby()
 
 QJsonObject LobbyWatcher::toJson(int gameId)
 {
-    auto& game = GameModel::instance().openGame(gameId);
+    auto& game = GameModel::instance().open(gameId).info;
 
     QJsonObject description;
     description["game_id"] = gameId;
     description["player_list"] = toArray(game.players());
-    description["game_status"] = game.state();
+    description["game_status"] = GamePhaseStringConverter::nameByState(game.phase());
     description["game_label"] = game.label();
     return description;
 }
 
-QJsonArray LobbyWatcher::toArray(const std::map<QString, Player>& players)
+QJsonArray LobbyWatcher::toArray(const std::vector<QString>& players)
 {
     QJsonArray array;
     for (auto& player : players)
     {
-        array.push_back(player.first);
+        array.push_back(player);
     }
     return array;
 }

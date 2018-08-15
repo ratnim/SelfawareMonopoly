@@ -8,3 +8,7 @@ This app uses Vue.js including vue-router, vuex, e2e-testing and service workers
 `npm install`
 
 `npm run serve`
+
+## Resources
+
+https://vuematerial.io/

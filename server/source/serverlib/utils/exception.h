@@ -7,7 +7,7 @@ class ErrorStringConverter : QObject
 {
     Q_OBJECT
 public:
-    enum error
+    enum Error
     {
         NoError = 0,
         InvalidRoute,
@@ -16,21 +16,21 @@ public:
         InvalidRequest,
         InternalError,
     };
-    Q_ENUM(error)
+    Q_ENUM(Error)
 };
 
-using error = ErrorStringConverter::error;
+using Error = ErrorStringConverter::Error;
 
 class Exception
 {
 public:
-    Exception(const QString& message, error code = error::InvalidRequest);
+    Exception(const QString& message, Error code = Error::InvalidRequest);
 
     QString json() const;
 
 protected:
-    static QString errorString(error code);
+    static QString errorString(Error code);
 
     const QString m_message;
-    const error m_code;
+    const Error m_code;
 };

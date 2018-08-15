@@ -1,6 +1,6 @@
 #include "program.h"
 
-#include <actions/lobbywatcher.h>
+#include <watchers/lobbywatcher.h>
 #include <models/accountmodel.h>
 #include <models/gamemodel.h>
 #include <utils/database.h>
