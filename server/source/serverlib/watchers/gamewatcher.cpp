@@ -1,5 +1,7 @@
 #include "gamewatcher.h"
 
+#include <iostream>
+
 #include <QJsonDocument>
 
 #include <game/game.h>
@@ -26,6 +28,7 @@ const std::vector<QString>& GameWatcher::messages() const
 void GameWatcher::event(const QString& message)
 {
     m_messages.push_back(message);
+    std::cout << "Send: " + message.toStdString() << std::endl;
     emit send(message);
 }
 
