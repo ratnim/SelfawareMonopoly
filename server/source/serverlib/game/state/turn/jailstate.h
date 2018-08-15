@@ -7,5 +7,5 @@ class JailState : public TurnState
 public:
     JailState(TurnState* state);
 
-    void rollDice() override;
+    virtual void rollDice();
 };

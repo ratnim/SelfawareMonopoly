@@ -17,10 +17,13 @@ public:
     void movePlayer(int distance, bool canRollAgain = false, int rollCount = 1);
     Dices roll();
 
-    void free();
+    void idle();
     void end();
 
 protected:
+    void nextPlayer();
+    void prepareTurnState();
+
     Game* m_game;
     RunState* m_state;
 };

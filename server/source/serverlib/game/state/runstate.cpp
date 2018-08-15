@@ -9,7 +9,7 @@ RunState::RunState(Game* game, std::vector<Player> players)
     , m_logic(game, this)
 {
     emit game->onGameStart();
-    emit game->onTurnChange(m_players().name);
+    emit game->onTurnChange(m_players().name());
 
     stateChange<RollState>(&m_logic);
 }
@@ -43,7 +43,7 @@ void RunState::endTurn(const QString& playerName)
 
 void RunState::checkPlayer(const QString& playerName)
 {
-    if (m_players().name != playerName)
+    if (m_players().name() != playerName)
     {
         throw Exception("Not your turn.");
     }

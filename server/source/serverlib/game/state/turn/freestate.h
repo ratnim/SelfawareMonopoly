@@ -7,5 +7,5 @@ class FreeState : public TurnState
 public:
     FreeState(TurnState* state);
 
-    void endTurn() override;
+    virtual void endTurn();
 };

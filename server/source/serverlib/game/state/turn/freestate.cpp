@@ -2,6 +2,7 @@
 
 #include <game/game.h>
 
+
 FreeState::FreeState(TurnState* state)
     : TurnState(*state)
 {
