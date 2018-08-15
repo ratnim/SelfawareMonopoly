@@ -4,7 +4,7 @@
 #include <QJsonObject>
 #include <QMetaEnum>
 
-Exception::Exception(const QString& message, error code)
+Exception::Exception(const QString& message, Error code)
     : m_message(message)
     , m_code(code)
 {
@@ -22,8 +22,8 @@ QString Exception::json() const
     return QJsonDocument(answer).toJson();
 }
 
-QString Exception::errorString(error code)
+QString Exception::errorString(Error code)
 {
-    const auto conversion = QMetaEnum::fromType<error>();
+    const auto conversion = QMetaEnum::fromType<Error>();
     return QString(conversion.valueToKey(code));
 }
