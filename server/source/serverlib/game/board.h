@@ -34,7 +34,7 @@ class Field
 public:
     Field(const QString& name, FieldType type);
 
-    QString name() const;
+    const QString& name() const;
     FieldType type() const;
 
 protected:
