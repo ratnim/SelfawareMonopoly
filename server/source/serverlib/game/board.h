@@ -71,13 +71,23 @@ protected:
     Player* m_owner;
 };
 
+enum PriceCategory
+{
+    BASE = 0,
+    HOUSE_1 = 1,
+    HOUSE_2 = 2,
+    HOUSE_3 = 3,
+    HOUSE_4 = 4,
+    HOTEL = 5,
+}
+
 class StreetInfo
 {
 public:
 protected:
     QString m_name;
     int m_group;
-    std::array<int, 6> m_prices;
+    std::array<int, PriceCategory::HOTEL + 1> m_prices;
 };
 
 class Board
