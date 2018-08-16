@@ -4,6 +4,7 @@
 
 struct Request
 {
+    Request(const QString& route, const QString& session, int gameId);
     static Request fromUrl(const QString& url);
 
     const QString route;
