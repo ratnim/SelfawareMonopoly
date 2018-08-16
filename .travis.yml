@@ -13,7 +13,7 @@ jobs:
   - stage: build & test
     script: 
       - docker-compose build 
-      - docker run --entrypoint "/bin/bash" selfaware-monopoly-server /usr/src/app/server/ci_test.sh 
+      - docker run --entrypoint "/bin/bash" selfaware-monopoly-server cd /usr/src/app/server && ci_test.sh 
 
   - stage: deploy
     script: echo " ... deploy ... "
