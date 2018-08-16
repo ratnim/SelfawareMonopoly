@@ -14,7 +14,7 @@ int GameModel::createGame(const QString& label, const QString& boardfile)
 {
     Board board({});
     if (!boardfile.isEmpty())
-		auto board = std::move(BoardModel::instance().newBoard(boardfile));
+		board = std::move(BoardModel::instance().newBoard(boardfile));
 
     m_games.emplace_back(std::make_unique<GameObject>(label, std::move(board)));
     emit onCreateGame(m_games.back()->info);
