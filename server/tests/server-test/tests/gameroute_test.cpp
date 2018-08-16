@@ -40,7 +40,7 @@ TEST(GameRouteTest, request_board)
 
 TEST(GameRouteTest, request_non_empty_board)
 {
-	BoardModel::setBoardDir("./../../../assets/boards");
+	BoardModel::setBoardDir("./assets/boards");
     auto session = AccountModel::instance().createSession("request_non_empty_board_tester");
     auto gameId = GameModel::instance().createGame("request_non_empty_board_game", "berlin.json");
     Request request("game", session, gameId);
