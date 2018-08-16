@@ -1,5 +1,7 @@
 #include "route.h"
 
+#include <iostream>
+
 #include <QJsonDocument>
 
 #include <utils/exception.h>
@@ -12,6 +14,7 @@ Route::Route(QWebSocket* parent)
 
 void Route::incommingMessage(const QString& message)
 {
+    std::cout << "Recieved: " + message.toStdString() << std::endl;
     try
     {
         const auto json = toJson(message);
@@ -22,6 +25,7 @@ void Route::incommingMessage(const QString& message)
     }
     catch (const Exception &e)
     {
+        std::cout << "Send: " + e.json().toStdString() << std::endl;
         emit send(e.json());
     }
 }

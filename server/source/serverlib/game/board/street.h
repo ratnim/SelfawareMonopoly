@@ -8,6 +8,16 @@
 
 class Player;
 
+enum ConstructionLevel
+{
+    BASE = 0,
+    HOUSE_1 = 1,
+    HOUSE_2 = 2,
+    HOUSE_3 = 3,
+    HOUSE_4 = 4,
+    HOTEL = 5,
+};
+
 class Street : public Field
 {
 public:
@@ -28,5 +38,5 @@ public:
 protected:
     QString m_name;
     int m_group;
-    std::array<int, 6> m_prices;
+    std::array<int, ConstructionLevel::HOTEL + 1> m_prices;
 };

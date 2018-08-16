@@ -3,6 +3,7 @@
 #include <game/dices.h>
 #include <game/game.h>
 
+
 RollState::RollState(TurnState* state, GameLogic* logic)
     : TurnState(logic)
     , m_rollCount(0)

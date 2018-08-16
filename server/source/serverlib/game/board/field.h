@@ -28,7 +28,6 @@ public:
 
 using FieldType = FieldTypeStringConverter::FieldType;
 
-
 class Field
 {
 public:

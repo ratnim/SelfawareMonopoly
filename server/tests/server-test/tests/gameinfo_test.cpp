@@ -29,14 +29,31 @@ TEST_F(GameInfoTest, store_state)
 
     QSignalSpy change_spy(&gameWrapper.info, &GameInfo::change);
 
-    EXPECT_EQ(gameWrapper.info.state(), "initialized");
+    EXPECT_EQ(gameWrapper.info.phase(), GamePhase::INITIALIZED);
     gameWrapper.game.onGameStart();
-    EXPECT_EQ(gameWrapper.info.state(), "started");
+    EXPECT_EQ(gameWrapper.info.phase(), GamePhase::STARTED);
     gameWrapper.game.onGameEnd();
-    EXPECT_EQ(gameWrapper.info.state(), "finished");
+    EXPECT_EQ(gameWrapper.info.phase(), GamePhase::FINISHED);
 
     EXPECT_EQ(change_spy.size(), 2);
 }
+
+TEST_F(GameInfoTest, convert_state)
+{
+    QString initialized_name = "initialized";
+    QString started_name = "started";
+    QString finished_name = "finished";
+	
+    EXPECT_EQ(GamePhase::INITIALIZED, GamePhaseStringConverter::stateByName(initialized_name));
+    EXPECT_EQ(GamePhase::STARTED, GamePhaseStringConverter::stateByName(started_name));
+    EXPECT_EQ(GamePhase::FINISHED, GamePhaseStringConverter::stateByName(finished_name));
+	
+	EXPECT_EQ(initialized_name, GamePhaseStringConverter::nameByState(GamePhase::INITIALIZED));
+    EXPECT_EQ(started_name, GamePhaseStringConverter::nameByState(GamePhase::STARTED));
+    EXPECT_EQ(finished_name, GamePhaseStringConverter::nameByState(GamePhase::FINISHED));
+}
+
+   
 
 TEST_F(GameInfoTest, store_players)
 {

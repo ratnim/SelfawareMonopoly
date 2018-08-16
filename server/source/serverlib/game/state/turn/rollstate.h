@@ -8,7 +8,7 @@ public:
     RollState(TurnState* state, GameLogic* logic);
     RollState(TurnState* state, int rollCount = 0);
 
-    void rollDice() override;
+    virtual void rollDice();
 
 protected:
     int m_rollCount;
