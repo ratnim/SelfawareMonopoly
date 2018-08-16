@@ -76,14 +76,14 @@ TEST(FieldFactoryTest, construct_field_society_card)
 TEST(FieldFactoryTest, construct_field_prison)
 {
     QJsonObject specification{
-        { "name", "Prison" },
-        { "type", "prison" }
+        { "name", "Jail" },
+        { "type", "jail" }
     };
 
     auto field = FieldFactory::create(specification);
 
-    EXPECT_EQ(FieldType::prison, field->type());
-    EXPECT_EQ("Prison", field->name());
+    EXPECT_EQ(FieldType::jail, field->type());
+    EXPECT_EQ("Jail", field->name());
 }
 
 TEST(FieldFactoryTest, construct_field_free_parking)
@@ -102,14 +102,14 @@ TEST(FieldFactoryTest, construct_field_free_parking)
 TEST(FieldFactoryTest, construct_field_go_to_prison)
 {
     QJsonObject specification{
-        { "name", "Go to Prison" },
-        { "type", "go_to_prison" }
+        { "name", "Go to Jail" },
+        { "type", "go_to_jail" }
     };
 
     auto field = FieldFactory::create(specification);
 
-    EXPECT_EQ(FieldType::go_to_prison, field->type());
-    EXPECT_EQ("Go to Prison", field->name());
+    EXPECT_EQ(FieldType::go_to_jail, field->type());
+    EXPECT_EQ("Go to Jail", field->name());
 }
 
 TEST(FieldFactoryTest, construct_field_tax)

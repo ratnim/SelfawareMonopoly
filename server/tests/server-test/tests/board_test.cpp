@@ -13,7 +13,7 @@ TEST(BoardTest, get_description)
 {
     std::vector<std::unique_ptr<Field>>fields;
     fields.push_back(std::move(std::make_unique<Field>("first", FieldType::start)));
-    fields.push_back(std::move(std::make_unique<Field>("second", FieldType::prison)));
+    fields.push_back(std::move(std::make_unique<Field>("second", FieldType::jail)));
     Board board(std::move(fields));
     auto description = board.description();
 
