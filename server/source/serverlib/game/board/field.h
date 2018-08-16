@@ -14,9 +14,9 @@ public:
         station,
         event_card,
         society_card,
-        prison,
+        jail,
         free,
-        go_to_prison,
+        go_to_jail,
         tax,
         utility
     };
