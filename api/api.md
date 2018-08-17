@@ -137,7 +137,7 @@ Returns:
             [
                 {
                     name : <field_name>,
-                    type : < start | street | station | event_card | society_card | prison | free | go_to_prison | tax | utility >,
+                    type : < start | street | station | event_card | society_card | jail | free | go_to_jail | tax | utility >,
                     group : < 0 | 1 | ... | 9 >,
                     price : <price>,
                     house_price : <price>,

@@ -46,6 +46,7 @@ WORKDIR /usr/src/app/server
 COPY ./source ./source
 COPY ./cmake ./cmake
 COPY ./tests ./tests
+COPY ./assets ./assets
 COPY ./CMakeLists.txt ./CMakeLists.txt
 
 # CI test file

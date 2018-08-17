@@ -1,12 +1,13 @@
 #pragma once
 
 #include <game/gameinfo.h>
-#include <watchers/gamewatcher.h>
+#include <game/board/board.h>
 #include <utils/staticstorage.h>
+#include <watchers/gamewatcher.h>
 
 struct GameObject
 {
-    GameObject(const QString& label);
+    GameObject(const QString& label, Board board);
 
     Game game;
     GameWatcher watcher;
@@ -17,7 +18,7 @@ class GameModel : public QObject, public StaticStorage<GameModel>
 {
     Q_OBJECT
 public:
-    int createGame(const QString& label);
+    int createGame(const QString& label, const QString& boardfile = "");
     int numberOfGames() const;
     GameObject& open(int gameId);
 

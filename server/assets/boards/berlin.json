@@ -209,7 +209,7 @@
             "type" : "go_to_jail"
         },
         {
-            "name" : "Schöneberg",
+            "name" : "Schoeneberg",
             "type" : "street",
             "group" :  6,
             "price" : 300,
