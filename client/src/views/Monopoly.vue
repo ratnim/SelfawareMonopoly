@@ -32,7 +32,7 @@
           :rotation="270"></MonopolyField>
 
         <!--the players -->
-        <!-- <MonopolyPlayer v-for="player in players" :key="player.id" :color="player.color" :fieldLength="fieldLength" ref="players"></MonopolyPlayer> -->
+        <MonopolyPlayer v-for="player in players" :key="player.id" :color="player.color" :fieldLength="fieldLength" ref="monopolyPlayers"></MonopolyPlayer>
 
 
         <Dice :x="300-30" :y="300" ref="dice1"></Dice>
@@ -169,6 +169,16 @@ export default {
           color: this.getRandomColor()
         });
       };
+      //translate players in game grafic
+      if (this.$refs.monopolyPlayers) {
+        let pCount = this.players.length;
+        let step = 2*Math.PI/pCount;
+        for (var i = 0; i < this.$refs.monopolyPlayers.length; i++) {
+          this.$refs.monopolyPlayers[i].x = 2+this.fieldLength/2 + 25*Math.sin((i+1)*step);
+          this.$refs.monopolyPlayers[i].y = 600-4-this.fieldLength/2-10 + 25*Math.cos((i+1)*step);
+        }
+      }
+
     },
     onPlayerMoved: function(playerName, distance) {
       for (var i = 0; i < this.players.length; i++) {
@@ -505,8 +515,6 @@ export default {
         }
       });
       setTimeout(() => homeConnection.createAccount("The Joker No." + Math.round(Math.random() * 100000)), 300);
-      //this.gameConnection.createAccount("The Joker");
-      //this.gameConnection.createAccount("The Joker");
 
     }
   }
