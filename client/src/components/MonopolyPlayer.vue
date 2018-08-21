@@ -28,31 +28,9 @@ export default {
     this.y = 600 - 10 - this.fieldLength / 2;
   },
   methods : {
-    move(fieldIndex) {
-      var fieldsPerLine = 10;
-      var linesPerGame = 4;
-
-      var line = Math.floor(fieldIndex / fieldsPerLine) % linesPerGame;
-      var fieldInLine = fieldIndex % fieldsPerLine;
-      var fieldOffset = this.fieldLength / 2;
-      var gameOffset = 10;
-
-      if (line == 0) {
-        this.x = fieldOffset;
-        this.y = 600 - (gameOffset + fieldOffset + fieldInLine * this.fieldLength);
-      }
-      else if (line == 1) {
-        this.x = fieldOffset + fieldInLine * this.fieldLength;
-        this.y = fieldOffset;
-      }
-      else if (line == 2) {
-        this.x = 600 - (gameOffset + fieldOffset);
-        this.y = fieldOffset + fieldInLine * this.fieldLength;
-      }
-      else if (line == 3) {
-        this.x = 600 - (gameOffset + fieldOffset + fieldInLine * this.fieldLength);
-        this.y = 600 - (gameOffset + fieldOffset);
-      } 
+    move(x, y) {
+      this.x = x;
+      this.y = y;
     }
   }
 }

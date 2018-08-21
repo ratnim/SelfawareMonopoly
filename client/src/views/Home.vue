@@ -1,6 +1,8 @@
 <template>
 <div class="home">
+<h1>GO TO /lobby !!!</h1>
   <h1>The more we get, the more you get</h1>
+
   <div v-for="(token, provider) in tokens">
     <button @click="authenticate(provider)" v-bind:disabled="tokens[provider]">Login with {{provider}}</button>
   </div>
@@ -8,11 +10,6 @@
   <div v-for="(token, provider) in tokens" v-show="token">
     {{provider}} : {{token}}
   </div>
-  <md-field>
-    <label for="nickname">Nickname</label>
-    <md-input name="nickname" v-model="nickname" />
-  </md-field>
-  <md-button class="md-raised md-primary" :disabled="!nickname" @click="createAccount()">join</md-button>
 </div>
 </template>
 
@@ -21,7 +18,7 @@ import {
   mapGetters
 } from 'vuex'
 
-import * as homeConnection from '../storePlugins/homeConnection'
+import * as homeConnection from '../sockets/homeConnection'
 
 
 export default {
