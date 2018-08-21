@@ -1,11 +1,10 @@
-
 //websocket
 
 // Helper
 function createJSON(request, data) {
   var JSONObject = {
-    'request' : request,
-    'data' : data
+    'request': request,
+    'data': data
   };
   return JSON.stringify(JSONObject, null, '\t');
 }
@@ -18,21 +17,23 @@ export default class GameConnection {
     this.socket = new WebSocket(process.env.VUE_APP_WEBSOCKET_URL + '/game?game_id=' + gameId + '&session=' + sessionId);
     this.eventHandlers = eventHandlers;
     this.socket.onmessage = (event) => this.handleResponse(event);
-    var request = { 'request' : 'join_game' };
-
     if (this.socket.readyState == 1) {
-      this.socket.send(JSON.stringify(request));
-    } else {
-      this.socket.onopen = () => {
-        this.socket.send(JSON.stringify(request));
+        this.joinGame();
+        this.requestGameboard();
+      } else {
+        this.socket.onopen = () => {
+          this.joinGame();
+          this.requestGameboard();
+        }
       }
-    }
   }
 
   handleResponse(event) {
     var JSONObject = JSON.parse(event.data);
     if (this.eventHandlers.hasOwnProperty(JSONObject.name)) {
       this.eventHandlers[JSONObject.name](JSONObject.data);
+    } else if (this.eventHandlers.hasOwnProperty("fallback")) {
+      this.eventHandlers["fallback"](JSONObject.data);
     } else {
       console.error("Missing event handler for event ", event.data);
     }
@@ -42,11 +43,14 @@ export default class GameConnection {
     this.socket.close();
   }
 
-  createAccount(name) {
-    var request = 'enter_lobby';
-    var data = { 'player_name' : name };
+  requestGameboard() {
+    var request = 'game_board';
+    this.socket.send(createJSON(request, {}));
+  }
 
-    this.socket.send(createJSON(request, data));
+  joinGame() {
+    var request = 'join_game';
+    this.socket.send(createJSON(request, {}));
   }
 }
 
