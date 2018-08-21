@@ -31,11 +31,10 @@ export default class GameConnection {
 
   handleResponse(event) {
     var JSONObject = JSON.parse(event.data);
-    debugger;
     if (this.eventHandlers.hasOwnProperty(JSONObject.name)) {
       this.eventHandlers[JSONObject.name](JSONObject.data);
     } else {
-      console.error("Missing event handler for event ", event);
+      console.error("Missing event handler for event ", event.data);
     }
   }
 

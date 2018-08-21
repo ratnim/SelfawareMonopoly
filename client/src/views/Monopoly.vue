@@ -101,18 +101,11 @@ export default {
   },
 
   created() {
-    debugger;
-    this.gameConnection = new GameConnection(this.$route.query.game_id, this.sessionId, {});
-    // gameConnection.joinGame();
-    //
-    // gameConnection.onDiceRolled(this.onDiceRolled);
-    // gameConnection.onPlayerJoined(this.onPlayerJoined);
-    // gameConnection.onPlayerMoved(this.onPlayerMoved);
-    // gameConnection.onPlayerReady(this.onPlayerReady);
-    // gameConnection.onGameStarted(this.onGameStarted);
-    // gameConnection.onGameEnded(this.onGameEnded);
-    // gameConnection.onTurnChanged(this.onTurnChanged);
-    // gameConnection.onError(this.onError);
+    let handlers = {
+      "join_game": this.onPlayerJoined
+    }
+    this.gameConnection = new GameConnection(this.sessionId, this.$route.query.game_id, handlers);
+
   },
   beforeRouteLeave(to, from, next) {
     //gameConnection.disconnect();
