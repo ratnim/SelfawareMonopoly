@@ -49,6 +49,14 @@
       <md-button @click="startGame()">START GAME</md-button>
     </div>
   </div>
+
+  <div class="">
+    <h1>DEV TOOLS</h1>
+    <md-button @click="__addFakePlayer()">add a fake player</md-button>
+
+
+
+  </div>
 </div>
 </template>
 
@@ -58,6 +66,8 @@ import {
 } from 'vuex'
 
 import GameConnection from '@/sockets/gameConnection'
+import HomeConnection from '@/sockets/homeConnection' // just for DEV
+import LobbyConnection from '@/sockets/lobbyConnection' // just for DEV
 
 import MonopolyField from '@/components/MonopolyField'
 import MonopolyPlayer from '@/components/MonopolyPlayer'
@@ -176,6 +186,17 @@ export default {
     },
     getRandomColor: function() {
       return "rgb(" + Math.round(Math.random()*255) + ", " + Math.round(Math.random()*255) + ", " + Math.round(Math.random()*255) + ")";
+
+    },
+
+    __addFakePlayer: function() {
+      let gameConnection; //TODO add auto rolldice if roll dice in possible_actions
+      let homeConnection = new HomeConnection({
+        enter_lobby: (data) => {gameConnection = new GameConnection(data.session, this.$route.query.game_id, {})}
+      });
+      setTimeout(() => homeConnection.createAccount("The Joker No." + Math.round(Math.random()*1000)), 300);
+      //this.gameConnection.createAccount("The Joker");
+      //this.gameConnection.createAccount("The Joker");
 
     }
   }
