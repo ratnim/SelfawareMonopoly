@@ -16,6 +16,15 @@ public:
 
 protected:
     std::vector<Player> turnOrder();
+    bool allPlayersReady() const;
+    bool minimalPlayersJoined() const;
+    bool gameIsStartable() const;
+
+    void broadcastPossibleRequests() const;
+    void broadcastGameIsStartable() const;
+    void broadcastPlayerReadyRequest() const;
+
+	QJsonObject createPossibleRequest(const QString& requestName) const;
 
     Game* m_game;
     std::map<QString, bool> m_playersReady;

@@ -1,5 +1,8 @@
 #include "initstate.h"
 
+#include <QJsonArray>
+#include <QJsonObject>
+
 #include <game/game.h>
 #include <game/state/runstate.h>
 #include <utils/exception.h>
@@ -29,6 +32,7 @@ void InitState::join(const QString& playerName)
 
     m_playersReady[playerName] = false;
     emit m_game->onPlayerJoin(playerName);
+    broadcastPossibleRequests();
 }
 
 void InitState::ready(const QString& playerName)
@@ -45,21 +49,19 @@ void InitState::ready(const QString& playerName)
 
     m_playersReady[playerName] = true;
     emit m_game->onPlayerReady(playerName);
+    broadcastPossibleRequests();
 }
 
 void InitState::start()
 {
-    if (m_playersReady.size() < minimumPlayers)
+    if (!minimalPlayersJoined())
     {
         throw Exception("The minimum amount of players is not reached.");
     }
 
-    for (const auto& elem : m_playersReady)
+    if (!allPlayersReady())
     {
-        if (!elem.second)
-        {
-            throw Exception("Not every player is ready.");
-        }
+        throw Exception("Not every player is ready.");
     }
 
     m_game->stateChange<RunState>(m_game, turnOrder());
@@ -74,4 +76,75 @@ std::vector<Player> InitState::turnOrder()
     }
     // TODO random shuffle
     return order;
+}
+
+bool InitState::allPlayersReady() const
+{
+    for (const auto& elem : m_playersReady)
+    {
+        if (!elem.second)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool InitState::gameIsStartable() const
+{
+    return minimalPlayersJoined() && allPlayersReady();
+}
+
+bool InitState::minimalPlayersJoined() const
+{
+    return m_playersReady.size() < minimumPlayers;
+}
+
+void InitState::broadcastPossibleRequests() const
+{
+    if (gameIsStartable())
+    {
+        broadcastGameIsStartable();
+	}
+	else
+	{
+        broadcastPlayerReadyRequest();
+	}
+}
+
+void InitState::broadcastGameIsStartable() const
+{
+    QJsonArray requests;
+    requests.append(createPossibleRequest("game_start"));
+
+    for (auto& player : m_playersReady)
+    {
+        m_game->possibleRequests(player.first, requests);
+    }
+}
+
+void InitState::broadcastPlayerReadyRequest() const
+{
+    QJsonArray requests;
+    requests.append(createPossibleRequest("player_ready"));
+
+    for (auto& player : m_playersReady)
+    {
+		if (!player.second)
+		{
+			m_game->possibleRequests(player.first, requests);
+		}
+		else
+		{
+            m_game->possibleRequests(player.first, {});
+		}
+    }
+}
+
+QJsonObject InitState::createPossibleRequest(const QString& requestName) const
+{
+    QJsonObject request;
+    request["request"] = requestName;
+    request["data"] = QJsonObject{};
+    return request;
 }
