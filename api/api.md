@@ -86,10 +86,10 @@ __Route:__ /game
 __Incoming Events:__
 ```
     {
-        "name" : "possible_actions",
+        "name" : "possible_requests",
         "data" :
         {
-            names : [{name : <name>}]
+            requests : [{request:<request>, data: {}}]
         }
     }
 ```
