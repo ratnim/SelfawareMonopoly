@@ -9,7 +9,7 @@
 Connection::Connection(QWebSocket* parent)
     : Watcher(parent)
 {
-    connect(this, &Watcher::send, parent, &QWebSocket::sendTextMessage);
+    connect(this, &Watcher::broadcast, parent, &QWebSocket::sendTextMessage);
 }
 
 void Connection::incommingMessage(const QString& message)
@@ -26,7 +26,7 @@ void Connection::incommingMessage(const QString& message)
     catch (const Exception &e)
     {
         std::cout << "Send: " + e.json().toStdString() << std::endl;
-        emit send(e.json());
+        emit broadcast(e.json());
     }
 }
 

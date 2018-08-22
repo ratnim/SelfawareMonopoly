@@ -12,5 +12,7 @@ public:
     void watchGame(GameWatcher& watcher);
 
 protected:
+	void broadcastFiltered(const QString& player, const QString& message);
+
     const QString m_playerName;
 };

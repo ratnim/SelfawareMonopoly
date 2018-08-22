@@ -20,7 +20,7 @@ public:
     {
         m_actions["test"] = [this](const QJsonValue& input) {
             data = input;
-            send("ok");
+            broadcast("ok");
         };
     }
 
@@ -37,7 +37,7 @@ TEST(RouteTest, parent_ownership)
 
 TEST_F(SubConnectionTest, non_json_message)
 {
-    QSignalSpy socket_spy(this, &Watcher::send);
+    QSignalSpy socket_spy(this, &Watcher::broadcast);
 
     incommingMessage(";not json");
 
@@ -50,7 +50,7 @@ TEST_F(SubConnectionTest, non_json_message)
 
 TEST_F(SubConnectionTest, unknown_action)
 {
-    QSignalSpy socket_spy(this, &Watcher::send);
+    QSignalSpy socket_spy(this, &Watcher::broadcast);
 
     QJsonObject in({ { "request", "someaction" } });
 
@@ -65,7 +65,7 @@ TEST_F(SubConnectionTest, unknown_action)
 
 TEST_F(SubConnectionTest, valid_message)
 {
-    QSignalSpy socket_spy(this, &Watcher::send);
+    QSignalSpy socket_spy(this, &Watcher::broadcast);
 
     QJsonObject in({ { "request", "test" } });
 

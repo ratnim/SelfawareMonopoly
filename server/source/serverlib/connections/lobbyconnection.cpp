@@ -22,8 +22,8 @@ void LobbyConnection::watchLobby()
 {
     auto& watcher = LobbyWatcher::instance();
 
-    emit send(watcher.message());
-    connect(&watcher, &Watcher::send, this, &Watcher::send);
+    emit broadcast(watcher.message());
+    connect(&watcher, &Watcher::broadcast, this, &Watcher::broadcast);
 }
 
 void LobbyConnection::createGame(const QJsonValue& body)
@@ -36,7 +36,7 @@ void LobbyConnection::createGame(const QJsonValue& body)
 
 	QString boardFile = "berlin.json";
     const auto gameId = GameModel::instance().createGame(label);
-    emit send(createGameAnswer(gameId));
+    emit broadcast(createGameAnswer(gameId));
 }
 
 QString LobbyConnection::createGameAnswer(int gameId)

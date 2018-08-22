@@ -23,17 +23,17 @@ TEST(GameConnectionTest, request_board)
 	Request request("game", session, gameId);
 
     QWebSocket socket;
-    auto route = new GameConnection(&socket, request);
+    auto connection = new GameConnection(&socket, request);
 
-    QSignalSpy socket_spy(route, &Watcher::send);
+    QSignalSpy socket_spy(connection, &Watcher::broadcast);
     
 	QJsonObject in({ { "request", "game_board" } });
 
-    route->incommingMessage(QJsonDocument(in).toJson());
+    connection->incommingMessage(QJsonDocument(in).toJson());
 	
 	ASSERT_TRUE(socket_spy.size() || socket_spy.wait());
 
-	auto json = route->toJson(socket_spy.at(0).at(0).toString());
+	auto json = connection->toJson(socket_spy.at(0).at(0).toString());
 
 	EXPECT_NE(json["data"].toObject().end(), json["data"].toObject().find("fields"));
 }
@@ -46,18 +46,18 @@ TEST(GameConnectionTest, request_non_empty_board)
     Request request("game", session, gameId);
 
     QWebSocket socket;
-    auto route = new GameConnection(&socket, request);
+    auto connection = new GameConnection(&socket, request);
 
-    QSignalSpy socket_spy(route, &Watcher::send);
+    QSignalSpy socket_spy(connection, &Watcher::broadcast);
 
     QJsonObject in({ { "request", "game_board" } });
 
-    route->incommingMessage(QJsonDocument(in).toJson());
+    connection->incommingMessage(QJsonDocument(in).toJson());
 
     ASSERT_TRUE(socket_spy.size() || socket_spy.wait());
 
 	auto msg = socket_spy.at(0).at(0).toString().toStdString();
-    auto json = route->toJson(socket_spy.at(0).at(0).toString());
+    auto json = connection->toJson(socket_spy.at(0).at(0).toString());
     auto fields = json["data"].toObject()["fields"].toArray();
 
     EXPECT_EQ(40, fields.size());

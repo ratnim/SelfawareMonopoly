@@ -9,13 +9,17 @@ class Game;
 
 class GameWatcher : public Watcher
 {
+    Q_OBJECT
 public:
     GameWatcher(const Game& game);
 
     const std::vector<QString>& messages() const;
+signals:
+    void broadcastPlayerMessage(const QString& player, const QString& message);
 
 protected:
-    void event(const QString &message);
+    void broadcastEvent(const QJsonObject &object);
+    void singlePlayerEvent(const QString& player, const QJsonObject& object);
 
     void playerJoin(const QString& playerName);
     void boardRequest(const QJsonObject& board);
@@ -27,6 +31,8 @@ protected:
 
     void gameStart();
     void gameEnd();
+
+	void possibleRequests(const QString& playerName, const QJsonArray& possibleRequests);
 
     static QString toString(const QJsonObject& object);
 

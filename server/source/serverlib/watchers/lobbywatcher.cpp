@@ -46,7 +46,7 @@ void LobbyWatcher::watchGame(const GameInfo& info)
 
 void LobbyWatcher::updateLobby()
 {
-    emit send(message());
+    emit broadcast(message());
 }
 
 QJsonObject LobbyWatcher::toJson(int gameId)

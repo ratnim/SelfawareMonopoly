@@ -24,7 +24,16 @@ void GameConnection::watchGame(GameWatcher& watcher)
 {
     for (const auto& message : watcher.messages())
     {
-        emit send(message);
+        emit broadcast(message);
     }
-    connect(&watcher, &Watcher::send, this, &Watcher::send);
+    connect(&watcher, &Watcher::broadcast, this, &Watcher::broadcast);
+    connect(&watcher, &GameWatcher::broadcastPlayerMessage, this, &GameConnection::broadcastFiltered);
+}
+
+void GameConnection::broadcastFiltered(const QString& player, const QString& message)
+{
+	if (player == m_playerName)
+	{
+        emit broadcast(message);
+	}
 }

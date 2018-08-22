@@ -37,6 +37,8 @@ signals:
     void onEnterJail(const QString& playerName);
     void onLeaveJail(const QString& playerName);
 
+	void onPossibleRequests(const QString& playerName, const QJsonArray& possibleRequests);
+
 protected:
     Board m_board;
 };

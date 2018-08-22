@@ -30,7 +30,7 @@ void OverviewConnection::enterLobby(const QJsonValue& data)
     }
 
     const auto userSession = AccountModel::instance().createUser(player);
-    emit send(enterLobbyAnswer(userSession));
+    emit broadcast(enterLobbyAnswer(userSession));
 }
 
 QString OverviewConnection::enterLobbyAnswer(const QString& userSession)
