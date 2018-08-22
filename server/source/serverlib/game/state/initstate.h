@@ -18,6 +18,7 @@ protected:
     std::vector<Player> turnOrder();
     bool allPlayersReady() const;
     bool minimalPlayersJoined() const;
+    bool maximalPlayersJoined() const;
     bool gameIsStartable() const;
 
     void broadcastPossibleRequests() const;

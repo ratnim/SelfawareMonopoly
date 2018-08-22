@@ -20,7 +20,7 @@ InitState::InitState(Game* game)
 
 void InitState::join(const QString& playerName)
 {
-    if (m_playersReady.size() >= maximumPlayers)
+    if (maximalPlayersJoined())
     {
         throw Exception("The maximum number of players is already joined.");
     }
@@ -98,6 +98,11 @@ bool InitState::gameIsStartable() const
 bool InitState::minimalPlayersJoined() const
 {
     return m_playersReady.size() >= minimumPlayers;
+}
+
+bool InitState::maximalPlayersJoined() const
+{
+    return m_playersReady.size() >= maximumPlayers;
 }
 
 void InitState::broadcastPossibleRequests() const
