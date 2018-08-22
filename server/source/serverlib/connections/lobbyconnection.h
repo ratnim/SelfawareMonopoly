@@ -1,11 +1,11 @@
 #pragma once
 
-#include <routes/route.h>
+#include <connections/connection.h>
 
-class LobbyRoute : public Route
+class LobbyConnection : public Connection
 {
 public:
-    LobbyRoute(QWebSocket* parent, const Request& request);
+    LobbyConnection(QWebSocket* parent, const Request& request);
 
 protected:
     void watchLobby();

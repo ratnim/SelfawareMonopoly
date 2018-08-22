@@ -1,4 +1,4 @@
-#include "overviewroute.h"
+#include "overviewconnection.h"
 
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -6,15 +6,15 @@
 #include <models/accountmodel.h>
 #include <utils/exception.h>
 
-OverviewRoute::OverviewRoute(QWebSocket* parent, const Request& request)
-    : Route(parent)
+OverviewConnection::OverviewConnection(QWebSocket* parent, const Request& request)
+    : Connection(parent)
 {
     m_actions[QString("enter_lobby")] = [this](const QJsonValue& data) {
         enterLobby(data);
     };
 }
 
-void OverviewRoute::enterLobby(const QJsonValue& data)
+void OverviewConnection::enterLobby(const QJsonValue& data)
 {
     const auto rawPlayer = data[QString("player_name")].toString();
     const auto player = rawPlayer.simplified().toHtmlEscaped();
@@ -33,7 +33,7 @@ void OverviewRoute::enterLobby(const QJsonValue& data)
     emit send(enterLobbyAnswer(userSession));
 }
 
-QString OverviewRoute::enterLobbyAnswer(const QString& userSession)
+QString OverviewConnection::enterLobbyAnswer(const QString& userSession)
 {
     QJsonObject answer({ { "name", "enter_lobby" } });
     answer[QString("data")] = QJsonObject({ { "session", userSession } });

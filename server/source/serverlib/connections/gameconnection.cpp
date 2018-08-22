@@ -1,10 +1,10 @@
-#include "gameroute.h"
+#include "gameconnection.h"
 
 #include <models/accountmodel.h>
 #include <models/gamemodel.h>
 
-GameRoute::GameRoute(QWebSocket* parent, const Request& request)
-    : Route(parent)
+GameConnection::GameConnection(QWebSocket* parent, const Request& request)
+    : Connection(parent)
     , m_playerName(AccountModel::instance().username(request.session))
 {
     auto& compound = GameModel::instance().open(request.gameId);
@@ -20,7 +20,7 @@ GameRoute::GameRoute(QWebSocket* parent, const Request& request)
     watchGame(compound.watcher);
 }
 
-void GameRoute::watchGame(GameWatcher& watcher)
+void GameConnection::watchGame(GameWatcher& watcher)
 {
     for (const auto& message : watcher.messages())
     {

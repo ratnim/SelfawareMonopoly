@@ -5,14 +5,14 @@
 #include <QWebSocket>
 
 #include <network/request.h>
-#include <routes/route.h>
+#include <connections/connection.h>
 
-class RouteFactory
+class ConnectionFactory
 {
 public:
-    using Factory = void (RouteFactory::*)(QWebSocket*, const Request&);
+    using Factory = void (ConnectionFactory::*)(QWebSocket*, const Request&);
 
-    RouteFactory();
+    ConnectionFactory();
 
     void handle(QWebSocket* socket);
     static void disconnect(QWebSocket* socket);
@@ -23,7 +23,7 @@ protected:
     {
         auto handler = new ConnectionHandler(socket, request);
 
-        QObject::connect(socket, &QWebSocket::textMessageReceived, handler, &Route::incommingMessage);
+        QObject::connect(socket, &QWebSocket::textMessageReceived, handler, &Connection::incommingMessage);
         QObject::connect(socket, &QWebSocket::readChannelFinished, [socket] { disconnect(socket); });
     }
 

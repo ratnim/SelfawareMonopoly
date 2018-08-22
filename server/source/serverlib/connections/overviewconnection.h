@@ -1,11 +1,11 @@
 #pragma once
 
-#include <routes/route.h>
+#include <connections/connection.h>
 
-class OverviewRoute : public Route
+class OverviewConnection : public Connection
 {
 public:
-    OverviewRoute(QWebSocket* parent, const Request& request);
+    OverviewConnection(QWebSocket* parent, const Request& request);
 
 protected:
     void enterLobby(const QJsonValue& data);

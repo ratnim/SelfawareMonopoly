@@ -60,16 +60,16 @@ set(sources
     models/boardmodel.h
     models/gamemodel.cpp
     models/gamemodel.h
-    routes/route.cpp
-    routes/route.h
-    routes/routefactory.cpp
-    routes/routefactory.h
-    routes/gameroute.cpp
-    routes/gameroute.h
-    routes/lobbyroute.cpp
-    routes/lobbyroute.h
-    routes/overviewroute.cpp
-    routes/overviewroute.h
+    connections/connection.cpp
+    connections/connection.h
+    connections/connectionfactory.cpp
+    connections/connectionfactory.h
+    connections/gameconnection.cpp
+    connections/gameconnection.h
+    connections/lobbyconnection.cpp
+    connections/lobbyconnection.h
+    connections/overviewconnection.cpp
+    connections/overviewconnection.h
     network/request.cpp
     network/request.h
     network/websocketserver.cpp

@@ -5,9 +5,9 @@
 
 #include <network/request.h>
 
-#include <routes/gameroute.h>
-#include <routes/lobbyroute.h>
-#include <routes/overviewroute.h>
+#include <connections/gameconnection.h>
+#include <connections/lobbyconnection.h>
+#include <connections/overviewconnection.h>
 
 WebSocketServer::WebSocketServer(QHostAddress::SpecialAddress host)
     : QWebSocketServer("Monopoly", QWebSocketServer::NonSecureMode)

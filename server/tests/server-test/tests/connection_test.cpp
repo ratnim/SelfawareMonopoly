@@ -4,7 +4,7 @@
 #include <QJsonObject>
 #include <QSignalSpy>
 
-#include <routes/route.h>
+#include <connections/connection.h>
 #include <utils/exception.h>
 
 namespace
@@ -12,11 +12,11 @@ namespace
 QWebSocket dummy;
 }
 
-class SubRouteTest : public ::testing::Test, public Route
+class SubConnectionTest : public ::testing::Test, public Connection
 {
 public:
-    SubRouteTest()
-        : Route(&dummy)
+    SubConnectionTest()
+        : Connection(&dummy)
     {
         m_actions["test"] = [this](const QJsonValue& input) {
             data = input;
@@ -30,12 +30,12 @@ public:
 TEST(RouteTest, parent_ownership)
 {
     QWebSocket socket;
-    auto route = new Route(&socket);
+    auto route = new Connection(&socket);
 
     EXPECT_TRUE(route->parent() == &socket);
 }
 
-TEST_F(SubRouteTest, non_json_message)
+TEST_F(SubConnectionTest, non_json_message)
 {
     QSignalSpy socket_spy(this, &Watcher::send);
 
@@ -48,7 +48,7 @@ TEST_F(SubRouteTest, non_json_message)
     EXPECT_EQ(json["data"].toObject()["id"].toInt(), Error::MalformedRequest);
 }
 
-TEST_F(SubRouteTest, unknown_action)
+TEST_F(SubConnectionTest, unknown_action)
 {
     QSignalSpy socket_spy(this, &Watcher::send);
 
@@ -63,7 +63,7 @@ TEST_F(SubRouteTest, unknown_action)
     EXPECT_EQ(json["data"].toObject()["id"].toInt(), Error::UnsupportedAction);
 }
 
-TEST_F(SubRouteTest, valid_message)
+TEST_F(SubConnectionTest, valid_message)
 {
     QSignalSpy socket_spy(this, &Watcher::send);
 

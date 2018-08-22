@@ -4,7 +4,7 @@
 #include <QJsonObject>
 #include <QSignalSpy>
 
-#include <routes/gameroute.h>
+#include <connections/gameconnection.h>
 
 #include <models/accountmodel.h>
 #include <models/gamemodel.h>
@@ -16,14 +16,14 @@ namespace
 QWebSocket dummy;
 }
 
-TEST(GameRouteTest, request_board)
+TEST(GameConnectionTest, request_board)
 {
     auto session = AccountModel::instance().createSession("request_board_tester");
     auto gameId = GameModel::instance().createGame("request_board_game");
 	Request request("game", session, gameId);
 
     QWebSocket socket;
-    auto route = new GameRoute(&socket, request);
+    auto route = new GameConnection(&socket, request);
 
     QSignalSpy socket_spy(route, &Watcher::send);
     
@@ -38,7 +38,7 @@ TEST(GameRouteTest, request_board)
 	EXPECT_NE(json["data"].toObject().end(), json["data"].toObject().find("fields"));
 }
 
-TEST(GameRouteTest, request_non_empty_board)
+TEST(GameConnectionTest, request_non_empty_board)
 {
 	BoardModel::setBoardDir("./assets/boards");
     auto session = AccountModel::instance().createSession("request_non_empty_board_tester");
@@ -46,7 +46,7 @@ TEST(GameRouteTest, request_non_empty_board)
     Request request("game", session, gameId);
 
     QWebSocket socket;
-    auto route = new GameRoute(&socket, request);
+    auto route = new GameConnection(&socket, request);
 
     QSignalSpy socket_spy(route, &Watcher::send);
 

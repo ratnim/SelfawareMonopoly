@@ -1,4 +1,4 @@
-#include "lobbyroute.h"
+#include "lobbyconnection.h"
 
 #include <QJsonDocument>
 
@@ -7,8 +7,8 @@
 #include <models/gamemodel.h>
 #include <utils/exception.h>
 
-LobbyRoute::LobbyRoute(QWebSocket* parent, const Request& request)
-    : Route(parent)
+LobbyConnection::LobbyConnection(QWebSocket* parent, const Request& request)
+    : Connection(parent)
     , m_playerName(AccountModel::instance().username(request.session))
 {
     m_actions["create_game"] = [this](const QJsonValue& data) {
@@ -18,7 +18,7 @@ LobbyRoute::LobbyRoute(QWebSocket* parent, const Request& request)
     watchLobby();
 }
 
-void LobbyRoute::watchLobby()
+void LobbyConnection::watchLobby()
 {
     auto& watcher = LobbyWatcher::instance();
 
@@ -26,7 +26,7 @@ void LobbyRoute::watchLobby()
     connect(&watcher, &Watcher::send, this, &Watcher::send);
 }
 
-void LobbyRoute::createGame(const QJsonValue& body)
+void LobbyConnection::createGame(const QJsonValue& body)
 {
     const auto label = body[QString("game_label")].toString();
     if (label.isEmpty())
@@ -39,7 +39,7 @@ void LobbyRoute::createGame(const QJsonValue& body)
     emit send(createGameAnswer(gameId));
 }
 
-QString LobbyRoute::createGameAnswer(int gameId)
+QString LobbyConnection::createGameAnswer(int gameId)
 {
     QJsonObject answer({ { "name", "create_game" } });
     answer[QString("data")] = QJsonObject({ { "game_id", gameId } });

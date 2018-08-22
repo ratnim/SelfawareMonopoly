@@ -8,12 +8,12 @@
 #include <watchers/watcher.h>
 #include <network/request.h>
 
-class Route : public Watcher
+class Connection : public Watcher
 {
 public:
     using ActionCallback = std::function<void(const QJsonValue&)>;
 
-    Route(QWebSocket* parent);
+    Connection(QWebSocket* parent);
 
     void incommingMessage(const QString& message);
     static QJsonObject toJson(const QString& message);

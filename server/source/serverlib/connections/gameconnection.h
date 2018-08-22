@@ -2,12 +2,12 @@
 
 #include <game/game.h>
 #include <watchers/gamewatcher.h>
-#include <routes/route.h>
+#include <connections/connection.h>
 
-class GameRoute : public Route
+class GameConnection : public Connection
 {
 public:
-    GameRoute(QWebSocket* parent, const Request& request);
+    GameConnection(QWebSocket* parent, const Request& request);
 
     void watchGame(GameWatcher& watcher);
 

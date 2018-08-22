@@ -21,9 +21,9 @@ set(sources
     tests/game_test.cpp
     tests/gameinfo_test.cpp
     tests/gamemodel_test.cpp
-	tests/gameroute_test.cpp
+	tests/gameconnection_test.cpp
     tests/request_test.cpp
-    tests/route_test.cpp
+    tests/connection_test.cpp
     tests/runstate_test.cpp
     tests/websocketserver_test.cpp
     test_utils/mocked_database.cpp

@@ -1,4 +1,4 @@
-#include "route.h"
+#include "connection.h"
 
 #include <iostream>
 
@@ -6,13 +6,13 @@
 
 #include <utils/exception.h>
 
-Route::Route(QWebSocket* parent)
+Connection::Connection(QWebSocket* parent)
     : Watcher(parent)
 {
     connect(this, &Watcher::send, parent, &QWebSocket::sendTextMessage);
 }
 
-void Route::incommingMessage(const QString& message)
+void Connection::incommingMessage(const QString& message)
 {
     std::cout << "Recieved: " + message.toStdString() << std::endl;
     try
@@ -30,7 +30,7 @@ void Route::incommingMessage(const QString& message)
     }
 }
 
-QJsonObject Route::toJson(const QString& message)
+QJsonObject Connection::toJson(const QString& message)
 {
     const auto json = QJsonDocument::fromJson(message.toUtf8());
     if (json.isObject())
@@ -41,7 +41,7 @@ QJsonObject Route::toJson(const QString& message)
     throw Exception("Only JSON objects are supported.", Error::MalformedRequest);
 }
 
-Route::ActionCallback Route::actionHandler(const QString& name) const
+Connection::ActionCallback Connection::actionHandler(const QString& name) const
 {
     const auto& action = m_actions.find(name);
     if (action == m_actions.end())
