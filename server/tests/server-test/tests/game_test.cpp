@@ -41,8 +41,6 @@ TEST(GameTest, ready)
 
     game.ready("Gertrude");
     EXPECT_EQ(ready_spy.size(), 2);
-
-    game.start();
 }
 
 TEST(GameTest, start_game)

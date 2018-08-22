@@ -97,7 +97,7 @@ bool InitState::gameIsStartable() const
 
 bool InitState::minimalPlayersJoined() const
 {
-    return m_playersReady.size() < minimumPlayers;
+    return m_playersReady.size() >= minimumPlayers;
 }
 
 void InitState::broadcastPossibleRequests() const
