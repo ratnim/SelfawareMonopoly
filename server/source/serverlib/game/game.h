@@ -22,6 +22,8 @@ public:
     void draw(const QString& playerName);
     void endTurn(const QString& playerName);
 
+	void possibleRequests(const QString& playerName, const QJsonArray& requests);
+
 signals:
     void onBoardRequest(const QJsonObject& board);
     void onPlayerJoin(const QString& playerName);

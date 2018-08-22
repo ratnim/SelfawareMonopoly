@@ -40,3 +40,8 @@ void Game::endTurn(const QString& playerName)
 {
     m_state->endTurn(playerName);
 }
+
+void Game::possibleRequests(const QString& playerName, const QJsonArray& requests)
+{
+    emit onPossibleRequests(playerName, requests);
+}
