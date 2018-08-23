@@ -24,3 +24,10 @@ Request Request::fromUrl(const QString& url)
 
     return { route, session, game_id };
 }
+
+Request::Request(const QString& route, const QString& session, int gameId) 
+	: route(route), 
+	session(session),
+	gameId(gameId)
+{
+}

@@ -10,6 +10,7 @@ GameRoute::GameRoute(QWebSocket* parent, const Request& request)
     auto& compound = GameModel::instance().open(request.gameId);
     auto& game = compound.game;
     m_actions["join_game"] = [&game, this](const QJsonValue&) { game.join(m_playerName); };
+    m_actions["game_board"] = [&game, this](const QJsonValue&) { game.board(); };
     m_actions["player_ready"] = [&game, this](const QJsonValue&) { game.ready(m_playerName); };
     m_actions["game_start"] = [&game, this](const QJsonValue&) { game.start(); };
 

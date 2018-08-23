@@ -10,6 +10,7 @@
 GameWatcher::GameWatcher(const Game& game)
 {
     connect(&game, &Game::onPlayerJoin, this, &GameWatcher::playerJoin);
+    connect(&game, &Game::onBoardRequest, this, &GameWatcher::boardRequest);
     connect(&game, &Game::onPlayerReady, this, &GameWatcher::playerReady);
 
     connect(&game, &Game::onRollDice, this, &GameWatcher::rollDice);
@@ -37,6 +38,13 @@ void GameWatcher::playerJoin(const QString& playerName)
     QJsonObject answer({ { "name", "join_game" } });
     answer["data"] = QJsonObject{ { "player_name", playerName } };
 
+    event(toString(answer));
+}
+
+void GameWatcher::boardRequest(const QJsonObject& board)
+{
+    QJsonObject answer({ { "name", "game_board" } });
+    answer["data"] = board;
     event(toString(answer));
 }
 

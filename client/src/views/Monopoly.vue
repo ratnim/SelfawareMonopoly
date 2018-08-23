@@ -3,10 +3,10 @@
   <div class="md-layout">
     <div class="md-layout-item md-size-15">
       <h3>Alles was du wissen musst</h3>
-      <div>
+      <div ref="a">
         Du bist {{nickname}}
       </div>
-      <div>
+      <div ref="a">
         Deine Gegner sind
         <div v-for="player in players" v-if="player.nickname != nickname">
           {{player.nickname}}
@@ -15,23 +15,25 @@
     </div>
 
     <div class="md-layout-item">
-      <easel-canvas width="600" height="600" ref="stage">
-        <!--from LOS to prison -->
-        <MonopolyField :x="10" :y="600-10-fieldLength" :fieldWidth="fieldLength" :fieldLength="fieldLength" :align="['bottom', 'left']" :label="lane1[lane1.length-1].label" :attributes="lane1[lane1.length-1].attributes"></MonopolyField>
-        <MonopolyField v-for="(field, index) in lane1" v-if="index != lane1.length-1" :x="10+index*1" :y="10+fieldLength+index*fieldWidth" :fieldWidth="fieldLength" :fieldLength="fieldWidth" :align="['bottom', 'left']" :label="field.label" :attributes="field.attributes"></MonopolyField>
+      <easel-canvas width="600" height="600" ref="stage" v-if="lane1.length>0">
+        <!--from LOS to jail -->
+        <MonopolyField ref="fields" :x="10" :y="600-10-fieldLength" :fieldWidth="fieldLength" :fieldLength="fieldLength" :align="['bottom', 'left']" :label="lane1[lane1.length-1].name" :attributes="lane1[lane1.length-1].attributes"></MonopolyField>
+        <MonopolyField ref="fields" v-for="(field, index) in lane1" v-if="index != lane1.length-1" :x="10+index*0" :y="10+fieldLength+index*fieldWidth" :fieldWidth="fieldLength" :fieldLength="fieldWidth" :align="['bottom', 'left']" :label="field.name" :attributes="field.attributes"></MonopolyField>
         <!--from prison to free parking -->
-        <MonopolyField :x="10" :y="10" :fieldWidth="fieldLength" :fieldLength="fieldLength" :align="['bottom', 'left']" :label="lane2[0].label" :attributes="lane2[0].attributes"></MonopolyField>
-        <MonopolyField v-for="(field, index) in lane2" v-if="index != 0" :x="10+fieldLength+index*fieldWidth" :y="10+index*1" :fieldWidth="fieldLength" :fieldLength="fieldWidth" :label="field.label" :attributes="field.attributes" :rotation="90"></MonopolyField>
+        <MonopolyField ref="fields" :x="10" :y="10" :fieldWidth="fieldLength" :fieldLength="fieldLength" :align="['bottom', 'left']" :label="lane2[0].name" :attributes="lane2[0].attributes"></MonopolyField>
+        <MonopolyField ref="fields" v-for="(field, index) in lane2" v-if="index != 0" :x="10+fieldLength+index*fieldWidth" :y="10+index*0" :fieldWidth="fieldLength" :fieldLength="fieldWidth" :label="field.name" :attributes="field.attributes" :rotation="90"></MonopolyField>
         <!-- from free parking to goto prison -->
-        <MonopolyField :x="600-10-fieldLength" :y="10" :fieldWidth="fieldLength" :fieldLength="fieldLength" :align="['bottom', 'left']" :label="lane3[0].label" :attributes="lane3[0].attributes"></MonopolyField>
-        <MonopolyField v-for="(field, index) in lane3" v-if="index != 0" :x="600-10-index*1" :y="10+index*fieldWidth+fieldLength" :fieldWidth="fieldLength" :fieldLength="fieldWidth"  :align="['bottom', 'right']"
-          :label="field.label" :attributes="field.attributes" :rotation="180"></MonopolyField>
+        <MonopolyField ref="fields" :x="600-10-fieldLength" :y="10" :fieldWidth="fieldLength" :fieldLength="fieldLength" :align="['bottom', 'left']" :label="lane3[0].name" :attributes="lane3[0].attributes"></MonopolyField>
+        <MonopolyField ref="fields" v-for="(field, index) in lane3" v-if="index != 0" :x="600-10-index*0" :y="10+index*fieldWidth+fieldLength" :fieldWidth="fieldLength" :fieldLength="fieldWidth" :align="['bottom', 'right']" :label="field.name" :attributes="field.attributes"
+          :rotation="180"></MonopolyField>
         <!-- from goto prision to los -->
-        <MonopolyField :x="600-10-fieldLength" :y="600-10-fieldLength" :fieldWidth="fieldLength" :fieldLength="fieldLength" :align="['bottom', 'left']" :label="lane4[lane4.length-1].label" :attributes="lane4[lane4.length-1].attributes"></MonopolyField>
-        <MonopolyField v-for="(field, index) in lane4" v-if="index != lane4.length-1" :x="10+fieldLength+index*fieldWidth" :y="600-10-index*1" :fieldWidth="fieldLength" :fieldLength="fieldWidth" :label="field.label" :attributes="field.attributes" :rotation="270"></MonopolyField>
+        <MonopolyField ref="fields" :x="600-10-fieldLength" :y="600-10-fieldLength" :fieldWidth="fieldLength" :fieldLength="fieldLength" :align="['bottom', 'left']" :label="lane4[lane4.length-1].name" :attributes="lane4[lane4.length-1].attributes"></MonopolyField>
+        <MonopolyField ref="fields" v-for="(field, index) in lane4" v-if="index != lane4.length-1" :x="10+fieldLength+index*fieldWidth" :y="600-10-index*0" :fieldWidth="fieldLength" :fieldLength="fieldWidth" :label="field.name" :attributes="field.attributes"
+          :rotation="270"></MonopolyField>
 
         <!--the players -->
-        <MonopolyPlayer v-for="player in players" :key="player.nickname" :color="player.color" :fieldLength="fieldLength" ref="players"></MonopolyPlayer>
+        <MonopolyPlayer v-for="player in players" :key="player.id" :color="player.color" :fieldLength="fieldLength" ref="monopolyPlayers"></MonopolyPlayer>
+
 
         <Dice :x="300-30" :y="300" ref="dice1"></Dice>
         <Dice :x="300+30" :y="300" ref="dice2"></Dice>
@@ -46,15 +48,27 @@
       <md-button @click="startGame()">START GAME</md-button>
     </div>
   </div>
+
+  <div class="">
+    <h1>DEV TOOLS</h1>
+    <md-button @click="__addFakePlayer()">add a fake player</md-button>
+
+
+
+  </div>
 </div>
 </template>
 
 <script>
+import _ from 'lodash';
+
 import {
   mapGetters
 } from 'vuex'
 
-import * as gameConnection from '../storePlugins/gameConnection'
+import GameConnection from '@/sockets/gameConnection'
+import HomeConnection from '@/sockets/homeConnection' // just for DEV
+import LobbyConnection from '@/sockets/lobbyConnection' // just for DEV
 
 import MonopolyField from '@/components/MonopolyField'
 import MonopolyPlayer from '@/components/MonopolyPlayer'
@@ -71,10 +85,27 @@ export default {
   },
   data: function() {
     return {
+      gameConnection: null,
       game: game,
+      colorMapping: {
+        0: "#527479",
+        1: "#27C3A3",
+        2: "#EDE591",
+        3: "#89AE3D",
+        4: "#F1B661",
+        5: "#524090",
+        6: "#AAC3A3",
+        7: "#ED4591",
+        8: "#E34B00"
+      },
       dice1: null,
       dice2: null,
       players: [],
+      lane1: [],
+      lane2: [],
+      lane3: [],
+      lane4: [],
+      possible_actions: {},
       canvas: {
         margin: 2
       }
@@ -86,29 +117,21 @@ export default {
       nickname: 'getNickname',
       sessionId: 'getSessionId'
     }),
-    lane1: () => [].concat(game.fields[0]).reverse(),
-    lane2: () => game.fields[1],
-    lane3: () => game.fields[2],
-    lane4: () => [].concat(game.fields[3]).reverse(),
-    fieldWidth: () => (600 - 10 - 10) / (game.fields[0].length + 1 + 1), // + 1 because of l = 1.5*w
-    fieldLength: () => (600 - 10 - 10) / (game.fields[0].length + 1 + 1) * 1.5,
+    fieldWidth: () => (600 - 10 - 10) / (10 + 1 + 1), // + 1 because of l = 1.5*w
+    fieldLength: () => (600 - 10 - 10) / (10 + 1 + 1) * 1.5,
   },
 
   created() {
-    gameConnection.connect(this.$route.query.game_id, this.sessionId);
-    gameConnection.joinGame();
+    let handlers = {
+      "join_game": this.onPlayerJoined,
+      "game_board": this.onGameboard,
+      "error": () => true
+    }
+    this.gameConnection = new GameConnection(this.sessionId, this.$route.query.game_id, handlers);
 
-    gameConnection.onDiceRolled(this.onDiceRolled);
-    gameConnection.onPlayerJoined(this.onPlayerJoined);
-    gameConnection.onPlayerMoved(this.onPlayerMoved);
-    gameConnection.onPlayerReady(this.onPlayerReady);
-    gameConnection.onGameStarted(this.onGameStarted);
-    gameConnection.onGameEnded(this.onGameEnded);
-    gameConnection.onTurnChanged(this.onTurnChanged);
-    gameConnection.onError(this.onError);
   },
   beforeRouteLeave(to, from, next) {
-    gameConnection.disconnect();
+    //gameConnection.disconnect();
     next();
   },
 
@@ -116,7 +139,7 @@ export default {
     rollDice: function() {
       this.$refs.dice1.animate();
       this.$refs.dice2.animate();
-      gameConnection.rollDice();
+      this.gameConnection.rollDice();
     },
     setReady: function() {
       gameConnection.setReady();
@@ -134,23 +157,332 @@ export default {
       this.dice1 = dice[0];
       this.dice2 = dice[1];
     },
-    onPlayerJoined: function(playerName) {
-      console.log(playerName);
-      this.players.push({
-        currentField: 0,
-        nickname: playerName,
-        color: this.getRandomColor()
-      });
+    onPlayerJoined: function(data) {
+      var playerName = data.player_name;
+      if (_.findIndex(this.players, {
+          'player_name': playerName
+        }) == -1) {
+        this.players.push({
+          id: this.players.length,
+          currentField: 0,
+          nickname: playerName,
+          color: this.getRandomColor()
+        });
+      };
+      //translate players in game grafic
+      if (this.$refs.monopolyPlayers) {
+        let pCount = this.players.length;
+        let step = 2*Math.PI/pCount;
+        for (var i = 0; i < this.$refs.monopolyPlayers.length; i++) {
+          this.$refs.monopolyPlayers[i].x = 2+this.fieldLength/2 + 25*Math.sin((i+1)*step);
+          this.$refs.monopolyPlayers[i].y = 600-4-this.fieldLength/2-10 + 25*Math.cos((i+1)*step);
+        }
+      }
+
     },
     onPlayerMoved: function(playerName, distance) {
       for (var i = 0; i < this.players.length; i++) {
         if (this.players[i].nickname == playerName) {
           console.log(this.players[i].currentField);
           this.players[i].currentField = (this.players[i].currentField + distance) % 40;
+          for (var j = 0; i < this.$refs.fields.length; j++) {
+            if (this.$refs.fields[j].name == this.gamesFlatten[this.players[i].currentField].name) {
+              this.$refs.players[i].move(this.$refs.fields[j].x, this.$refs.fields[j].y);
+            }
+          }
           console.log(this.players[i].currentField);
-          this.$refs.players[i].move(this.players[i].currentField);
+
         }
       }
+    },
+    onGameboard: function(data) {
+      data = {
+        "fields": [{
+            "name": "Start",
+            "type": "start"
+          },
+          {
+            "name": "Mahrzahn",
+            "type": "street",
+            "group": 0,
+            "price": 60,
+            "house_price": 50,
+            "rent": [2, 10, 30, 90, 160, 250]
+          },
+          {
+            "name": "Community Chest",
+            "type": "society_card"
+          },
+          {
+            "name": "Mahlsdorf",
+            "type": "street",
+            "group": 0,
+            "price": 60,
+            "house_price": 50,
+            "rent": [4, 20, 60, 180, 320, 450]
+          },
+          {
+            "name": "Income Tax",
+            "type": "tax",
+            "rent": [200]
+          },
+          {
+            "name": "Westhafen",
+            "type": "station",
+            "group": 8,
+            "price": 200,
+            "rent": [50]
+          },
+          {
+            "name": "Reinickendorf",
+            "type": "street",
+            "group": 1,
+            "price": 100,
+            "house_price": 50,
+            "rent": [6, 30, 90, 270, 400, 550]
+          },
+          {
+            "name": "Chance",
+            "type": "event_card"
+          },
+          {
+            "name": "Tegel",
+            "type": "street",
+            "group": 1,
+            "price": 100,
+            "house_price": 50,
+            "rent": [6, 30, 90, 270, 400, 550]
+          },
+          {
+            "name": "Spandau",
+            "type": "street",
+            "group": 1,
+            "price": 120,
+            "house_price": 50,
+            "rent": [8, 40, 100, 300, 450, 600]
+          },
+          {
+            "name": "Jail",
+            "type": "jail"
+          },
+          {
+            "name": "Wedding",
+            "type": "street",
+            "group": 2,
+            "price": 140,
+            "house_price": 100,
+            "rent": [10, 50, 150, 450, 625, 750]
+          },
+          {
+            "name": "Brandenburger Tor",
+            "type": "utility",
+            "group": 9,
+            "price": 150,
+            "rent": 75
+          },
+          {
+            "name": "Moabit",
+            "type": "street",
+            "group": 2,
+            "price": 140,
+            "house_price": 100,
+            "rent": [10, 50, 150, 450, 625, 750]
+          },
+          {
+            "name": "Pankow",
+            "type": "street",
+            "group": 2,
+            "price": 160,
+            "house_price": 100,
+            "rent": [12, 60, 180, 500, 700, 900]
+          },
+          {
+            "name": "Messe Nord",
+            "type": "station",
+            "group": 8,
+            "price": 200,
+            "rent": [50]
+          },
+          {
+            "name": "Charlottenburg",
+            "type": "street",
+            "group": 3,
+            "price": 180,
+            "house_price": 100,
+            "rent": [14, 70, 200, 550, 750, 950]
+          },
+          {
+            "name": "Community Chest",
+            "type": "society_card"
+          },
+          {
+            "name": "Wilmersdorf",
+            "type": "street",
+            "group": 3,
+            "price": 180,
+            "house_price": 100,
+            "rent": [14, 70, 200, 550, 750, 950]
+          },
+          {
+            "name": "Friedenau",
+            "type": "street",
+            "group": 3,
+            "price": 200,
+            "house_price": 100,
+            "rent": [16, 80, 220, 600, 800, 1000]
+          },
+          {
+            "name": "Free Parking",
+            "type": "free"
+          },
+          {
+            "name": "Tempelhof",
+            "type": "street",
+            "group": 4,
+            "price": 220,
+            "house_price": 150,
+            "rent": [18, 90, 250, 700, 875, 1050]
+          },
+          {
+            "name": "Chance",
+            "type": "event_card"
+          },
+          {
+            "name": "Kreuzberg",
+            "type": "street",
+            "group": 4,
+            "price": 220,
+            "house_price": 150,
+            "rent": [18, 90, 250, 700, 875, 1050]
+          },
+          {
+            "name": "Neukölln",
+            "type": "street",
+            "group": 4,
+            "price": 240,
+            "house_price": 150,
+            "rent": [20, 100, 300, 750, 925, 1100]
+          },
+          {
+            "name": "Warschauer Straße",
+            "type": "station",
+            "group": 8,
+            "price": 200,
+            "rent": [50]
+          },
+          {
+            "name": "Sprengelkiez",
+            "type": "street",
+            "group": 5,
+            "price": 260,
+            "house_price": 150,
+            "rent": [22, 110, 330, 800, 975, 1150]
+          },
+          {
+            "name": "Bergmannkiez",
+            "type": "street",
+            "group": 5,
+            "price": 260,
+            "house_price": 150,
+            "rent": [22, 110, 330, 800, 975, 1150]
+          },
+          {
+            "name": "Fernsehturm",
+            "type": "utility",
+            "group": 9,
+            "price": 150,
+            "rent": 75
+          },
+          {
+            "name": "Kollwitzkiez",
+            "type": "street",
+            "group": 5,
+            "price": 280,
+            "house_price": 150,
+            "rent": [24, 120, 360, 850, 1025, 1200]
+          },
+          {
+            "name": "Go To Jail",
+            "type": "go_to_jail"
+          },
+          {
+            "name": "Schoeneberg",
+            "type": "street",
+            "group": 6,
+            "price": 300,
+            "house_price": 200,
+            "rent": [26, 130, 390, 900, 1100, 1275]
+          },
+          {
+            "name": "Friedrichshain",
+            "type": "street",
+            "group": 6,
+            "price": 300,
+            "house_price": 200,
+            "rent": [26, 130, 390, 900, 1100, 1275]
+          },
+          {
+            "name": "Community Chest",
+            "type": "society_card"
+          },
+          {
+            "name": "Prenzlauer Berg",
+            "type": "street",
+            "group": 6,
+            "price": 320,
+            "house_price": 200,
+            "rent": [28, 150, 450, 1000, 1200, 1400]
+          },
+          {
+            "name": "Alexander Platz",
+            "type": "station",
+            "group": 8,
+            "price": 200,
+            "rent": 50
+          },
+          {
+            "name": "Chance",
+            "type": "event_card"
+          },
+          {
+            "name": "Grunewald",
+            "type": "street",
+            "group": 7,
+            "price": 350,
+            "house_price": 200,
+            "rent": [35, 175, 500, 1100, 1300, 1500]
+          },
+          {
+            "name": "Luxury Tax",
+            "type": "tax",
+            "rent": 100
+          },
+          {
+            "name": "Mitte",
+            "type": "street",
+            "group": 7,
+            "price": 400,
+            "house_price": 200,
+            "rent": [50, 200, 600, 1400, 1700, 2000]
+          }
+
+        ]
+      };
+
+      for (var i = 0; i < data.fields.length; i++) {
+        data.fields[i].attributes = {
+          color: this.colorMapping[data.fields[i].group]
+        };
+      }
+      var gameboard = data.fields;
+      this.lane1 = [].concat(gameboard.slice(0, 10)).reverse();
+      this.lane2 = gameboard.slice(10, 20);
+      this.lane3 = gameboard.slice(20, 30);
+      this.lane4 = [].concat(gameboard.slice(30, 40)).reverse();
+      //var gameboard = data.fields.map((field) => field.assign("color": "red"));
+      //debugger;
+      //console.log(gameboard.length);
+      //this.lane1 = game.slice()
     },
     onPlayerReady: function(playerName) {
       console.log(playerName + ' is now ready!');
@@ -168,7 +500,21 @@ export default {
       console.log(message);
     },
     getRandomColor: function() {
-      return "rgb(" + Math.round(Math.random()*255) + ", " + Math.round(Math.random()*255) + ", " + Math.round(Math.random()*255) + ")";
+      return "rgb(" + Math.round(Math.random() * 255) + ", " + Math.round(Math.random() * 255) + ", " + Math.round(Math.random() * 255) + ")";
+
+    },
+
+    __addFakePlayer: function() {
+      let gameConnection; //TODO add auto rolldice if roll dice in possible_actions
+      let homeConnection = new HomeConnection({
+        enter_lobby: (data) => {
+          gameConnection = new GameConnection(data.session, this.$route.query.game_id, {
+            "fallback": () => true,
+            "error": () => true
+          })
+        }
+      });
+      setTimeout(() => homeConnection.createAccount("The Joker No." + Math.round(Math.random() * 100000)), 300);
 
     }
   }

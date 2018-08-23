@@ -60,14 +60,8 @@ const vueAuth = new VueAuthenticate(Vue.prototype.$http, {
 export default new Vuex.Store({
   plugins: [vuexLocalStorage.plugin],
   state: {
-    socket: {
-      isConnected: false,
-      message: '',
-      reconnectError: false,
-    },
     sessionId: '',
     nickname : '',
-    gameList: [],
     isAuthenticated: false,
     tokens: {'instagram' : null, 'facebook' : null, 'google': null}
   },
@@ -80,9 +74,6 @@ export default new Vuex.Store({
     },
     getNickname(state) {
       return state.nickname
-    },
-    getGameList(state) {
-      return state.gameList
     },
     getSessionId(state) {
       return state.sessionId;
@@ -97,9 +88,6 @@ export default new Vuex.Store({
     },
     setNickname(state, payload) {
       state.nickname = payload
-    },
-    setGameList(state, payload) {
-      state.gameList = payload
     },
     setSessionId(state, payload) {
       state.sessionId = payload;

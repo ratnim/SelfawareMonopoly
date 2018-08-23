@@ -1,15 +1,24 @@
 #include "game.h"
 
-#include <game/state/initstate.h>
+#include <QJsonObject>
 
-Game::Game()
+#include <game/state/initstate.h>
+#include <models/boardmodel.h>
+
+Game::Game(Board board)
+    : m_board(std::move(board))
 {
-    stateChange<InitState>(this);
+	stateChange<InitState>(this);
 }
 
 void Game::join(const QString& playerName)
 {
     m_state->join(playerName);
+}
+
+void Game::board()
+{
+    emit onBoardRequest(m_board.description());
 }
 
 void Game::ready(const QString& playerName)

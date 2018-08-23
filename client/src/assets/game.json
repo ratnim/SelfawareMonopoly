@@ -1,352 +1,273 @@
 {
-  "fields": [
-    [{
-        "id": "los",
-        "type": "los",
-        "label": "LOS",
-        "attributes": {}
-      },
-      {
-        "id": "s11",
-        "type": "street",
-        "label": "Mahrzahn",
-        "attributes": {
-          "color": "#6A009B",
-          "houses": 0
+    "fields":[
+        {
+            "name" : "Start",
+            "type" : "start"
+        },
+        {
+            "name" : "Mahrzahn",
+            "type" : "street",
+            "group" : 0,
+            "price" : 60,
+            "house_price" : 50,
+            "rent" : [2,10,30,90,160,250]
+        },
+        {
+            "name" : "Community Chest",
+            "type" : "society_card"
+        },
+        {
+            "name" : "Mahlsdorf",
+            "type" : "street",
+            "group" : 0,
+            "price" : 60,
+            "house_price" : 50,
+            "rent" : [4,20,60,180,320,450]
+        },
+        {
+            "name" : "Income Tax",
+            "type" : "tax",
+            "rent" : [200]
+        },
+        {
+            "name" : "Westhafen",
+            "type" : "station",
+            "group" : 8,
+            "price" : 200,
+            "rent" : [50]
+        },
+        {
+            "name" : "Reinickendorf",
+            "type" : "street",
+            "group" : 1,
+            "price" : 100,
+            "house_price" : 50,
+            "rent" : [6,30,90,270,400,550]
+        },
+        {
+            "name" : "Chance",
+            "type" : "event_card"
+        },
+        {
+            "name" : "Tegel",
+            "type" : "street",
+            "group" : 1,
+            "price" : 100,
+            "house_price" : 50,
+            "rent" : [6,30,90,270,400,550]
+        },
+        {
+            "name" : "Spandau",
+            "type" : "street",
+            "group" : 1,
+            "price" : 120,
+            "house_price" : 50,
+            "rent" : [8,40,100,300,450,600]
+        },
+        {
+            "name" : "Jail",
+            "type" : "jail"
+        },
+        {
+            "name" : "Wedding",
+            "type" : "street",
+            "group" : 2,
+            "price" : 140,
+            "house_price" : 100,
+            "rent" : [10,50,150,450,625,750]
+        },
+        {
+            "name" : "Brandenburger Tor",
+            "type" : "utility",
+            "group" : 9,
+            "price" : 150,
+            "rent" : 75
+        },
+        {
+            "name" : "Moabit",
+            "type" : "street",
+            "group" : 2,
+            "price" : 140,
+            "house_price" : 100,
+            "rent" : [10,50,150,450,625,750]
+        },
+        {
+            "name" : "Pankow",
+            "type" : "street",
+            "group" : 2,
+            "price" :160,
+            "house_price" : 100,
+            "rent" : [12,60,180,500,700,900]
+        },
+        {
+            "name" : "Messe Nord",
+            "type" : "station",
+            "group" : 8,
+            "price" : 200,
+            "rent" : [50]
+        },
+        {
+            "name" : "Charlottenburg",
+            "type" : "street",
+            "group" :  3,
+            "price" : 180,
+            "house_price" : 100,
+            "rent" : [14,70,200,550,750,950]
+        },
+        {
+            "name" : "Community Chest",
+            "type" : "society_card"
+        },
+        {
+            "name" : "Wilmersdorf",
+            "type" : "street",
+            "group" : 3,
+            "price" : 180,
+            "house_price" : 100,
+            "rent" : [14,70,200,550,750,950]
+        },
+        {
+            "name" : "Friedenau",
+            "type" : "street",
+            "group" : 3,
+            "price" :200,
+            "house_price" : 100,
+            "rent" : [16,80,220,600,800,1000]
+        },
+        {
+            "name" :"Free Parking",
+            "type" : "free"
+        },
+        {
+            "name" : "Tempelhof",
+            "type" : "street",
+            "group" : 4,
+            "price" :220,
+            "house_price" : 150,
+            "rent" : [18,90,250,700,875,1050]
+        },
+        {
+            "name" : "Chance",
+            "type" : "event_card"
+        },
+        {
+            "name" : "Kreuzberg",
+            "type" : "street",
+            "group" : 4,
+            "price" : 220,
+            "house_price" : 150,
+            "rent" : [18,90,250,700,875,1050]
+        },
+        {
+            "name" : "Neukölln",
+            "type" : "street",
+            "group" : 4,
+            "price" : 240,
+            "house_price" : 150,
+            "rent" : [20,100,300,750,925,1100]
+        },
+        {
+            "name" : "Warschauer Straße",
+            "type" : "station",
+            "group" : 8,
+            "price" : 200,
+            "rent" : [50]
+        },
+        {
+            "name" : "Sprengelkiez",
+            "type" : "street",
+            "group" :  5,
+            "price" : 260,
+            "house_price" : 150,
+            "rent" : [22,110,330,800,975,1150]
+        },
+        {
+            "name" : "Bergmannkiez",
+            "type" : "street",
+            "group" : 5,
+            "price" : 260,
+            "house_price" : 150,
+            "rent" : [22,110,330,800,975,1150]
+        },
+        {
+            "name" : "Fernsehturm",
+            "type" : "utility",
+            "group" : 9,
+            "price" : 150,
+            "rent" : 75
+        },
+        {
+            "name" : "Kollwitzkiez",
+            "type" : "street",
+            "group" : 5,
+            "price" : 280,
+            "house_price" : 150,
+            "rent" : [24,120,360,850,1025,1200]
+        },
+        {
+            "name" : "Go To Jail",
+            "type" : "go_to_jail"
+        },
+        {
+            "name" : "Schoeneberg",
+            "type" : "street",
+            "group" :  6,
+            "price" : 300,
+            "house_price" : 200,
+            "rent" : [26,130,390,900,1100,1275]
+        },
+        {
+            "name" : "Friedrichshain",
+            "type" : "street",
+            "group" : 6,
+            "price" : 300,
+            "house_price" : 200,
+            "rent" : [26,130,390,900,1100,1275]
+        },
+        {
+            "name" : "Community Chest",
+            "type" : "society_card"
+        },
+        {
+            "name" : "Prenzlauer Berg",
+            "type" : "street",
+            "group" : 6,
+            "price" : 320,
+            "house_price" : 200,
+            "rent" : [28,150,450,1000,1200,1400]
+        },
+        {
+            "name" : "Alexander Platz",
+            "type" : "station",
+            "group" : 8,
+            "price" : 200,
+            "rent" : 50
+        },
+        {
+            "name" : "Chance",
+            "type" : "event_card"
+        },
+        {
+            "name" : "Grunewald",
+            "type" : "street",
+            "group" : 7,
+            "price" : 350,
+            "house_price" : 200,
+            "rent" : [35,175,500,1100,1300,1500]
+        },
+        {
+            "name" : "Luxury Tax",
+            "type" : "tax",
+            "rent" : 100
+        },
+        {
+            "name" : "Mitte",
+            "type" : "street",
+            "group" : 7,
+            "price" : 400,
+            "house_price" : 200,
+            "rent" : [50,200,600,1400,1700,2000]
         }
-      },
-      {
-        "id": "s11",
-        "type": "street",
-        "label": "Mahlsdorf",
-        "attributes": {
-          "color": "#6A009B",
-          "houses": 0
-        }
-      },
-      {
-        "id": "s12",
-        "type": "street",
-        "label": "Kaulsdorf",
-        "attributes": {
-          "color": "#6A009B",
-          "houses": 0
-        }
-      },
-      {
-        "id": "s12",
-        "type": "street",
-        "label": "Hellersdorf",
-        "attributes": {
-          "color": "#6A009B",
-          "houses": 0
-        }
-      },
-      {
-        "id": "station1",
-        "type": "station",
-        "label": "Westkreuz",
-        "attributes": {
-          "color": "#555555"
-        }
-      },
-      {
-        "id": "s11",
-        "type": "street",
-        "label": "Wedding",
-        "attributes": {
-          "color": "#C7E5FE",
-          "houses": 0
-        }
-      },
-      {
-        "id": "s11",
-        "type": "street",
-        "label": "Wedding2",
-        "attributes": {
-          "color": "#C7E5FE",
-          "houses": 0
-        }
-      },
-      {
-        "id": "s2",
-        "type": "street",
-        "label": "Lichten-\nberg",
-        "attributes": {
-          "color": "#C7E5FE",
-          "houses": 0
-        }
-      },
-      {
-        "id": "s2",
-        "type": "street",
-        "label": "Lichten-\nberg",
-        "attributes": {
-          "color": "#C7E5FE",
-          "houses": 0
-        }
-      }
-    ],
-    [{
-        "id": "prison",
-        "type": "prison",
-        "label": "Gefängnis",
-        "attributes": {}
-      },
-      {
-        "id": "s3",
-        "type": "street",
-        "label": "Köpenick",
-        "attributes": {
-          "color": "#DA009B",
-          "houses": 0
-        }
-      },
-      {
-        "id": "s3",
-        "type": "street",
-        "label": "Köpenick2",
-        "attributes": {
-          "color": "#DA009B",
-          "houses": 0
-        }
-      },
-      {
-        "id": "s11",
-        "type": "street",
-        "label": "Hohen-\nschön-\nhausen",
-        "attributes": {
-          "color": "#DA009B",
-          "houses": 0
-        }
-      },
-      {
-        "id": "s11",
-        "type": "street",
-        "label": "Hohen-\nschön-\nhausen2",
-        "attributes": {
-          "color": "#DA009B",
-          "houses": 0
-        }
-      },
-      {
-        "id": "station2",
-        "type": "station",
-        "label": "Gesund-\nbrunnen",
-        "attributes": {
-          "color": "#555555"
-        }
-      },
-      {
-        "id": "s11",
-        "type": "street",
-        "label": "Pankow",
-        "attributes": {
-          "color": "#F19D00",
-          "houses": 0
-        }
-      },
-      {
-        "id": "s11",
-        "type": "street",
-        "label": "Pankow2",
-        "attributes": {
-          "color": "#F19D00",
-          "houses": 0
-        }
-      },
-      {
-        "id": "s4",
-        "type": "street",
-        "label": "Reinicken-\ndorf",
-        "attributes": {
-          "color": "#F19D00",
-          "houses": 0
-        }
-      },
-      {
-        "id": "s4",
-        "type": "street",
-        "label": "Reinicken-\ndorf2",
-        "attributes": {
-          "color": "#F19D00",
-          "houses": 0
-        }
-      }
-    ],
-    [{
-        "id": "free",
-        "type": "free",
-        "label": "Frei\nParken",
-        "attributes": {}
-      },
-      {
-        "id": "s5",
-        "type": "street",
-        "label": "Moabit",
-        "attributes": {
-          "color": "#F20000",
-          "houses": 0
-        }
-      },
-      {
-        "id": "s5",
-        "type": "street",
-        "label": "Moabit2",
-        "attributes": {
-          "color": "#F20000",
-          "houses": 0
-        }
-      },
-      {
-        "id": "s11",
-        "type": "street",
-        "label": "Steglitz",
-        "attributes": {
-          "color": "#F20000",
-          "houses": 0
-        }
-      },
-      {
-        "id": "s11",
-        "type": "street",
-        "label": "Steglitz2",
-        "attributes": {
-          "color": "#F20000",
-          "houses": 0
-        }
-      },
-      {
-        "id": "station3",
-        "type": "station",
-        "label": "Ost-\nbahnhof",
-        "attributes": {
-          "color": "#555555"
-        }
-      },
-      {
-        "id": "s11",
-        "type": "street",
-        "label": "Zehlendorf",
-        "attributes": {
-          "color": "#ECFF00",
-          "houses": 0
-        }
-      },
-      {
-        "id": "s11",
-        "type": "street",
-        "label": "Zehlendorf2",
-        "attributes": {
-          "color": "#ECFF00",
-          "houses": 0
-        }
-      },
-      {
-        "id": "s6",
-        "type": "street",
-        "label": "Neukölln",
-        "attributes": {
-          "color": "#ECFF00",
-          "houses": 0
-        }
-      },
-      {
-        "id": "s6",
-        "type": "street",
-        "label": "Neukölln2",
-        "attributes": {
-          "color": "#ECFF00",
-          "houses": 0
-        }
-      }
-    ],
-    [{
-        "id": "gotoprison",
-        "type": "gotoprison",
-        "label": "Gehe ins \nGefängnis",
-        "attributes": {}
-      },
-      {
-        "id": "s7",
-        "type": "street",
-        "label": "Tempelhof",
-        "attributes": {
-          "color": "#00B167",
-          "houses": 0
-        }
-      },
-      {
-        "id": "s7",
-        "type": "street",
-        "label": "Tempelhof2",
-        "attributes": {
-          "color": "#00B167",
-          "houses": 0
-        }
-      },
-      {
-        "id": "s8",
-        "type": "street",
-        "label": "Schöneberg",
-        "attributes": {
-          "color": "#00B167",
-          "houses": 0
-        }
-      },
-      {
-        "id": "s8",
-        "type": "street",
-        "label": "Schöneberg2",
-        "attributes": {
-          "color": "#00B167",
-          "houses": 0
-        }
-      },
-      {
-        "id": "station4",
-        "type": "station",
-        "label": "Friedrich-\nstraße",
-        "attributes": {
-          "color": "#555555"
-        }
-      },
-      {
-        "id": "s11",
-        "type": "street",
-        "label": "Charlotten-\nburg",
-        "attributes": {
-          "color": "#345CB9",
-          "houses": 0
-        }
-      },
-      {
-        "id": "s11",
-        "type": "street",
-        "label": "Charlotten-\nburg2",
-        "attributes": {
-          "color": "#345CB9",
-          "houses": 0
-        }
-      },
-      {
-        "id": "s11",
-        "type": "street",
-        "label": "Kreuzburg",
-        "attributes": {
-          "color": "#345CB9",
-          "houses": 0
-        }
-      },
-      {
-        "id": "s11",
-        "type": "street",
-        "label": "Kreuzburg2",
-        "attributes": {
-          "color": "#345CB9",
-          "houses": 0
-        }
-      }
+
     ]
-  ]
 }
