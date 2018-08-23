@@ -38,22 +38,22 @@ set(sources
     game/board/fieldfactory.h
     game/board/street.h
     game/board/taxfield.h
-    game/state/gamestate.cpp
-    game/state/gamestate.h
-    game/state/endstate.cpp
-    game/state/endstate.h
-    game/state/initstate.cpp
-    game/state/initstate.h
-    game/state/runstate.cpp
-    game/state/runstate.h
-    game/state/turn/freestate.cpp
-    game/state/turn/freestate.h
-    game/state/turn/jailstate.cpp
-    game/state/turn/jailstate.h
-    game/state/turn/turnstate.cpp
-    game/state/turn/turnstate.h
-    game/state/turn/rollstate.cpp
-    game/state/turn/rollstate.h
+    game/stages/stage.cpp
+    game/stages/stage.h
+    game/stages/endstage.cpp
+    game/stages/endstage.h
+    game/stages/initstage.cpp
+    game/stages/initstage.h
+    game/stages/runstage.cpp
+    game/stages/runstage.h
+    game/turn/freestate.cpp
+    game/turn/freestate.h
+    game/turn/jailstate.cpp
+    game/turn/jailstate.h
+    game/turn/turnstate.cpp
+    game/turn/turnstate.h
+    game/turn/rollstate.cpp
+    game/turn/rollstate.h
     models/accountmodel.cpp
     models/accountmodel.h
     models/boardmodel.cpp

@@ -1,9 +1,9 @@
 #include "turnstate.h"
 
 #include <game/game.h>
-#include <game/state/runstate.h>
-#include <game/state/turn/jailstate.h>
-#include <game/state/turn/rollstate.h>
+#include <game/stages/runstage.h>
+#include <game/turn/jailstate.h>
+#include <game/turn/rollstate.h>
 #include <utils/exception.h>
 
 TurnState::TurnState(GameLogic* logic)

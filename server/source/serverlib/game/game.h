@@ -1,10 +1,10 @@
 #pragma once
 
-#include <game/state/gamestate.h>
+#include <game/stages/stage.h>
 #include <game/board/board.h>
 #include <utils/budhist.h>
 
-class Game : public QObject, public Budhist<GameState>
+class Game : public QObject, public Budhist<Stage>
 {
     Q_OBJECT
 

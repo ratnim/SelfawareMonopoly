@@ -1,8 +1,8 @@
-#include "endstate.h"
+#include "endstage.h"
 
 #include <game/game.h>
 
-EndState::EndState(Game* game)
+EndStage::EndStage(Game* game)
 {
     emit game->onGameEnd();
 }

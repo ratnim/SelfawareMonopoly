@@ -1,6 +1,6 @@
 #pragma once
 
-#include <game/state/turn/turnstate.h>
+#include <game/turn/turnstate.h>
 
 class FreeState : public TurnState
 {

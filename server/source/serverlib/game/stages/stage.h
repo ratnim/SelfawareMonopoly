@@ -5,10 +5,10 @@
 
 class Game;
 
-class GameState
+class Stage
 {
 public:
-    virtual ~GameState() = default;
+    virtual ~Stage() = default;
 
     virtual void join(const QString& playerName);
     virtual void ready(const QString& playerName);

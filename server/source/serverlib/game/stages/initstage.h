@@ -3,12 +3,12 @@
 #include <map>
 
 #include <game/player.h>
-#include <game/state/gamestate.h>
+#include <game/stages/stage.h>
 
-class InitState : public GameState
+class InitStage : public Stage
 {
 public:
-    InitState(Game* game);
+    InitStage(Game* game);
 
     void join(const QString& playerName) override;
     void ready(const QString& playerName) override;

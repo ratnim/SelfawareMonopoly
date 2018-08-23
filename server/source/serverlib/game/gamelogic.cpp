@@ -1,10 +1,10 @@
 #include "gamelogic.h"
 
-#include <game/state/endstate.h>
-#include <game/state/runstate.h>
-#include <game/state/turn/freestate.h>
-#include <game/state/turn/jailstate.h>
-#include <game/state/turn/rollstate.h>
+#include <game/stages/endstage.h>
+#include <game/stages/runstage.h>
+#include <game/turn/freestate.h>
+#include <game/turn/jailstate.h>
+#include <game/turn/rollstate.h>
 #include <utils/exception.h>
 
 #include <iostream>
@@ -16,7 +16,7 @@ const int goToJailPosition = 30;
 const int gameEndField = 40;
 }
 
-GameLogic::GameLogic(Game* game, RunState* state)
+GameLogic::GameLogic(Game* game, RunStage* state)
     : m_game(game)
     , m_state(state)
 {
@@ -31,7 +31,7 @@ void GameLogic::movePlayer(int distance, bool canRollAgain, int rollCount)
     // handle game end
     if (player.position() >= gameEndField)
     {
-        m_game->stateChange<EndState>(m_game);
+        m_game->stateChange<EndStage>(m_game);
         return;
     }
 

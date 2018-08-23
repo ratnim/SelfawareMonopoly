@@ -2,13 +2,13 @@
 
 #include <QJsonObject>
 
-#include <game/state/initstate.h>
+#include <game/stages/initstage.h>
 #include <models/boardmodel.h>
 
 Game::Game(Board board)
     : m_board(std::move(board))
 {
-	stateChange<InitState>(this);
+	stateChange<InitStage>(this);
 }
 
 void Game::join(const QString& playerName)

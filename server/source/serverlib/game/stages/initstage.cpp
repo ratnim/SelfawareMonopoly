@@ -1,10 +1,10 @@
-#include "initstate.h"
+#include "initstage.h"
 
 #include <QJsonArray>
 #include <QJsonObject>
 
 #include <game/game.h>
-#include <game/state/runstate.h>
+#include <game/stages/runstage.h>
 #include <utils/exception.h>
 
 namespace
@@ -13,12 +13,12 @@ int minimumPlayers = 2;
 int maximumPlayers = 6;
 }
 
-InitState::InitState(Game* game)
+InitStage::InitStage(Game* game)
     : m_game(game)
 {
 }
 
-void InitState::join(const QString& playerName)
+void InitStage::join(const QString& playerName)
 {
     if (maximalPlayersJoined())
     {
@@ -35,7 +35,7 @@ void InitState::join(const QString& playerName)
     broadcastPossibleRequests();
 }
 
-void InitState::ready(const QString& playerName)
+void InitStage::ready(const QString& playerName)
 {
     if (m_playersReady.find(playerName) == m_playersReady.end())
     {
@@ -52,7 +52,7 @@ void InitState::ready(const QString& playerName)
     broadcastPossibleRequests();
 }
 
-void InitState::start()
+void InitStage::start()
 {
     if (!minimalPlayersJoined())
     {
@@ -64,10 +64,10 @@ void InitState::start()
         throw Exception("Not every player is ready.");
     }
 
-    m_game->stateChange<RunState>(m_game, turnOrder());
+    m_game->stateChange<RunStage>(m_game, turnOrder());
 }
 
-std::vector<Player> InitState::turnOrder()
+std::vector<Player> InitStage::turnOrder()
 {
     std::vector<Player> order;
     for (auto& player : m_playersReady)
@@ -78,7 +78,7 @@ std::vector<Player> InitState::turnOrder()
     return order;
 }
 
-bool InitState::allPlayersReady() const
+bool InitStage::allPlayersReady() const
 {
     for (const auto& elem : m_playersReady)
     {
@@ -90,22 +90,22 @@ bool InitState::allPlayersReady() const
     return true;
 }
 
-bool InitState::gameIsStartable() const
+bool InitStage::gameIsStartable() const
 {
     return minimalPlayersJoined() && allPlayersReady();
 }
 
-bool InitState::minimalPlayersJoined() const
+bool InitStage::minimalPlayersJoined() const
 {
     return m_playersReady.size() >= minimumPlayers;
 }
 
-bool InitState::maximalPlayersJoined() const
+bool InitStage::maximalPlayersJoined() const
 {
     return m_playersReady.size() >= maximumPlayers;
 }
 
-void InitState::broadcastPossibleRequests() const
+void InitStage::broadcastPossibleRequests() const
 {
     if (gameIsStartable())
     {
@@ -117,7 +117,7 @@ void InitState::broadcastPossibleRequests() const
 	}
 }
 
-void InitState::broadcastGameIsStartable() const
+void InitStage::broadcastGameIsStartable() const
 {
     QJsonArray requests;
     requests.append(createPossibleRequest("game_start"));
@@ -128,7 +128,7 @@ void InitState::broadcastGameIsStartable() const
     }
 }
 
-void InitState::broadcastPlayerReadyRequest() const
+void InitStage::broadcastPlayerReadyRequest() const
 {
     QJsonArray requests;
     requests.append(createPossibleRequest("player_ready"));
@@ -146,7 +146,7 @@ void InitState::broadcastPlayerReadyRequest() const
     }
 }
 
-QJsonObject InitState::createPossibleRequest(const QString& requestName) const
+QJsonObject InitStage::createPossibleRequest(const QString& requestName) const
 {
     QJsonObject request;
     request["request"] = requestName;

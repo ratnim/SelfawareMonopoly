@@ -1,10 +1,10 @@
-#include "runstate.h"
+#include "runstage.h"
 
 #include <game/game.h>
-#include <game/state/turn/rollstate.h>
+#include <game/turn/rollstate.h>
 #include <utils/exception.h>
 
-RunState::RunState(Game* game, std::vector<Player> players)
+RunStage::RunStage(Game* game, std::vector<Player> players)
     : m_players(std::move(players))
     , m_logic(game, this)
 {
@@ -14,34 +14,34 @@ RunState::RunState(Game* game, std::vector<Player> players)
     stateChange<RollState>(&m_logic);
 }
 
-Player& RunState::player()
+Player& RunStage::player()
 {
     return m_players();
 }
 
-RingBuffer<Player>& RunState::players()
+RingBuffer<Player>& RunStage::players()
 {
     return m_players;
 }
 
-Watson& RunState::watson()
+Watson& RunStage::watson()
 {
     return m_watson;
 }
 
-void RunState::rollDice(const QString& playerName)
+void RunStage::rollDice(const QString& playerName)
 {
     checkPlayer(playerName);
     m_state->rollDice();
 }
 
-void RunState::endTurn(const QString& playerName)
+void RunStage::endTurn(const QString& playerName)
 {
     checkPlayer(playerName);
     m_state->endTurn();
 }
 
-void RunState::checkPlayer(const QString& playerName)
+void RunStage::checkPlayer(const QString& playerName)
 {
     if (m_players().name() != playerName)
     {

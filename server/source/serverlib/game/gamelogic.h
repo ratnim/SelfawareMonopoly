@@ -6,12 +6,12 @@
 #include <game/watson.h>
 #include <utils/ringbuffer.h>
 
-class RunState;
+class RunStage;
 
 class GameLogic
 {
 public:
-    GameLogic(Game* game, RunState* state);
+    GameLogic(Game* game, RunStage* state);
 
     void goToJail();
     void movePlayer(int distance, bool canRollAgain = false, int rollCount = 1);
@@ -25,5 +25,5 @@ protected:
     void prepareTurnState();
 
     Game* m_game;
-    RunState* m_state;
+    RunStage* m_state;
 };

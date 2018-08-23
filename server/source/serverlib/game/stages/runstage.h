@@ -2,14 +2,14 @@
 
 #include <game/gamelogic.h>
 #include <game/watson.h>
-#include <game/state/gamestate.h>
-#include <game/state/turn/turnstate.h>
+#include <game/stages/stage.h>
+#include <game/turn/turnstate.h>
 #include <utils/budhist.h>
 
-class RunState : public GameState, public Budhist<TurnState>
+class RunStage : public Stage, public Budhist<TurnState>
 {
 public:
-    RunState(Game* game, std::vector<Player> players);
+    RunStage(Game* game, std::vector<Player> players);
 
     Player& player();
     RingBuffer<Player>& players();
