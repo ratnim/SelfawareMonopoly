@@ -35,7 +35,7 @@ void LobbyRoute::createGame(const QJsonValue& body)
     }
 
 	QString boardFile = "berlin.json";
-    const auto gameId = GameModel::instance().createGame(label);
+    const auto gameId = GameModel::instance().createGame(label, boardFile);
     emit send(createGameAnswer(gameId));
 }
 

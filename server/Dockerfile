@@ -58,6 +58,6 @@ RUN sudo cmake -DCMAKE_PREFIX_PATH=/opt/qt510 .. \
   && sudo make
 
 # Prepare Run
-WORKDIR /usr/src/app
+WORKDIR /usr/src/app/server
 EXPOSE 31415
-ENTRYPOINT [ "./server/build/server" ]
+ENTRYPOINT [ "./build/server" ]
