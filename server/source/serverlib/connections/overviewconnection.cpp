@@ -9,7 +9,7 @@
 OverviewConnection::OverviewConnection(QWebSocket* parent, const Request& request)
     : Connection(parent)
 {
-    m_actions[QString("enter_lobby")] = [this](const QJsonValue& data) {
+    m_requests[QString("enter_lobby")] = [this](const QJsonValue& data) {
         enterLobby(data);
     };
 }

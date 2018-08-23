@@ -11,7 +11,7 @@
 class Connection : public Watcher
 {
 public:
-    using ActionCallback = std::function<void(const QJsonValue&)>;
+    using RequestCallback = std::function<void(const QJsonValue&)>;
 
     Connection(QWebSocket* parent);
 
@@ -19,7 +19,7 @@ public:
     static QJsonObject toJson(const QString& message);
 
 protected:
-    ActionCallback actionHandler(const QString& name) const;
+    RequestCallback requestHandler(const QString& name) const;
 
-    std::map<QString, ActionCallback> m_actions;
+    std::map<QString, RequestCallback> m_requests;
 };

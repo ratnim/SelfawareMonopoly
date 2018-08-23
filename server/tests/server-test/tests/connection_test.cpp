@@ -18,7 +18,7 @@ public:
     SubConnectionTest()
         : Connection(&dummy)
     {
-        m_actions["test"] = [this](const QJsonValue& input) {
+        m_requests["test"] = [this](const QJsonValue& input) {
             data = input;
             broadcast("ok");
         };

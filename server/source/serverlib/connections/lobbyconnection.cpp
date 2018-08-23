@@ -11,7 +11,7 @@ LobbyConnection::LobbyConnection(QWebSocket* parent, const Request& request)
     : Connection(parent)
     , m_playerName(AccountModel::instance().username(request.session))
 {
-    m_actions["create_game"] = [this](const QJsonValue& data) {
+    m_requests["create_game"] = [this](const QJsonValue& data) {
         createGame(data);
     };
 

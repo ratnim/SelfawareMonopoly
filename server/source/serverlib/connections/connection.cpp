@@ -20,7 +20,7 @@ void Connection::incommingMessage(const QString& message)
         const auto json = toJson(message);
         const auto actionName = json[QString("request")].toString();
 
-        const auto handler = actionHandler(actionName);
+        const auto handler = requestHandler(actionName);
         handler(json[QString("data")]);
     }
     catch (const Exception &e)
@@ -41,10 +41,10 @@ QJsonObject Connection::toJson(const QString& message)
     throw Exception("Only JSON objects are supported.", Error::MalformedRequest);
 }
 
-Connection::ActionCallback Connection::actionHandler(const QString& name) const
+Connection::RequestCallback Connection::requestHandler(const QString& name) const
 {
-    const auto& action = m_actions.find(name);
-    if (action == m_actions.end())
+    const auto& action = m_requests.find(name);
+    if (action == m_requests.end())
     {
         throw Exception(QString("'%1' is not valid.").arg(name), Error::UnsupportedAction);
     }
