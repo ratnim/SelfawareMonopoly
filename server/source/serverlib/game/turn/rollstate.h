@@ -5,8 +5,8 @@
 class RollState : public TurnState
 {
 public:
-    RollState(TurnState* state, GameLogic* logic);
-    RollState(TurnState* state, int rollCount = 0);
+    RollState(TurnState* state);
+    RollState(TurnState* state, int rollCount);
 
     virtual void rollDice();
 

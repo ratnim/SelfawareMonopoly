@@ -52,10 +52,10 @@ void GameWatcher::playerJoin(const QString& playerName)
     broadcastEvent(answer);
 }
 
-void GameWatcher::boardRequest(const QJsonObject& board)
+void GameWatcher::boardRequest(const QJsonObject& gameBoard)
 {
     QJsonObject answer({ { "name", "game_board" } });
-    answer["data"] = board;
+    answer["data"] = gameBoard;
     broadcastEvent(answer);
 }
 

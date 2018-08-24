@@ -4,8 +4,8 @@
 #include <game/game.h>
 
 
-RollState::RollState(TurnState* state, GameLogic* logic)
-    : TurnState(logic)
+RollState::RollState(TurnState* state)
+    : TurnState(*state)
     , m_rollCount(0)
 {
 }

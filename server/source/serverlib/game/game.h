@@ -1,31 +1,31 @@
 #pragma once
 
-#include <game/stages/stage.h>
+#include <game/turn/turnstate.h>
 #include <game/board/board.h>
 #include <utils/budhist.h>
 
-class Game : public QObject, public Budhist<Stage>
+class Game : public QObject, public Budhist<TurnState>
 {
     Q_OBJECT
 
 public:
-    Game(Board board = Board({}));
+    Game(Board gameBoard = Board({}));
 
-    void join(const QString& playerName);
-    void board();
-    void ready(const QString& playerName);
-    void start();
+    void playerJoin(const QString& playerName);
+    void gameBoard();
+    void playerReady(const QString& playerName);
+    void gameStart();
 
     void rollDice(const QString& playerName);
-    void pay(const QString& playerName);
-    void ignore(const QString& playerName);
-    void draw(const QString& playerName);
     void endTurn(const QString& playerName);
 
 	void possibleRequests(const QString& playerName);
 
+	RingBuffer<Player>& players();
+    Player& currentPlayer();
+
 signals:
-    void onBoardRequest(const QJsonObject& board);
+    void onBoardRequest(const QJsonObject& gameBoard);
     void onPlayerJoin(const QString& playerName);
     void onPlayerReady(const QString& playerName);
 
@@ -43,4 +43,5 @@ signals:
 
 protected:
     Board m_board;
+    RingBuffer<Player> m_players;
 };

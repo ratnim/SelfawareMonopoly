@@ -9,11 +9,17 @@
 #include <utils/exception.h>
 
 TurnState::TurnState(GameLogic* logic)
-    : m_logic(logic)
+    : m_logic(logic),
+	m_game(logic->m_game)
 {
 }
 
-void TurnState::startGame()
+TurnState::TurnState(Game* game)
+    : m_logic(nullptr), m_game(game)
+{
+}
+
+void TurnState::gameStart()
 {
     InvalidRequest();
 }
@@ -46,12 +52,4 @@ void TurnState::possibleRequests(const QString& playerName)
 void TurnState::InvalidRequest()
 {
     throw Exception("You are not allowed to perform this action.", Error::InvalidRequest);
-}
-
-QJsonObject TurnState::createPossibleRequest(const QString& requestName) const
-{
-    QJsonObject request;
-    request["request"] = requestName;
-    request["data"] = QJsonObject{};
-    return request;
 }

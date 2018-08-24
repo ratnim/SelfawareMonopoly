@@ -1,5 +1,6 @@
 #include "gamelogic.h"
 
+#include <game/game.h>
 #include <game/stages/endstage.h>
 #include <game/stages/runstage.h>
 #include <game/turn/freestate.h>
@@ -16,7 +17,7 @@ const int goToJailPosition = 30;
 const int gameEndField = 40;
 }
 
-GameLogic::GameLogic(Game* game, RunStage* state)
+GameLogic::GameLogic(Game* game, StartState* state)
     : m_game(game)
     , m_state(state)
 {
@@ -24,81 +25,81 @@ GameLogic::GameLogic(Game* game, RunStage* state)
 
 void GameLogic::movePlayer(int distance, bool canRollAgain, int rollCount)
 {
-    auto& player = m_state->player();
-    player.move(distance);
-    emit m_game->onPlayerMove(player.name(), distance);
+    //auto& player = m_state->player();
+    //player.move(distance);
+    //emit m_game->onPlayerMove(player.name(), distance);
 
-    // handle game end
-    if (player.position() >= gameEndField)
-    {
-        m_game->stateChange<EndStage>(m_game);
-        return;
-    }
+    //// handle game end
+    //if (player.position() >= gameEndField)
+    //{
+    //    m_game->stateChange<EndStage>(m_game);
+    //    return;
+    //}
 
-    // handle go to jail field
-    if (player.position() == goToJailPosition)
-    {
-        goToJail();
-        return;
-    }
+    //// handle go to jail field
+    //if (player.position() == goToJailPosition)
+    //{
+    //    goToJail();
+    //    return;
+    //}
 
-    if (!canRollAgain)
-    {
-        m_state->stateChange<FreeState>();
-    }
-    else
-    {
-        m_state->stateChange<RollState>(rollCount);
-    }
+    //if (!canRollAgain)
+    //{
+    //    m_state->stateChange<FreeState>();
+    //}
+    //else
+    //{
+    //    m_state->stateChange<RollState>(rollCount);
+    //}
 }
 
 void GameLogic::goToJail()
 {
-    auto& player = m_state->player();
+    //auto& player = m_state->player();
 
-    player.jail();
+    //player.jail();
 
-    auto distance = jailPosition - player.position();
-    player.move(distance);
-    emit m_game->onPlayerMove(player.name(), distance);
-    emit m_game->onEnterJail(player.name());
+    //auto distance = jailPosition - player.position();
+    //player.move(distance);
+    //emit m_game->onPlayerMove(player.name(), distance);
+    //emit m_game->onEnterJail(player.name());
 
-    end();
+    //end();
 }
 
 Dices GameLogic::roll()
 {
-    auto d = m_state->watson().roll();
-    emit m_game->onRollDice(m_state->player().name(), d.first, d.second);
-    return d;
+    //auto d = m_state->watson().roll();
+    //emit m_game->onRollDice(m_state->player().name(), d.first, d.second);
+    return {};
 }
 
 void GameLogic::idle()
 {
-    m_state->stateChange<FreeState>();
+    //m_state->stateChange<FreeState>();
 }
 
 void GameLogic::end()
 {
-	nextPlayer();
-	prepareTurnState();
+	//nextPlayer();
+	//prepareTurnState();
 }
 
 void GameLogic::nextPlayer()
 {
-    m_state->players().next();
-    m_state->player().nextTurn();
-    emit m_game->onTurnChange(m_state->player().name());
+    //m_state->players().next();
+    //m_state->player().nextTurn();
+    //emit m_game->onTurnChange(m_state->player().name());
 }
 
 void GameLogic::prepareTurnState()
 {
-    if (m_state->player().inJail())
-    {
-        m_state->stateChange<JailState>();
-    }
-    else
-    {
-        m_state->stateChange<RollState>();
-    }
+    //if (m_state->player().inJail())
+    //{
+    //    m_state->stateChange<JailState>();
+    //}
+    //else
+    //{
+    //    m_state->stateChange<RollState>();
+    //}
 }

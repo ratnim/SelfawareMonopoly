@@ -7,7 +7,7 @@
 
 struct GameObject
 {
-    GameObject(const QString& label, Board board);
+    GameObject(const QString& label, Board gameBoard);
 
     Game game;
     GameWatcher watcher;

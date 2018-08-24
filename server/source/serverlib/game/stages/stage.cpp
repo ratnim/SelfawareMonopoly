@@ -2,17 +2,17 @@
 
 #include <utils/exception.h>
 
-void Stage::join(const QString& playerName)
+void Stage::playerJoin(const QString& playerName)
 {
     InvalidRequest();
 }
 
-void Stage::ready(const QString& playerName)
+void Stage::playerReady(const QString& playerName)
 {
     InvalidRequest();
 }
 
-void Stage::start()
+void Stage::gameStart()
 {
     InvalidRequest();
 }

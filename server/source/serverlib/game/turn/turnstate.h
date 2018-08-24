@@ -3,15 +3,18 @@
 #include <game/dices.h>
 #include <game/gamelogic.h>
 
+class Game;
+
 class TurnState
 {
 public:
-    TurnState(GameLogic* logic);
+    TurnState(Game* game);
+	TurnState(GameLogic* logic);
     virtual ~TurnState() = default;
 
     virtual void possibleRequests(const QString& playerName);
 
-	virtual void startGame();
+	virtual void gameStart();
 
     virtual void playerReady(const QString& playerName);
     virtual void playerJoin(const QString& playerName);
@@ -21,8 +24,7 @@ public:
 
 protected:
     GameLogic* m_logic;
-
-	QJsonObject createPossibleRequest(const QString& requestName) const;
+    Game* m_game;
 
 private:
     static void InvalidRequest();

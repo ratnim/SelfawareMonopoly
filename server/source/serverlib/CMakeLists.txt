@@ -54,6 +54,8 @@ set(sources
     game/turn/turnstate.h
     game/turn/rollstate.cpp
     game/turn/rollstate.h
+    game/turn/possiblerequest.cpp
+    game/turn/possiblerequest.h
     models/accountmodel.cpp
     models/accountmodel.h
     models/boardmodel.cpp

@@ -11,35 +11,35 @@ TEST(GameTest, join_multiple_times)
 
     QSignalSpy join_spy(&game, &Game::onPlayerJoin);
 
-    game.join("Heinz");
+    game.playerJoin("Heinz");
 
-    EXPECT_THROW(game.join("Heinz"), Exception);
+    EXPECT_THROW(game.playerJoin("Heinz"), Exception);
 
-    game.join("Gertrude");
+    game.playerJoin("Gertrude");
 
     EXPECT_EQ(join_spy.size(), 2);
     EXPECT_EQ(join_spy.at(0).at(0).toString(), "Heinz");
     EXPECT_EQ(join_spy.at(1).at(0).toString(), "Gertrude");
 }
 
-TEST(GameTest, ready)
+TEST(GameTest, playerReady)
 {
     Game game;
 
     QSignalSpy ready_spy(&game, &Game::onPlayerReady);
 
-    game.join("Heinz");
-    game.join("Gertrude");
+    game.playerJoin("Heinz");
+    game.playerJoin("Gertrude");
 
-    EXPECT_THROW(game.ready("Else"), Exception);
+    EXPECT_THROW(game.playerReady("Else"), Exception);
     EXPECT_EQ(ready_spy.size(), 0);
 
-    game.ready("Heinz");
+    game.playerReady("Heinz");
 
     EXPECT_EQ(ready_spy.size(), 1);
-    EXPECT_THROW(game.ready("Heinz"), Exception);
+    EXPECT_THROW(game.playerReady("Heinz"), Exception);
 
-    game.ready("Gertrude");
+    game.playerReady("Gertrude");
     EXPECT_EQ(ready_spy.size(), 2);
 }
 
@@ -49,23 +49,23 @@ TEST(GameTest, start_game)
 
     QSignalSpy start_spy(&game, &Game::onGameStart);
 
-    EXPECT_THROW(game.start(), Exception);
+    EXPECT_THROW(game.gameStart(), Exception);
 
-    game.join("Heinz");
-    game.join("Gertrude");
-    game.join("Else");
+    game.playerJoin("Heinz");
+    game.playerJoin("Gertrude");
+    game.playerJoin("Else");
 
-    EXPECT_THROW(game.start(), Exception);
+    EXPECT_THROW(game.gameStart(), Exception);
 
-    game.ready("Heinz");
-    game.ready("Gertrude");
+    game.playerReady("Heinz");
+    game.playerReady("Gertrude");
 
-    EXPECT_THROW(game.start(), Exception);
+    EXPECT_THROW(game.gameStart(), Exception);
 
-    game.ready("Else");
+    game.playerReady("Else");
 
     EXPECT_EQ(start_spy.size(), 0);
-    game.start();
+    game.gameStart();
     EXPECT_EQ(start_spy.size(), 1);
 }
 
@@ -75,17 +75,17 @@ TEST(GameTest, simple_start_turn)
 
     QSignalSpy start_spy(&game, &Game::onTurnChange);
 
-    game.join("Heinz");
-    game.join("Gertrude");
+    game.playerJoin("Heinz");
+    game.playerJoin("Gertrude");
 
-    game.ready("Heinz");
-    game.ready("Gertrude");
+    game.playerReady("Heinz");
+    game.playerReady("Gertrude");
 
     EXPECT_EQ(start_spy.size(), 0);
-    game.start();
+    game.gameStart();
     ASSERT_EQ(start_spy.size(), 1);
 
-    EXPECT_THROW(game.ready("Heinz"), Exception);
+    EXPECT_THROW(game.playerReady("Heinz"), Exception);
     EXPECT_THROW(game.endTurn("Heinz"), Exception);
 
     auto player = start_spy.at(0).at(0).toString();

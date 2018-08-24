@@ -3,19 +3,19 @@
 #include <map>
 
 #include <game/player.h>
-#include <game/stages/stage.h>
+#include <game/turn/turnstate.h>
 
-class InitStage : public Stage
+class InitState : public TurnState
 {
 public:
-    InitStage(Game* game);
+    InitState(Game* game);
 
-    void join(const QString& playerName) override;
-    void ready(const QString& playerName) override;
-    void start() override;
+    void playerJoin(const QString& playerName) override;
+    void playerReady(const QString& playerName) override;
+    void gameStart() override;
 
 protected:
-    std::vector<Player> turnOrder();
+    std::vector<Player> joinedPlayers();
     bool allPlayersReady() const;
     bool minimalPlayersJoined() const;
     bool maximalPlayersJoined() const;
@@ -24,8 +24,6 @@ protected:
     void broadcastPossibleRequests() const;
     void broadcastGameIsStartable() const;
     void broadcastPlayerReadyRequest() const;
-
-	QJsonObject createPossibleRequest(const QString& requestName) const;
 
     Game* m_game;
     std::map<QString, bool> m_playersReady;

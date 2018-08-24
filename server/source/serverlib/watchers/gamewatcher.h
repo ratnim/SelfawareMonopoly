@@ -22,7 +22,7 @@ protected:
     void singlePlayerEvent(const QString& player, const QJsonObject& object);
 
     void playerJoin(const QString& playerName);
-    void boardRequest(const QJsonObject& board);
+    void boardRequest(const QJsonObject& gameBoard);
     void playerReady(const QString& playerName);
 
     void rollDice(const QString& playerName, int d1, int d2);
