@@ -32,13 +32,13 @@ Watson& RunStage::watson()
 void RunStage::rollDice(const QString& playerName)
 {
     checkPlayer(playerName);
-    m_state->rollDice();
+    m_state->rollDice(playerName);
 }
 
 void RunStage::endTurn(const QString& playerName)
 {
     checkPlayer(playerName);
-    m_state->endTurn();
+    m_state->endTurn(playerName);
 }
 
 void RunStage::checkPlayer(const QString& playerName)

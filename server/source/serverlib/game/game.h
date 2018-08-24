@@ -22,7 +22,7 @@ public:
     void draw(const QString& playerName);
     void endTurn(const QString& playerName);
 
-	void possibleRequests(const QString& playerName, const QJsonArray& requests);
+	void possibleRequests(const QString& playerName);
 
 signals:
     void onBoardRequest(const QJsonObject& board);

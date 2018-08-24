@@ -71,17 +71,17 @@ TEST(GameConnectionTest, possible_requests)
 
 	auto& game = GameModel::instance().open(gameId).game;
 
-	game.possibleRequests("not_there", {});
+	emit game.onPossibleRequests("not_there", {});
 
     ASSERT_FALSE(socket_spy_1.size() || socket_spy_1.wait(500));
     ASSERT_FALSE(socket_spy_2.size() || socket_spy_2.wait(500));
 
-	game.possibleRequests(player_1, {});
+	emit game.onPossibleRequests(player_1, {});
 
 	ASSERT_TRUE(socket_spy_1.size() || socket_spy_1.wait(500));
     ASSERT_FALSE(socket_spy_2.size() || socket_spy_2.wait(500));
 
-	game.possibleRequests(player_2, {});
+	emit game.onPossibleRequests(player_2, {});
 
     ASSERT_EQ(1, socket_spy_1.size());
     ASSERT_TRUE(socket_spy_2.size() || socket_spy_2.wait(500));

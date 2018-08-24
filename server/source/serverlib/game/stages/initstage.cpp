@@ -124,7 +124,7 @@ void InitStage::broadcastGameIsStartable() const
 
     for (auto& player : m_playersReady)
     {
-        m_game->possibleRequests(player.first, requests);
+        emit m_game->onPossibleRequests(player.first, requests);
     }
 }
 
@@ -137,11 +137,11 @@ void InitStage::broadcastPlayerReadyRequest() const
     {
 		if (!player.second)
 		{
-			m_game->possibleRequests(player.first, requests);
+			emit m_game->onPossibleRequests(player.first, requests);
 		}
 		else
 		{
-            m_game->possibleRequests(player.first, {});
+            emit m_game->onPossibleRequests(player.first, {});
 		}
     }
 }

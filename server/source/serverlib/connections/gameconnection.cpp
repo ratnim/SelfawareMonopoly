@@ -18,7 +18,7 @@ GameConnection::GameConnection(QWebSocket* parent, const ConnectionRequest& requ
     m_requests["roll_dice"] = [&game, this](const QJsonValue&) { game.rollDice(m_playerName); };
     m_requests["end_turn"] = [&game, this](const QJsonValue&) { game.endTurn(m_playerName); };
 
-	m_requests["possible_requests"] = [&game, this](const QJsonValue&) { game.endTurn(m_playerName); };
+	m_requests["possible_requests"] = [&game, this](const QJsonValue&) { game.possibleRequests(m_playerName); };
 
     watchGame(compound.watcher);
 }

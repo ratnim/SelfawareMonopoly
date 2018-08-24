@@ -16,6 +16,7 @@ public:
 
     virtual void rollDice(const QString& playerName);
     virtual void endTurn(const QString& playerName);
+    virtual void possibleRequests(const QString& playerName);
 
 private:
     static void InvalidRequest();
