@@ -5,10 +5,9 @@
 #include <game/game.h>
 
 #include <game/turn/startstate.h>
-#include <game/turn/initstate.h>
 
 #include <utils/exception.h>
-#include <utils/program.h>
+
 
 namespace
 {
@@ -25,18 +24,4 @@ TEST(StartStateTest, start_game)
 
     EXPECT_EQ(start_spy.size(), 1);
     EXPECT_EQ(turn_spy.size(), 1);
-}
-
-TEST(StartStateTest, roll_dice)
-{
-    Game game;
-    game.stateChange<StartState>(std::vector<Player>({ { player } }));
-
-    QSignalSpy roll_spy(&game, &Game::onRollDice);
-    QSignalSpy move_spy(&game, &Game::onPlayerMove);
-
-    game.rollDice(player);
-
-    EXPECT_EQ(roll_spy.size(), 1);
-    EXPECT_EQ(move_spy.size(), 1);
 }

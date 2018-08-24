@@ -25,7 +25,8 @@ set(sources
     tests/request_test.cpp
     tests/connection_test.cpp
     tests/initstate_test.cpp
-    tests/startstage_test.cpp
+    tests/startstate_test.cpp
+    tests/rollstate_test.cpp
     tests/websocketserver_test.cpp
     test_utils/mocked_database.cpp
     test_utils/mocked_database.h
