@@ -6,7 +6,7 @@
 #include <QWebSocket>
 
 #include <watchers/watcher.h>
-#include <network/request.h>
+#include <network/connectionrequest.h>
 
 class Connection : public Watcher
 {

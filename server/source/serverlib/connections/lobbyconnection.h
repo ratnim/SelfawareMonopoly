@@ -5,7 +5,7 @@
 class LobbyConnection : public Connection
 {
 public:
-    LobbyConnection(QWebSocket* parent, const Request& request);
+    LobbyConnection(QWebSocket* parent, const ConnectionRequest& request);
 
 protected:
     void watchLobby();

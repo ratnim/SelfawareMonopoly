@@ -4,13 +4,13 @@
 #include <QString>
 #include <QWebSocket>
 
-#include <network/request.h>
+#include <network/connectionrequest.h>
 #include <connections/connection.h>
 
 class ConnectionFactory
 {
 public:
-    using Factory = void (ConnectionFactory::*)(QWebSocket*, const Request&);
+    using Factory = void (ConnectionFactory::*)(QWebSocket*, const ConnectionRequest&);
 
     ConnectionFactory();
 
@@ -19,7 +19,7 @@ public:
 
 protected:
     template <class ConnectionHandler>
-    void create(QWebSocket* socket, const Request& request)
+    void create(QWebSocket* socket, const ConnectionRequest& request)
     {
         auto handler = new ConnectionHandler(socket, request);
 

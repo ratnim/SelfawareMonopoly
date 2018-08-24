@@ -9,7 +9,7 @@
 #include <models/accountmodel.h>
 #include <models/gamemodel.h>
 #include <models/boardmodel.h>
-#include <network/request.h>
+#include <network/connectionrequest.h>
 
 namespace
 {

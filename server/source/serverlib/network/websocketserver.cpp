@@ -3,7 +3,7 @@
 #include <QMetaMethod>
 #include <QWebSocket>
 
-#include <network/request.h>
+#include <network/connectionrequest.h>
 
 #include <connections/gameconnection.h>
 #include <connections/lobbyconnection.h>

@@ -6,7 +6,7 @@
 #include <models/accountmodel.h>
 #include <utils/exception.h>
 
-OverviewConnection::OverviewConnection(QWebSocket* parent, const Request& request)
+OverviewConnection::OverviewConnection(QWebSocket* parent, const ConnectionRequest& request)
     : Connection(parent)
 {
     m_requests[QString("enter_lobby")] = [this](const QJsonValue& data) {

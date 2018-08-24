@@ -5,7 +5,7 @@
 class OverviewConnection : public Connection
 {
 public:
-    OverviewConnection(QWebSocket* parent, const Request& request);
+    OverviewConnection(QWebSocket* parent, const ConnectionRequest& request);
 
 protected:
     void enterLobby(const QJsonValue& data);

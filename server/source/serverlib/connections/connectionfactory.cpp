@@ -14,7 +14,7 @@ ConnectionFactory::ConnectionFactory()
 
 void ConnectionFactory::handle(QWebSocket* socket)
 {
-    auto request = Request::fromUrl(socket->resourceName());
+    auto request = ConnectionRequest::fromUrl(socket->resourceName());
 
     try
     {

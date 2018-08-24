@@ -70,8 +70,8 @@ set(sources
     connections/lobbyconnection.h
     connections/overviewconnection.cpp
     connections/overviewconnection.h
-    network/request.cpp
-    network/request.h
+    network/connectionrequest.cpp
+    network/connectionrequest.h
     network/websocketserver.cpp
     network/websocketserver.h
     utils/budhist.h

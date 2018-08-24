@@ -7,7 +7,7 @@
 #include <models/gamemodel.h>
 #include <utils/exception.h>
 
-LobbyConnection::LobbyConnection(QWebSocket* parent, const Request& request)
+LobbyConnection::LobbyConnection(QWebSocket* parent, const ConnectionRequest& request)
     : Connection(parent)
     , m_playerName(AccountModel::instance().username(request.session))
 {

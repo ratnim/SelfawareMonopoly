@@ -7,7 +7,7 @@
 class GameConnection : public Connection
 {
 public:
-    GameConnection(QWebSocket* parent, const Request& request);
+    GameConnection(QWebSocket* parent, const ConnectionRequest& request);
 
     void watchGame(GameWatcher& watcher);
 
