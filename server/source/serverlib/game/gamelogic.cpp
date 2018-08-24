@@ -32,7 +32,7 @@ void GameLogic::movePlayer(int distance, bool canRollAgain, int rollCount)
     //// handle game end
     //if (player.position() >= gameEndField)
     //{
-    //    m_game->stateChange<EndStage>(m_game);
+    //    m_game->stateChange<EndState>(m_game);
     //    return;
     //}
 

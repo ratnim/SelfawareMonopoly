@@ -2,7 +2,8 @@
 
 #include <game/game.h>
 
-EndStage::EndStage(Game* game)
+EndState::EndState(TurnState* state)
+    : TurnState(*state)
 {
-    emit game->onGameEnd();
+    emit m_game->onGameEnd();
 }

@@ -1,9 +1,9 @@
 #pragma once
 
-#include <game/stages/stage.h>
+#include <game/turn/turnstate.h>
 
-class EndStage : public Stage
+class EndState : public TurnState
 {
 public:
-    EndStage(Game* game);
+    EndState(TurnState* state);
 };
