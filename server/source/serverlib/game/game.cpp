@@ -2,7 +2,7 @@
 
 #include <QJsonObject>
 
-#include <game/stages/initstage.h>
+#include <game/turn/initstate.h>
 #include <models/boardmodel.h>
 
 Game::Game(Board gameBoard)

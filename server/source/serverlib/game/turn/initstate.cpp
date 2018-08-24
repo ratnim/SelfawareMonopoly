@@ -1,11 +1,11 @@
-#include "initstage.h"
+#include "initstate.h"
 
 #include <QJsonArray>
 #include <QJsonObject>
 
 #include <game/game.h>
 #include <game/turn/possiblerequest.h>
-#include <game/stages/runstage.h>
+#include <game/turn/startstate.h>
 #include <utils/exception.h>
 
 namespace

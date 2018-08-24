@@ -1,4 +1,4 @@
-#include "endstage.h"
+#include "endstate.h"
 
 #include <game/game.h>
 

@@ -3,8 +3,10 @@
 #include <QSignalSpy>
 
 #include <game/game.h>
-#include <game/stages/runstage.h>
-#include <game/stages/initstage.h>
+
+#include <game/turn/startstate.h>
+#include <game/turn/initstate.h>
+
 #include <utils/exception.h>
 #include <utils/program.h>
 
@@ -13,7 +15,7 @@ namespace
 const QString player("Heinz");
 }
 
-TEST(RunStageTest, start_game)
+TEST(StartStateTest, start_game)
 {
     Game game;
     InitState previousState(&game);
@@ -27,7 +29,7 @@ TEST(RunStageTest, start_game)
     EXPECT_EQ(turn_spy.size(), 1);
 }
 
-TEST(RunStageTest, roll_dice)
+TEST(StartStateTest, roll_dice)
 {
     Game game;
     InitState previousState(&game);

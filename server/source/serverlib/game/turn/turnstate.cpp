@@ -2,10 +2,6 @@
 
 #include <QJsonObject>
 
-#include <game/game.h>
-#include <game/stages/runstage.h>
-#include <game/turn/jailstate.h>
-#include <game/turn/rollstate.h>
 #include <utils/exception.h>
 
 TurnState::TurnState(GameLogic* logic)

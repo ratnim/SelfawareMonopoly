@@ -38,14 +38,12 @@ set(sources
     game/board/fieldfactory.h
     game/board/street.h
     game/board/taxfield.h
-    game/stages/stage.cpp
-    game/stages/stage.h
-    game/stages/endstage.cpp
-    game/stages/endstage.h
-    game/stages/initstage.cpp
-    game/stages/initstage.h
-    game/stages/runstage.cpp
-    game/stages/runstage.h
+    game/turn/endstate.cpp
+    game/turn/endstate.h
+    game/turn/initstate.cpp
+    game/turn/initstate.h
+    game/turn/startstate.cpp
+    game/turn/startstate.h
     game/turn/freestate.cpp
     game/turn/freestate.h
     game/turn/jailstate.cpp
