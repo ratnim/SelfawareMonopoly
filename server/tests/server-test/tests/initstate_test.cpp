@@ -69,5 +69,42 @@ TEST(InitStateTest, start_game)
 
     game.playerReady(player_2);
 
-	EXPECT_THROW(game.gameStart(), Exception);
+	game.gameStart();
+}
+
+TEST(InitStateTest, possible_requests)
+{
+    Game game;
+
+	QSignalSpy request_spy(&game, &Game::onPossibleRequests);
+
+    game.playerJoin(player_1);
+    game.playerJoin(player_2);
+
+	game.possibleRequests(player_1);
+
+    EXPECT_EQ(request_spy.at(0).at(0).toString(), player_1);
+
+	game.possibleRequests(player_2);
+
+	EXPECT_EQ(request_spy.at(1).at(0).toString(), player_2);
+}
+
+TEST(InitStateTest, update_possible_actions)
+{
+    Game game;
+
+	QSignalSpy request_spy(&game, &Game::onPossibleRequests);
+
+    game.playerJoin(player_1);
+    EXPECT_EQ(1, request_spy.size());
+
+    game.playerJoin(player_2);
+    EXPECT_EQ(3, request_spy.size());
+
+    game.playerReady(player_1);
+    EXPECT_EQ(5, request_spy.size());
+
+    game.playerReady(player_2);
+    EXPECT_EQ(7, request_spy.size());
 }

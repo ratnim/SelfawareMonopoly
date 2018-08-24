@@ -19,6 +19,22 @@ InitState::InitState(Game* game)
 {
 }
 
+void InitState::possibleRequests(const QString& playerName)
+{
+    QJsonArray requests;
+
+    if (!m_playersReady[playerName])
+    {
+        requests.append(PossibleRequest::playerReady().toJson());
+    }
+    else if (gameIsStartable())
+    {
+        requests.append(PossibleRequest::gameStart().toJson());
+    }
+
+    emit m_game->onPossibleRequests(playerName, requests);
+}
+
 void InitState::playerJoin(const QString& playerName)
 {
     if (maximalPlayersJoined())
@@ -105,43 +121,10 @@ bool InitState::maximalPlayersJoined() const
     return m_playersReady.size() >= maximumPlayers;
 }
 
-void InitState::broadcastPossibleRequests() const
+void InitState::broadcastPossibleRequests()
 {
-    if (gameIsStartable())
-    {
-        broadcastGameIsStartable();
-	}
-	else
-	{
-        broadcastPlayerReadyRequest();
-	}
-}
-
-void InitState::broadcastGameIsStartable() const
-{
-    QJsonArray requests;
-    requests.append(PossibleRequest::gameStart().toJson());
-
     for (auto& player : m_playersReady)
     {
-        emit m_game->onPossibleRequests(player.first, requests);
-    }
-}
-
-void InitState::broadcastPlayerReadyRequest() const
-{
-    QJsonArray requests;
-    requests.append(PossibleRequest::playerReady().toJson());
-
-    for (auto& player : m_playersReady)
-    {
-		if (!player.second)
-		{
-			emit m_game->onPossibleRequests(player.first, requests);
-		}
-		else
-		{
-            emit m_game->onPossibleRequests(player.first, {});
-		}
+        possibleRequests(player.first);
     }
 }
