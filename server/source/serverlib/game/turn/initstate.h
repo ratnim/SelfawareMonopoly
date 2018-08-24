@@ -26,6 +26,5 @@ protected:
     void broadcastGameIsStartable() const;
     void broadcastPlayerReadyRequest() const;
 
-    Game* m_game;
     std::map<QString, bool> m_playersReady;
 };

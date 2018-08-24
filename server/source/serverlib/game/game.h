@@ -17,6 +17,7 @@ public:
     Game(Board gameBoard = Board({}));
 
     void playerJoin(const QString& playerName);
+
     void gameBoard();
     void playerReady(const QString& playerName);
     void gameStart();

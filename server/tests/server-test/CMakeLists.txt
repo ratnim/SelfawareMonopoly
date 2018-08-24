@@ -24,6 +24,7 @@ set(sources
 	tests/gameconnection_test.cpp
     tests/request_test.cpp
     tests/connection_test.cpp
+    tests/initstate_test.cpp
     tests/startstage_test.cpp
     tests/websocketserver_test.cpp
     test_utils/mocked_database.cpp

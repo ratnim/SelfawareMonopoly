@@ -5,23 +5,6 @@
 #include <game/game.h>
 #include <utils/exception.h>
 
-TEST(GameTest, join_multiple_times)
-{
-    Game game;
-
-    QSignalSpy join_spy(&game, &Game::onPlayerJoin);
-
-    game.playerJoin("Heinz");
-
-    EXPECT_THROW(game.playerJoin("Heinz"), Exception);
-
-    game.playerJoin("Gertrude");
-
-    EXPECT_EQ(join_spy.size(), 2);
-    EXPECT_EQ(join_spy.at(0).at(0).toString(), "Heinz");
-    EXPECT_EQ(join_spy.at(1).at(0).toString(), "Gertrude");
-}
-
 TEST(GameTest, playerReady)
 {
     Game game;
