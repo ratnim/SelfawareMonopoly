@@ -5,27 +5,6 @@
 #include <game/game.h>
 #include <utils/exception.h>
 
-TEST(GameTest, playerReady)
-{
-    Game game;
-
-    QSignalSpy ready_spy(&game, &Game::onPlayerReady);
-
-    game.playerJoin("Heinz");
-    game.playerJoin("Gertrude");
-
-    EXPECT_THROW(game.playerReady("Else"), Exception);
-    EXPECT_EQ(ready_spy.size(), 0);
-
-    game.playerReady("Heinz");
-
-    EXPECT_EQ(ready_spy.size(), 1);
-    EXPECT_THROW(game.playerReady("Heinz"), Exception);
-
-    game.playerReady("Gertrude");
-    EXPECT_EQ(ready_spy.size(), 2);
-}
-
 TEST(GameTest, start_game)
 {
     Game game;

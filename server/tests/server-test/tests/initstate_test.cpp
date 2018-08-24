@@ -33,28 +33,41 @@ TEST(InitStateTest, player_join)
     EXPECT_EQ(join_spy.size(), 2);
 }
 
+TEST(InitStateTest, player_ready)
+{
+    Game game;
+
+    QSignalSpy ready_spy(&game, &Game::onPlayerReady);
+
+    game.playerJoin(player_1);
+    game.playerJoin(player_2);
+
+    game.playerReady(player_1);
+
+    EXPECT_EQ(ready_spy.size(), 1);
+    EXPECT_THROW(game.playerReady(player_1), Exception);
+
+    game.playerReady(player_2);
+    EXPECT_EQ(ready_spy.size(), 2);
+}
+
 TEST(InitStateTest, start_game)
 {
     Game game;
-   
-    QSignalSpy start_spy(&game, &Game::onGameStart);
-    QSignalSpy turn_spy(&game, &Game::onTurnChange);
 
-    EXPECT_EQ(start_spy.size(), 1);
-    EXPECT_EQ(turn_spy.size(), 1);
-}
+	EXPECT_THROW(game.gameStart(), Exception);
 
-TEST(InitStateTest, roll_dice)
-{
-    Game game;
-    InitState previousState(&game);
-    game.stateChange<StartState>(&previousState, std::vector<Player>({ { player_1 } }));
+    game.playerJoin(player_1);
+    game.playerJoin(player_2);
 
-    QSignalSpy roll_spy(&game, &Game::onRollDice);
-    QSignalSpy move_spy(&game, &Game::onPlayerMove);
+	
+	EXPECT_THROW(game.gameStart(), Exception);
 
-    game.rollDice(player_1);
+    game.playerReady(player_1);
 
-    EXPECT_EQ(roll_spy.size(), 1);
-    EXPECT_EQ(move_spy.size(), 1);
+	EXPECT_THROW(game.gameStart(), Exception);
+
+    game.playerReady(player_2);
+
+	EXPECT_THROW(game.gameStart(), Exception);
 }

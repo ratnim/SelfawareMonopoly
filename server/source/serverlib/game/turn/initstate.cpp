@@ -65,7 +65,7 @@ void InitState::gameStart()
         throw Exception("Not every player is ready.");
     }
 
-    m_game->stateChange<StartState>(this, joinedPlayers());
+    m_game->stateChange<StartState>(joinedPlayers());
 }
 
 std::vector<Player> InitState::joinedPlayers()

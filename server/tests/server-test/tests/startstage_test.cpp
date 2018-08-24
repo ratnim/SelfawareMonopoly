@@ -18,12 +18,10 @@ const QString player("Heinz");
 TEST(StartStateTest, start_game)
 {
     Game game;
-    InitState previousState(&game);
-
     QSignalSpy start_spy(&game, &Game::onGameStart);
     QSignalSpy turn_spy(&game, &Game::onTurnChange);
 
-	game.stateChange<StartState>(&previousState, std::vector<Player>({ { player } }));
+	game.stateChange<StartState>(std::vector<Player>({ { player } }));
 
     EXPECT_EQ(start_spy.size(), 1);
     EXPECT_EQ(turn_spy.size(), 1);
@@ -32,8 +30,7 @@ TEST(StartStateTest, start_game)
 TEST(StartStateTest, roll_dice)
 {
     Game game;
-    InitState previousState(&game);
-    game.stateChange<StartState>(&previousState, std::vector<Player>({ { player } }));
+    game.stateChange<StartState>(std::vector<Player>({ { player } }));
 
     QSignalSpy roll_spy(&game, &Game::onRollDice);
     QSignalSpy move_spy(&game, &Game::onPlayerMove);
