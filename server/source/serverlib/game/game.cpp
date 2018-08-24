@@ -1,9 +1,6 @@
 #include "game.h"
 
-#include <QJsonObject>
-
 #include <game/turn/initstate.h>
-#include <models/boardmodel.h>
 
 Game::Game(Board gameBoard)
     : m_board(std::move(gameBoard))

@@ -1,17 +1,11 @@
 #include "turnstate.h"
 
-#include <QJsonObject>
+#include <game/game.h>
 
 #include <utils/exception.h>
 
-TurnState::TurnState(GameLogic* logic)
-    : m_logic(logic),
-	m_game(logic->m_game)
-{
-}
-
 TurnState::TurnState(Game* game)
-    : m_logic(nullptr), m_game(game)
+    : m_game(game)
 {
 }
 

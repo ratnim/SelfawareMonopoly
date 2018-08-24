@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include <game/gamelogic.h>
 #include <game/watson.h>
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <vector>
 
 #include <game/player.h>
 #include <game/turn/turnstate.h>

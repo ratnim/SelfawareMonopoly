@@ -11,14 +11,14 @@ JailState::JailState(TurnState* state)
 
 void JailState::rollDice()
 {
-    auto d = m_logic->roll();
+    //auto d = m_logic->roll();
 
-    if (d.isDouble())
-    {
-        m_logic->movePlayer(d.sum());
-    }
-    else
-    {
-        m_logic->idle();
-    }
+    //if (d.isDouble())
+    //{
+    //    m_logic->movePlayer(d.sum());
+    //}
+    //else
+    //{
+    //    m_logic->idle();
+    //}
 }

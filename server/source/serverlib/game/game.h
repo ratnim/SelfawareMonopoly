@@ -1,8 +1,13 @@
 #pragma once
 
-#include <game/turn/turnstate.h>
-#include <game/board/board.h>
+#include <QJsonObject>
+
 #include <utils/budhist.h>
+#include <utils/ringbuffer.h>
+
+#include <game/player.h>
+#include <game/board/board.h>
+#include <game/turn/turnstate.h>
 
 class Game : public QObject, public Budhist<TurnState>
 {

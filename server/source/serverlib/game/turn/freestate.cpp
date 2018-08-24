@@ -10,5 +10,5 @@ FreeState::FreeState(TurnState* state)
 
 void FreeState::endTurn()
 {
-    m_logic->end();
+    //m_logic->end();
 }
