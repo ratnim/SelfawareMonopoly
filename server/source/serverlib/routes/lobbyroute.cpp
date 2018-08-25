@@ -34,7 +34,8 @@ void LobbyRoute::createGame(const QJsonValue& body)
         throw Exception("data.game_label is missing.", Error::MalformedRequest);
     }
 
-    const auto gameId = GameModel::instance().createGame(label);
+	QString boardFile = "berlin.json";
+    const auto gameId = GameModel::instance().createGame(label, boardFile);
     emit send(createGameAnswer(gameId));
 }
 

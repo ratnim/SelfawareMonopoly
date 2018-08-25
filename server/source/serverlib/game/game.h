@@ -1,6 +1,7 @@
 #pragma once
 
 #include <game/state/gamestate.h>
+#include <game/board/board.h>
 #include <utils/budhist.h>
 
 class Game : public QObject, public Budhist<GameState>
@@ -8,9 +9,10 @@ class Game : public QObject, public Budhist<GameState>
     Q_OBJECT
 
 public:
-    Game();
+    Game(Board board = Board({}));
 
     void join(const QString& playerName);
+    void board();
     void ready(const QString& playerName);
     void start();
 
@@ -21,6 +23,7 @@ public:
     void endTurn(const QString& playerName);
 
 signals:
+    void onBoardRequest(const QJsonObject& board);
     void onPlayerJoin(const QString& playerName);
     void onPlayerReady(const QString& playerName);
 
@@ -33,4 +36,7 @@ signals:
 
     void onEnterJail(const QString& playerName);
     void onLeaveJail(const QString& playerName);
+
+protected:
+    Board m_board;
 };

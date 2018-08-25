@@ -46,6 +46,7 @@ WORKDIR /usr/src/app/server
 COPY ./source ./source
 COPY ./cmake ./cmake
 COPY ./tests ./tests
+COPY ./assets ./assets
 COPY ./CMakeLists.txt ./CMakeLists.txt
 
 # CI test file
@@ -57,6 +58,6 @@ RUN sudo cmake -DCMAKE_PREFIX_PATH=/opt/qt510 .. \
   && sudo make
 
 # Prepare Run
-WORKDIR /usr/src/app
+WORKDIR /usr/src/app/server
 EXPOSE 31415
-ENTRYPOINT [ "./server/build/server" ]
+ENTRYPOINT [ "./build/server" ]
