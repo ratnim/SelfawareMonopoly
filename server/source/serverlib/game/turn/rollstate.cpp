@@ -23,6 +23,8 @@ void RollState::rollDice(const QString& playerName)
 
     Dices dice;
     m_game->onRollDice(playerName, dice.first, dice.second);
+
+	m_game->currentPlayer().move(dice.sum());
     m_game->onPlayerMove(playerName, dice.sum());
 
     //++m_rollCount;
