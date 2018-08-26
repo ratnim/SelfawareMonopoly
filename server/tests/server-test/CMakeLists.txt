@@ -31,6 +31,8 @@ set(sources
     test_utils/mocked_database.h
     test_utils/mocked_server.cpp
     test_utils/mocked_server.h
+	test_utils/helpers.cpp
+	test_utils/helpers.h
 )
 
 source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${sources})

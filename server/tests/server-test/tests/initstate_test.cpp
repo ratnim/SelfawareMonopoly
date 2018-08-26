@@ -9,6 +9,9 @@
 
 #include <utils/exception.h>
 
+#include <test_utils/helpers.h>
+
+
 namespace
 {
 const QString player_1("Heinz");
@@ -80,14 +83,23 @@ TEST(InitStateTest, possible_requests)
 
     game.playerJoin(player_1);
     game.playerJoin(player_2);
-
 	game.possibleRequests(player_1);
 
-    EXPECT_EQ(request_spy.at(0).at(0).toString(), player_1);
+    EXPECT_EQ(request_spy.last().at(0).toString(), player_1);
+    EXPECT_TRUE(containsRequest(request_spy.last().at(1).toJsonArray(), "player_ready"));
+    EXPECT_FALSE(containsRequest(request_spy.last().at(1).toJsonArray(), "game_start"));
 
 	game.possibleRequests(player_2);
 
-	EXPECT_EQ(request_spy.at(1).at(0).toString(), player_2);
+	EXPECT_EQ(request_spy.last().at(0).toString(), player_2);
+    EXPECT_TRUE(containsRequest(request_spy.last().at(1).toJsonArray(), "player_ready"));
+    EXPECT_FALSE(containsRequest(request_spy.last().at(1).toJsonArray(), "game_start"));
+
+	game.playerReady(player_1);
+    game.playerReady(player_2);
+
+    EXPECT_FALSE(containsRequest(request_spy.last().at(1).toJsonArray(), "player_ready"));
+    EXPECT_TRUE(containsRequest(request_spy.last().at(1).toJsonArray(), "game_start"));
 }
 
 TEST(InitStateTest, update_possible_actions)
