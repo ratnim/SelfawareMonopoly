@@ -16,25 +16,34 @@ MoveState::MoveState(TurnState* state)
 void MoveState::rollDice(const QString& playerName)
 {
     ensurePlayersTurn(playerName);
+    auto& player = m_game->currentPlayer();
 
-	Dices dices = m_game->getDices();
-
+	Dices dices = m_game->currentPlayerRollDices();
     m_game->onRollDice(playerName, dices.first, dices.second);
 
-	m_game->currentPlayer().move(dices.sum());
-    m_game->onPlayerMove(playerName, dices.sum());
+	if (player.timesRolled() >= 3 && dices.isDouble())
+	{
+        m_game->jailCurrentPlayer();
+        m_game->stateChange<IdleState>();
+	}
+    else
+	{
+	    player.move(dices.sum());
+	    m_game->onPlayerMove(playerName, dices.sum());
 
-    //++m_rollCount;
-    //if (m_rollCount == 3)
-    //{
-    //    m_logic->goToJail();
-    //}
-    //else
-    //{
-    //    m_logic->movePlayer(d.sum(), d.isDouble(), m_rollCount);
-    //}
-
-    m_game->stateChange<IdleState>();
+		if (player.position() == m_game->GO_TO_JAIL_POSITION)
+		{
+            m_game->stateChange<IdleState>();
+		}
+		else if (dices.isDouble())
+		{
+            m_game->stateChange<MoveState>();
+		}
+		else
+		{
+			m_game->stateChange<IdleState>();
+		}
+	}
 }
 
 void MoveState::possibleRequests(const QString& playerName)

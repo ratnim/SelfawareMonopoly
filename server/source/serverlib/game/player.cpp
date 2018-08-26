@@ -7,6 +7,8 @@ Player::Player(const QString& playerName)
 
 void Player::nextTurn()
 {
+    m_timesRolled = 0;
+
     if (m_jailTurns > 0)
         --m_jailTurns;
 }
@@ -39,4 +41,14 @@ const QString& Player::name() const
 void Player::move(int distance)
 {
     m_position += distance;
+}
+
+int Player::timesRolled() const
+{
+    return m_timesRolled;
+}
+
+void Player::rolled()
+{
+    ++m_timesRolled;
 }

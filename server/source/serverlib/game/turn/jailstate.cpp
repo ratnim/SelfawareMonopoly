@@ -16,15 +16,16 @@ JailState::JailState(TurnState* state)
 void JailState::rollDice(const QString& playerName)
 {
     ensurePlayersTurn(playerName);
+    auto& player = m_game->currentPlayer();
 
-    Dices dices = m_game->getDices();
+    Dices dices = m_game->currentPlayerRollDices();
     m_game->onRollDice(playerName, dices.first, dices.second);
 
     if (dices.isDouble())
     {
-        m_game->currentPlayer().move(dices.sum());
-        m_game->onPlayerMove(playerName, dices.sum());
-        m_game->currentPlayer().leaveJail();
+        player.move(dices.sum());
+        emit m_game->onPlayerMove(playerName, dices.sum());
+        player.leaveJail();
 	}
 	
 	m_game->stateChange<IdleState>();

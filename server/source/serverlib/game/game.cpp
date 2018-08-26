@@ -44,8 +44,10 @@ void Game::possibleRequests(const QString& playerName)
     m_state->possibleRequests(playerName);
 }
 
-Dices Game::getDices()
+Dices Game::currentPlayerRollDices()
 {
+    currentPlayer().rolled();
+
     if (!watson_next_rolls.empty())
     {
         auto dices = watson_next_rolls.front();
@@ -54,6 +56,15 @@ Dices Game::getDices()
     }
 
 	return {};
+}
+
+void Game::jailCurrentPlayer()
+{
+    auto distance = JAIL_POSITION - currentPlayer().position();
+    currentPlayer().move(distance);
+    emit onPlayerMove(currentPlayer().name(), distance);
+    
+    currentPlayer().jail();
 }
 
 RingBuffer<Player>& Game::players()

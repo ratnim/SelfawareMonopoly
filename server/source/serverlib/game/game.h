@@ -30,7 +30,8 @@ public:
 
 	void possibleRequests(const QString& playerName);
 
-	Dices getDices();
+	Dices currentPlayerRollDices();
+    void jailCurrentPlayer();
 
 	RingBuffer<Player>& players();
     Player& currentPlayer();
@@ -38,6 +39,10 @@ public:
 	TurnState* state() const;
 
 	std::queue<Dices> watson_next_rolls;
+
+	const int JAIL_POSITION = 10;
+    const int GO_TO_JAIL_POSITION = 30;
+
 signals:
     void onBoardRequest(const QJsonObject& gameBoard);
     void onPlayerJoin(const QString& playerName);
@@ -50,13 +55,8 @@ signals:
     void onPlayerMove(const QString& playerName, int distance);
     void onTurnChange(const QString& newMovingPlayer);
 
-    void onEnterJail(const QString& playerName);
-    void onLeaveJail(const QString& playerName);
-
 	void onPossibleRequests(const QString& playerName, const QJsonArray& possibleRequests);
-
 protected:
     Board m_board;
     RingBuffer<Player> m_players;
-
 };
