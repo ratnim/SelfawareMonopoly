@@ -53,3 +53,8 @@ Player& Game::currentPlayer()
 {
     return m_players();
 }
+
+TurnState* Game::state() const
+{
+    return m_state.get();
+}

@@ -5,7 +5,7 @@
 #include <game/game.h>
 
 #include <game/turn/initstate.h>
-#include <game/turn/startstate.h>
+#include <game/turn/rollstate.h>
 
 #include <utils/exception.h>
 
@@ -60,7 +60,6 @@ TEST(InitStateTest, start_game)
     game.playerJoin(player_1);
     game.playerJoin(player_2);
 
-	
 	EXPECT_THROW(game.gameStart(), Exception);
 
     game.playerReady(player_1);
@@ -70,6 +69,7 @@ TEST(InitStateTest, start_game)
     game.playerReady(player_2);
 
 	game.gameStart();
+	EXPECT_NE(nullptr, dynamic_cast<RollState*>(game.state()));
 }
 
 TEST(InitStateTest, possible_requests)

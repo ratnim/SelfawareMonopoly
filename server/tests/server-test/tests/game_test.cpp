@@ -3,7 +3,14 @@
 #include <QSignalSpy>
 
 #include <game/game.h>
+#include <game/turn/initstate.h>
 #include <utils/exception.h>
+
+TEST(GameTest, init_state)
+{
+    Game game;
+    EXPECT_NE(nullptr, dynamic_cast<InitState*>(game.state()));
+}
 
 TEST(GameTest, start_game)
 {

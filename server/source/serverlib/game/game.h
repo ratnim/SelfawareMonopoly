@@ -30,6 +30,8 @@ public:
 	RingBuffer<Player>& players();
     Player& currentPlayer();
 
+	TurnState* state() const;
+
 signals:
     void onBoardRequest(const QJsonObject& gameBoard);
     void onPlayerJoin(const QString& playerName);

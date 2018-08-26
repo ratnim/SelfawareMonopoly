@@ -5,6 +5,7 @@
 #include <game/game.h>
 
 #include <game/turn/startstate.h>
+#include <game/turn/rollstate.h>
 
 #include <utils/exception.h>
 
@@ -24,4 +25,6 @@ TEST(StartStateTest, start_game)
 
     EXPECT_EQ(start_spy.size(), 1);
     EXPECT_EQ(turn_spy.size(), 1);
+
+	EXPECT_NE(nullptr, dynamic_cast<RollState*>(game.state()));
 }
