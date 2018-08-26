@@ -24,8 +24,6 @@ set(sources
     game/game.h
     game/gameinfo.cpp
     game/gameinfo.h
-    game/gamelogic.cpp
-    game/gamelogic.h
     game/player.cpp
     game/player.h   
     game/watson.cpp
