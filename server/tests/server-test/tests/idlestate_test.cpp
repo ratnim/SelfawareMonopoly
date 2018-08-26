@@ -45,6 +45,21 @@ TEST(IdleStateTest, state_transfer_to_roll)
     EXPECT_EQ(player_2, game.currentPlayer().name());
 }
 
+TEST(IdleStateTest, state_transfer_to_jail)
+{
+    Game game;
+    game.players() = RingBuffer<Player>(std::vector<Player>{ { player_1, player_2 } });
+    game.stateChange<IdleState>();
+
+	game.players().storage().at(0).jail();
+
+    EXPECT_EQ(player_1, game.currentPlayer().name());
+    game.endTurn(player_1);
+
+    EXPECT_NE(nullptr, dynamic_cast<RollState*>(game.state()));
+    EXPECT_EQ(player_2, game.currentPlayer().name());
+}
+
 TEST(IdleStateTest, possible_requests)
 {
     Game game;

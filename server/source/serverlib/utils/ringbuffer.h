@@ -22,7 +22,7 @@ public:
         m_index = (m_index + 1) % m_storage.size();
     }
 
-    const std::vector<Object>& storage()
+    std::vector<Object>& storage()
     {
         return m_storage;
     }
