@@ -44,6 +44,18 @@ void Game::possibleRequests(const QString& playerName)
     m_state->possibleRequests(playerName);
 }
 
+Dices Game::getDices()
+{
+    if (!watson_next_rolls.empty())
+    {
+        auto dices = watson_next_rolls.front();
+        watson_next_rolls.pop();
+        return dices;
+    }
+
+	return {};
+}
+
 RingBuffer<Player>& Game::players()
 {
     return m_players;

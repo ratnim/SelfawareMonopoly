@@ -51,6 +51,7 @@ TEST(JailStateTest, roll_dice_no_pash)
     QSignalSpy move_spy(&game, &Game::onPlayerMove);
 
     EXPECT_EQ(player_1, game.currentPlayer().name());
+    game.watson_next_rolls.emplace(1, 2);
     game.rollDice(player_1);
 
     EXPECT_EQ(roll_spy.size(), 1);
@@ -69,6 +70,7 @@ TEST(JailStateTest, roll_dice_pash)
     QSignalSpy move_spy(&game, &Game::onPlayerMove);
 
     EXPECT_EQ(player_1, game.currentPlayer().name());
+    game.watson_next_rolls.emplace(6, 6);
     game.rollDice(player_1);
 
     EXPECT_EQ(roll_spy.size(), 1);

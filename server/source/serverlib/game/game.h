@@ -1,11 +1,14 @@
 #pragma once
 
+#include <queue>
+
 #include <QJsonObject>
 
 #include <utils/budhist.h>
 #include <utils/ringbuffer.h>
 
 #include <game/player.h>
+#include <game/dices.h>
 #include <game/board/board.h>
 #include <game/turn/turnstate.h>
 
@@ -27,12 +30,14 @@ public:
 
 	void possibleRequests(const QString& playerName);
 
+	Dices getDices();
 
 	RingBuffer<Player>& players();
     Player& currentPlayer();
 
 	TurnState* state() const;
 
+	std::queue<Dices> watson_next_rolls;
 signals:
     void onBoardRequest(const QJsonObject& gameBoard);
     void onPlayerJoin(const QString& playerName);
@@ -53,4 +58,5 @@ signals:
 protected:
     Board m_board;
     RingBuffer<Player> m_players;
+
 };

@@ -2,8 +2,8 @@
 
 #include <QJsonArray>
 
-#include <game/game.h>
 #include <game/dices.h>
+#include <game/game.h>
 #include <game/turn/idlestate.h>
 #include <game/turn/possiblerequest.h>
 
@@ -17,11 +17,12 @@ void MoveState::rollDice(const QString& playerName)
 {
     ensurePlayersTurn(playerName);
 
-    Dices dice;
-    m_game->onRollDice(playerName, dice.first, dice.second);
+	Dices dices = m_game->getDices();
 
-	m_game->currentPlayer().move(dice.sum());
-    m_game->onPlayerMove(playerName, dice.sum());
+    m_game->onRollDice(playerName, dices.first, dices.second);
+
+	m_game->currentPlayer().move(dices.sum());
+    m_game->onPlayerMove(playerName, dices.sum());
 
     //++m_rollCount;
     //if (m_rollCount == 3)
