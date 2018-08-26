@@ -16,10 +16,7 @@ RollState::RollState(TurnState* state)
 
 void RollState::rollDice(const QString& playerName)
 {
-    if (!playersTurn(playerName))
-    {
-        throw Exception("Not your turn.", Error::InvalidRequest);
-    }
+    ensurePlayersTurn(playerName);
 
     Dices dice;
     m_game->onRollDice(playerName, dice.first, dice.second);

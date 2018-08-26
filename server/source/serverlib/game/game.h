@@ -27,6 +27,7 @@ public:
 
 	void possibleRequests(const QString& playerName);
 
+
 	RingBuffer<Player>& players();
     Player& currentPlayer();
 

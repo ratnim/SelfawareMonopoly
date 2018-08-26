@@ -13,6 +13,7 @@ public:
 	static PossibleRequest playerReady();
     static PossibleRequest gameStart();
     static PossibleRequest rollDice();
+    static PossibleRequest endTurn();
 
 protected:
     const QString m_request;

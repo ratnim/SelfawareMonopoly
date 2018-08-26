@@ -27,3 +27,8 @@ PossibleRequest PossibleRequest::rollDice()
 {
     return PossibleRequest("roll_dice");
 }
+
+PossibleRequest PossibleRequest::endTurn()
+{
+    return PossibleRequest("end_turn");
+}

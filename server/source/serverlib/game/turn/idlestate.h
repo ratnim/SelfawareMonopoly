@@ -5,7 +5,9 @@
 class IdleState : public TurnState
 {
 public:
+    void possibleRequests(const QString& playerName) override;
+
     IdleState(TurnState* state);
 
-    virtual void endTurn();
+    void endTurn(const QString& playerName) override;
 };

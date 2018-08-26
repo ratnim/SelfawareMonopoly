@@ -58,3 +58,11 @@ void TurnState::broadcastPossibleRequests()
         possibleRequests(player.name());
     }
 }
+
+void TurnState::ensurePlayersTurn(const QString& playerName) const
+{
+    if (!playersTurn(playerName))
+    {
+        throw Exception("Not your turn.", Error::InvalidRequest);
+    }
+}

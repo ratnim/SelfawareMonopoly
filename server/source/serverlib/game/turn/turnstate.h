@@ -24,6 +24,7 @@ protected:
     Game* m_game;
 
 	bool playersTurn(const QString& playerName) const;
+    void ensurePlayersTurn(const QString& playerName) const;
 
     virtual void broadcastPossibleRequests();
 
