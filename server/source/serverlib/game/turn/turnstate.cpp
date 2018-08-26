@@ -1,5 +1,7 @@
 #include "turnstate.h"
 
+#include <QJsonArray>
+
 #include <game/game.h>
 
 #include <utils/exception.h>
@@ -36,7 +38,7 @@ void TurnState::endTurn(const QString& playerName)
 
 void TurnState::possibleRequests(const QString& playerName)
 {
-    InvalidRequest();
+    emit m_game->onPossibleRequests(playerName, QJsonArray{});
 }
 
 void TurnState::InvalidRequest()

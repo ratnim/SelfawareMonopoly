@@ -6,6 +6,7 @@
 IdleState::IdleState(TurnState* state)
     : TurnState(*state)
 {
+    broadcastPossibleRequests();
 }
 
 void IdleState::endTurn()
