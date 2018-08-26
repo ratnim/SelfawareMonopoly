@@ -4,6 +4,7 @@
 
 #include <game/game.h>
 #include <game/turn/rollstate.h>
+#include <game/turn/jailstate.h>
 #include <game/turn/possiblerequest.h>
 
 
@@ -33,5 +34,12 @@ void IdleState::endTurn(const QString& playerName)
     m_game->currentPlayer().nextTurn();
     emit m_game->onTurnChange(m_game->currentPlayer().name());
 
-	m_game->stateChange<RollState>();
+	if (m_game->currentPlayer().inJail())
+	{
+        m_game->stateChange<JailState>();
+	}
+	else
+	{
+		m_game->stateChange<RollState>();
+	}
 }

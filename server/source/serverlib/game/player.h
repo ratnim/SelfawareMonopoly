@@ -9,7 +9,6 @@ public:
 
 	void nextTurn();
 
-
 	void jail();
 	bool inJail() const;
 	
