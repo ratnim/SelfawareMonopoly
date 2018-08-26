@@ -5,7 +5,7 @@
 
 #include <game/game.h>
 #include <game/turn/possiblerequest.h>
-#include <game/turn/rollstate.h>
+#include <game/turn/movestate.h>
 #include <utils/exception.h>
 
 namespace
@@ -127,7 +127,7 @@ void InitState::handleGameStart()
     emit m_game->onGameStart();
     emit m_game->onTurnChange(m_game->currentPlayer().name());
 
-    m_game->stateChange<RollState>(this);
+    m_game->stateChange<MoveState>(this);
 }
 
 void InitState::broadcastPossibleRequests()

@@ -2,10 +2,10 @@
 
 #include <game/turn/turnstate.h>
 
-class RollState : public TurnState
+class MoveState : public TurnState
 {
 public:
-    RollState(TurnState* state);
+    MoveState(TurnState* state);
 
 	void possibleRequests(const QString& playerName) override;
     void rollDice(const QString& playerName) override;

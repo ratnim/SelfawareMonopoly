@@ -1,4 +1,4 @@
-#include "rollstate.h"
+#include "movestate.h"
 
 #include <QJsonArray>
 
@@ -8,13 +8,13 @@
 #include <game/turn/possiblerequest.h>
 #include <utils/exception.h>
 
-RollState::RollState(TurnState* state)
+MoveState::MoveState(TurnState* state)
     : TurnState(*state)
 {
     broadcastPossibleRequests();
 }
 
-void RollState::rollDice(const QString& playerName)
+void MoveState::rollDice(const QString& playerName)
 {
     ensurePlayersTurn(playerName);
 
@@ -37,7 +37,7 @@ void RollState::rollDice(const QString& playerName)
     m_game->stateChange<IdleState>();
 }
 
-void RollState::possibleRequests(const QString& playerName)
+void MoveState::possibleRequests(const QString& playerName)
 {
     QJsonArray requests;
 

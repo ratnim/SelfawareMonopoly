@@ -4,7 +4,7 @@
 #include <game/turn/endstate.h>
 #include <game/turn/idlestate.h>
 #include <game/turn/jailstate.h>
-#include <game/turn/rollstate.h>
+#include <game/turn/movestate.h>
 #include <utils/exception.h>
 
 #include <iostream>
@@ -48,7 +48,7 @@ void GameLogic::movePlayer(int distance, bool canRollAgain, int rollCount)
     //}
     //else
     //{
-    //    m_state->stateChange<RollState>(rollCount);
+    //    m_state->stateChange<MoveState>(rollCount);
     //}
 }
 
@@ -99,6 +99,6 @@ void GameLogic::prepareTurnState()
     //}
     //else
     //{
-    //    m_state->stateChange<RollState>();
+    //    m_state->stateChange<MoveState>();
     //}
 }

@@ -5,7 +5,7 @@
 #include <game/game.h>
 
 #include <game/turn/idlestate.h>
-#include <game/turn/rollstate.h>
+#include <game/turn/movestate.h>
 
 #include <utils/exception.h>
 
@@ -41,7 +41,7 @@ TEST(IdleStateTest, state_transfer_to_roll)
     EXPECT_EQ(player_1, game.currentPlayer().name());
     game.endTurn(player_1);
 
-    EXPECT_NE(nullptr, dynamic_cast<RollState*>(game.state()));
+    EXPECT_NE(nullptr, dynamic_cast<MoveState*>(game.state()));
     EXPECT_EQ(player_2, game.currentPlayer().name());
 }
 
@@ -56,7 +56,7 @@ TEST(IdleStateTest, state_transfer_to_jail)
     EXPECT_EQ(player_1, game.currentPlayer().name());
     game.endTurn(player_1);
 
-    EXPECT_NE(nullptr, dynamic_cast<RollState*>(game.state()));
+    EXPECT_NE(nullptr, dynamic_cast<MoveState*>(game.state()));
     EXPECT_EQ(player_2, game.currentPlayer().name());
 }
 

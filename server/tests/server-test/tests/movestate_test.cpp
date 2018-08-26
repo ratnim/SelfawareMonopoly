@@ -5,7 +5,7 @@
 #include <game/game.h>
 
 #include <game/turn/idlestate.h>
-#include <game/turn/rollstate.h>
+#include <game/turn/movestate.h>
 
 #include <utils/exception.h>
 
@@ -21,7 +21,7 @@ TEST(RollStateTest, roll_dice)
 {
     Game game;
     game.players() = RingBuffer<Player>(std::vector<Player>{ { player_1, player_2 } });
-    game.stateChange<RollState>();
+    game.stateChange<MoveState>();
 
     QSignalSpy roll_spy(&game, &Game::onRollDice);
     QSignalSpy move_spy(&game, &Game::onPlayerMove);
@@ -37,7 +37,7 @@ TEST(RollStateTest, roll_dice_false_player)
 {
     Game game;
     game.players() = RingBuffer<Player>(std::vector<Player>{ { player_1, player_2 } });
-    game.stateChange<RollState>();
+    game.stateChange<MoveState>();
 
     EXPECT_EQ(player_1, game.currentPlayer().name());
     EXPECT_THROW(game.rollDice(player_2), Exception);
@@ -47,7 +47,7 @@ TEST(RollStateTest, state_transfer_to_idle)
 {
     Game game;
     game.players() = RingBuffer<Player>(std::vector<Player>{ { player_1, player_2 } });
-    game.stateChange<RollState>();
+    game.stateChange<MoveState>();
 
     EXPECT_EQ(player_1, game.currentPlayer().name());
     game.rollDice(player_1);
@@ -58,7 +58,7 @@ TEST(RollStateTest, possible_requests)
 {
     Game game;
     game.players() = RingBuffer<Player>(std::vector<Player>{ { player_1, player_2 } });
-    game.stateChange<RollState>();
+    game.stateChange<MoveState>();
     QSignalSpy request_spy(&game, &Game::onPossibleRequests);
 
     game.possibleRequests(player_1);
@@ -79,7 +79,7 @@ TEST(RollStateTest, update_possible_actions)
     game.players() = RingBuffer<Player>(std::vector<Player>{ { player_1, player_2 } });
     QSignalSpy request_spy(&game, &Game::onPossibleRequests);
 
-    game.stateChange<RollState>();
+    game.stateChange<MoveState>();
 
     EXPECT_EQ(2, request_spy.size());
 

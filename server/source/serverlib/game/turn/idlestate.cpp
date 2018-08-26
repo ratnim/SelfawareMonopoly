@@ -3,7 +3,7 @@
 #include <QJsonArray>
 
 #include <game/game.h>
-#include <game/turn/rollstate.h>
+#include <game/turn/movestate.h>
 #include <game/turn/jailstate.h>
 #include <game/turn/possiblerequest.h>
 
@@ -40,6 +40,6 @@ void IdleState::endTurn(const QString& playerName)
 	}
 	else
 	{
-		m_game->stateChange<RollState>();
+		m_game->stateChange<MoveState>();
 	}
 }

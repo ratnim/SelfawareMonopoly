@@ -48,8 +48,8 @@ set(sources
     game/turn/jailstate.h
     game/turn/turnstate.cpp
     game/turn/turnstate.h
-    game/turn/rollstate.cpp
-    game/turn/rollstate.h
+    game/turn/movestate.cpp
+    game/turn/movestate.h
     game/turn/possiblerequest.cpp
     game/turn/possiblerequest.h
     models/accountmodel.cpp
