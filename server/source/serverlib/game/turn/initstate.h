@@ -24,6 +24,7 @@ protected:
     bool maximalPlayersJoined() const;
     bool gameIsStartable() const;
 
+	void handleGameStart();
     void broadcastPossibleRequests();
 
     std::map<QString, bool> m_playersReady;

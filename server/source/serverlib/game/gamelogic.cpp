@@ -2,7 +2,6 @@
 
 #include <game/game.h>
 #include <game/turn/endstate.h>
-#include <game/turn/startstate.h>
 #include <game/turn/freestate.h>
 #include <game/turn/jailstate.h>
 #include <game/turn/rollstate.h>

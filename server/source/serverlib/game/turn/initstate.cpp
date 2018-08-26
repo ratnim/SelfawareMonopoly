@@ -5,7 +5,7 @@
 
 #include <game/game.h>
 #include <game/turn/possiblerequest.h>
-#include <game/turn/startstate.h>
+#include <game/turn/rollstate.h>
 #include <utils/exception.h>
 
 namespace
@@ -81,7 +81,7 @@ void InitState::gameStart()
         throw Exception("Not every player is ready.");
     }
 
-    m_game->stateChange<StartState>(joinedPlayers());
+    handleGameStart();
 }
 
 std::vector<Player> InitState::joinedPlayers()
@@ -119,6 +119,15 @@ bool InitState::minimalPlayersJoined() const
 bool InitState::maximalPlayersJoined() const
 {
     return m_playersReady.size() >= maximumPlayers;
+}
+
+void InitState::handleGameStart()
+{
+    m_game->players() = RingBuffer<Player>(joinedPlayers());
+    emit m_game->onGameStart();
+    emit m_game->onTurnChange(m_game->currentPlayer().name());
+
+    m_game->stateChange<RollState>(this);
 }
 
 void InitState::broadcastPossibleRequests()
