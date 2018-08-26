@@ -11,6 +11,7 @@ public:
 
 	void jail();
 	bool inJail() const;
+    void leaveJail();
 	
 	void move(int distance);
     int position() const;

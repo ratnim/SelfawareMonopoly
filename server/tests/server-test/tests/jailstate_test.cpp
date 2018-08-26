@@ -47,9 +47,14 @@ TEST(JailStateTest, roll_dice_no_pash)
     game.currentPlayer().jail();
     game.stateChange<JailState>();
 
-    EXPECT_EQ(player_1, game.currentPlayer().name());
-    game.rollDice(player_1); // need to be no pash
+    QSignalSpy roll_spy(&game, &Game::onRollDice);
+    QSignalSpy move_spy(&game, &Game::onPlayerMove);
 
+    EXPECT_EQ(player_1, game.currentPlayer().name());
+    game.rollDice(player_1);
+
+    EXPECT_EQ(roll_spy.size(), 1);
+    EXPECT_EQ(move_spy.size(), 0);
 	EXPECT_TRUE(game.currentPlayer().inJail());
 }
 
@@ -60,10 +65,15 @@ TEST(JailStateTest, roll_dice_pash)
     game.currentPlayer().jail();
     game.stateChange<JailState>();
 
-    EXPECT_EQ(player_1, game.currentPlayer().name());
-    game.rollDice(player_1);  // need to be a pash
+    QSignalSpy roll_spy(&game, &Game::onRollDice);
+    QSignalSpy move_spy(&game, &Game::onPlayerMove);
 
-	EXPECT_FALSE(game.currentPlayer().inJail());
+    EXPECT_EQ(player_1, game.currentPlayer().name());
+    game.rollDice(player_1);
+
+    EXPECT_EQ(roll_spy.size(), 1);
+    EXPECT_EQ(move_spy.size(), 1);
+    EXPECT_FALSE(game.currentPlayer().inJail());
 }
 
 TEST(JailStateTest, possible_requests)

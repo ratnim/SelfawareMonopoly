@@ -21,6 +21,11 @@ void Player::jail()
     m_jailTurns = 3;
 }
 
+void Player::leaveJail()
+{
+    m_jailTurns = 0;
+}
+
 int Player::position() const
 {
     return m_position;

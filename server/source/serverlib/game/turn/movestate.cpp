@@ -6,7 +6,6 @@
 #include <game/dices.h>
 #include <game/turn/idlestate.h>
 #include <game/turn/possiblerequest.h>
-#include <utils/exception.h>
 
 MoveState::MoveState(TurnState* state)
     : TurnState(*state)

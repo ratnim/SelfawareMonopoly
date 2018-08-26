@@ -1,23 +1,43 @@
 #include "jailstate.h"
 
-#include <game/turn/idlestate.h>
+#include <QJsonArray>
 
+#include <game/dices.h>
+#include <game/game.h>
+#include <game/turn/idlestate.h>
+#include <game/turn/possiblerequest.h>
 
 JailState::JailState(TurnState* state)
     : TurnState(*state)
 {
+    broadcastPossibleRequests();
 }
 
-void JailState::rollDice()
+void JailState::rollDice(const QString& playerName)
 {
-    //auto d = m_logic->roll();
+    ensurePlayersTurn(playerName);
 
-    //if (d.isDouble())
-    //{
-    //    m_logic->movePlayer(d.sum());
-    //}
-    //else
-    //{
-    //    m_logic->idle();
-    //}
+    Dices dice;
+    m_game->onRollDice(playerName, dice.first, dice.second);
+
+    if (dice.isDouble())
+    {
+        m_game->currentPlayer().move(dice.sum());
+        m_game->onPlayerMove(playerName, dice.sum());
+        m_game->currentPlayer().leaveJail();
+	}
+	
+	m_game->stateChange<IdleState>();
+}
+
+void JailState::possibleRequests(const QString& playerName)
+{
+    QJsonArray requests;
+
+    if (playersTurn(playerName))
+    {
+        requests.append(PossibleRequest::rollDice().toJson());
+    }
+
+    emit m_game->onPossibleRequests(playerName, requests);
 }
