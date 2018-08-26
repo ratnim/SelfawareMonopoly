@@ -9,7 +9,4 @@ public:
 
 	void possibleRequests(const QString& playerName) override;
     void rollDice(const QString& playerName) override;
-
-protected:
-    void broadcastPossibleRequests();
 };

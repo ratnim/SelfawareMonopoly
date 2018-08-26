@@ -25,6 +25,9 @@ protected:
 
 	bool playersTurn(const QString& playerName) const;
 
+    virtual void broadcastPossibleRequests();
+
+
 private:
     static void InvalidRequest();
 };

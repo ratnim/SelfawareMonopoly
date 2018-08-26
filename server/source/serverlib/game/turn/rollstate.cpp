@@ -51,11 +51,3 @@ void RollState::possibleRequests(const QString& playerName)
 
     emit m_game->onPossibleRequests(playerName, requests);
 }
-
-void RollState::broadcastPossibleRequests()
-{
-    for (auto& player : m_game->players().storage())
-    {
-        possibleRequests(player.name());
-    }
-}

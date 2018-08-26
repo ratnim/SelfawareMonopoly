@@ -25,7 +25,7 @@ protected:
     bool gameIsStartable() const;
 
 	void handleGameStart();
-    void broadcastPossibleRequests();
+    void broadcastPossibleRequests() override;
 
     std::map<QString, bool> m_playersReady;
 };

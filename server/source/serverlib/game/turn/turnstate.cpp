@@ -49,3 +49,10 @@ bool TurnState::playersTurn(const QString& playerName) const
     return playerName == m_game->currentPlayer().name();
 }
 
+void TurnState::broadcastPossibleRequests()
+{
+    for (auto& player : m_game->players().storage())
+    {
+        possibleRequests(player.name());
+    }
+}
