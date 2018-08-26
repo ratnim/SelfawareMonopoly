@@ -5,7 +5,7 @@
 #include <game/game.h>
 
 #include <game/turn/rollstate.h>
-#include <game/turn/freestate.h>
+#include <game/turn/idlestate.h>
 
 #include <utils/exception.h>
 
@@ -50,5 +50,5 @@ TEST(RollStateTest, state_transfer_to_idle)
 
     EXPECT_EQ(player_1, game.currentPlayer().name());
     game.rollDice(player_1);
-    EXPECT_NE(nullptr, dynamic_cast<FreeState*>(game.state()));
+    EXPECT_NE(nullptr, dynamic_cast<IdleState*>(game.state()));
 }

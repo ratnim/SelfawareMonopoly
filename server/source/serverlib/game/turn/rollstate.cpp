@@ -4,7 +4,7 @@
 
 #include <game/dices.h>
 #include <game/game.h>
-#include <game/turn/freestate.h>
+#include <game/turn/idlestate.h>
 
 
 RollState::RollState(TurnState* state)
@@ -33,5 +33,5 @@ void RollState::rollDice(const QString& playerName)
     //    m_logic->movePlayer(d.sum(), d.isDouble(), m_rollCount);
     //}
 
-	m_game->stateChange<FreeState>();
+	m_game->stateChange<IdleState>();
 }

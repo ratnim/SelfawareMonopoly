@@ -1,6 +1,6 @@
 #include "jailstate.h"
 
-#include <game/turn/freestate.h>
+#include <game/turn/idlestate.h>
 
 
 JailState::JailState(TurnState* state)

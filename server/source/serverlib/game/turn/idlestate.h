@@ -2,10 +2,10 @@
 
 #include <game/turn/turnstate.h>
 
-class FreeState : public TurnState
+class IdleState : public TurnState
 {
 public:
-    FreeState(TurnState* state);
+    IdleState(TurnState* state);
 
     virtual void endTurn();
 };

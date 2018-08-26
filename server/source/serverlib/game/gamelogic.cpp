@@ -2,7 +2,7 @@
 
 #include <game/game.h>
 #include <game/turn/endstate.h>
-#include <game/turn/freestate.h>
+#include <game/turn/idlestate.h>
 #include <game/turn/jailstate.h>
 #include <game/turn/rollstate.h>
 #include <utils/exception.h>
@@ -44,7 +44,7 @@ void GameLogic::movePlayer(int distance, bool canRollAgain, int rollCount)
 
     //if (!canRollAgain)
     //{
-    //    m_state->stateChange<FreeState>();
+    //    m_state->stateChange<IdleState>();
     //}
     //else
     //{
@@ -75,7 +75,7 @@ Dices GameLogic::roll()
 
 void GameLogic::idle()
 {
-    //m_state->stateChange<FreeState>();
+    //m_state->stateChange<IdleState>();
 }
 
 void GameLogic::end()

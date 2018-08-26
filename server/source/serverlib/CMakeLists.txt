@@ -42,8 +42,8 @@ set(sources
     game/turn/endstate.h
     game/turn/initstate.cpp
     game/turn/initstate.h
-    game/turn/freestate.cpp
-    game/turn/freestate.h
+    game/turn/idlestate.cpp
+    game/turn/idlestate.h
     game/turn/jailstate.cpp
     game/turn/jailstate.h
     game/turn/turnstate.cpp
