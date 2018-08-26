@@ -22,3 +22,8 @@ PossibleRequest PossibleRequest::gameStart()
 {
     return PossibleRequest("game_start");
 }
+
+PossibleRequest PossibleRequest::rollDice()
+{
+    return PossibleRequest("roll_dice");
+}
