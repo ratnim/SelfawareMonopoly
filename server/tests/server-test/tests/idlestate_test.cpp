@@ -6,6 +6,7 @@
 
 #include <game/turn/idlestate.h>
 #include <game/turn/movestate.h>
+#include <game/turn/jailstate.h>
 
 #include <utils/exception.h>
 
@@ -31,7 +32,6 @@ TEST(IdleStateTest, end_turn)
     EXPECT_EQ(turnChange_spy.size(), 1);
 }
 
-
 TEST(IdleStateTest, state_transfer_to_roll)
 {
     Game game;
@@ -51,13 +51,13 @@ TEST(IdleStateTest, state_transfer_to_jail)
     game.players() = RingBuffer<Player>(std::vector<Player>{ { player_1, player_2 } });
     game.stateChange<IdleState>();
 
-	game.players().storage().at(0).jail();
+    game.players().storage().at(1).jail();
 
     EXPECT_EQ(player_1, game.currentPlayer().name());
     game.endTurn(player_1);
 
-    EXPECT_NE(nullptr, dynamic_cast<MoveState*>(game.state()));
     EXPECT_EQ(player_2, game.currentPlayer().name());
+    EXPECT_NE(nullptr, dynamic_cast<JailState*>(game.state()));
 }
 
 TEST(IdleStateTest, possible_requests)
