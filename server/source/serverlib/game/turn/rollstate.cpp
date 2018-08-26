@@ -1,24 +1,27 @@
 #include "rollstate.h"
 
+#include <utils/exception.h>
+
 #include <game/dices.h>
 #include <game/game.h>
+#include <game/turn/freestate.h>
 
 
 RollState::RollState(TurnState* state)
     : TurnState(*state)
-    , m_rollCount(0)
 {
 }
 
-RollState::RollState(TurnState* state, int rollCount)
-    : TurnState(*state)
-    , m_rollCount(rollCount)
+void RollState::rollDice(const QString& playerName)
 {
-}
+	if (!playersTurn(playerName))
+	{
+        throw Exception("Not your turn.", Error::InvalidRequest);
+	}
 
-void RollState::rollDice()
-{
-    //auto d = m_logic->roll();
+	Dices dice;
+    m_game->onRollDice(playerName, dice.first, dice.second);
+    m_game->onPlayerMove(playerName, dice.sum());
 
     //++m_rollCount;
     //if (m_rollCount == 3)
@@ -29,4 +32,6 @@ void RollState::rollDice()
     //{
     //    m_logic->movePlayer(d.sum(), d.isDouble(), m_rollCount);
     //}
+
+	m_game->stateChange<FreeState>();
 }

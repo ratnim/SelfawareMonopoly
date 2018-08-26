@@ -23,6 +23,8 @@ public:
 protected:
     Game* m_game;
 
+	bool playersTurn(const QString& playerName) const;
+
 private:
     static void InvalidRequest();
 };

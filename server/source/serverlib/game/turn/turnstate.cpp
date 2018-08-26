@@ -44,3 +44,8 @@ void TurnState::InvalidRequest()
     throw Exception("You are not allowed to perform this action.", Error::InvalidRequest);
 }
 
+bool TurnState::playersTurn(const QString& playerName) const
+{
+    return playerName == m_game->currentPlayer().name();
+}
+
