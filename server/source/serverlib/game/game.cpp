@@ -1,34 +1,32 @@
 #include "game.h"
 
-#include <QJsonObject>
+#include <game/turn/initstate.h>
 
-#include <game/state/initstate.h>
-#include <models/boardmodel.h>
-
-Game::Game(Board board)
-    : m_board(std::move(board))
+Game::Game(Board gameBoard)
+    : m_board(std::move(gameBoard))
+	, m_players({})
 {
-	stateChange<InitState>(this);
+    stateChange<InitState>(this);
 }
 
-void Game::join(const QString& playerName)
+void Game::playerJoin(const QString& playerName)
 {
-    m_state->join(playerName);
+    m_state->playerJoin(playerName);
 }
 
-void Game::board()
+void Game::gameBoard()
 {
     emit onBoardRequest(m_board.description());
 }
 
-void Game::ready(const QString& playerName)
+void Game::playerReady(const QString& playerName)
 {
-    m_state->ready(playerName);
+    m_state->playerReady(playerName);
 }
 
-void Game::start()
+void Game::gameStart()
 {
-    m_state->start();
+    m_state->gameStart();
 }
 
 void Game::rollDice(const QString& playerName)
@@ -39,4 +37,47 @@ void Game::rollDice(const QString& playerName)
 void Game::endTurn(const QString& playerName)
 {
     m_state->endTurn(playerName);
+}
+
+void Game::possibleRequests(const QString& playerName)
+{
+    m_state->possibleRequests(playerName);
+}
+
+Dices Game::currentPlayerRollDices()
+{
+    currentPlayer().rolled();
+
+    if (!watson_next_rolls.empty())
+    {
+        auto dices = watson_next_rolls.front();
+        watson_next_rolls.pop();
+        return dices;
+    }
+
+	return {};
+}
+
+void Game::jailCurrentPlayer()
+{
+    auto distance = JAIL_POSITION - currentPlayer().position();
+    currentPlayer().move(distance);
+    emit onPlayerMove(currentPlayer().name(), distance);
+    
+    currentPlayer().jail();
+}
+
+RingBuffer<Player>& Game::players()
+{
+    return m_players;
+}
+
+Player& Game::currentPlayer()
+{
+    return m_players();
+}
+
+TurnState* Game::state() const
+{
+    return m_state.get();
 }

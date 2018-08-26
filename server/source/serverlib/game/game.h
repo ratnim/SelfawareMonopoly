@@ -1,29 +1,50 @@
 #pragma once
 
-#include <game/state/gamestate.h>
-#include <game/board/board.h>
-#include <utils/budhist.h>
+#include <queue>
 
-class Game : public QObject, public Budhist<GameState>
+#include <QJsonObject>
+
+#include <utils/budhist.h>
+#include <utils/ringbuffer.h>
+
+#include <game/player.h>
+#include <game/dices.h>
+#include <game/board/board.h>
+#include <game/turn/turnstate.h>
+
+class Game : public QObject, public Budhist<TurnState>
 {
     Q_OBJECT
 
 public:
-    Game(Board board = Board({}));
+    Game(Board gameBoard = Board({}));
 
-    void join(const QString& playerName);
-    void board();
-    void ready(const QString& playerName);
-    void start();
+    void playerJoin(const QString& playerName);
+
+    void gameBoard();
+    void playerReady(const QString& playerName);
+    void gameStart();
 
     void rollDice(const QString& playerName);
-    void pay(const QString& playerName);
-    void ignore(const QString& playerName);
-    void draw(const QString& playerName);
     void endTurn(const QString& playerName);
 
+	void possibleRequests(const QString& playerName);
+
+	Dices currentPlayerRollDices();
+    void jailCurrentPlayer();
+
+	RingBuffer<Player>& players();
+    Player& currentPlayer();
+
+	TurnState* state() const;
+
+	std::queue<Dices> watson_next_rolls;
+
+	const int JAIL_POSITION = 10;
+    const int GO_TO_JAIL_POSITION = 30;
+
 signals:
-    void onBoardRequest(const QJsonObject& board);
+    void onBoardRequest(const QJsonObject& gameBoard);
     void onPlayerJoin(const QString& playerName);
     void onPlayerReady(const QString& playerName);
 
@@ -34,9 +55,8 @@ signals:
     void onPlayerMove(const QString& playerName, int distance);
     void onTurnChange(const QString& newMovingPlayer);
 
-    void onEnterJail(const QString& playerName);
-    void onLeaveJail(const QString& playerName);
-
+	void onPossibleRequests(const QString& playerName, const QJsonArray& possibleRequests);
 protected:
     Board m_board;
+    RingBuffer<Player> m_players;
 };

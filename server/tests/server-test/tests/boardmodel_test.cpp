@@ -11,10 +11,10 @@ TEST_F(BoardModelTest, default_dir_assets_boards)
 {
     auto& instance = BoardModel::instance();
 
-    auto board = std::move(instance.newBoard("berlin.json"));
+    auto gameBoard = std::move(instance.newBoard("berlin.json"));
 
-    EXPECT_EQ(40, board.size());
-    EXPECT_EQ(FieldType::start, board[0]->type());
+    EXPECT_EQ(40, gameBoard.size());
+    EXPECT_EQ(FieldType::start, gameBoard[0]->type());
 }
 
 TEST_F(BoardModelTest, board_file_not_exists)
@@ -29,8 +29,8 @@ TEST_F(BoardModelTest, load_board)
 {
     BoardModel::setBoardDir("./assets/boards");
     auto& instance = BoardModel::instance();
-    auto board = std::move(instance.newBoard("berlin.json"));
+    auto gameBoard = std::move(instance.newBoard("berlin.json"));
 
-    EXPECT_EQ(40, board.size());
-    EXPECT_EQ(FieldType::start, board[0]->type());
+    EXPECT_EQ(40, gameBoard.size());
+    EXPECT_EQ(FieldType::start, gameBoard[0]->type());
 }
