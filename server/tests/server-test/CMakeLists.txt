@@ -12,6 +12,7 @@ message(STATUS "Test ${target}")
 
 set(sources
     main.cpp
+    tests/bankaccount_test.cpp
 	tests/board_test.cpp
     tests/boardmodel_test.cpp
     tests/configuration_test.cpp
