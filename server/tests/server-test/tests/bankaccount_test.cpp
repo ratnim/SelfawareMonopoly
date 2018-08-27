@@ -4,10 +4,22 @@
 
 TEST(BankAccountTest, transfer_to)
 {
-    auto bank = BankAccount(std::numeric_limits<int>::max());
-    BankAccount playerAccount;
+    BankAccount sender(1000);
+    BankAccount reciever;
 
-	bank.transferTo(playerAccount, 1000);
+	EXPECT_TRUE(sender.transferTo(reciever, 1000));
 
-	EXPECT_EQ(1000, playerAccount.balance());
+	EXPECT_EQ(0, sender.balance());
+	EXPECT_EQ(1000, reciever.balance());
+}
+
+TEST(BankAccountTest, transfer_not_enough_money)
+{
+    BankAccount sender;
+    BankAccount reciever;
+
+    EXPECT_FALSE(sender.transferTo(reciever, 1000));
+
+	EXPECT_EQ(0, sender.balance());
+    EXPECT_EQ(0, reciever.balance());
 }

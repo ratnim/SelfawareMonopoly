@@ -5,10 +5,15 @@ BankAccount::BankAccount(int deposit)
 {
 }
 
-void BankAccount::transferTo(BankAccount& other, int amount)
+bool BankAccount::transferTo(BankAccount& other, int amount)
 {
+    if (amount >= 0 && m_deposit < amount)
+        return false;
+
     this->m_deposit -= amount;
     other.m_deposit += amount;
+
+	return true;
 }
 
 int BankAccount::balance() const
