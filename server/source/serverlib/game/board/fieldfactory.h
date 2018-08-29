@@ -13,4 +13,8 @@ class FieldFactory
 public:
     
 	static std::unique_ptr<Field> create(const QJsonObject& specification);
+
+protected:
+
+	static std::unique_ptr<Field> createStreet(const QJsonObject& specification);
 };

@@ -20,24 +20,24 @@ enum ConstructionLevel
 class Street : public Field
 {
 public:
-    Street(const QString& name);
+    Street(const QString& name, int group, int price, int housePrice, std::array<int, ConstructionLevel::HOTEL + 1> rents);
 
-    int group();
+    int group() const;
 
-    int price();
-    int rent();
+    int price() const;
+    int housePrice() const;
+    ConstructionLevel constructionLevel() const;
+    int rent() const;
 
-    QString owner();
+	void changeOwner(const QString& newOwner);
+
+    QString owner() const;
 
 protected:
     QString m_owner;
-};
-
-class StreetInfo
-{
-public:
-protected:
-    QString m_name;
-    int m_group;
-    std::array<int, ConstructionLevel::HOTEL + 1> m_prices;
+    const int m_group;
+    const int m_price;
+    const int m_housePrice;
+    ConstructionLevel m_constructionLevel;
+    const std::array<int, ConstructionLevel::HOTEL + 1> m_rents;
 };
