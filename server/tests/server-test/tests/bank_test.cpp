@@ -22,16 +22,21 @@ TEST(BankTest, create_account)
     EXPECT_EQ(1000, bank.balance(player_2));
 }
 
-TEST(BankTest, create_money)
+TEST(BankTest, transaction_with_the_bank)
 {
     Bank bank;
     QString player("player");
-    EXPECT_THROW(bank.transferMoney(player, 1000), Exception);
+    EXPECT_THROW(bank.giveMoney(player, 1000), Exception);
+    EXPECT_THROW(bank.takeMoney(player, 500), Exception);
     bank.createAccount(player);
 
     EXPECT_EQ(0, bank.balance(player));
-    bank.transferMoney(player, 1000);
+    bank.giveMoney(player, 1000);
     EXPECT_EQ(1000, bank.balance(player));
+	bank.takeMoney(player, 500);
+    EXPECT_EQ(1000, bank.balance(player));
+
+    EXPECT_THROW(bank.takeMoney(player, 1000), Exception);
 }
 
 TEST(BankTest, transfer_not_enough_money)

@@ -17,6 +17,38 @@ void Bank::transferMoney(const QString& reciever, int amount)
 
 }
 
+void Bank::takeMoney(const QString& debtor, int debt)
+{
+    auto& it = m_accounts.find(debtor);
+    if (it == m_accounts.end())
+    {
+        throw Exception("Bank account does not exists.", Error::InternalError);
+    }
+
+	if (it->second < debt)
+	{
+        throw Exception("Not sufficent money on bank account to pay debt.", Error::UnsupportedAction);
+	}
+
+	it->second -= debt;
+
+    emit onMoneyChange(it->first, it->second);
+
+}
+
+void Bank::giveMoney(const QString& reciever, int amount)
+{
+    auto& it = m_accounts.find(reciever);
+    if (it == m_accounts.end())
+    {
+        throw Exception("Bank account does not exists.", Error::InternalError);
+    }
+
+	it->second += amount;
+
+	emit onMoneyChange(it->first, it->second);
+}
+
 int Bank::balance(const QString& name) const
 {
     auto& it = m_accounts.find(name);
