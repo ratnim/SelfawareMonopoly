@@ -3,6 +3,8 @@
 #include <array>
 
 #include <QString>
+#include <QJsonObject>
+#include <QJsonArray>
 
 #include <game/board/field.h>
 
@@ -33,7 +35,11 @@ public:
 
     QString owner() const;
 
+	QJsonObject description() override;
+
 protected:
+    QJsonArray rents() const;
+
     QString m_owner;
     const int m_group;
     const int m_price;

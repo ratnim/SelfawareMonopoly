@@ -38,7 +38,7 @@ FieldType Field::type() const
     return m_type;
 }
 
-QJsonObject Field::description() const
+QJsonObject Field::description()
 {
     return {
         { "name", m_name },

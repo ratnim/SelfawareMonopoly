@@ -1,7 +1,8 @@
 #include <gmock/gmock.h>
 
-#include <game/board/field.h>
 #include <QJsonObject>
+
+#include <game/board/field.h>
 
 TEST(FieldTest, get_description)
 {
@@ -16,7 +17,7 @@ TEST(FieldTest, get_description)
 TEST(FieldTypeStringConverterTest, type_to_name)
 {
     EXPECT_EQ(FieldType::jail, FieldTypeStringConverter::typeByName("jail"));
-	EXPECT_EQ(FieldType::go_to_jail, FieldTypeStringConverter::typeByName("go_to_jail"));
+    EXPECT_EQ(FieldType::go_to_jail, FieldTypeStringConverter::typeByName("go_to_jail"));
     EXPECT_ANY_THROW(FieldTypeStringConverter::typeByName("not_there"));
 }
 

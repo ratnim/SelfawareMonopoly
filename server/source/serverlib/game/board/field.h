@@ -36,7 +36,7 @@ public:
     QString name() const;
     FieldType type() const;
 	
-	virtual QJsonObject description() const;
+	virtual QJsonObject description();
 
 protected:
     const QString m_name;

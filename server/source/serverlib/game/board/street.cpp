@@ -44,3 +44,25 @@ int Street::rent() const
 {
     return m_rents[m_constructionLevel];
 }
+
+QJsonObject Street::description()
+{
+    auto description = Field::description();
+    description["group"] = m_group;
+    description["price"] = m_price;
+    description["house_price"] = m_housePrice;
+    description["construction_level"] = m_constructionLevel;
+    description["rent"] = rents();
+    return description;
+}
+
+QJsonArray Street::rents() const
+{
+    QJsonArray jsonRents;
+	for (int i = 0; i < ConstructionLevel::HOTEL + 1; ++i)
+	{
+        jsonRents.append(m_rents[i]);
+	}
+
+	return jsonRents;
+}
