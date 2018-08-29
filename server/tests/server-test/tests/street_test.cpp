@@ -17,5 +17,4 @@ TEST(StreetTest, get_description)
     EXPECT_EQ(200, description["price"].toInt());
     EXPECT_EQ(50, description["house_price"].toInt());
     EXPECT_EQ(QJsonArray({ 24, 120, 360, 850, 1025, 1200 }), description["rent"].toArray());
-    EXPECT_EQ(0, description["construction_level"].toInt());
 }

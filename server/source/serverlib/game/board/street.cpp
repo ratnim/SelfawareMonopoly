@@ -51,7 +51,6 @@ QJsonObject Street::description()
     description["group"] = m_group;
     description["price"] = m_price;
     description["house_price"] = m_housePrice;
-    description["construction_level"] = m_constructionLevel;
     description["rent"] = rents();
     return description;
 }
