@@ -7,6 +7,6 @@ class MoveState : public TurnState
 public:
     MoveState(TurnState* state);
 
-	void possibleRequests(const QString& playerName) override;
-    void rollDice(const QString& playerName) override;
+	void requestPossibleRequests(const QString& playerName) override;
+    void requestRollDice(const QString& playerName) override;
 };

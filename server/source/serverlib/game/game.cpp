@@ -23,27 +23,27 @@ void Game::requestGameBoard()
 
 void Game::requestPlayerReady(const QString& playerName)
 {
-    m_state->playerReady(playerName);
+    m_state->requestPlayerReady(playerName);
 }
 
 void Game::requestGameStart()
 {
-    m_state->gameStart();
+    m_state->requestGameStart();
 }
 
 void Game::requestRollDice(const QString& playerName)
 {
-    m_state->rollDice(playerName);
+    m_state->requestRollDice(playerName);
 }
 
 void Game::requestEndTurn(const QString& playerName)
 {
-    m_state->endTurn(playerName);
+    m_state->requestEndTurn(playerName);
 }
 
 void Game::requestPossibleRequests(const QString& playerName)
 {
-    m_state->possibleRequests(playerName);
+    m_state->requestPossibleRequests(playerName);
 }
 
 Dices Game::doCurrentPlayerRollDices()

@@ -10,15 +10,15 @@ public:
     TurnState(Game* game);
     virtual ~TurnState() = default;
 
-    virtual void possibleRequests(const QString& playerName);
+    virtual void requestPossibleRequests(const QString& playerName);
 
-    virtual void gameStart();
+    virtual void requestGameStart();
 
-    virtual void playerReady(const QString& playerName);
+    virtual void requestPlayerReady(const QString& playerName);
     virtual void requestPlayerJoin(const QString& playerName);
 
-    virtual void rollDice(const QString& playerName);
-    virtual void endTurn(const QString& playerName);
+    virtual void requestRollDice(const QString& playerName);
+    virtual void requestEndTurn(const QString& playerName);
 
 protected:
     Game* m_game;

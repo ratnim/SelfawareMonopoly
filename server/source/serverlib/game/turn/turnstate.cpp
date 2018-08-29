@@ -11,7 +11,7 @@ TurnState::TurnState(Game* game)
 {
 }
 
-void TurnState::gameStart()
+void TurnState::requestGameStart()
 {
     InvalidRequest();
 }
@@ -21,22 +21,22 @@ void TurnState::requestPlayerJoin(const QString& playerName)
     InvalidRequest();
 }
 
-void TurnState::playerReady(const QString& playerName)
+void TurnState::requestPlayerReady(const QString& playerName)
 {
     InvalidRequest();
 }
 
-void TurnState::rollDice(const QString& playerName)
+void TurnState::requestRollDice(const QString& playerName)
 {
     InvalidRequest();
 }
 
-void TurnState::endTurn(const QString& playerName)
+void TurnState::requestEndTurn(const QString& playerName)
 {
     InvalidRequest();
 }
 
-void TurnState::possibleRequests(const QString& playerName)
+void TurnState::requestPossibleRequests(const QString& playerName)
 {
     emit m_game->onPossibleRequests(playerName, QJsonArray{});
 }
@@ -55,7 +55,7 @@ void TurnState::broadcastPossibleRequests()
 {
     for (auto& player : m_game->players().storage())
     {
-        possibleRequests(player.name());
+        requestPossibleRequests(player.name());
     }
 }
 

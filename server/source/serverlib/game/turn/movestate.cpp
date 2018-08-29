@@ -13,7 +13,7 @@ MoveState::MoveState(TurnState* state)
     broadcastPossibleRequests();
 }
 
-void MoveState::rollDice(const QString& playerName)
+void MoveState::requestRollDice(const QString& playerName)
 {
     ensurePlayersTurn(playerName);
     auto& player = m_game->currentPlayer();
@@ -44,7 +44,7 @@ void MoveState::rollDice(const QString& playerName)
 	}
 }
 
-void MoveState::possibleRequests(const QString& playerName)
+void MoveState::requestPossibleRequests(const QString& playerName)
 {
     QJsonArray requests;
 
