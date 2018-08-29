@@ -18,18 +18,18 @@ void MoveState::rollDice(const QString& playerName)
     ensurePlayersTurn(playerName);
     auto& player = m_game->currentPlayer();
 
-	Dices dices = m_game->currentPlayerRollDices();
+	Dices dices = m_game->doCurrentPlayerRollDices();
     m_game->onRollDice(playerName, dices.first, dices.second);
 
 	if (player.timesRolled() >= 3 && dices.isDouble())
 	{
-        m_game->jailCurrentPlayer();
+        m_game->doJailCurrentPlayer();
         m_game->stateChange<IdleState>();
 	}
     else
 	{
 	    player.move(dices.sum());
-	    m_game->onPlayerMove(playerName, dices.sum());
+	    m_game->onPlayerMove(playerName, player.position(), "forward");
 
 		if (player.position() == m_game->GO_TO_JAIL_POSITION)
 		{

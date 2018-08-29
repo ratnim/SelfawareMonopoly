@@ -37,7 +37,7 @@ signals:
     void change();
 
 protected:
-    void playerJoin(const QString& playerName);
+    void requestPlayerJoin(const QString& playerName);
     void gameStart();
     void gameEnd();
 

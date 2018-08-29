@@ -36,7 +36,7 @@ void InitState::possibleRequests(const QString& playerName)
     emit m_game->onPossibleRequests(playerName, requests);
 }
 
-void InitState::playerJoin(const QString& playerName)
+void InitState::requestPlayerJoin(const QString& playerName)
 {
     if (maximalPlayersJoined())
     {

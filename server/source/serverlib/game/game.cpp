@@ -11,42 +11,42 @@ Game::Game(Board gameBoard)
     stateChange<InitState>(this);
 }
 
-void Game::playerJoin(const QString& playerName)
+void Game::requestPlayerJoin(const QString& playerName)
 {
-    m_state->playerJoin(playerName);
+    m_state->requestPlayerJoin(playerName);
 }
 
-void Game::gameBoard()
+void Game::requestGameBoard()
 {
     emit onBoardRequest(m_board.description());
 }
 
-void Game::playerReady(const QString& playerName)
+void Game::requestPlayerReady(const QString& playerName)
 {
     m_state->playerReady(playerName);
 }
 
-void Game::gameStart()
+void Game::requestGameStart()
 {
     m_state->gameStart();
 }
 
-void Game::rollDice(const QString& playerName)
+void Game::requestRollDice(const QString& playerName)
 {
     m_state->rollDice(playerName);
 }
 
-void Game::endTurn(const QString& playerName)
+void Game::requestEndTurn(const QString& playerName)
 {
     m_state->endTurn(playerName);
 }
 
-void Game::possibleRequests(const QString& playerName)
+void Game::requestPossibleRequests(const QString& playerName)
 {
     m_state->possibleRequests(playerName);
 }
 
-Dices Game::currentPlayerRollDices()
+Dices Game::doCurrentPlayerRollDices()
 {
     currentPlayer().rolled();
 
@@ -60,11 +60,10 @@ Dices Game::currentPlayerRollDices()
 	return {};
 }
 
-void Game::jailCurrentPlayer()
+void Game::doJailCurrentPlayer()
 {
-    auto distance = JAIL_POSITION - currentPlayer().position();
-    currentPlayer().move(distance);
-    emit onPlayerMove(currentPlayer().name(), distance);
+    currentPlayer().moveTo(JAIL_POSITION);
+    emit onPlayerMove(currentPlayer().name(), JAIL_POSITION, "jump");
     
     currentPlayer().jail();
 }

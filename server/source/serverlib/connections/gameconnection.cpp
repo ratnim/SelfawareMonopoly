@@ -10,15 +10,15 @@ GameConnection::GameConnection(QWebSocket* parent, const ConnectionRequest& requ
     auto& compound = GameModel::instance().open(request.gameId);
     auto& game = compound.game;
 
-    m_requests["join_game"] = [&game, this](const QJsonValue&) { game.playerJoin(m_playerName); };
-    m_requests["game_board"] = [&game, this](const QJsonValue&) { game.gameBoard(); };
-    m_requests["player_ready"] = [&game, this](const QJsonValue&) { game.playerReady(m_playerName); };
-    m_requests["game_start"] = [&game, this](const QJsonValue&) { game.gameStart(); };
+    m_requests["join_game"] = [&game, this](const QJsonValue&) { game.requestPlayerJoin(m_playerName); };
+    m_requests["game_board"] = [&game, this](const QJsonValue&) { game.requestGameBoard(); };
+    m_requests["player_ready"] = [&game, this](const QJsonValue&) { game.requestPlayerReady(m_playerName); };
+    m_requests["game_start"] = [&game, this](const QJsonValue&) { game.requestGameStart(); };
 
-    m_requests["roll_dice"] = [&game, this](const QJsonValue&) { game.rollDice(m_playerName); };
-    m_requests["end_turn"] = [&game, this](const QJsonValue&) { game.endTurn(m_playerName); };
+    m_requests["roll_dice"] = [&game, this](const QJsonValue&) { game.requestRollDice(m_playerName); };
+    m_requests["end_turn"] = [&game, this](const QJsonValue&) { game.requestEndTurn(m_playerName); };
 
-	m_requests["possible_requests"] = [&game, this](const QJsonValue&) { game.possibleRequests(m_playerName); };
+	m_requests["possible_requests"] = [&game, this](const QJsonValue&) { game.requestPossibleRequests(m_playerName); };
 
     watchGame(compound.watcher);
 }

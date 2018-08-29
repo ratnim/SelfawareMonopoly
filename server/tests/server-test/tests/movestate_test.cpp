@@ -27,10 +27,11 @@ TEST(MoveStateTest, roll_dice)
     QSignalSpy move_spy(&game, &Game::onPlayerMove);
 
     EXPECT_EQ(player_1, game.currentPlayer().name());
-    game.rollDice(player_1);
+    game.requestRollDice(player_1);
 
     EXPECT_EQ(roll_spy.size(), 1);
     EXPECT_EQ(move_spy.size(), 1);
+    EXPECT_EQ("forward", move_spy.last().at(2).toString().toStdString());
 }
 
 TEST(MoveStateTest, roll_dice_1_pash)
@@ -44,14 +45,14 @@ TEST(MoveStateTest, roll_dice_1_pash)
 
     EXPECT_EQ(player_1, game.currentPlayer().name());
     game.watson_next_rolls.emplace(6, 6);
-    game.rollDice(player_1);
+    game.requestRollDice(player_1);
 
     EXPECT_EQ(roll_spy.size(), 1);
     EXPECT_EQ(move_spy.size(), 1);
     EXPECT_NE(nullptr, dynamic_cast<MoveState*>(game.state()));
 
 	game.watson_next_rolls.emplace(1, 2);
-    game.rollDice(player_1);
+    game.requestRollDice(player_1);
 
 	EXPECT_EQ(roll_spy.size(), 2);
     EXPECT_EQ(move_spy.size(), 2);
@@ -69,24 +70,27 @@ TEST(MoveStateTest, roll_dice_pash_3_times)
 
     EXPECT_EQ(player_1, game.currentPlayer().name());
     game.watson_next_rolls.emplace(6, 6);
-    game.rollDice(player_1);
+    game.requestRollDice(player_1);
 
     EXPECT_EQ(roll_spy.size(), 1);
     EXPECT_EQ(move_spy.size(), 1);
+    EXPECT_EQ("forward", move_spy.last().at(2).toString().toStdString());
     EXPECT_NE(nullptr, dynamic_cast<MoveState*>(game.state()));
 
     game.watson_next_rolls.emplace(6, 6);
-    game.rollDice(player_1);
+    game.requestRollDice(player_1);
 
     EXPECT_EQ(roll_spy.size(), 2);
     EXPECT_EQ(move_spy.size(), 2);
+    EXPECT_EQ("forward", move_spy.last().at(2).toString().toStdString());
     EXPECT_NE(nullptr, dynamic_cast<MoveState*>(game.state()));
 
     game.watson_next_rolls.emplace(6, 6);
-    game.rollDice(player_1);
+    game.requestRollDice(player_1);
 
     EXPECT_EQ(roll_spy.size(), 3);
     EXPECT_EQ(move_spy.size(), 3);
+    EXPECT_EQ("jump", move_spy.last().at(2).toString().toStdString());
     EXPECT_EQ(game.JAIL_POSITION, game.currentPlayer().position());
     EXPECT_NE(nullptr, dynamic_cast<IdleState*>(game.state()));
     EXPECT_TRUE(game.currentPlayer().inJail());
@@ -99,7 +103,7 @@ TEST(MoveStateTest, roll_dice_false_player)
     game.stateChange<MoveState>();
 
     EXPECT_EQ(player_1, game.currentPlayer().name());
-    EXPECT_THROW(game.rollDice(player_2), Exception);
+    EXPECT_THROW(game.requestRollDice(player_2), Exception);
 }
 
 TEST(MoveStateTest, state_transfer_to_idle)
@@ -110,7 +114,7 @@ TEST(MoveStateTest, state_transfer_to_idle)
 
     EXPECT_EQ(player_1, game.currentPlayer().name());
     game.watson_next_rolls.emplace(1, 2);
-    game.rollDice(player_1);
+    game.requestRollDice(player_1);
 
     EXPECT_NE(nullptr, dynamic_cast<IdleState*>(game.state()));
 }
@@ -122,13 +126,13 @@ TEST(MoveStateTest, possible_requests)
     game.stateChange<MoveState>();
     QSignalSpy request_spy(&game, &Game::onPossibleRequests);
 
-    game.possibleRequests(player_1);
+    game.requestPossibleRequests(player_1);
 
     EXPECT_EQ(player_1, game.currentPlayer().name());
     EXPECT_EQ(player_1, request_spy.last().at(0).toString());
     EXPECT_TRUE(containsRequest(request_spy.last().at(1).toJsonArray(), "roll_dice"));
 
-    game.possibleRequests(player_2);
+    game.requestPossibleRequests(player_2);
 
     EXPECT_EQ(request_spy.last().at(0).toString(), player_2);
     EXPECT_FALSE(containsRequest(request_spy.last().at(1).toJsonArray(), "roll_dice"));
@@ -145,5 +149,5 @@ TEST(MoveStateTest, update_possible_actions)
     EXPECT_EQ(2, request_spy.size());
 
 	EXPECT_EQ(player_1, game.currentPlayer().name());
-    game.rollDice(player_1);
+    game.requestRollDice(player_1);
 }

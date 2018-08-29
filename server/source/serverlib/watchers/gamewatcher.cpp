@@ -9,7 +9,7 @@
 
 GameWatcher::GameWatcher(const Game& game)
 {
-    connect(&game, &Game::onPlayerJoin, this, &GameWatcher::playerJoin);
+    connect(&game, &Game::onPlayerJoin, this, &GameWatcher::requestPlayerJoin);
     connect(&game, &Game::onBoardRequest, this, &GameWatcher::boardRequest);
     connect(&game, &Game::onPlayerReady, this, &GameWatcher::playerReady);
 
@@ -45,7 +45,7 @@ void GameWatcher::singlePlayerEvent(const QString& player, const QJsonObject& ob
     emit broadcastPlayerMessage(player, message);
 }
 
-void GameWatcher::playerJoin(const QString& playerName)
+void GameWatcher::requestPlayerJoin(const QString& playerName)
 {
     QJsonObject answer({ { "name", "join_game" } });
     answer["data"] = QJsonObject{ { "player_name", playerName } };
@@ -84,10 +84,10 @@ void GameWatcher::moneyChange(const QString& playerName, int balance)
     broadcastEvent(answer);
 }
 
-void GameWatcher::playerMove(const QString& playerName, int distance)
+void GameWatcher::playerMove(const QString& playerName, int fieldIndex, const QString& type)
 {
     QJsonObject answer({ { "name", "player_move" } });
-    answer["data"] = QJsonObject({ { "player_name", playerName }, { "distance", distance } });
+    answer["data"] = QJsonObject({ { "player_name", playerName }, { "target", fieldIndex}, {"type", type} });
 
     broadcastEvent(answer);
 }

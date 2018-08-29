@@ -21,19 +21,19 @@ class Game : public QObject, public Budhist<TurnState>
 public:
     Game(Board gameBoard = Board({}));
 
-    void playerJoin(const QString& playerName);
+    void requestPlayerJoin(const QString& playerName);
 
-    void gameBoard();
-    void playerReady(const QString& playerName);
-    void gameStart();
+    void requestGameBoard();
+    void requestPlayerReady(const QString& playerName);
+    void requestGameStart();
 
-    void rollDice(const QString& playerName);
-    void endTurn(const QString& playerName);
+    void requestRollDice(const QString& playerName);
+    void requestEndTurn(const QString& playerName);
 
-    void possibleRequests(const QString& playerName);
+    void requestPossibleRequests(const QString& playerName);
 
-    Dices currentPlayerRollDices();
-    void jailCurrentPlayer();
+    Dices doCurrentPlayerRollDices();
+    void doJailCurrentPlayer();
 
     RingBuffer<Player>& players();
     Player& currentPlayer();
@@ -56,7 +56,7 @@ signals:
 
     void onRollDice(const QString& playerName, int d1, int d2);
     void onMoneyChange(const QString& playerName, int balance);
-    void onPlayerMove(const QString& playerName, int distance);
+    void onPlayerMove(const QString& playerName, int index, const QString& type);
     void onTurnChange(const QString& newMovingPlayer);
 
     void onPossibleRequests(const QString& playerName, const QJsonArray& possibleRequests);
