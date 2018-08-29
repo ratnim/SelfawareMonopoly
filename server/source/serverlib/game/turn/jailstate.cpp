@@ -22,11 +22,13 @@ void JailState::requestRollDice(const QString& playerName)
 
     if (dices.isDouble())
     {
-        m_game->doMoveCurrentPlayer(dices.sum());
         player.leaveJail();
+        m_game->doMoveCurrentPlayer(dices.sum());
 	}
-	
-	m_game->stateChange<IdleState>();
+	else
+	{
+        changeToDefaultState();
+	}
 }
 
 void JailState::requestPossibleRequests(const QString& playerName)

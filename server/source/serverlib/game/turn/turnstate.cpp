@@ -3,6 +3,10 @@
 #include <QJsonArray>
 
 #include <game/game.h>
+#include <game/player.h>
+
+#include <game/turn/movestate.h>
+#include <game/turn/idlestate.h>
 
 #include <utils/exception.h>
 
@@ -64,5 +68,17 @@ void TurnState::ensurePlayersTurn(const QString& playerName) const
     if (!playersTurn(playerName))
     {
         throw Exception("Not your turn.", Error::InvalidRequest);
+    }
+}
+
+void TurnState::changeToDefaultState()
+{
+    if (m_game->currentPlayer().canRoll())
+    {
+        m_game->stateChange<MoveState>();
+    }
+    else
+    {
+        m_game->stateChange<IdleState>();
     }
 }

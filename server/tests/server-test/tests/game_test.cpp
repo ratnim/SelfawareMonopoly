@@ -2,8 +2,11 @@
 
 #include <QSignalSpy>
 
+#include <models/boardmodel.h>
+
 #include <game/game.h>
 #include <game/turn/initstate.h>
+#include <game/turn/idlestate.h>
 #include <utils/exception.h>
 
 TEST(GameTest, init_state)
@@ -48,7 +51,7 @@ TEST(GameTest, money_change_signal)
     game.requestPlayerReady("Gertrude");
     game.requestGameStart();
 
-	EXPECT_EQ(2, money_spy.size());
+    EXPECT_EQ(2, money_spy.size());
 }
 
 TEST(GameTest, simple_start_turn)
@@ -82,4 +85,23 @@ TEST(GameTest, simple_start_turn)
         EXPECT_THROW(game.requestRollDice("Gertrude"), Exception);
         EXPECT_THROW(game.requestEndTurn("Gertrude"), Exception);
     }
+}
+
+TEST(GameTest, go_to_jail_position)
+{
+
+	auto& instance = BoardModel::instance();
+	auto board = std::move(instance.newBoard("berlin.json"));
+
+    Game game(std::move(board));
+    game.requestPlayerJoin("Heinz");
+    game.requestPlayerJoin("Gertrude");
+    game.requestPlayerReady("Heinz");
+    game.requestPlayerReady("Gertrude");
+    game.requestGameStart();
+
+	game.doMoveCurrentPlayer(game.GO_TO_JAIL_POSITION);
+	
+	EXPECT_TRUE(game.currentPlayer().inJail());
+	EXPECT_NE(nullptr, dynamic_cast<IdleState*>(game.state()));
 }

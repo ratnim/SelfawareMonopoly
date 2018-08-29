@@ -20,6 +20,7 @@ public:
     virtual void requestRollDice(const QString& playerName);
     virtual void requestEndTurn(const QString& playerName);
 
+    void changeToDefaultState();
 protected:
     Game* m_game;
 
@@ -27,7 +28,6 @@ protected:
     void ensurePlayersTurn(const QString& playerName) const;
 
     virtual void broadcastPossibleRequests();
-
 
 private:
     static void InvalidRequest();

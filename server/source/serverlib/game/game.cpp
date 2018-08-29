@@ -62,9 +62,12 @@ Dices Game::doCurrentPlayerRollDices()
 
 void Game::doJailCurrentPlayer()
 {
+    currentPlayer().canRoll(false);
     currentPlayer().moveTo(JAIL_POSITION);
     emit onPlayerMove(currentPlayer().name(), JAIL_POSITION, "jump");
     currentPlayer().jail();
+
+	m_state->changeToDefaultState();
 }
 
 void Game::doMoveCurrentPlayer(int distance)
@@ -72,6 +75,21 @@ void Game::doMoveCurrentPlayer(int distance)
     auto target = m_board.targetForMove(currentPlayer().position(), distance);
     currentPlayer().moveTo(target);
 	emit onPlayerMove(currentPlayer().name(), target, "forward");
+
+	
+	// special position
+    // buy
+    // rent
+    // tax
+    // what ever
+    if (target == GO_TO_JAIL_POSITION)
+    {
+    	doJailCurrentPlayer();
+    }
+	else
+	{
+		m_state->changeToDefaultState();
+	}
 }
 
 RingBuffer<Player>& Game::players()

@@ -8,6 +8,7 @@ Player::Player(const QString& playerName)
 void Player::nextTurn()
 {
     m_timesRolled = 0;
+    m_canRoll = true;
 
     if (m_jailTurns > 0)
         --m_jailTurns;
@@ -51,4 +52,15 @@ int Player::timesRolled() const
 void Player::rolled()
 {
     ++m_timesRolled;
+    m_canRoll = false;
+}
+
+bool Player::canRoll() const
+{
+    return m_canRoll;
+}
+
+void Player::canRoll(bool value)
+{
+	m_canRoll = value;
 }
