@@ -21,15 +21,17 @@ enum ConstructionLevel
 class Street : public Field
 {
 public:
+    Street(const QString& name);
+
     int group();
 
     int price();
     int rent();
 
-    Player* owner();
+    QString owner();
 
 protected:
-    Player* m_owner;
+    QString m_owner;
 };
 
 class StreetInfo

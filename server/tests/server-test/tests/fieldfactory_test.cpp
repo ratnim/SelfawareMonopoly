@@ -30,8 +30,7 @@ TEST(FieldFactoryTest, construct_field_street)
     EXPECT_EQ(FieldType::street, field->type());
     EXPECT_EQ("TestStreet", field->name());
 
-    auto a = new Field("a", FieldType::street);
-    auto street = dynamic_cast<Street *>(a);
+    EXPECT_NE(nullptr, dynamic_cast<Street*>(field.get()));
 }
 
 TEST(FieldFactoryTest, construct_field_station)
