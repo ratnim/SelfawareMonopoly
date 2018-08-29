@@ -38,11 +38,6 @@ const QString& Player::name() const
     return m_name;
 }
 
-void Player::move(int distance)
-{
-    m_position += distance;
-}
-
 void Player::moveTo(int fieldIndex)
 {
     m_position = fieldIndex;

@@ -34,6 +34,7 @@ public:
 
     Dices doCurrentPlayerRollDices();
     void doJailCurrentPlayer();
+    void doMoveCurrentPlayer(int distance);
 
     RingBuffer<Player>& players();
     Player& currentPlayer();

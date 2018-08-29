@@ -19,7 +19,6 @@ void MoveState::rollDice(const QString& playerName)
     auto& player = m_game->currentPlayer();
 
 	Dices dices = m_game->doCurrentPlayerRollDices();
-    m_game->onRollDice(playerName, dices.first, dices.second);
 
 	if (player.timesRolled() >= 3 && dices.isDouble())
 	{
@@ -28,8 +27,7 @@ void MoveState::rollDice(const QString& playerName)
 	}
     else
 	{
-	    player.move(dices.sum());
-	    m_game->onPlayerMove(playerName, player.position(), "forward");
+        m_game->doMoveCurrentPlayer(dices.sum());
 
 		if (player.position() == m_game->GO_TO_JAIL_POSITION)
 		{

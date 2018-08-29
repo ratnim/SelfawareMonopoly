@@ -49,23 +49,29 @@ void Game::requestPossibleRequests(const QString& playerName)
 Dices Game::doCurrentPlayerRollDices()
 {
     currentPlayer().rolled();
-
+    Dices dices;
     if (!watson_next_rolls.empty())
     {
-        auto dices = watson_next_rolls.front();
+        dices = watson_next_rolls.front();
         watson_next_rolls.pop();
-        return dices;
     }
 
-	return {};
+	emit onRollDice(currentPlayer().name(), dices.first, dices.second);
+	return dices;
 }
 
 void Game::doJailCurrentPlayer()
 {
     currentPlayer().moveTo(JAIL_POSITION);
     emit onPlayerMove(currentPlayer().name(), JAIL_POSITION, "jump");
-    
     currentPlayer().jail();
+}
+
+void Game::doMoveCurrentPlayer(int distance)
+{
+    auto target = m_board.targetForMove(currentPlayer().position(), distance);
+    currentPlayer().moveTo(target);
+	emit onPlayerMove(currentPlayer().name(), target, "forward");
 }
 
 RingBuffer<Player>& Game::players()

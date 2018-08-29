@@ -13,7 +13,6 @@ public:
 	bool inJail() const;
     void leaveJail();
 	
-	void move(int distance);
     void moveTo(int fieldIndex);
     int position() const;
     const QString& name() const;
