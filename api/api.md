@@ -130,7 +130,8 @@ __Incoming Events:__
         "data" :
         {
             player_name : <player_name>,
-            distance : <distance>
+            type : <forward | backward | jump>
+            target : <field_index>
         }
     }
 ```
