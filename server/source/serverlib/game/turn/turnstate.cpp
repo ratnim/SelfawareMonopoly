@@ -16,7 +16,7 @@ void TurnState::gameStart()
     InvalidRequest();
 }
 
-void TurnState::playerJoin(const QString& playerName)
+void TurnState::requestPlayerJoin(const QString& playerName)
 {
     InvalidRequest();
 }

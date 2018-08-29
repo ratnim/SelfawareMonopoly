@@ -21,13 +21,13 @@ protected:
     void broadcastEvent(const QJsonObject &object);
     void singlePlayerEvent(const QString& player, const QJsonObject& object);
 
-    void playerJoin(const QString& playerName);
+    void requestPlayerJoin(const QString& playerName);
     void boardRequest(const QJsonObject& gameBoard);
     void playerReady(const QString& playerName);
 
     void rollDice(const QString& playerName, int d1, int d2);
     void moneyChange(const QString& playerName, int balance);
-    void playerMove(const QString& playerName, int distance);
+    void playerMove(const QString& playerName, int fieldIndex, const QString& type);
     void changeTurn(const QString& movingPlayer);
 
     void gameStart();
