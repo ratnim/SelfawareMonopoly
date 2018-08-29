@@ -4,17 +4,37 @@
 
 void Bank::createAccount(const QString& name, int deposit)
 {
-	if (m_accounts.find(name) != m_accounts.end())
-	{
+    if (m_accounts.find(name) != m_accounts.end())
+    {
         throw Exception("Bank account already exists.", Error::InternalError);
-	}
+    }
 
-	m_accounts.emplace(name, deposit);
+    m_accounts.emplace(name, 0);
+    changeDeposit(name, deposit);
+
 }
 
-void Bank::transferMoney(const QString& reciever, int amount)
+void Bank::transferMoney(const QString& sender, const QString& reciever, int amount)
 {
+    auto& senderIt = m_accounts.find(sender);
+    if (senderIt == m_accounts.end())
+    {
+        throw Exception("Bank account does not exists.", Error::InternalError);
+    }
 
+    if (senderIt->second < amount)
+    {
+        throw Exception("Not sufficent money on bank account to pay debt.", Error::UnsupportedAction);
+    }
+
+    auto& recieverIt = m_accounts.find(reciever);
+    if (recieverIt == m_accounts.end())
+    {
+        throw Exception("Bank account does not exists.", Error::InternalError);
+    }
+
+    changeDeposit(sender, -amount);
+    changeDeposit(reciever, amount);
 }
 
 void Bank::takeMoney(const QString& debtor, int debt)
@@ -25,28 +45,22 @@ void Bank::takeMoney(const QString& debtor, int debt)
         throw Exception("Bank account does not exists.", Error::InternalError);
     }
 
-	if (it->second < debt)
-	{
+    if (it->second < debt)
+    {
         throw Exception("Not sufficent money on bank account to pay debt.", Error::UnsupportedAction);
-	}
+    }
 
-	it->second -= debt;
-
-    emit onMoneyChange(it->first, it->second);
-
+    changeDeposit(debtor, -debt);
 }
 
 void Bank::giveMoney(const QString& reciever, int amount)
 {
-    auto& it = m_accounts.find(reciever);
-    if (it == m_accounts.end())
+    if (m_accounts.find(reciever) == m_accounts.end())
     {
         throw Exception("Bank account does not exists.", Error::InternalError);
     }
 
-	it->second += amount;
-
-	emit onMoneyChange(it->first, it->second);
+    changeDeposit(reciever, amount);
 }
 
 int Bank::balance(const QString& name) const
@@ -57,5 +71,11 @@ int Bank::balance(const QString& name) const
         throw Exception("Bank account does not exists.", Error::InternalError);
     }
 
-	return it->second;
+    return it->second;
+}
+
+void Bank::changeDeposit(const QString& name, int amount)
+{
+    m_accounts[name] += amount;
+    emit onMoneyChange(name, m_accounts[name]);
 }
