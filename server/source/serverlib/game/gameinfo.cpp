@@ -21,7 +21,7 @@ GameInfo::GameInfo(const Game& game, const QString& label)
 {
     connect(&game, &Game::onGameStart, this, &GameInfo::gameStart);
     connect(&game, &Game::onGameEnd, this, &GameInfo::gameEnd);
-    connect(&game, &Game::onPlayerJoin, this, &GameInfo::playerJoin);
+    connect(&game, &Game::onPlayerJoin, this, &GameInfo::requestPlayerJoin);
 }
 
 QString GameInfo::label() const
@@ -39,7 +39,7 @@ std::vector<QString> GameInfo::players() const
     return m_players;
 }
 
-void GameInfo::playerJoin(const QString& playerName)
+void GameInfo::requestPlayerJoin(const QString& playerName)
 {
     m_players.push_back(playerName);
     emit change();

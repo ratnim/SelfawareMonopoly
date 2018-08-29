@@ -15,6 +15,8 @@ public:
 
     Field* operator[](size_t index);
 
+	int targetForMove(int position, int distance);
+
 protected:
     std::vector<std::unique_ptr<Field>> m_fields;
 };

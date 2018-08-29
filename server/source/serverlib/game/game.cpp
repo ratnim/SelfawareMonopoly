@@ -11,62 +11,67 @@ Game::Game(Board gameBoard)
     stateChange<InitState>(this);
 }
 
-void Game::playerJoin(const QString& playerName)
+void Game::requestPlayerJoin(const QString& playerName)
 {
-    m_state->playerJoin(playerName);
+    m_state->requestPlayerJoin(playerName);
 }
 
-void Game::gameBoard()
+void Game::requestGameBoard()
 {
     emit onBoardRequest(m_board.description());
 }
 
-void Game::playerReady(const QString& playerName)
+void Game::requestPlayerReady(const QString& playerName)
 {
     m_state->playerReady(playerName);
 }
 
-void Game::gameStart()
+void Game::requestGameStart()
 {
     m_state->gameStart();
 }
 
-void Game::rollDice(const QString& playerName)
+void Game::requestRollDice(const QString& playerName)
 {
     m_state->rollDice(playerName);
 }
 
-void Game::endTurn(const QString& playerName)
+void Game::requestEndTurn(const QString& playerName)
 {
     m_state->endTurn(playerName);
 }
 
-void Game::possibleRequests(const QString& playerName)
+void Game::requestPossibleRequests(const QString& playerName)
 {
     m_state->possibleRequests(playerName);
 }
 
-Dices Game::currentPlayerRollDices()
+Dices Game::doCurrentPlayerRollDices()
 {
     currentPlayer().rolled();
-
+    Dices dices;
     if (!watson_next_rolls.empty())
     {
-        auto dices = watson_next_rolls.front();
+        dices = watson_next_rolls.front();
         watson_next_rolls.pop();
-        return dices;
     }
 
-	return {};
+	emit onRollDice(currentPlayer().name(), dices.first, dices.second);
+	return dices;
 }
 
-void Game::jailCurrentPlayer()
+void Game::doJailCurrentPlayer()
 {
-    auto distance = JAIL_POSITION - currentPlayer().position();
-    currentPlayer().move(distance);
-    emit onPlayerMove(currentPlayer().name(), distance);
-    
+    currentPlayer().moveTo(JAIL_POSITION);
+    emit onPlayerMove(currentPlayer().name(), JAIL_POSITION, "jump");
     currentPlayer().jail();
+}
+
+void Game::doMoveCurrentPlayer(int distance)
+{
+    auto target = m_board.targetForMove(currentPlayer().position(), distance);
+    currentPlayer().moveTo(target);
+	emit onPlayerMove(currentPlayer().name(), target, "forward");
 }
 
 RingBuffer<Player>& Game::players()

@@ -13,7 +13,7 @@ public:
 
 	void possibleRequests(const QString& playerName) override;
 
-    void playerJoin(const QString& playerName) override;
+    void requestPlayerJoin(const QString& playerName) override;
     void playerReady(const QString& playerName) override;
     void gameStart() override;
 

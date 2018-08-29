@@ -38,9 +38,9 @@ const QString& Player::name() const
     return m_name;
 }
 
-void Player::move(int distance)
+void Player::moveTo(int fieldIndex)
 {
-    m_position += distance;
+    m_position = fieldIndex;
 }
 
 int Player::timesRolled() const
