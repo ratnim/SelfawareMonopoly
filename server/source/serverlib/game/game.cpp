@@ -6,6 +6,8 @@ Game::Game(Board gameBoard)
     : m_board(std::move(gameBoard))
 	, m_players({})
 {
+    connect(&m_bank, &Bank::onMoneyChange, this, &Game::onMoneyChange);
+
     stateChange<InitState>(this);
 }
 

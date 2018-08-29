@@ -26,6 +26,7 @@ protected:
     void playerReady(const QString& playerName);
 
     void rollDice(const QString& playerName, int d1, int d2);
+    void moneyChange(const QString& playerName, int balance);
     void playerMove(const QString& playerName, int distance);
     void changeTurn(const QString& movingPlayer);
 

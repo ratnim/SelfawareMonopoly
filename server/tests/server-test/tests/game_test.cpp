@@ -38,6 +38,19 @@ TEST(GameTest, start_game)
     EXPECT_EQ(start_spy.size(), 1);
 }
 
+TEST(GameTest, money_change_signal)
+{
+    Game game;
+    QSignalSpy money_spy(&game, &Game::onMoneyChange);
+    game.playerJoin("Heinz");
+    game.playerJoin("Gertrude");
+    game.playerReady("Heinz");
+    game.playerReady("Gertrude");
+    game.gameStart();
+
+	EXPECT_EQ(2, money_spy.size());
+}
+
 TEST(GameTest, simple_start_turn)
 {
     Game game;

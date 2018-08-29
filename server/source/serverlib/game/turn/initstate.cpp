@@ -12,6 +12,7 @@ namespace
 {
 int minimumPlayers = 2;
 int maximumPlayers = 6;
+int startMoney = 1500;
 }
 
 InitState::InitState(Game* game)
@@ -123,12 +124,13 @@ bool InitState::maximalPlayersJoined() const
 
 void InitState::handleGameStart()
 {
+
 	for (auto& player : joinedPlayers())
 	{
-        //m_game->bank().transferTo(player.bankAccount(), 1500);
+        m_game->bank().createAccount(player.name(), startMoney);
 	}
-
     m_game->players() = RingBuffer<Player>(std::move(joinedPlayers()));
+
     emit m_game->onGameStart();
     emit m_game->onTurnChange(m_game->currentPlayer().name());
 

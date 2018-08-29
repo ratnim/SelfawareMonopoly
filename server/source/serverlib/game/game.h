@@ -55,6 +55,7 @@ signals:
     void onGameEnd();
 
     void onRollDice(const QString& playerName, int d1, int d2);
+    void onMoneyChange(const QString& playerName, int balance);
     void onPlayerMove(const QString& playerName, int distance);
     void onTurnChange(const QString& newMovingPlayer);
 
