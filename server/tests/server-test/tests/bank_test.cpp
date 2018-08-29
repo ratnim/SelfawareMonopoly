@@ -9,15 +9,17 @@
 TEST(BankTest, create_account)
 {
     Bank bank;
-    QString player_1("player");
-    QString player_2("player");
+    QString player_1("player1");
+    QString player_2("player2");
 
 	EXPECT_THROW(bank.balance(player_1), Exception);
+
     bank.createAccount(player_1);
     EXPECT_EQ(0, bank.balance(player_1));
+    EXPECT_THROW(bank.createAccount(player_1), Exception);
 
     bank.createAccount(player_2, 1000);
-    EXPECT_EQ(0, bank.balance(player_2));
+    EXPECT_EQ(1000, bank.balance(player_2));
 }
 
 TEST(BankTest, create_money)
