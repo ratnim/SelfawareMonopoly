@@ -12,6 +12,7 @@ namespace
 {
 int minimumPlayers = 2;
 int maximumPlayers = 6;
+int startMoney = 1500;
 }
 
 InitState::InitState(Game* game)
@@ -89,7 +90,7 @@ std::vector<Player> InitState::joinedPlayers()
     std::vector<Player> order;
     for (auto& player : m_playersReady)
     {
-        order.push_back(player.first);
+        order.push_back(std::move(player.first));
     }
     return order;
 }
@@ -123,7 +124,13 @@ bool InitState::maximalPlayersJoined() const
 
 void InitState::handleGameStart()
 {
-    m_game->players() = RingBuffer<Player>(joinedPlayers());
+
+	for (auto& player : joinedPlayers())
+	{
+        m_game->bank().createAccount(player.name(), startMoney);
+	}
+    m_game->players() = RingBuffer<Player>(std::move(joinedPlayers()));
+
     emit m_game->onGameStart();
     emit m_game->onTurnChange(m_game->currentPlayer().name());
 

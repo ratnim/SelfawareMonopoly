@@ -14,6 +14,7 @@ GameWatcher::GameWatcher(const Game& game)
     connect(&game, &Game::onPlayerReady, this, &GameWatcher::playerReady);
 
     connect(&game, &Game::onRollDice, this, &GameWatcher::rollDice);
+    connect(&game, &Game::onMoneyChange, this, &GameWatcher::moneyChange);
     connect(&game, &Game::onPlayerMove, this, &GameWatcher::playerMove);
     connect(&game, &Game::onTurnChange, this, &GameWatcher::changeTurn);
 
@@ -75,6 +76,14 @@ void GameWatcher::rollDice(const QString& playerName, int d1, int d2)
     broadcastEvent(answer);
 }
 
+void GameWatcher::moneyChange(const QString& playerName, int balance)
+{
+    QJsonObject answer({ { "name", "money_change" } });
+    answer["data"] = QJsonObject({ { "deposit", balance }, { "player_name", playerName } });
+
+    broadcastEvent(answer);
+}
+
 void GameWatcher::playerMove(const QString& playerName, int distance)
 {
     QJsonObject answer({ { "name", "player_move" } });
@@ -110,9 +119,8 @@ void GameWatcher::possibleRequests(const QString& playerName, const QJsonArray& 
     QJsonObject answer({ { "name", "possible_requests" } });
     answer["data"] = QJsonObject{ { "requests", possibleRequests } };
 
-	singlePlayerEvent(playerName, answer);
+    singlePlayerEvent(playerName, answer);
 }
-
 
 QString GameWatcher::toString(const QJsonObject& object)
 {

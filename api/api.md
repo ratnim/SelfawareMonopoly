@@ -105,6 +105,27 @@ __Incoming Events:__
 ```
 ```
     {
+        "name" : "money_change",
+        "data" :
+        {
+            player: <name>,
+            deposit: <new_value>
+        }
+    }
+```
+```
+{
+    "name" : "property_change",
+    "data" :
+    {
+        index: <index>,
+        owner: <player_name>,
+        construction_level: <level>
+    }
+}
+```
+```
+    {
         "name" : "player_move",
         "data" :
         {

@@ -26,4 +26,3 @@ protected:
     int m_jailTurns = 0;
     int m_position = 0;
 };
-

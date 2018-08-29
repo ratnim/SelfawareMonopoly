@@ -7,9 +7,11 @@
 #include <utils/budhist.h>
 #include <utils/ringbuffer.h>
 
-#include <game/player.h>
-#include <game/dices.h>
+#include <game/bank/bank.h>
 #include <game/board/board.h>
+
+#include <game/dices.h>
+#include <game/player.h>
 #include <game/turn/turnstate.h>
 
 class Game : public QObject, public Budhist<TurnState>
@@ -28,19 +30,20 @@ public:
     void rollDice(const QString& playerName);
     void endTurn(const QString& playerName);
 
-	void possibleRequests(const QString& playerName);
+    void possibleRequests(const QString& playerName);
 
-	Dices currentPlayerRollDices();
+    Dices currentPlayerRollDices();
     void jailCurrentPlayer();
 
-	RingBuffer<Player>& players();
+    RingBuffer<Player>& players();
     Player& currentPlayer();
 
-	TurnState* state() const;
+    TurnState* state() const;
+    Bank& bank();
 
-	std::queue<Dices> watson_next_rolls;
+    std::queue<Dices> watson_next_rolls;
 
-	const int JAIL_POSITION = 10;
+    const int JAIL_POSITION = 10;
     const int GO_TO_JAIL_POSITION = 30;
 
 signals:
@@ -52,11 +55,14 @@ signals:
     void onGameEnd();
 
     void onRollDice(const QString& playerName, int d1, int d2);
+    void onMoneyChange(const QString& playerName, int balance);
     void onPlayerMove(const QString& playerName, int distance);
     void onTurnChange(const QString& newMovingPlayer);
 
-	void onPossibleRequests(const QString& playerName, const QJsonArray& possibleRequests);
+    void onPossibleRequests(const QString& playerName, const QJsonArray& possibleRequests);
+
 protected:
     Board m_board;
+    Bank m_bank;
     RingBuffer<Player> m_players;
 };
