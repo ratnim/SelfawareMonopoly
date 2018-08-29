@@ -6,7 +6,6 @@
 
 #include <game/board/field.h>
 
-class Player;
 
 enum ConstructionLevel
 {
