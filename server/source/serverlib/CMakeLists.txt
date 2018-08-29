@@ -28,8 +28,8 @@ set(sources
     game/player.h   
     game/watson.cpp
     game/watson.h
-    game/bank/bankaccount.cpp
-    game/bank/bankaccount.h
+    game/bank/bank.cpp
+    game/bank/bank.h
     game/board/board.cpp
     game/board/board.h
     game/board/field.cpp

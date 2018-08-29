@@ -81,3 +81,8 @@ TurnState* Game::state() const
 {
     return m_state.get();
 }
+
+Bank& Game::bank()
+{
+    return m_bank;
+}
