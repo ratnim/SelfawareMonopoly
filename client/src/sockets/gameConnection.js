@@ -52,9 +52,23 @@ export default class GameConnection {
     var request = 'join_game';
     this.socket.send(createJSON(request, {}));
   }
+
+  setReady() {
+    this.socket.send(createJSON('player_ready', {}));
+  }
+
+  startGame() {
+    this.socket.send(createJSON('game_start', {}));
+  }
+
+  endTurn() {
+    this.socket.send(createJSON('end_turn', {}));
+  }
+
+  rollDice() {
+    this.socket.send(createJSON('roll_dice', {}));
+  }
 }
-
-
 
 
 //
@@ -78,30 +92,4 @@ export default class GameConnection {
 //   } else if (JSONObject.error) {
 //     errorCallback(JSONObject.error.message);
 //   }
-// }
-//
-//
-//
-// export function setReady() {
-//   var request = { 'request' : 'player_ready' };
-//
-//   socket.send(JSON.stringify(request));
-// }
-//
-// export function startGame() {
-//   var request = { 'request' : 'game_start' };
-//
-//   socket.send(JSON.stringify(request));
-// }
-//
-// export function endTurn() {
-//   var request = { 'request' : 'end_turn' };
-//
-//   socket.send(JSON.stringify(request));
-// }
-//
-// export function rollDice() {
-//   var request = { 'request' : 'roll_dice' };
-//
-//   socket.send(JSON.stringify(request));
 // }

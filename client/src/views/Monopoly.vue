@@ -125,7 +125,11 @@ export default {
     let handlers = {
       "join_game": this.onPlayerJoined,
       "game_board": this.onGameboard,
-      "error": () => true
+      "possible_requests": this.onPossibleActions,
+      "player_ready": this.onPlayerReady,
+      "change_turn" : this.onTurnChanged,
+      "money_change": this.onMoneyChange,
+      "error": (data) => {console.log(data);}
     }
     this.gameConnection = new GameConnection(this.sessionId, this.$route.query.game_id, handlers);
 
@@ -142,13 +146,13 @@ export default {
       this.gameConnection.rollDice();
     },
     setReady: function() {
-      gameConnection.setReady();
+      this.gameConnection.setReady();
     },
     startGame: function() {
-      gameConnection.startGame();
+      this.gameConnection.startGame();
     },
     endTurn: function() {
-      gameConnection.endTurn();
+      this.gameConnection.endTurn();
     },
 
     onDiceRolled: function(dice) {
@@ -196,278 +200,6 @@ export default {
       }
     },
     onGameboard: function(data) {
-      data = {
-        "fields": [{
-            "name": "Start",
-            "type": "start"
-          },
-          {
-            "name": "Mahrzahn",
-            "type": "street",
-            "group": 0,
-            "price": 60,
-            "house_price": 50,
-            "rent": [2, 10, 30, 90, 160, 250]
-          },
-          {
-            "name": "Community Chest",
-            "type": "society_card"
-          },
-          {
-            "name": "Mahlsdorf",
-            "type": "street",
-            "group": 0,
-            "price": 60,
-            "house_price": 50,
-            "rent": [4, 20, 60, 180, 320, 450]
-          },
-          {
-            "name": "Income Tax",
-            "type": "tax",
-            "rent": [200]
-          },
-          {
-            "name": "Westhafen",
-            "type": "station",
-            "group": 8,
-            "price": 200,
-            "rent": [50]
-          },
-          {
-            "name": "Reinickendorf",
-            "type": "street",
-            "group": 1,
-            "price": 100,
-            "house_price": 50,
-            "rent": [6, 30, 90, 270, 400, 550]
-          },
-          {
-            "name": "Chance",
-            "type": "event_card"
-          },
-          {
-            "name": "Tegel",
-            "type": "street",
-            "group": 1,
-            "price": 100,
-            "house_price": 50,
-            "rent": [6, 30, 90, 270, 400, 550]
-          },
-          {
-            "name": "Spandau",
-            "type": "street",
-            "group": 1,
-            "price": 120,
-            "house_price": 50,
-            "rent": [8, 40, 100, 300, 450, 600]
-          },
-          {
-            "name": "Jail",
-            "type": "jail"
-          },
-          {
-            "name": "Wedding",
-            "type": "street",
-            "group": 2,
-            "price": 140,
-            "house_price": 100,
-            "rent": [10, 50, 150, 450, 625, 750]
-          },
-          {
-            "name": "Brandenburger Tor",
-            "type": "utility",
-            "group": 9,
-            "price": 150,
-            "rent": 75
-          },
-          {
-            "name": "Moabit",
-            "type": "street",
-            "group": 2,
-            "price": 140,
-            "house_price": 100,
-            "rent": [10, 50, 150, 450, 625, 750]
-          },
-          {
-            "name": "Pankow",
-            "type": "street",
-            "group": 2,
-            "price": 160,
-            "house_price": 100,
-            "rent": [12, 60, 180, 500, 700, 900]
-          },
-          {
-            "name": "Messe Nord",
-            "type": "station",
-            "group": 8,
-            "price": 200,
-            "rent": [50]
-          },
-          {
-            "name": "Charlottenburg",
-            "type": "street",
-            "group": 3,
-            "price": 180,
-            "house_price": 100,
-            "rent": [14, 70, 200, 550, 750, 950]
-          },
-          {
-            "name": "Community Chest",
-            "type": "society_card"
-          },
-          {
-            "name": "Wilmersdorf",
-            "type": "street",
-            "group": 3,
-            "price": 180,
-            "house_price": 100,
-            "rent": [14, 70, 200, 550, 750, 950]
-          },
-          {
-            "name": "Friedenau",
-            "type": "street",
-            "group": 3,
-            "price": 200,
-            "house_price": 100,
-            "rent": [16, 80, 220, 600, 800, 1000]
-          },
-          {
-            "name": "Free Parking",
-            "type": "free"
-          },
-          {
-            "name": "Tempelhof",
-            "type": "street",
-            "group": 4,
-            "price": 220,
-            "house_price": 150,
-            "rent": [18, 90, 250, 700, 875, 1050]
-          },
-          {
-            "name": "Chance",
-            "type": "event_card"
-          },
-          {
-            "name": "Kreuzberg",
-            "type": "street",
-            "group": 4,
-            "price": 220,
-            "house_price": 150,
-            "rent": [18, 90, 250, 700, 875, 1050]
-          },
-          {
-            "name": "Neukölln",
-            "type": "street",
-            "group": 4,
-            "price": 240,
-            "house_price": 150,
-            "rent": [20, 100, 300, 750, 925, 1100]
-          },
-          {
-            "name": "Warschauer Straße",
-            "type": "station",
-            "group": 8,
-            "price": 200,
-            "rent": [50]
-          },
-          {
-            "name": "Sprengelkiez",
-            "type": "street",
-            "group": 5,
-            "price": 260,
-            "house_price": 150,
-            "rent": [22, 110, 330, 800, 975, 1150]
-          },
-          {
-            "name": "Bergmannkiez",
-            "type": "street",
-            "group": 5,
-            "price": 260,
-            "house_price": 150,
-            "rent": [22, 110, 330, 800, 975, 1150]
-          },
-          {
-            "name": "Fernsehturm",
-            "type": "utility",
-            "group": 9,
-            "price": 150,
-            "rent": 75
-          },
-          {
-            "name": "Kollwitzkiez",
-            "type": "street",
-            "group": 5,
-            "price": 280,
-            "house_price": 150,
-            "rent": [24, 120, 360, 850, 1025, 1200]
-          },
-          {
-            "name": "Go To Jail",
-            "type": "go_to_jail"
-          },
-          {
-            "name": "Schoeneberg",
-            "type": "street",
-            "group": 6,
-            "price": 300,
-            "house_price": 200,
-            "rent": [26, 130, 390, 900, 1100, 1275]
-          },
-          {
-            "name": "Friedrichshain",
-            "type": "street",
-            "group": 6,
-            "price": 300,
-            "house_price": 200,
-            "rent": [26, 130, 390, 900, 1100, 1275]
-          },
-          {
-            "name": "Community Chest",
-            "type": "society_card"
-          },
-          {
-            "name": "Prenzlauer Berg",
-            "type": "street",
-            "group": 6,
-            "price": 320,
-            "house_price": 200,
-            "rent": [28, 150, 450, 1000, 1200, 1400]
-          },
-          {
-            "name": "Alexander Platz",
-            "type": "station",
-            "group": 8,
-            "price": 200,
-            "rent": 50
-          },
-          {
-            "name": "Chance",
-            "type": "event_card"
-          },
-          {
-            "name": "Grunewald",
-            "type": "street",
-            "group": 7,
-            "price": 350,
-            "house_price": 200,
-            "rent": [35, 175, 500, 1100, 1300, 1500]
-          },
-          {
-            "name": "Luxury Tax",
-            "type": "tax",
-            "rent": 100
-          },
-          {
-            "name": "Mitte",
-            "type": "street",
-            "group": 7,
-            "price": 400,
-            "house_price": 200,
-            "rent": [50, 200, 600, 1400, 1700, 2000]
-          }
-
-        ]
-      };
 
       for (var i = 0; i < data.fields.length; i++) {
         data.fields[i].attributes = {
@@ -479,13 +211,12 @@ export default {
       this.lane2 = gameboard.slice(10, 20);
       this.lane3 = gameboard.slice(20, 30);
       this.lane4 = [].concat(gameboard.slice(30, 40)).reverse();
-      //var gameboard = data.fields.map((field) => field.assign("color": "red"));
-      //debugger;
-      //console.log(gameboard.length);
-      //this.lane1 = game.slice()
     },
-    onPlayerReady: function(playerName) {
-      console.log(playerName + ' is now ready!');
+    onPossibleActions: function(data) {
+      console.log("Possible Requests", data.requests);
+    },
+    onPlayerReady: function(data) {
+      console.log(data.player_name + ' is now ready!');
     },
     onGameStarted: function() {
       console.log('Game started!');
@@ -493,8 +224,11 @@ export default {
     onGameEnded: function() {
       console.log('Game ended');
     },
-    onTurnChanged: function(playerName) {
-      console.log('It\'s ' + playerName + ' turn!');
+    onTurnChanged: function(data) {
+      console.log('turn change!', data);
+    },
+    onMoneyChange: function(data) {
+      console.log("Money change");
     },
     onError: function(message) {
       console.log(message);
@@ -509,13 +243,14 @@ export default {
       let homeConnection = new HomeConnection({
         enter_lobby: (data) => {
           gameConnection = new GameConnection(data.session, this.$route.query.game_id, {
+            "possible_requests": () => {this.rollDice();},
             "fallback": () => true,
             "error": () => true
           })
         }
       });
-      setTimeout(() => homeConnection.createAccount("The Joker No." + Math.round(Math.random() * 100000)), 300);
-
+      setTimeout(() => homeConnection.createAccount("The Joker No." + Math.round(Math.random() * 1000)), 300);
+      setTimeout(() => gameConnection.setReady(), 1000);
     }
   }
 }
