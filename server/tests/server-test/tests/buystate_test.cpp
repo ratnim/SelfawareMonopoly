@@ -6,6 +6,9 @@
 
 #include <game/turn/buystate.h>
 #include <game/turn/idlestate.h>
+#include <game/turn/movestate.h>
+
+#include <utils/exception.h>
 
 #include <test_utils/helpers.h>
 
@@ -20,6 +23,7 @@ TEST(BuyStateTest, buy_street)
     Game game(fieldsStreets());
     game.players() = RingBuffer<Player>(std::vector<Player>{ { player_1, player_2 } });
     game.stateChange<BuyState>();
+    game.bank().createAccount(game.currentPlayer().name(), 1000);
 
 	QSignalSpy property_spy(&game, &Game::onPropertyChange);
 	QSignalSpy money_spy(&game, &Game::onMoneyChange);
@@ -29,8 +33,45 @@ TEST(BuyStateTest, buy_street)
 	EXPECT_EQ(1, property_spy.size());
     EXPECT_EQ(1, money_spy.size());
 
-	EXPECT_NE(nullptr, dynamic_cast<IdleState*>(game.state()));
+	EXPECT_NE(nullptr, dynamic_cast<MoveState*>(game.state()));
 }
+
+TEST(BuyStateTest, dont_buy_street)
+{
+    Game game(fieldsStreets());
+    game.players() = RingBuffer<Player>(std::vector<Player>{ { player_1, player_2 } });
+    game.stateChange<BuyState>();
+    game.bank().createAccount(game.currentPlayer().name(), 1000);
+
+    QSignalSpy property_spy(&game, &Game::onPropertyChange);
+    QSignalSpy money_spy(&game, &Game::onMoneyChange);
+
+    game.requestBuyField(game.currentPlayer().name(), false);
+
+    EXPECT_EQ(0, property_spy.size());
+    EXPECT_EQ(0, money_spy.size());
+
+    EXPECT_NE(nullptr, dynamic_cast<MoveState*>(game.state()));
+}
+
+TEST(BuyStateTest, buy_street_not_enough_money)
+{
+    Game game(fieldsStreets());
+    game.players() = RingBuffer<Player>(std::vector<Player>{ { player_1, player_2 } });
+    game.stateChange<BuyState>();
+    game.bank().createAccount(game.currentPlayer().name(), 0);
+
+    QSignalSpy property_spy(&game, &Game::onPropertyChange);
+    QSignalSpy money_spy(&game, &Game::onMoneyChange);
+
+    EXPECT_THROW(game.requestBuyField(game.currentPlayer().name(), true), Exception);
+
+    EXPECT_EQ(0, property_spy.size());
+    EXPECT_EQ(0, money_spy.size());
+
+    EXPECT_NE(nullptr, dynamic_cast<BuyState*>(game.state()));
+}
+
 
 TEST(BuyStateTest, possible_requests)
 {

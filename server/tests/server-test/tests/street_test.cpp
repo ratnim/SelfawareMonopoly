@@ -5,6 +5,7 @@
 
 #include <game/game.h>
 #include <game/turn/buystate.h>
+#include <game/turn/initstate.h>
 
 #include <game/board/street.h>
 
@@ -22,14 +23,23 @@ TEST(StreetTest, get_description)
     EXPECT_EQ(QJsonArray({ 24, 120, 360, 850, 1025, 1200 }), description["rent"].toArray());
 }
 
-TEST(StreetTest, transfer_to_states)
+TEST(StreetTest, transfer_to_buy_state)
 {
     Game game;
     Street street("Test", 5, 200, 50, { 24, 120, 360, 850, 1025, 1200 });
     EXPECT_TRUE(street.moveOn("Gertrude", &game));
     EXPECT_NE(nullptr, dynamic_cast<BuyState*>(game.state()));
+}
 
+TEST(StreetTest, dont_change_state)
+{
+    Game game;
+    Street street("Test", 5, 200, 50, { 24, 120, 360, 850, 1025, 1200 });
     street.changeOwner("Gertrude");
+
     EXPECT_FALSE(street.moveOn("Gertrude", &game));
+    EXPECT_NE(nullptr, dynamic_cast<InitState*>(game.state()));
+
     EXPECT_FALSE(street.moveOn("Herbert", &game));
+    EXPECT_NE(nullptr, dynamic_cast<InitState*>(game.state()));
 }

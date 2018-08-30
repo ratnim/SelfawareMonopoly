@@ -7,6 +7,7 @@ Game::Game(std::vector<std::unique_ptr<Field>> fields)
     , m_players({})
 {
     connect(&m_bank, &Bank::onMoneyChange, this, &Game::onMoneyChange);
+    connect(&m_board, &Board::onPropertyChange, this, &Game::onPropertyChange);
 
     stateChange<InitState>(this);
 }
