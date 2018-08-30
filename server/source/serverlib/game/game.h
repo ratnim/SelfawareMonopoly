@@ -44,8 +44,6 @@ public:
 
     std::queue<Dices> watson_next_rolls;
 
-    const int JAIL_POSITION = 10;
-
 signals:
     void onBoardRequest(const QJsonObject& gameBoard);
     void onPlayerJoin(const QString& playerName);

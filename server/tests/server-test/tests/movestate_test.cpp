@@ -120,7 +120,7 @@ TEST(MoveStateTest, roll_dice_pash_3_times)
     EXPECT_EQ(roll_spy.size(), 3);
     EXPECT_EQ(move_spy.size(), 3);
     EXPECT_EQ("jump", move_spy.last().at(2).toString().toStdString());
-    EXPECT_EQ(game.JAIL_POSITION, game.currentPlayer().position());
+    EXPECT_EQ(10, game.currentPlayer().position());
     EXPECT_NE(nullptr, dynamic_cast<IdleState*>(game.state()));
     EXPECT_TRUE(game.currentPlayer().inJail());
 }

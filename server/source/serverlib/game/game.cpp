@@ -63,8 +63,8 @@ Dices Game::doCurrentPlayerRollDices()
 void Game::doJailCurrentPlayer()
 {
     currentPlayer().canRoll(false);
-    currentPlayer().moveTo(JAIL_POSITION);
-    emit onPlayerMove(currentPlayer().name(), JAIL_POSITION, "jump");
+    currentPlayer().moveTo(m_board.jailIndex());
+    emit onPlayerMove(currentPlayer().name(), m_board.jailIndex(), "jump");
     currentPlayer().jail();
 
 	m_state->changeToDefaultState();
