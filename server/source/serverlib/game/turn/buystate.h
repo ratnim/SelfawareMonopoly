@@ -6,4 +6,6 @@ class BuyState : public TurnState
 {
 public:
     BuyState(TurnState* state);
+
+	void requestPossibleRequests(const QString& playerName) override;
 };
