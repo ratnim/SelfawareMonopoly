@@ -20,6 +20,7 @@ set(sources
 
     tests/fieldfactory_test.cpp
 	tests/field_test.cpp
+	tests/gotojail_test.cpp
     tests/street_test.cpp
 
     tests/game_test.cpp

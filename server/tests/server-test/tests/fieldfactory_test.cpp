@@ -5,6 +5,7 @@
 
 #include <game/board/fieldfactory.h>
 #include <game/board/street.h>
+#include <game/board/gotojail.h>
 
 TEST(FieldFactoryTest, construct_field_start)
 {
@@ -108,7 +109,7 @@ TEST(FieldFactoryTest, construct_field_free_parking)
     EXPECT_EQ("Free Parking", field->name());
 }
 
-TEST(FieldFactoryTest, construct_field_go_to_prison)
+TEST(FieldFactoryTest, construct_field_go_to_jail)
 {
     QJsonObject specification{
         { "name", "Go to Jail" },
@@ -116,7 +117,9 @@ TEST(FieldFactoryTest, construct_field_go_to_prison)
     };
 
     auto field = FieldFactory::create(specification);
+    auto gotojail = dynamic_cast<GoToJail*>(field.get());
 
+    EXPECT_NE(nullptr, gotojail);
     EXPECT_EQ(FieldType::go_to_jail, field->type());
     EXPECT_EQ("Go to Jail", field->name());
 }

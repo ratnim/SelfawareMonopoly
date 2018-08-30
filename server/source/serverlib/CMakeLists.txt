@@ -38,6 +38,8 @@ set(sources
     game/board/fieldfactory.h
     game/board/street.cpp
     game/board/street.h
+    game/board/gotojail.cpp
+    game/board/gotojail.h
     game/board/taxfield.h
     game/turn/endstate.cpp
     game/turn/endstate.h
