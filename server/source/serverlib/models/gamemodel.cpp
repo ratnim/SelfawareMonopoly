@@ -3,8 +3,8 @@
 #include <models/boardmodel.h>
 #include <utils/exception.h>
 
-GameObject::GameObject(const QString& label, Board gameBoard)
-    : game(std::move(gameBoard))
+GameObject::GameObject(const QString& label, std::vector<std::unique_ptr<Field>> fields)
+    : game(std::move(fields))
 	, watcher(game)
     , info(game, label)
 {
@@ -12,11 +12,11 @@ GameObject::GameObject(const QString& label, Board gameBoard)
 
 int GameModel::createGame(const QString& label, const QString& boardfile)
 {
-    Board gameBoard({});
+    std::vector<std::unique_ptr<Field>> fields = {};
     if (!boardfile.isEmpty())
-		gameBoard = std::move(BoardModel::instance().newBoard(boardfile));
+        fields = std::move(BoardModel::instance().getFieldsForNewBoard(boardfile));
 
-    m_games.emplace_back(std::make_unique<GameObject>(label, std::move(gameBoard)));
+    m_games.emplace_back(std::make_unique<GameObject>(label, std::move(fields)));
     emit onCreateGame(m_games.back()->info);
     return static_cast<int>(m_games.size() - 1);
 }

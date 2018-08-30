@@ -8,7 +8,6 @@
 #include <models/boardmodel.h>
 
 #include <game/game.h>
-#include <game/board/board.h>
 #include <game/board/field.h>
 
 #include <game/turn/idlestate.h>
@@ -26,10 +25,7 @@ const QString player_2("Gertrude");
 
 TEST(MoveStateTest, roll_dice)
 {
-
-    Board board(std::move(fieldsFree()));
-
-    Game game(std::move(board));
+    Game game(std::move(fieldsFree()));
     game.players() = RingBuffer<Player>(std::vector<Player>{ { player_1, player_2 } });
     game.stateChange<MoveState>();
 

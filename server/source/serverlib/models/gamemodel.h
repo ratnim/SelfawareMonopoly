@@ -7,7 +7,7 @@
 
 struct GameObject
 {
-    GameObject(const QString& label, Board gameBoard);
+    GameObject(const QString& label, std::vector<std::unique_ptr<Field>> fields);
 
     Game game;
     GameWatcher watcher;

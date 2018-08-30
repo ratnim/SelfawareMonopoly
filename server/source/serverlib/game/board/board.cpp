@@ -3,6 +3,10 @@
 #include <QJsonArray>
 #include <QJsonObject>
 
+#include <game/board/street.h>
+
+#include <utils/exception.h>
+
 Board::Board(std::vector<std::unique_ptr<Field>> fields)
     : m_fields(std::move(fields))
     , m_jailIndex(0)
@@ -60,4 +64,26 @@ void Board::findAndSetJailIndex()
 		}
 	}
     m_jailIndex = 0;
+}
+
+void Board::changeOwner(int id, const QString& owner)
+{
+    auto street = dynamic_cast<Street*>(m_fields[id].get());
+    if (street == nullptr)
+    {
+        throw Exception("Field is not a street.");
+    }
+    street->changeOwner(owner);
+
+	emit onPropertyChange(id, street->owner(), street->constructionLevel());
+}
+
+int Board::fieldPrice(int id)
+{
+    auto street = dynamic_cast<Street*>(m_fields[id].get());
+	if (street == nullptr)
+	{
+        throw Exception("Field is not a street.");
+	}
+    return street->price();
 }

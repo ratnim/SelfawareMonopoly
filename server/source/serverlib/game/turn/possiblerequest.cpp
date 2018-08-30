@@ -35,5 +35,5 @@ PossibleRequest PossibleRequest::endTurn()
 
 PossibleRequest PossibleRequest::buyField()
 {
-	return PossibleRequest("buy_field", {{ "buy" , 0 }});
+	return PossibleRequest("buy_field", {{ "buy" , 1 }});
 }

@@ -11,7 +11,7 @@ public:
     BoardModel(const QString& boradDir);
     static void setBoardDir(const QString& path);
 
-    Board newBoard(const QString& filename) const;
+     std::vector<std::unique_ptr<Field>> getFieldsForNewBoard(const QString& filename) const;
 
 protected:
     QDir m_boardDir;

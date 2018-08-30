@@ -35,6 +35,11 @@ void TurnState::requestRollDice(const QString& playerName)
     InvalidRequest();
 }
 
+void TurnState::requestBuyField(const QString& playerName, bool buy)
+{
+    InvalidRequest();
+}
+
 void TurnState::requestEndTurn(const QString& playerName)
 {
     InvalidRequest();

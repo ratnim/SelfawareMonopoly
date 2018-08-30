@@ -2,9 +2,9 @@
 
 #include <game/turn/initstate.h>
 
-Game::Game(Board gameBoard)
-    : m_board(std::move(gameBoard))
-	, m_players({})
+Game::Game(std::vector<std::unique_ptr<Field>> fields)
+    : m_board(std::move(fields))
+    , m_players({})
 {
     connect(&m_bank, &Bank::onMoneyChange, this, &Game::onMoneyChange);
 
@@ -41,6 +41,11 @@ void Game::requestEndTurn(const QString& playerName)
     m_state->requestEndTurn(playerName);
 }
 
+void Game::requestBuyField(const QString& playerName, bool buy)
+{
+    m_state->requestBuyField(playerName, buy);
+}
+
 void Game::requestPossibleRequests(const QString& playerName)
 {
     m_state->requestPossibleRequests(playerName);
@@ -56,8 +61,8 @@ Dices Game::doCurrentPlayerRollDices()
         watson_next_rolls.pop();
     }
 
-	emit onRollDice(currentPlayer().name(), dices.first, dices.second);
-	return dices;
+    emit onRollDice(currentPlayer().name(), dices.first, dices.second);
+    return dices;
 }
 
 void Game::doJailCurrentPlayer()
@@ -67,19 +72,27 @@ void Game::doJailCurrentPlayer()
     emit onPlayerMove(currentPlayer().name(), m_board.jailIndex(), "jump");
     currentPlayer().jail();
 
-	m_state->changeToDefaultState();
+    m_state->changeToDefaultState();
 }
 
 void Game::doMoveCurrentPlayer(int distance)
 {
     auto target = m_board.targetForMove(currentPlayer().position(), distance);
     currentPlayer().moveTo(target);
-	emit onPlayerMove(currentPlayer().name(), target, "forward");
+    emit onPlayerMove(currentPlayer().name(), target, "forward");
 
-	if (!m_board[target]->moveOn(currentPlayer().name(), this))
-	{
+    if (!m_board[target]->moveOn(currentPlayer().name(), this))
+    {
         m_state->changeToDefaultState();
-	}
+    }
+}
+
+void Game::doBuyCurrentPlayerField()
+{
+    auto propertyId = currentPlayer().position();
+    auto price = m_board.fieldPrice(propertyId);
+    m_bank.takeMoney(currentPlayer().name(), price);
+    m_board.changeOwner(propertyId, currentPlayer().name());
 }
 
 RingBuffer<Player>& Game::players()
@@ -100,4 +113,9 @@ TurnState* Game::state() const
 Bank& Game::bank()
 {
     return m_bank;
+}
+
+Board& Game::board()
+{
+    return m_board;
 }
