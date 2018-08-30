@@ -33,6 +33,7 @@ set(sources
     tests/request_test.cpp
     tests/websocketserver_test.cpp
 
+    tests/buystate_test.cpp
     tests/idlestate_test.cpp
     tests/initstate_test.cpp
     tests/jailstate_test.cpp

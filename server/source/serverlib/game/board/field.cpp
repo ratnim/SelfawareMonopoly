@@ -48,11 +48,7 @@ QJsonObject Field::description()
 	};
 }
 
-bool Field::moveOnTriggersStateChange(const QString& playerName) const
+bool Field::moveOn(const QString& playerName, Game* game)
 {
     return false;
-}
-
-void Field::moveOn(const QString& playerName, Game* game)
-{
 }

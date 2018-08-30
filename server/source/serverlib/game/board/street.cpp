@@ -1,5 +1,9 @@
 #include "street.h"
 
+#include <game/game.h>
+
+#include <game/turn/buystate.h>
+
 Street::Street(const QString& name, int group, int price, int housePrice, std::array<int, ConstructionLevel::HOTEL + 1> rents)
     : Field(name, FieldType::street)
     , m_group(group)
@@ -58,10 +62,31 @@ QJsonObject Street::description()
 QJsonArray Street::rents() const
 {
     QJsonArray jsonRents;
-	for (int i = 0; i < ConstructionLevel::HOTEL + 1; ++i)
-	{
+    for (int i = 0; i < ConstructionLevel::HOTEL + 1; ++i)
+    {
         jsonRents.append(m_rents[i]);
-	}
+    }
 
-	return jsonRents;
+    return jsonRents;
+}
+
+bool Street::moveOn(const QString& playerName, Game* game)
+{
+    if (m_owner == playerName)
+    {
+        return false;
+	}
+	else
+	{
+		if (m_owner == "")
+		{
+            game->stateChange<BuyState>();
+            return true;
+		} 
+		else
+		{
+			// Pay the rent
+            return false;
+		}
+	}
 }

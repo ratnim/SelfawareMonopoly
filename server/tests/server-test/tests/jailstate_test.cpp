@@ -65,9 +65,7 @@ TEST(JailStateTest, roll_dice_no_pash)
 
 TEST(JailStateTest, roll_dice_pash)
 {
-    auto& instance = BoardModel::instance();
-    auto board = std::move(instance.newBoard("berlin.json"));
-    Game game(std::move(board));
+    Game game(std::move(fieldsSingleJail()));
     game.players() = RingBuffer<Player>(std::vector<Player>{ { player_1, player_2 } });
     game.doJailCurrentPlayer();
     game.stateChange<JailState>();

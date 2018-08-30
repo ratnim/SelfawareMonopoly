@@ -76,9 +76,7 @@ void Game::doMoveCurrentPlayer(int distance)
     currentPlayer().moveTo(target);
 	emit onPlayerMove(currentPlayer().name(), target, "forward");
 
-	m_board[target]->moveOn(currentPlayer().name(), this);
-	
-	if (!m_board[target]->moveOnTriggersStateChange(currentPlayer().name()))
+	if (!m_board[target]->moveOn(currentPlayer().name(), this))
 	{
         m_state->changeToDefaultState();
 	}

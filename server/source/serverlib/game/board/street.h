@@ -24,16 +24,17 @@ class Street : public Field
 public:
     Street(const QString& name, int group, int price, int housePrice, std::array<int, ConstructionLevel::HOTEL + 1> rents);
 
-    int group() const;
+    bool moveOn(const QString& playerName, Game* game) override;
 
+    int group() const;
     int price() const;
     int housePrice() const;
     ConstructionLevel constructionLevel() const;
     int rent() const;
+    QString owner() const;
 
 	void changeOwner(const QString& newOwner);
 
-    QString owner() const;
 
 	QJsonObject description() override;
 

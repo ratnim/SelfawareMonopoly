@@ -39,8 +39,9 @@ public:
     FieldType type() const;
 	
 	virtual QJsonObject description();
-    virtual bool moveOnTriggersStateChange(const QString& playerName) const;
-    virtual void moveOn(const QString& playerName, Game* game);
+
+	// returns true if a state change happend
+    virtual bool moveOn(const QString& playerName, Game* game);
 
 protected:
     const QString m_name;

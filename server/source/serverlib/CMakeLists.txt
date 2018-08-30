@@ -43,6 +43,8 @@ set(sources
     game/board/taxfield.h
     game/turn/endstate.cpp
     game/turn/endstate.h
+    game/turn/buystate.cpp
+    game/turn/buystate.h
     game/turn/initstate.cpp
     game/turn/initstate.h
     game/turn/idlestate.cpp

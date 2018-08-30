@@ -9,6 +9,8 @@
 #include <game/turn/idlestate.h>
 #include <utils/exception.h>
 
+#include <test_utils/helpers.h>
+
 TEST(GameTest, init_state)
 {
     Game game;
@@ -56,9 +58,7 @@ TEST(GameTest, money_change_signal)
 
 TEST(GameTest, simple_start_turn)
 {
-    auto& instance = BoardModel::instance();
-    auto board = std::move(instance.newBoard("berlin.json"));
-    Game game(std::move(board));
+    Game game(std::move(fieldsFree()));
 
     QSignalSpy start_spy(&game, &Game::onTurnChange);
 
@@ -91,18 +91,14 @@ TEST(GameTest, simple_start_turn)
 
 TEST(GameTest, go_to_jail_position)
 {
-
-	auto& instance = BoardModel::instance();
-	auto board = std::move(instance.newBoard("berlin.json"));
-
-    Game game(std::move(board));
+    Game game(std::move(fieldsJailGoToJail()));
     game.requestPlayerJoin("Heinz");
     game.requestPlayerJoin("Gertrude");
     game.requestPlayerReady("Heinz");
     game.requestPlayerReady("Gertrude");
     game.requestGameStart();
 
-	game.doMoveCurrentPlayer(30);
+	game.doMoveCurrentPlayer(3);
 
 	EXPECT_TRUE(game.currentPlayer().inJail());
 	EXPECT_NE(nullptr, dynamic_cast<IdleState*>(game.state()));
