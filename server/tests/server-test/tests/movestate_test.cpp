@@ -5,10 +5,11 @@
 #include <memory>
 #include <vector>
 
+#include <models/boardmodel.h>
+
 #include <game/game.h>
 #include <game/board/board.h>
 #include <game/board/field.h>
-
 
 #include <game/turn/idlestate.h>
 #include <game/turn/movestate.h>
@@ -58,7 +59,10 @@ TEST(MoveStateTest, roll_dice)
 
 TEST(MoveStateTest, roll_dice_1_pash)
 {
-    Game game;
+    auto& instance = BoardModel::instance();
+    auto board = std::move(instance.newBoard("berlin.json"));
+    Game game(std::move(board));
+
     game.players() = RingBuffer<Player>(std::vector<Player>{ { player_1, player_2 } });
     game.stateChange<MoveState>();
 
@@ -83,7 +87,10 @@ TEST(MoveStateTest, roll_dice_1_pash)
 
 TEST(MoveStateTest, roll_dice_pash_3_times)
 {
-    Game game;
+    auto& instance = BoardModel::instance();
+    auto board = std::move(instance.newBoard("berlin.json"));
+    Game game(std::move(board));
+
     game.players() = RingBuffer<Player>(std::vector<Player>{ { player_1, player_2 } });
     game.stateChange<MoveState>();
 
@@ -130,7 +137,10 @@ TEST(MoveStateTest, roll_dice_false_player)
 
 TEST(MoveStateTest, state_transfer_to_idle)
 {
-    Game game;
+    auto& instance = BoardModel::instance();
+    auto board = std::move(instance.newBoard("berlin.json"));
+    Game game(std::move(board));
+
     game.players() = RingBuffer<Player>(std::vector<Player>{ { player_1, player_2 } });
     game.stateChange<MoveState>();
 
@@ -162,7 +172,10 @@ TEST(MoveStateTest, possible_requests)
 
 TEST(MoveStateTest, update_possible_actions)
 {
-    Game game;
+    auto& instance = BoardModel::instance();
+    auto board = std::move(instance.newBoard("berlin.json"));
+    Game game(std::move(board));
+
     game.players() = RingBuffer<Player>(std::vector<Player>{ { player_1, player_2 } });
     QSignalSpy request_spy(&game, &Game::onPossibleRequests);
 

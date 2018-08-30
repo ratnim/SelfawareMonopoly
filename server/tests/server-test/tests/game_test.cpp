@@ -56,7 +56,9 @@ TEST(GameTest, money_change_signal)
 
 TEST(GameTest, simple_start_turn)
 {
-    Game game;
+    auto& instance = BoardModel::instance();
+    auto board = std::move(instance.newBoard("berlin.json"));
+    Game game(std::move(board));
 
     QSignalSpy start_spy(&game, &Game::onTurnChange);
 
@@ -100,8 +102,8 @@ TEST(GameTest, go_to_jail_position)
     game.requestPlayerReady("Gertrude");
     game.requestGameStart();
 
-	game.doMoveCurrentPlayer(game.GO_TO_JAIL_POSITION);
-	
+	game.doMoveCurrentPlayer(30);
+
 	EXPECT_TRUE(game.currentPlayer().inJail());
 	EXPECT_NE(nullptr, dynamic_cast<IdleState*>(game.state()));
 }

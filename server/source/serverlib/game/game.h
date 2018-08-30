@@ -45,7 +45,6 @@ public:
     std::queue<Dices> watson_next_rolls;
 
     const int JAIL_POSITION = 10;
-    const int GO_TO_JAIL_POSITION = 30;
 
 signals:
     void onBoardRequest(const QJsonObject& gameBoard);

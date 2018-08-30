@@ -2,6 +2,8 @@
 
 #include <QSignalSpy>
 
+#include <models/boardmodel.h>
+
 #include <game/game.h>
 
 #include <game/turn/jailstate.h>
@@ -20,11 +22,13 @@ const QString player_2("Gertrude");
 TEST(JailStateTest, state_transfer_to_idle)
 {
     Game game;
+
     game.players() = RingBuffer<Player>(std::vector<Player>{ { player_1, player_2 } });
     game.currentPlayer().jail();
     game.stateChange<JailState>();
 
 	EXPECT_EQ(player_1, game.currentPlayer().name());
+    game.watson_next_rolls.emplace(1, 2);
     game.requestRollDice(player_1);
     EXPECT_NE(nullptr, dynamic_cast<IdleState*>(game.state()));
 }
@@ -61,7 +65,9 @@ TEST(JailStateTest, roll_dice_no_pash)
 
 TEST(JailStateTest, roll_dice_pash)
 {
-    Game game;
+    auto& instance = BoardModel::instance();
+    auto board = std::move(instance.newBoard("berlin.json"));
+    Game game(std::move(board));
     game.players() = RingBuffer<Player>(std::vector<Player>{ { player_1, player_2 } });
     game.doJailCurrentPlayer();
     game.stateChange<JailState>();

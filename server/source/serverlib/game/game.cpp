@@ -76,19 +76,11 @@ void Game::doMoveCurrentPlayer(int distance)
     currentPlayer().moveTo(target);
 	emit onPlayerMove(currentPlayer().name(), target, "forward");
 
+	m_board[target]->moveOn(currentPlayer().name(), this);
 	
-	// special position
-    // buy
-    // rent
-    // tax
-    // what ever
-    if (target == GO_TO_JAIL_POSITION)
-    {
-    	doJailCurrentPlayer();
-    }
-	else
+	if (!m_board[target]->moveOnTriggersStateChange(currentPlayer().name()))
 	{
-		m_state->changeToDefaultState();
+        m_state->changeToDefaultState();
 	}
 }
 

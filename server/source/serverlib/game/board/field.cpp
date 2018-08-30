@@ -3,6 +3,8 @@
 #include <QMetaEnum>
 #include <QJsonObject>
 
+#include <game/game.h>
+
 FieldTypeStringConverter::FieldType FieldTypeStringConverter::typeByName(const QString& string)
 {
     QMetaEnum metaEnum = QMetaEnum::fromType<FieldTypeStringConverter::FieldType>();
@@ -44,4 +46,13 @@ QJsonObject Field::description()
         { "name", m_name },
         { "type", FieldTypeStringConverter::nameByType(m_type) }
 	};
+}
+
+bool Field::moveOnTriggersStateChange(const QString& playerName) const
+{
+    return false;
+}
+
+void Field::moveOn(const QString& playerName, Game* game)
+{
 }
