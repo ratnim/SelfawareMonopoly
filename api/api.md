@@ -251,3 +251,41 @@ Returns:
             eyes : [<eye1>, <eye2>]
         }
     }
+
+### Buy a Street
+Expects:
+
+    {
+        "request" : "buy_field",
+        "data" :
+        {
+            buy : < 0 | 1 >
+        }
+    }
+
+Returns:
+
+```
+{
+    "name" : "property_change",
+    "data" :
+    {
+        index: <index>,
+        owner: <player_name>,
+        construction_level: <level>
+    }
+}
+```
+
+or
+
+```
+    {
+        "name" : "error",
+        "data" :
+        {
+            "id" : <id>,
+            "message" : <message>
+        }
+    }
+```

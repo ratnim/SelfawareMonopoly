@@ -27,6 +27,7 @@ protected:
 
     void rollDice(const QString& playerName, int d1, int d2);
     void moneyChange(const QString& playerName, int balance);
+    void propertyChange(int id ,const QString& owner, int constructionLevel);
     void playerMove(const QString& playerName, int fieldIndex, const QString& type);
     void changeTurn(const QString& movingPlayer);
 

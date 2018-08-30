@@ -13,7 +13,7 @@ JailState::JailState(TurnState* state)
     broadcastPossibleRequests();
 }
 
-void JailState::rollDice(const QString& playerName)
+void JailState::requestRollDice(const QString& playerName)
 {
     ensurePlayersTurn(playerName);
     auto& player = m_game->currentPlayer();
@@ -22,14 +22,16 @@ void JailState::rollDice(const QString& playerName)
 
     if (dices.isDouble())
     {
-        m_game->doMoveCurrentPlayer(dices.sum());
         player.leaveJail();
+        m_game->doMoveCurrentPlayer(dices.sum());
 	}
-	
-	m_game->stateChange<IdleState>();
+	else
+	{
+        changeToDefaultState();
+	}
 }
 
-void JailState::possibleRequests(const QString& playerName)
+void JailState::requestPossibleRequests(const QString& playerName)
 {
     QJsonArray requests;
 

@@ -27,14 +27,14 @@ void BoardModel::setBoardDir(const QString& path)
 	instance.reset(path);
 }
 
-Board BoardModel::newBoard(const QString& filename) const
+ std::vector<std::unique_ptr<Field>> BoardModel::getFieldsForNewBoard(const QString& filename) const
 {
 	auto path = getPath(filename);
     auto json = loadBoardFile(path);
     auto jObject = parseBoardFile(json);
     auto fields = createFields(jObject);
 
-    return {std::move(fields)};
+    return std::move(fields);
 }
 
 QString BoardModel::getPath(const QString& filename) const

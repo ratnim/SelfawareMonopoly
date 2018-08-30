@@ -3,6 +3,8 @@
 #include <QObject>
 #include <QString>
 
+class Game;
+
 class FieldTypeStringConverter : QObject
 {
     Q_OBJECT
@@ -36,7 +38,10 @@ public:
     QString name() const;
     FieldType type() const;
 	
-	virtual QJsonObject description() const;
+	virtual QJsonObject description();
+
+	// returns true if a state change happend
+    virtual bool moveOn(const QString& playerName, Game* game);
 
 protected:
     const QString m_name;

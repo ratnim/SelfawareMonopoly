@@ -14,7 +14,7 @@ IdleState::IdleState(TurnState* state)
     broadcastPossibleRequests();
 }
 
-void IdleState::possibleRequests(const QString& playerName)
+void IdleState::requestPossibleRequests(const QString& playerName)
 {
     QJsonArray requests;
 
@@ -26,7 +26,7 @@ void IdleState::possibleRequests(const QString& playerName)
     emit m_game->onPossibleRequests(playerName, requests);
 }
 
-void IdleState::endTurn(const QString& playerName)
+void IdleState::requestEndTurn(const QString& playerName)
 {
     ensurePlayersTurn(playerName);
 

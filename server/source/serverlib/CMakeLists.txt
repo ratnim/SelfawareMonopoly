@@ -36,10 +36,15 @@ set(sources
     game/board/field.h
     game/board/fieldfactory.cpp
     game/board/fieldfactory.h
+    game/board/street.cpp
     game/board/street.h
+    game/board/gotojail.cpp
+    game/board/gotojail.h
     game/board/taxfield.h
     game/turn/endstate.cpp
     game/turn/endstate.h
+    game/turn/buystate.cpp
+    game/turn/buystate.h
     game/turn/initstate.cpp
     game/turn/initstate.h
     game/turn/idlestate.cpp

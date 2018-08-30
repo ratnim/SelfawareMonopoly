@@ -19,7 +19,7 @@ class Game : public QObject, public Budhist<TurnState>
     Q_OBJECT
 
 public:
-    Game(Board gameBoard = Board({}));
+    Game(std::vector<std::unique_ptr<Field>> fields = {});
 
     void requestPlayerJoin(const QString& playerName);
 
@@ -29,23 +29,23 @@ public:
 
     void requestRollDice(const QString& playerName);
     void requestEndTurn(const QString& playerName);
+    void requestBuyField(const QString& playerName, bool buy);
 
     void requestPossibleRequests(const QString& playerName);
 
     Dices doCurrentPlayerRollDices();
     void doJailCurrentPlayer();
     void doMoveCurrentPlayer(int distance);
+    void doBuyCurrentPlayerField();
 
     RingBuffer<Player>& players();
     Player& currentPlayer();
 
     TurnState* state() const;
     Bank& bank();
+    Board& board();
 
     std::queue<Dices> watson_next_rolls;
-
-    const int JAIL_POSITION = 10;
-    const int GO_TO_JAIL_POSITION = 30;
 
 signals:
     void onBoardRequest(const QJsonObject& gameBoard);
@@ -57,6 +57,7 @@ signals:
 
     void onRollDice(const QString& playerName, int d1, int d2);
     void onMoneyChange(const QString& playerName, int balance);
+    void onPropertyChange(int id, const QString& owner, int consrtuctionLevel);
     void onPlayerMove(const QString& playerName, int index, const QString& type);
     void onTurnChange(const QString& newMovingPlayer);
 

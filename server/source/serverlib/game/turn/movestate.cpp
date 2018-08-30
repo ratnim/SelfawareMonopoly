@@ -13,38 +13,28 @@ MoveState::MoveState(TurnState* state)
     broadcastPossibleRequests();
 }
 
-void MoveState::rollDice(const QString& playerName)
+void MoveState::requestRollDice(const QString& playerName)
 {
     ensurePlayersTurn(playerName);
     auto& player = m_game->currentPlayer();
 
 	Dices dices = m_game->doCurrentPlayerRollDices();
+	if (dices.isDouble())
+	{
+        player.canRoll(true);
+	}
 
 	if (player.timesRolled() >= 3 && dices.isDouble())
 	{
         m_game->doJailCurrentPlayer();
-        m_game->stateChange<IdleState>();
 	}
     else
 	{
         m_game->doMoveCurrentPlayer(dices.sum());
-
-		if (player.position() == m_game->GO_TO_JAIL_POSITION)
-		{
-            m_game->stateChange<IdleState>();
-		}
-		else if (dices.isDouble())
-		{
-            m_game->stateChange<MoveState>();
-		}
-		else
-		{
-			m_game->stateChange<IdleState>();
-		}
 	}
 }
 
-void MoveState::possibleRequests(const QString& playerName)
+void MoveState::requestPossibleRequests(const QString& playerName)
 {
     QJsonArray requests;
 

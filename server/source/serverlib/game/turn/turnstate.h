@@ -10,16 +10,18 @@ public:
     TurnState(Game* game);
     virtual ~TurnState() = default;
 
-    virtual void possibleRequests(const QString& playerName);
+    virtual void requestPossibleRequests(const QString& playerName);
 
-    virtual void gameStart();
+    virtual void requestGameStart();
 
-    virtual void playerReady(const QString& playerName);
+    virtual void requestPlayerReady(const QString& playerName);
     virtual void requestPlayerJoin(const QString& playerName);
 
-    virtual void rollDice(const QString& playerName);
-    virtual void endTurn(const QString& playerName);
+    virtual void requestRollDice(const QString& playerName);
+	virtual void requestEndTurn(const QString& playerName);
+	virtual void requestBuyField(const QString& playerName, bool buy);
 
+    void changeToDefaultState();
 protected:
     Game* m_game;
 
@@ -27,7 +29,6 @@ protected:
     void ensurePlayersTurn(const QString& playerName) const;
 
     virtual void broadcastPossibleRequests();
-
 
 private:
     static void InvalidRequest();

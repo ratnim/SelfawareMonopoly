@@ -20,7 +20,7 @@ InitState::InitState(Game* game)
 {
 }
 
-void InitState::possibleRequests(const QString& playerName)
+void InitState::requestPossibleRequests(const QString& playerName)
 {
     QJsonArray requests;
 
@@ -53,7 +53,7 @@ void InitState::requestPlayerJoin(const QString& playerName)
     broadcastPossibleRequests();
 }
 
-void InitState::playerReady(const QString& playerName)
+void InitState::requestPlayerReady(const QString& playerName)
 {
     if (m_playersReady.find(playerName) == m_playersReady.end())
     {
@@ -70,7 +70,7 @@ void InitState::playerReady(const QString& playerName)
     broadcastPossibleRequests();
 }
 
-void InitState::gameStart()
+void InitState::requestGameStart()
 {
     if (!minimalPlayersJoined())
     {
@@ -141,6 +141,6 @@ void InitState::broadcastPossibleRequests()
 {
     for (auto& player : m_playersReady)
     {
-        possibleRequests(player.first);
+        requestPossibleRequests(player.first);
     }
 }

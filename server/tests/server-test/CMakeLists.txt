@@ -12,24 +12,35 @@ message(STATUS "Test ${target}")
 
 set(sources
     main.cpp
+
     tests/bank_test.cpp
+
 	tests/board_test.cpp
     tests/boardmodel_test.cpp
-    tests/configuration_test.cpp
-    tests/exception_test.cpp
+
     tests/fieldfactory_test.cpp
 	tests/field_test.cpp
+	tests/gotojail_test.cpp
+    tests/street_test.cpp
+
     tests/game_test.cpp
     tests/gameinfo_test.cpp
     tests/gamemodel_test.cpp
+
+    tests/configuration_test.cpp
+    tests/connection_test.cpp
 	tests/gameconnection_test.cpp
     tests/request_test.cpp
-    tests/connection_test.cpp
+    tests/websocketserver_test.cpp
+
+    tests/buystate_test.cpp
     tests/idlestate_test.cpp
     tests/initstate_test.cpp
     tests/jailstate_test.cpp
     tests/movestate_test.cpp
-    tests/websocketserver_test.cpp
+
+    tests/exception_test.cpp
+
     test_utils/mocked_database.cpp
     test_utils/mocked_database.h
     test_utils/mocked_server.cpp

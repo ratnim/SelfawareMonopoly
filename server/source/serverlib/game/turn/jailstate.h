@@ -7,6 +7,6 @@ class JailState : public TurnState
 public:
     JailState(TurnState* state);
 
-	void possibleRequests(const QString& playerName) override;
-    void rollDice(const QString& playerName) override;
+	void requestPossibleRequests(const QString& playerName) override;
+    void requestRollDice(const QString& playerName) override;
 };

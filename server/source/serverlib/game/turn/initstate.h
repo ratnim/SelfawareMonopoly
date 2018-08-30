@@ -11,11 +11,11 @@ class InitState : public TurnState
 public:
     InitState(Game* game);
 
-	void possibleRequests(const QString& playerName) override;
+	void requestPossibleRequests(const QString& playerName) override;
 
     void requestPlayerJoin(const QString& playerName) override;
-    void playerReady(const QString& playerName) override;
-    void gameStart() override;
+    void requestPlayerReady(const QString& playerName) override;
+    void requestGameStart() override;
 
 protected:
     std::vector<Player> joinedPlayers();

@@ -14,6 +14,7 @@ public:
     static PossibleRequest gameStart();
     static PossibleRequest rollDice();
     static PossibleRequest endTurn();
+    static PossibleRequest buyField();
 
 protected:
     const QString m_request;
