@@ -20,6 +20,8 @@ class PayState : public TurnState
 public:
     PayState(TurnState* state, std::vector<Debt> debts);
 
+	void requestPossibleRequests(const QString& playerName) override;
+
 protected:
     std::vector<Debt> m_debts;
 };

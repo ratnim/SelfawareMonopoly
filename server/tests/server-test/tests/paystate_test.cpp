@@ -48,7 +48,4 @@ TEST(PayStateTest, update_possible_requests)
     game.stateChange<PayState>(debts);
 
     EXPECT_EQ(2, request_spy.size());
-
-    EXPECT_EQ(player_1, game.currentPlayer().name());
-    game.requestRollDice(player_1);
 }
