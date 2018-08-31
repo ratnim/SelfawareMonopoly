@@ -15,6 +15,7 @@ public:
     static PossibleRequest rollDice();
     static PossibleRequest endTurn();
     static PossibleRequest buyField();
+    static PossibleRequest payDebt(const QString& beneficiary, int amount);
 
 protected:
     const QString m_request;
