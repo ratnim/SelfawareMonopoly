@@ -4,4 +4,6 @@
 
 class PayState : public TurnState
 {
+public:
+    PayState(TurnState* state);
 };
