@@ -82,7 +82,9 @@ bool Street::moveOn(const QString& playerName, Game* game)
     }
     else if (m_owner != playerName)
     {
-        game->stateChange<PayState>();
+        std::vector<Debt> debts;
+        debts.emplace_back(playerName, m_owner, rent());
+        game->stateChange<PayState>(debts);
         stateChanged = true;
     }
     return stateChanged;
