@@ -234,7 +234,7 @@ Returns:
         }
     }
 
-### Roll dice:
+### Roll dices:
 Expects:
 
     {
@@ -253,8 +253,19 @@ Returns:
     }
 
 ### Buy a Street
-Expects:
+Possible Request:
+```
+    {
+        "request" : "buy_field",
+        "data" :
+        {
+            buy : 1
+        }
+    }
+```
 
+Expects:
+```
     {
         "request" : "buy_field",
         "data" :
@@ -262,6 +273,7 @@ Expects:
             buy : < 0 | 1 >
         }
     }
+```
 
 Returns:
 
@@ -275,6 +287,55 @@ Returns:
         construction_level: <level>
     }
 }
+```
+
+or
+
+```
+    {
+        "name" : "error",
+        "data" :
+        {
+            "id" : <id>,
+            "message" : <message>
+        }
+    }
+```
+
+### Pay a Debt
+Possible Request:
+
+```
+{
+    "request" : pay_debt,
+    "data": { 
+        "value": <value>,
+        "beneficiary" : <name>
+    } 
+}
+```
+
+Request:
+
+```
+{
+    "request" : pay_debt,
+    "data": {
+        "beneficiary": <name>
+    } 
+}
+```
+
+Returns:
+```
+    {
+        "name" : "money_change",
+        "data" :
+        {
+            player: <name>,
+            deposit: <new_value>
+        }
+    }
 ```
 
 or
