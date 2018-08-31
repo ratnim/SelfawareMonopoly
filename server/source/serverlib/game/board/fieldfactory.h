@@ -17,5 +17,4 @@ public:
 protected:
 
 	static std::unique_ptr<Field> createStreet(const QJsonObject& specification);
-	static std::unique_ptr<Field> createGoToJail(const QJsonObject& specification);
 };

@@ -98,7 +98,7 @@ TEST(GameTest, go_to_jail_position)
     game.requestPlayerReady("Gertrude");
     game.requestGameStart();
 
-	game.doMoveCurrentPlayer(3);
+	game.doCurrentPlayerMove(3);
 
 	EXPECT_TRUE(game.currentPlayer().inJail());
 	EXPECT_NE(nullptr, dynamic_cast<IdleState*>(game.state()));

@@ -3,6 +3,7 @@
 #include <QJsonObject>
 
 #include <game/board/gotojail.h>
+#include <game/board/start.h>
 #include <game/board/street.h>
 
 bool containsRequest(const QJsonArray& possibleRequests, const QString& request)
@@ -56,5 +57,17 @@ std::vector<std::unique_ptr<Field>> fieldsStreets()
 {
     std::vector<std::unique_ptr<Field>> fields;
     fields.push_back(std::move(std::make_unique<Street>("street", 0, 100, 50, std::array<int, ConstructionLevel::HOTEL + 1>{ { 10, 20, 30, 40, 50, 60 } })));
+    return fields;
+}
+
+std::vector<std::unique_ptr<Field>> fieldsStart()
+{
+    std::vector<std::unique_ptr<Field>> fields;
+    fields.push_back(std::move(std::make_unique<Start>("start")));
+    fields.push_back(std::move(std::make_unique<Field>("free", FieldType::free)));
+    fields.push_back(std::move(std::make_unique<Field>("free", FieldType::free)));
+    fields.push_back(std::move(std::make_unique<Field>("free", FieldType::free)));
+    fields.push_back(std::move(std::make_unique<Field>("free", FieldType::free)));
+    fields.push_back(std::move(std::make_unique<Field>("free", FieldType::free)));
     return fields;
 }

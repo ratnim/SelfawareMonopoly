@@ -67,7 +67,7 @@ TEST(JailStateTest, roll_dice_pash)
 {
     Game game(std::move(fieldsSingleJail()));
     game.players() = RingBuffer<Player>(std::vector<Player>{ { player_1, player_2 } });
-    game.doJailCurrentPlayer();
+    game.doCurrentPlayerGoToJail();
     game.stateChange<JailState>();
 
     QSignalSpy roll_spy(&game, &Game::onRollDice);
@@ -88,7 +88,7 @@ TEST(JailStateTest, possible_requests)
     Game game;
     game.players() = RingBuffer<Player>(std::vector<Player>{ { player_1, player_2 } });
     QSignalSpy request_spy(&game, &Game::onPossibleRequests);
-    game.doJailCurrentPlayer();
+    game.doCurrentPlayerGoToJail();
     game.stateChange<JailState>();
 
     game.requestPossibleRequests(player_1);

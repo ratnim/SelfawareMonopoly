@@ -4,6 +4,7 @@
 
 #include <QJsonArray>
 
+#include <game/board/start.h>
 #include <game/board/street.h>
 #include <game/board/gotojail.h>
 
@@ -14,10 +15,12 @@ std::unique_ptr<Field> FieldFactory::create(const QJsonObject& specification)
 
 	switch (type)
 	{
+    case FieldType::start:
+        return std::make_unique<Start>(name);
     case FieldType::street:
         return createStreet(specification);
     case FieldType::go_to_jail:
-        return createGoToJail(specification);
+        return std::make_unique<GoToJail>(name);
     default:
         return std::make_unique<Field>(name, type);
 	}
@@ -40,10 +43,4 @@ std::unique_ptr<Field> FieldFactory::createStreet(const QJsonObject& specificati
     }
 
     return std::make_unique<Street>(name, group, price, housePrice, rents);
-}
-
-std::unique_ptr<Field> FieldFactory::createGoToJail(const QJsonObject& specification)
-{
-    auto name = specification["name"].toString();
-    return std::make_unique<GoToJail>(name);
 }

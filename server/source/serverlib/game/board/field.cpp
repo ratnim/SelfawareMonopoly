@@ -52,3 +52,7 @@ bool Field::moveOn(const QString& playerName, Game* game)
 {
     return false;
 }
+
+void Field::passBy(const QString& playerName, Game* game)
+{
+}

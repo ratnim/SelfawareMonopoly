@@ -23,7 +23,7 @@ void JailState::requestRollDice(const QString& playerName)
     if (dices.isDouble())
     {
         player.leaveJail();
-        m_game->doMoveCurrentPlayer(dices.sum());
+        m_game->doCurrentPlayerMove(dices.sum());
 	}
 	else
 	{

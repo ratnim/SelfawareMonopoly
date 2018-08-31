@@ -6,12 +6,12 @@
 
 TEST(FieldTest, get_description)
 {
-    Field field("Test", FieldType::start);
+    Field field("Test", FieldType::free);
 
     auto description = field.description();
 
     EXPECT_EQ("Test", description["name"].toString().toStdString());
-    EXPECT_EQ("start", description["type"].toString().toStdString());
+    EXPECT_EQ("free", description["type"].toString().toStdString());
 }
 
 TEST(FieldTypeStringConverterTest, type_to_name)

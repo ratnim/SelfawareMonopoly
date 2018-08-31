@@ -34,9 +34,10 @@ public:
     void requestPossibleRequests(const QString& playerName);
 
     Dices doCurrentPlayerRollDices();
-    void doJailCurrentPlayer();
-    void doMoveCurrentPlayer(int distance);
-    void doBuyCurrentPlayerField();
+    void doCurrentPlayerGoToJail();
+    void doCurrentPlayerMove(int distance);
+    void doCurrentPlayerBuyField();
+    void doCurrentPlayerEarnMoney(int amount);
 
     RingBuffer<Player>& players();
     Player& currentPlayer();

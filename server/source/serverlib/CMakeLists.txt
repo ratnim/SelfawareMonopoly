@@ -36,6 +36,8 @@ set(sources
     game/board/field.h
     game/board/fieldfactory.cpp
     game/board/fieldfactory.h
+    game/board/start.cpp
+    game/board/start.h
     game/board/street.cpp
     game/board/street.h
     game/board/gotojail.cpp
