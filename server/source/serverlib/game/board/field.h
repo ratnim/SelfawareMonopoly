@@ -42,6 +42,7 @@ public:
 
 	// returns true if a state change happend
     virtual bool moveOn(const QString& playerName, Game* game);
+    virtual void passBy(const QString& playerName, Game* game);
 
 protected:
     const QString m_name;

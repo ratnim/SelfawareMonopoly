@@ -48,6 +48,40 @@ TEST(MoveStateTest, roll_dice)
     EXPECT_EQ(2, move_spy.last().at(1).toInt());
 }
 
+TEST(MoveStateTest, money_on_pass_start)
+{
+    Game game(std::move(fieldsStart()));
+    game.players() = RingBuffer<Player>(std::vector<Player>{ { player_1, player_2 } });
+    game.stateChange<MoveState>();
+    game.bank().createAccount(player_1, 0);
+    game.bank().createAccount(player_2, 0);
+
+    QSignalSpy money_spy(&game, &Game::onMoneyChange);
+
+    EXPECT_EQ(player_1, game.currentPlayer().name());
+    game.watson_next_rolls.emplace(2, 2);
+    game.requestRollDice(player_1);
+
+    EXPECT_EQ(money_spy.size(), 0);
+
+    game.watson_next_rolls.emplace(1, 2);
+    game.requestRollDice(player_1);
+    EXPECT_EQ(money_spy.size(), 1);
+
+	game.requestEndTurn(player_1);
+
+	EXPECT_EQ(player_2, game.currentPlayer().name());
+    game.watson_next_rolls.emplace(3, 3);
+    game.requestRollDice(player_2);
+
+    EXPECT_EQ(money_spy.size(), 2);
+	EXPECT_EQ(player_2, game.currentPlayer().name());
+    game.watson_next_rolls.emplace(1, 2);
+    game.requestRollDice(player_2);
+
+     EXPECT_EQ(money_spy.size(), 2);
+}
+
 TEST(MoveStateTest, roll_dice_1_pash)
 {
 

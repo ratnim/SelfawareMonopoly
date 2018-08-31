@@ -26,11 +26,11 @@ void MoveState::requestRollDice(const QString& playerName)
 
 	if (player.timesRolled() >= 3 && dices.isDouble())
 	{
-        m_game->doJailCurrentPlayer();
+        m_game->doCurrentPlayerGoToJail();
 	}
     else
 	{
-        m_game->doMoveCurrentPlayer(dices.sum());
+        m_game->doCurrentPlayerMove(dices.sum());
 	}
 }
 

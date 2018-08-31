@@ -14,3 +14,4 @@ std::vector<std::unique_ptr<Field>> fieldsFree();
 std::vector<std::unique_ptr<Field>> fieldsSingleJail();
 std::vector<std::unique_ptr<Field>> fieldsJailGoToJail();
 std::vector<std::unique_ptr<Field>> fieldsStreets();
+std::vector<std::unique_ptr<Field>> fieldsStart();

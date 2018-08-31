@@ -8,28 +8,21 @@
 
 #include <game/board/board.h>
 
+#include <test_utils/helpers.h>
+
 TEST(BoardTest, get_description)
 {
-    std::vector<std::unique_ptr<Field>> fields;
-    fields.push_back(std::move(std::make_unique<Field>("first", FieldType::start)));
-    fields.push_back(std::move(std::make_unique<Field>("second", FieldType::jail)));
-    Board gameBoard(std::move(fields));
+    Board gameBoard(std::move(fieldsSingleJail()));
     auto description = gameBoard.description();
 
-    EXPECT_EQ(2, description["fields"].toArray().size());
-    EXPECT_EQ("first", description["fields"].toArray()[0].toObject()["name"].toString().toStdString());
-    EXPECT_EQ("second", description["fields"].toArray()[1].toObject()["name"].toString().toStdString());
+    EXPECT_EQ(5, description["fields"].toArray().size());
+    EXPECT_EQ("free", description["fields"].toArray()[0].toObject()["name"].toString().toStdString());
+    EXPECT_EQ("jail", description["fields"].toArray()[4].toObject()["name"].toString().toStdString());
 }
 
 TEST(BoardTest, target_for_move)
 {
-    std::vector<std::unique_ptr<Field>> fields;
-    fields.push_back(std::move(std::make_unique<Field>("first", FieldType::start)));
-    fields.push_back(std::move(std::make_unique<Field>("first", FieldType::start)));
-    fields.push_back(std::move(std::make_unique<Field>("first", FieldType::start)));
-    fields.push_back(std::move(std::make_unique<Field>("first", FieldType::start)));
-    fields.push_back(std::move(std::make_unique<Field>("second", FieldType::jail)));
-    Board board(std::move(fields));
+    Board board(std::move(fieldsSingleJail()));
 
     EXPECT_EQ(0, board.targetForMove(0, 0));
     EXPECT_EQ(1, board.targetForMove(1, 0));
@@ -43,23 +36,12 @@ TEST(BoardTest, target_for_move)
 
 TEST(BoardTest, find_jail_non_existing)
 {
-    std::vector<std::unique_ptr<Field>> fields;
-    fields.push_back(std::move(std::make_unique<Field>("first", FieldType::start)));
-    fields.push_back(std::move(std::make_unique<Field>("first", FieldType::start)));
-    fields.push_back(std::move(std::make_unique<Field>("first", FieldType::start)));
-    fields.push_back(std::move(std::make_unique<Field>("first", FieldType::start)));
-    Board board(std::move(fields));
+    Board board(std::move(fieldsFree()));
     EXPECT_EQ(0, board.jailIndex());
 }
 
 TEST(BoardTest, find_jail)
 {
-    std::vector<std::unique_ptr<Field>> fields;
-    fields.push_back(std::move(std::make_unique<Field>("first", FieldType::start)));
-    fields.push_back(std::move(std::make_unique<Field>("first", FieldType::start)));
-    fields.push_back(std::move(std::make_unique<Field>("first", FieldType::start)));
-    fields.push_back(std::move(std::make_unique<Field>("first", FieldType::start)));
-    fields.push_back(std::move(std::make_unique<Field>("jail", FieldType::jail)));
-    Board board(std::move(fields));
+    Board board(std::move(fieldsSingleJail()));
     EXPECT_EQ(4, board.jailIndex());
 }

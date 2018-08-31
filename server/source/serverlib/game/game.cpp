@@ -66,7 +66,7 @@ Dices Game::doCurrentPlayerRollDices()
     return dices;
 }
 
-void Game::doJailCurrentPlayer()
+void Game::doCurrentPlayerGoToJail()
 {
     currentPlayer().canRoll(false);
     currentPlayer().moveTo(m_board.jailIndex());
@@ -76,24 +76,38 @@ void Game::doJailCurrentPlayer()
     m_state->changeToDefaultState();
 }
 
-void Game::doMoveCurrentPlayer(int distance)
+void Game::doCurrentPlayerMove(int distance)
 {
-    auto target = m_board.targetForMove(currentPlayer().position(), distance);
-    currentPlayer().moveTo(target);
-    emit onPlayerMove(currentPlayer().name(), target, "forward");
+    auto& name = currentPlayer().name();
+    auto startPosition = currentPlayer().position();
 
-    if (!m_board[target]->moveOn(currentPlayer().name(), this))
+	for (int step = 1; step <= distance; ++step)
+	{
+        auto stepTarget = m_board.targetForMove(startPosition, step);
+        m_board[stepTarget]->passBy(name, this);
+	}
+
+    auto target = m_board.targetForMove(startPosition, distance);
+    currentPlayer().moveTo(target);
+    emit onPlayerMove(name, target, "forward");
+
+    if (!m_board[target]->moveOn(name, this))
     {
         m_state->changeToDefaultState();
     }
 }
 
-void Game::doBuyCurrentPlayerField()
+void Game::doCurrentPlayerBuyField()
 {
     auto propertyId = currentPlayer().position();
     auto price = m_board.fieldPrice(propertyId);
     m_bank.takeMoney(currentPlayer().name(), price);
     m_board.changeOwner(propertyId, currentPlayer().name());
+}
+
+void Game::doCurrentPlayerEarnMoney(int amount)
+{
+    m_bank.giveMoney(currentPlayer().name(), amount);
 }
 
 RingBuffer<Player>& Game::players()

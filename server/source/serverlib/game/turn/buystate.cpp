@@ -31,7 +31,7 @@ void BuyState::requestBuyField(const QString& playerName, bool buy)
 
     if (buy)
     {
-        m_game->doBuyCurrentPlayerField();
+        m_game->doCurrentPlayerBuyField();
         changeToDefaultState();
     }
 	else
