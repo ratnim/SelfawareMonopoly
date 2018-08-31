@@ -309,7 +309,7 @@ Possible Request:
 {
     "request" : pay_debt,
     "data": { 
-        "value": <value>,
+        "amount": <amount>,
         "beneficiary" : <name>
     } 
 }
