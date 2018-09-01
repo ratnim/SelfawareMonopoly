@@ -13,6 +13,7 @@ namespace
 {
 const QString player_1("Heinz");
 const QString player_2("Gertrude");
+const QString player_3("Mali");
 }
 
 TEST(PayStateTest, possible_requests)
@@ -70,4 +71,45 @@ TEST(PayStateTest, pay_debt)
 
 	EXPECT_EQ(0, game.bank().balance(player_1));
 	EXPECT_EQ(100, game.bank().balance(player_2));
+}
+
+TEST(PayStateTest, pay_debt_multiple_debts)
+{
+    Game game;
+    game.players() = RingBuffer<Player>(std::vector<Player>{ { player_1, player_2 } });
+    game.bank().createAccount(player_1, 200);
+    game.bank().createAccount(player_2, 0);
+    game.bank().createAccount(player_3, 0);
+    std::vector<Debt> debts;
+    debts.emplace_back(player_1, player_2, 100);
+    debts.emplace_back(player_1, player_3, 100);
+    game.stateChange<PayState>(debts);
+
+    game.requestPayDebt(player_1, player_2);
+    EXPECT_NE(nullptr, dynamic_cast<PayState*>(game.state()));
+
+    game.requestPayDebt(player_1, player_3);
+    EXPECT_NE(nullptr, dynamic_cast<MoveState*>(game.state()));
+
+    EXPECT_EQ(0, game.bank().balance(player_1));
+    EXPECT_EQ(100, game.bank().balance(player_2));
+    EXPECT_EQ(100, game.bank().balance(player_3));
+}
+
+TEST(PayStateTest, cant_pay_debt)
+{
+    Game game;
+    game.players() = RingBuffer<Player>(std::vector<Player>{ { player_1, player_2 } });
+    game.bank().createAccount(player_1, 0);
+    game.bank().createAccount(player_2, 0);
+    std::vector<Debt> debts;
+    debts.emplace_back(player_1, player_2, 100);
+    game.stateChange<PayState>(debts);
+
+    QSignalSpy money_spy(&game, &Game::onMoneyChange);
+
+    EXPECT_THROW(game.requestPayDebt(player_1, player_2), Exception);
+
+    EXPECT_EQ(0, money_spy.size());
+    EXPECT_NE(nullptr, dynamic_cast<PayState*>(game.state()));
 }
