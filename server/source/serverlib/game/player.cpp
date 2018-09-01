@@ -7,6 +7,9 @@ Player::Player(const QString& playerName)
 
 void Player::nextTurn()
 {
+    m_timesRolled = 0;
+    m_canRoll = true;
+
     if (m_jailTurns > 0)
         --m_jailTurns;
 }
@@ -21,6 +24,11 @@ void Player::jail()
     m_jailTurns = 3;
 }
 
+void Player::leaveJail()
+{
+    m_jailTurns = 0;
+}
+
 int Player::position() const
 {
     return m_position;
@@ -31,7 +39,28 @@ const QString& Player::name() const
     return m_name;
 }
 
-void Player::move(int distance)
+void Player::moveTo(int fieldIndex)
 {
-    m_position += distance;
+    m_position = fieldIndex;
+}
+
+int Player::timesRolled() const
+{
+    return m_timesRolled;
+}
+
+void Player::rolled()
+{
+    ++m_timesRolled;
+    m_canRoll = false;
+}
+
+bool Player::canRoll() const
+{
+    return m_canRoll;
+}
+
+void Player::canRoll(bool value)
+{
+	m_canRoll = value;
 }

@@ -1,42 +1,136 @@
 #include "game.h"
 
-#include <QJsonObject>
+#include <game/turn/initstate.h>
 
-#include <game/state/initstate.h>
-#include <models/boardmodel.h>
-
-Game::Game(Board board)
-    : m_board(std::move(board))
+Game::Game(std::vector<std::unique_ptr<Field>> fields)
+    : m_board(std::move(fields))
+    , m_players({})
 {
-	stateChange<InitState>(this);
+    connect(&m_bank, &Bank::onMoneyChange, this, &Game::onMoneyChange);
+    connect(&m_board, &Board::onPropertyChange, this, &Game::onPropertyChange);
+
+    stateChange<InitState>(this);
 }
 
-void Game::join(const QString& playerName)
+void Game::requestPlayerJoin(const QString& playerName)
 {
-    m_state->join(playerName);
+    m_state->requestPlayerJoin(playerName);
 }
 
-void Game::board()
+void Game::requestGameBoard()
 {
     emit onBoardRequest(m_board.description());
 }
 
-void Game::ready(const QString& playerName)
+void Game::requestPlayerReady(const QString& playerName)
 {
-    m_state->ready(playerName);
+    m_state->requestPlayerReady(playerName);
 }
 
-void Game::start()
+void Game::requestGameStart()
 {
-    m_state->start();
+    m_state->requestGameStart();
 }
 
-void Game::rollDice(const QString& playerName)
+void Game::requestRollDice(const QString& playerName)
 {
-    m_state->rollDice(playerName);
+    m_state->requestRollDice(playerName);
 }
 
-void Game::endTurn(const QString& playerName)
+void Game::requestEndTurn(const QString& playerName)
 {
-    m_state->endTurn(playerName);
+    m_state->requestEndTurn(playerName);
+}
+
+void Game::requestBuyField(const QString& playerName, bool buy)
+{
+    m_state->requestBuyField(playerName, buy);
+}
+
+void Game::requestPossibleRequests(const QString& playerName)
+{
+    m_state->requestPossibleRequests(playerName);
+}
+
+Dices Game::doCurrentPlayerRollDices()
+{
+    currentPlayer().rolled();
+    Dices dices;
+    if (!watson_next_rolls.empty())
+    {
+        dices = watson_next_rolls.front();
+        watson_next_rolls.pop();
+    }
+
+    emit onRollDice(currentPlayer().name(), dices.first, dices.second);
+    return dices;
+}
+
+void Game::doCurrentPlayerGoToJail()
+{
+    currentPlayer().canRoll(false);
+    currentPlayer().moveTo(m_board.jailIndex());
+    emit onPlayerMove(currentPlayer().name(), m_board.jailIndex(), "jump");
+    currentPlayer().jail();
+
+    m_state->changeToDefaultState();
+}
+
+void Game::doCurrentPlayerMove(int distance)
+{
+    auto& name = currentPlayer().name();
+    auto startPosition = currentPlayer().position();
+
+	for (int step = 1; step <= distance; ++step)
+	{
+        auto stepTarget = m_board.targetForMove(startPosition, step);
+        m_board[stepTarget]->passBy(name, this);
+	}
+
+    auto target = m_board.targetForMove(startPosition, distance);
+    currentPlayer().moveTo(target);
+    emit onPlayerMove(name, target, "forward");
+
+    if (!m_board[target]->moveOn(name, this))
+    {
+        m_state->changeToDefaultState();
+    }
+}
+
+void Game::doCurrentPlayerBuyField()
+{
+    auto propertyId = currentPlayer().position();
+    auto price = m_board.fieldPrice(propertyId);
+    m_bank.takeMoney(currentPlayer().name(), price);
+    m_board.changeOwner(propertyId, currentPlayer().name());
+}
+
+void Game::doCurrentPlayerEarnMoney(int amount)
+{
+    m_bank.giveMoney(currentPlayer().name(), amount);
+}
+
+RingBuffer<Player>& Game::players()
+{
+    return m_players;
+}
+
+Player& Game::currentPlayer()
+{
+    return m_players();
+}
+
+TurnState* Game::state() const
+{
+    return m_state.get();
+}
+
+Bank& Game::bank()
+{
+    return m_bank;
+}
+
+Board& Game::board()
+{
+    return m_board;
 }

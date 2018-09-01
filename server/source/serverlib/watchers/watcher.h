@@ -11,5 +11,5 @@ public:
     Watcher(QObject* object = nullptr);
 
 signals:
-    void send(const QString& message);
+    void broadcast(const QString& message);
 };

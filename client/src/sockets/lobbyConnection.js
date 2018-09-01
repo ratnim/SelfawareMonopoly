@@ -1,8 +1,4 @@
-//websocket
-var socket = undefined;
-var createGameCallback = undefined;
-var getGameListCallback = undefined;
-var errorCallback = undefined;
+
 
 // Helper
 function createJSON(request, data) {

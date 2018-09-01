@@ -1,29 +1,55 @@
 #pragma once
 
-#include <game/state/gamestate.h>
-#include <game/board/board.h>
-#include <utils/budhist.h>
+#include <queue>
 
-class Game : public QObject, public Budhist<GameState>
+#include <QJsonObject>
+
+#include <utils/budhist.h>
+#include <utils/ringbuffer.h>
+
+#include <game/bank/bank.h>
+#include <game/board/board.h>
+
+#include <game/dices.h>
+#include <game/player.h>
+#include <game/turn/turnstate.h>
+
+class Game : public QObject, public Budhist<TurnState>
 {
     Q_OBJECT
 
 public:
-    Game(Board board = Board({}));
+    Game(std::vector<std::unique_ptr<Field>> fields = {});
 
-    void join(const QString& playerName);
-    void board();
-    void ready(const QString& playerName);
-    void start();
+    void requestPlayerJoin(const QString& playerName);
 
-    void rollDice(const QString& playerName);
-    void pay(const QString& playerName);
-    void ignore(const QString& playerName);
-    void draw(const QString& playerName);
-    void endTurn(const QString& playerName);
+    void requestGameBoard();
+    void requestPlayerReady(const QString& playerName);
+    void requestGameStart();
+
+    void requestRollDice(const QString& playerName);
+    void requestEndTurn(const QString& playerName);
+    void requestBuyField(const QString& playerName, bool buy);
+
+    void requestPossibleRequests(const QString& playerName);
+
+    Dices doCurrentPlayerRollDices();
+    void doCurrentPlayerGoToJail();
+    void doCurrentPlayerMove(int distance);
+    void doCurrentPlayerBuyField();
+    void doCurrentPlayerEarnMoney(int amount);
+
+    RingBuffer<Player>& players();
+    Player& currentPlayer();
+
+    TurnState* state() const;
+    Bank& bank();
+    Board& board();
+
+    std::queue<Dices> watson_next_rolls;
 
 signals:
-    void onBoardRequest(const QJsonObject& board);
+    void onBoardRequest(const QJsonObject& gameBoard);
     void onPlayerJoin(const QString& playerName);
     void onPlayerReady(const QString& playerName);
 
@@ -31,12 +57,15 @@ signals:
     void onGameEnd();
 
     void onRollDice(const QString& playerName, int d1, int d2);
-    void onPlayerMove(const QString& playerName, int distance);
+    void onMoneyChange(const QString& playerName, int balance);
+    void onPropertyChange(int id, const QString& owner, int consrtuctionLevel);
+    void onPlayerMove(const QString& playerName, int index, const QString& type);
     void onTurnChange(const QString& newMovingPlayer);
 
-    void onEnterJail(const QString& playerName);
-    void onLeaveJail(const QString& playerName);
+    void onPossibleRequests(const QString& playerName, const QJsonArray& possibleRequests);
 
 protected:
     Board m_board;
+    Bank m_bank;
+    RingBuffer<Player> m_players;
 };

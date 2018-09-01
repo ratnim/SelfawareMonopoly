@@ -3,15 +3,16 @@
 #include <cstdlib>
 #include <random>
 
-struct Dices
+class Dices
 {
+public:
     Dices(int d1 = random(), int d2 = random());
 
     bool isDouble() const;
     int sum() const;
 
-    const int first;
-    const int second;
+    int first;
+    int second;
 
 protected:
     static int random();

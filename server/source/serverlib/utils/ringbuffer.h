@@ -22,6 +22,11 @@ public:
         m_index = (m_index + 1) % m_storage.size();
     }
 
+    std::vector<Object>& storage()
+    {
+        return m_storage;
+    }
+
 private:
     std::vector<Object> m_storage;
     size_t m_index;

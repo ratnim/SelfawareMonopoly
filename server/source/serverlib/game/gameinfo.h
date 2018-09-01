@@ -8,19 +8,19 @@ class GamePhaseStringConverter :QObject
 {
 	Q_OBJECT
 public:
-    enum GamePhase
+    enum GameStage
     {
         INITIALIZED,
         STARTED,
         FINISHED
     };
-    Q_ENUM(GamePhase);
+    Q_ENUM(GameStage);
 
-	static GamePhaseStringConverter::GamePhase stateByName(const QString& name);
-    static QString nameByState(GamePhase phase);
+	static GamePhaseStringConverter::GameStage stateByName(const QString& name);
+    static QString nameByState(GameStage stage);
 };
 
-using GamePhase = GamePhaseStringConverter::GamePhase;
+using GameStage = GamePhaseStringConverter::GameStage;
 
 class GameInfo : public QObject
 {
@@ -30,18 +30,18 @@ public:
     GameInfo(const Game& game, const QString& label);
 
     QString label() const;
-    GamePhase phase() const;
+    GameStage stage() const;
     std::vector<QString> players() const;
 
 signals:
     void change();
 
 protected:
-    void playerJoin(const QString& playerName);
+    void requestPlayerJoin(const QString& playerName);
     void gameStart();
     void gameEnd();
 
     const QString m_label;
-    GamePhase m_gamePhase;
+    GameStage m_gamePhase;
     std::vector<QString> m_players;
 };

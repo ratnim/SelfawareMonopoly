@@ -1,9 +1,12 @@
 #include <gmock/gmock.h>
 
 #include <QJsonObject>
+#include <QJsonArray>
 
 #include <game/board/fieldfactory.h>
 #include <game/board/street.h>
+#include <game/board/gotojail.h>
+#include <game/board/start.h>
 
 TEST(FieldFactoryTest, construct_field_start)
 {
@@ -13,25 +16,34 @@ TEST(FieldFactoryTest, construct_field_start)
     };
 
     auto field = FieldFactory::create(specification);
-
-    EXPECT_EQ(FieldType::start, field->type());
-    EXPECT_EQ("Start", field->name());
+    auto start = dynamic_cast<Start*>(field.get());
+    EXPECT_NE(nullptr, start);
+    EXPECT_EQ(FieldType::start, start->type());
+    EXPECT_EQ("Start", start->name());
 }
 
 TEST(FieldFactoryTest, construct_field_street)
 {
     QJsonObject specification{
         { "name", "TestStreet" },
-        { "type", "street" }
+        { "type", "street" },
+        { "group", 5 },
+        { "price", 280 },
+        { "house_price", 150 },
+        { "rent", QJsonArray({24, 120, 360, 850, 1025, 1200}) }
     };
 
     auto field = FieldFactory::create(specification);
 
-    EXPECT_EQ(FieldType::street, field->type());
     EXPECT_EQ("TestStreet", field->name());
+    EXPECT_EQ(FieldType::street, field->type());
 
-    auto a = new Field("a", FieldType::street);
-    auto street = dynamic_cast<Street *>(a);
+	auto street = dynamic_cast<Street*>(field.get());
+    EXPECT_NE(nullptr, street);
+    EXPECT_EQ(5, street->group());
+    EXPECT_EQ(280, street->price());
+    EXPECT_EQ(150, street->housePrice());
+    EXPECT_EQ(24, street->rent());
 }
 
 TEST(FieldFactoryTest, construct_field_station)
@@ -99,7 +111,7 @@ TEST(FieldFactoryTest, construct_field_free_parking)
     EXPECT_EQ("Free Parking", field->name());
 }
 
-TEST(FieldFactoryTest, construct_field_go_to_prison)
+TEST(FieldFactoryTest, construct_field_go_to_jail)
 {
     QJsonObject specification{
         { "name", "Go to Jail" },
@@ -107,7 +119,9 @@ TEST(FieldFactoryTest, construct_field_go_to_prison)
     };
 
     auto field = FieldFactory::create(specification);
+    auto gotojail = dynamic_cast<GoToJail*>(field.get());
 
+    EXPECT_NE(nullptr, gotojail);
     EXPECT_EQ(FieldType::go_to_jail, field->type());
     EXPECT_EQ("Go to Jail", field->name());
 }

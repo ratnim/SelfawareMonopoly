@@ -24,36 +24,41 @@ set(sources
     game/game.h
     game/gameinfo.cpp
     game/gameinfo.h
-    game/gamelogic.cpp
-    game/gamelogic.h
     game/player.cpp
     game/player.h   
     game/watson.cpp
     game/watson.h
+    game/bank/bank.cpp
+    game/bank/bank.h
     game/board/board.cpp
     game/board/board.h
     game/board/field.cpp
     game/board/field.h
     game/board/fieldfactory.cpp
     game/board/fieldfactory.h
+    game/board/start.cpp
+    game/board/start.h
+    game/board/street.cpp
     game/board/street.h
+    game/board/gotojail.cpp
+    game/board/gotojail.h
     game/board/taxfield.h
-    game/state/gamestate.cpp
-    game/state/gamestate.h
-    game/state/endstate.cpp
-    game/state/endstate.h
-    game/state/initstate.cpp
-    game/state/initstate.h
-    game/state/runstate.cpp
-    game/state/runstate.h
-    game/state/turn/freestate.cpp
-    game/state/turn/freestate.h
-    game/state/turn/jailstate.cpp
-    game/state/turn/jailstate.h
-    game/state/turn/turnstate.cpp
-    game/state/turn/turnstate.h
-    game/state/turn/rollstate.cpp
-    game/state/turn/rollstate.h
+    game/turn/endstate.cpp
+    game/turn/endstate.h
+    game/turn/buystate.cpp
+    game/turn/buystate.h
+    game/turn/initstate.cpp
+    game/turn/initstate.h
+    game/turn/idlestate.cpp
+    game/turn/idlestate.h
+    game/turn/jailstate.cpp
+    game/turn/jailstate.h
+    game/turn/turnstate.cpp
+    game/turn/turnstate.h
+    game/turn/movestate.cpp
+    game/turn/movestate.h
+    game/turn/possiblerequest.cpp
+    game/turn/possiblerequest.h
     models/accountmodel.cpp
     models/accountmodel.h
     models/boardmodel.cpp
@@ -64,18 +69,18 @@ set(sources
     rest_apis/coinhive.h
     rest_apis/restAPIsBase.cpp
     rest_apis/restAPIsBase.h
-    routes/route.cpp
-    routes/route.h
-    routes/routefactory.cpp
-    routes/routefactory.h
-    routes/gameroute.cpp
-    routes/gameroute.h
-    routes/lobbyroute.cpp
-    routes/lobbyroute.h
-    routes/overviewroute.cpp
-    routes/overviewroute.h
-    network/request.cpp
-    network/request.h
+    connections/connection.cpp
+    connections/connection.h
+    connections/connectionfactory.cpp
+    connections/connectionfactory.h
+    connections/gameconnection.cpp
+    connections/gameconnection.h
+    connections/lobbyconnection.cpp
+    connections/lobbyconnection.h
+    connections/overviewconnection.cpp
+    connections/overviewconnection.h
+    network/connectionrequest.cpp
+    network/connectionrequest.h
     network/websocketserver.cpp
     network/websocketserver.h
     utils/budhist.h
