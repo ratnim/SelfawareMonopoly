@@ -30,6 +30,7 @@ public:
     void requestRollDice(const QString& playerName);
     void requestEndTurn(const QString& playerName);
     void requestBuyField(const QString& playerName, bool buy);
+    void requestBuyHouse(const QString& playerName, int fieldId, bool buy);
 
     void requestPossibleRequests(const QString& playerName);
 
@@ -37,6 +38,7 @@ public:
     void doCurrentPlayerGoToJail();
     void doCurrentPlayerMove(int distance);
     void doCurrentPlayerBuyField();
+    void doCurrentPlayerBuyHouse(int fieldId, bool buy);
     void doCurrentPlayerEarnMoney(int amount);
 
     RingBuffer<Player>& players();

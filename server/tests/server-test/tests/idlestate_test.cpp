@@ -4,6 +4,8 @@
 
 #include <game/game.h>
 
+#include <game/board/street.h>
+
 #include <game/turn/idlestate.h>
 #include <game/turn/movestate.h>
 #include <game/turn/jailstate.h>
@@ -88,4 +90,25 @@ TEST(IdleStateTest, update_possible_actions)
     game.stateChange<IdleState>();
 
     EXPECT_EQ(2, request_spy.size());
+}
+
+TEST(IdleStateTest, buy_house)
+{
+    Game game(fieldsTwoGroups());
+    game.players() = RingBuffer<Player>(std::vector<Player>{ { player_1 } });
+    game.stateChange<IdleState>();
+    game.bank().createAccount(player_1, 1000);
+
+    dynamic_cast<Street*>(game.board()[0])->changeOwner(player_1);
+    dynamic_cast<Street*>(game.board()[1])->changeOwner(player_1);
+
+	QSignalSpy property_spy(&game, &Game::onPropertyChange);
+	QSignalSpy money_spy(&game, &Game::onMoneyChange);
+
+    game.requestBuyHouse(player_1, 0, true);
+
+	EXPECT_EQ(1, property_spy.size());
+    EXPECT_EQ(1, money_spy.size());
+
+	EXPECT_NE(nullptr, dynamic_cast<IdleState*>(game.state()));
 }

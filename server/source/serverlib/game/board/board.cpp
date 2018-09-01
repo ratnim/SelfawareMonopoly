@@ -78,6 +78,46 @@ void Board::changeOwner(int id, const QString& owner)
 	emit onPropertyChange(id, street->owner(), street->constructionLevel());
 }
 
+void Board::buildHouse(int id)
+{
+    auto street = dynamic_cast<Street*>(m_fields[id].get());
+	if (street == nullptr)
+	{
+        throw Exception("Field is not a street.");
+	}
+
+    const ConstructionLevel level = street->constructionLevel();
+
+    if (level == ConstructionLevel::HOTEL)
+    {
+        throw Exception("Street already has a hotel.");
+    }
+
+    street->changeConstructionLevel(ConstructionLevel(level + 1));
+
+	emit onPropertyChange(id, street->owner(), street->constructionLevel());
+}
+
+void Board::removeHouse(int id)
+{
+    auto street = dynamic_cast<Street*>(m_fields[id].get());
+	if (street == nullptr)
+	{
+        throw Exception("Field is not a street.");
+	}
+
+    const ConstructionLevel level = street->constructionLevel();
+
+    if (level == ConstructionLevel::BASE)
+    {
+        throw Exception("Street already has no houses.");
+    }
+
+    street->changeConstructionLevel(ConstructionLevel(level - 1));
+
+	emit onPropertyChange(id, street->owner(), street->constructionLevel());
+}
+
 int Board::fieldPrice(int id)
 {
     auto street = dynamic_cast<Street*>(m_fields[id].get());
@@ -86,4 +126,37 @@ int Board::fieldPrice(int id)
         throw Exception("Field is not a street.");
 	}
     return street->price();
+}
+
+int Board::housePrice(int id)
+{
+    auto street = dynamic_cast<Street*>(m_fields[id].get());
+	if (street == nullptr)
+	{
+        throw Exception("Field is not a street.");
+	}
+    return street->housePrice();
+}
+
+void Board::ensureFullGroupOwnership(const QString& owner, int id)
+{
+    auto firstStreet = dynamic_cast<Street*>(m_fields[id].get());
+    if (firstStreet == nullptr)
+    {
+        throw Exception("Field is not a street.");
+    }
+
+    const auto checkedGroup = firstStreet->group();
+
+    for (auto& field : m_fields)
+    {
+        if (auto street = dynamic_cast<Street*>(field.get()))
+        {
+            if ((street->group() == checkedGroup)
+             && (street->owner() != owner))
+            {
+                throw Exception("Player does not own full group.", Error::InvalidRequest);
+            }
+        }
+    }
 }

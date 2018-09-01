@@ -43,3 +43,10 @@ void IdleState::requestEndTurn(const QString& playerName)
 		m_game->stateChange<MoveState>();
 	}
 }
+
+void IdleState::requestBuyHouse(const QString& playerName, int fieldId, bool buy)
+{
+    ensurePlayersTurn(playerName);
+
+    m_game->doCurrentPlayerBuyHouse(fieldId, buy);
+}

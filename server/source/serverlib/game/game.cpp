@@ -47,6 +47,11 @@ void Game::requestBuyField(const QString& playerName, bool buy)
     m_state->requestBuyField(playerName, buy);
 }
 
+void Game::requestBuyHouse(const QString& playerName, int fieldId, bool buy)
+{
+    m_state->requestBuyHouse(playerName, fieldId, buy);
+}
+
 void Game::requestPossibleRequests(const QString& playerName)
 {
     m_state->requestPossibleRequests(playerName);
@@ -103,6 +108,25 @@ void Game::doCurrentPlayerBuyField()
     auto price = m_board.fieldPrice(propertyId);
     m_bank.takeMoney(currentPlayer().name(), price);
     m_board.changeOwner(propertyId, currentPlayer().name());
+}
+
+void Game::doCurrentPlayerBuyHouse(int fieldID, bool buy)
+{
+    auto buyPrice = m_board.housePrice(fieldID);
+    auto sellPrice = buyPrice / 2;
+
+    m_board.ensureFullGroupOwnership(currentPlayer().name(), fieldID);
+
+    if (buy)
+    {
+        m_bank.takeMoney(currentPlayer().name(), buyPrice);
+        m_board.buildHouse(fieldID);
+    }
+    else
+    {
+        m_board.removeHouse(fieldID);
+        m_bank.giveMoney(currentPlayer().name(), sellPrice);
+    }
 }
 
 void Game::doCurrentPlayerEarnMoney(int amount)

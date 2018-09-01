@@ -22,7 +22,12 @@ public:
 
     int targetForMove(int position, int distance);
     void changeOwner(int id, const QString& owner);
+    void buildHouse(int id);
+    void removeHouse(int id);
     int fieldPrice(int id);
+    int housePrice(int id);
+
+    void ensureFullGroupOwnership(const QString& owner, int id);
 
 signals:
     void onPropertyChange(int id, const QString& owner, int consrtuctionLevel);
