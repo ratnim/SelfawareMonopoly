@@ -40,6 +40,12 @@ void TurnState::requestBuyField(const QString& playerName, bool buy)
     InvalidRequest();
 }
 
+void TurnState::requestPayDebt(const QString& debtor, const QString& beneficiary)
+{
+    InvalidRequest();
+}
+
+
 void TurnState::requestEndTurn(const QString& playerName)
 {
     InvalidRequest();

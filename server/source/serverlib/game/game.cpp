@@ -52,6 +52,11 @@ void Game::requestPossibleRequests(const QString& playerName)
     m_state->requestPossibleRequests(playerName);
 }
 
+void Game::requestPayDebt(const QString& debtor, const QString& beneficiary)
+{
+    m_state->requestPayDebt(debtor, beneficiary);
+}
+
 Dices Game::doCurrentPlayerRollDices()
 {
     currentPlayer().rolled();
@@ -81,11 +86,11 @@ void Game::doCurrentPlayerMove(int distance)
     auto& name = currentPlayer().name();
     auto startPosition = currentPlayer().position();
 
-	for (int step = 1; step <= distance; ++step)
-	{
+    for (int step = 1; step <= distance; ++step)
+    {
         auto stepTarget = m_board.targetForMove(startPosition, step);
         m_board[stepTarget]->passBy(name, this);
-	}
+    }
 
     auto target = m_board.targetForMove(startPosition, distance);
     currentPlayer().moveTo(target);
@@ -109,6 +114,12 @@ void Game::doCurrentPlayerEarnMoney(int amount)
 {
     m_bank.giveMoney(currentPlayer().name(), amount);
 }
+
+void Game::doTransferMoney(const QString& sender, const QString& reciever, int amount)
+{
+    m_bank.transferMoney(sender, reciever, amount);
+}
+
 
 RingBuffer<Player>& Game::players()
 {
