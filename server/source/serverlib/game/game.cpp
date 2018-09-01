@@ -119,8 +119,12 @@ void Game::doCurrentPlayerBuyHouse(int fieldID, bool buy)
 
     if (buy)
     {
-        m_bank.takeMoney(currentPlayer().name(), buyPrice);
+        if (m_bank.balance(currentPlayer().name()) < buyPrice)
+        { // throw exception indirectly
+            m_bank.takeMoney(currentPlayer().name(), buyPrice);
+        }
         m_board.buildHouse(fieldID);
+        m_bank.takeMoney(currentPlayer().name(), buyPrice);
     }
     else
     {
