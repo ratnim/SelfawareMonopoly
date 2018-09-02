@@ -37,3 +37,8 @@ PossibleRequest PossibleRequest::buyField()
 {
 	return PossibleRequest("buy_field", {{ "buy" , 1 }});
 }
+
+PossibleRequest PossibleRequest::constructBuilding()
+{
+    return PossibleRequest("construct_building");
+}

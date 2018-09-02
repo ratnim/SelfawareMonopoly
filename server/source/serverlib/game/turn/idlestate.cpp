@@ -21,6 +21,7 @@ void IdleState::requestPossibleRequests(const QString& playerName)
     if (playersTurn(playerName))
     {
         requests.append(PossibleRequest::endTurn().toJson());
+        requests.append(PossibleRequest::constructBuilding().toJson());
     }
 
     emit m_game->onPossibleRequests(playerName, requests);

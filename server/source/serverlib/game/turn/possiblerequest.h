@@ -15,6 +15,7 @@ public:
     static PossibleRequest rollDice();
     static PossibleRequest endTurn();
     static PossibleRequest buyField();
+    static PossibleRequest constructBuilding();
 
 protected:
     const QString m_request;

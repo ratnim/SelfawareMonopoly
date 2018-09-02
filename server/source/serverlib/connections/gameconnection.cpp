@@ -19,6 +19,17 @@ GameConnection::GameConnection(QWebSocket* parent, const ConnectionRequest& requ
     m_requests["end_turn"] = [&game, this](const QJsonValue&) { game.requestEndTurn(m_playerName); };
     m_requests["buy_field"] = [&game, this](const QJsonValue& data) { game.requestBuyField(m_playerName, data["buy"].toBool()); };
 
+    m_requests["construct_building"] = [&game, this](const QJsonValue& data) {
+        std::vector<std::pair<int,int>> pairs;
+
+        for (const auto& [key, val] : data.toObject().toVariantMap().toStdMap())
+        {
+            pairs.emplace_back(key.toInt(), val.toInt());
+        }
+
+        game.requestChangeHouses(m_playerName, pairs);
+    };
+
 	m_requests["possible_requests"] = [&game, this](const QJsonValue&) { game.requestPossibleRequests(m_playerName); };
 
     watchGame(compound.watcher);
