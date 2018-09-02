@@ -130,6 +130,8 @@ void Board::changeConstructionLevels(const std::vector<std::pair<int,int>>& newL
         }
 
         street->changeConstructionLevel(ConstructionLevel(level));
+
+        emit onPropertyChange(id, street->owner(), level);
     }
 }
 
