@@ -160,6 +160,8 @@ int Board::checkHouseChangePrice(const QString& owner, const std::vector<std::pa
 
     uint8_t levelValidation = 0b00111111; // TODO: More dynamic: one '1' bit per building level
 
+    int group = -1;
+
     for (const auto [id, level] : newLevels)
     {
         if (level < ConstructionLevel::BASE || level > ConstructionLevel::HOTEL)
@@ -177,6 +179,18 @@ int Board::checkHouseChangePrice(const QString& owner, const std::vector<std::pa
         if (street->owner() != owner)
         {
             throw Exception("Player does not own street.");
+        }
+
+        if (group == -1)
+        {
+            group = street->group();
+        }
+        else
+        {
+            if (street->group() != group)
+            {
+                throw Exception("Not all streets belong to the same group.");
+            }
         }
 
         if (street->constructionLevel() > level)
