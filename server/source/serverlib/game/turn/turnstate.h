@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include <QString>
 
 class Game;
@@ -21,6 +23,7 @@ public:
 	virtual void requestEndTurn(const QString& playerName);
 	virtual void requestBuyField(const QString& playerName, bool buy);
     virtual void requestBuyHouse(const QString& playerName, int fieldId, bool buy);
+    virtual void requestChangeHouses(const QString& playerName, const std::vector<std::pair<int,int>>& newLevels);
 
     void changeToDefaultState();
 protected:

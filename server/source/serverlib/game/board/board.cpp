@@ -118,6 +118,21 @@ void Board::removeHouse(int id)
 	emit onPropertyChange(id, street->owner(), street->constructionLevel());
 }
 
+void Board::changeConstructionLevels(const std::vector<std::pair<int,int>>& newLevels)
+{
+    for (const auto [id, level] : newLevels)
+    {
+        auto street = dynamic_cast<Street*>(m_fields[id].get());
+
+        if (street == nullptr)
+        {
+            throw Exception("Field is not a street.");
+        }
+
+        street->changeConstructionLevel(ConstructionLevel(level));
+    }
+}
+
 int Board::fieldPrice(int id)
 {
     auto street = dynamic_cast<Street*>(m_fields[id].get());
@@ -136,6 +151,53 @@ int Board::housePrice(int id)
         throw Exception("Field is not a street.");
 	}
     return street->housePrice();
+}
+
+int Board::checkHouseChangePrice(const QString& owner, const std::vector<std::pair<int,int>>& newLevels)
+{
+    int fullPrice = 0;
+    int fullReturn = 0;
+
+    uint8_t levelValidation = 0b00111111; // TODO: More dynamic: one '1' bit per building level
+
+    for (const auto [id, level] : newLevels)
+    {
+        if (level < ConstructionLevel::BASE || level > ConstructionLevel::HOTEL)
+        {
+            throw Exception("Invalid construction level");
+        }
+
+        auto street = dynamic_cast<Street*>(m_fields[id].get());
+
+        if (street == nullptr)
+        {
+            throw Exception("Field is not a street.");
+        }
+
+        if (street->owner() != owner)
+        {
+            throw Exception("Player does not own street.");
+        }
+
+        if (street->constructionLevel() > level)
+        {
+            fullPrice += street->housePrice() * (level - street->constructionLevel());
+        }
+
+        if (street->constructionLevel() < level)
+        {
+            fullReturn += street->housePrice() * (street->constructionLevel() - level) / 2;
+        }
+
+        levelValidation &= 0b11 << level;
+    }
+
+    if (levelValidation == 0)
+    {
+        throw Exception("Construciton levels differ too much.");
+    }
+
+    return fullPrice - fullReturn;
 }
 
 void Board::ensureFullGroupOwnership(const QString& owner, int id)

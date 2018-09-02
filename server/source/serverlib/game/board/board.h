@@ -24,9 +24,11 @@ public:
     void changeOwner(int id, const QString& owner);
     void buildHouse(int id);
     void removeHouse(int id);
+    void changeConstructionLevels(const std::vector<std::pair<int,int>>& newLevels);
     int fieldPrice(int id);
     int housePrice(int id);
 
+    int checkHouseChangePrice(const QString& owner, const std::vector<std::pair<int,int>>& newLevels);
     void ensureFullGroupOwnership(const QString& owner, int id);
 
 signals:

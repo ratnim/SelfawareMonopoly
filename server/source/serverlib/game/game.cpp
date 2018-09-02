@@ -52,6 +52,11 @@ void Game::requestBuyHouse(const QString& playerName, int fieldId, bool buy)
     m_state->requestBuyHouse(playerName, fieldId, buy);
 }
 
+void Game::requestChangeHouses(const QString& playerName, const std::vector<std::pair<int,int>>& newLevels)
+{
+    m_state->requestChangeHouses(playerName, newLevels);
+}
+
 void Game::requestPossibleRequests(const QString& playerName)
 {
     m_state->requestPossibleRequests(playerName);
@@ -131,6 +136,22 @@ void Game::doCurrentPlayerBuyHouse(int fieldID, bool buy)
         m_board.removeHouse(fieldID);
         m_bank.giveMoney(currentPlayer().name(), sellPrice);
     }
+}
+
+void Game::doCurrentPlayerChangeHouses(const std::vector<std::pair<int,int>>& newLevels)
+{
+    auto cashflow = m_board.checkHouseChangePrice(currentPlayer().name(), newLevels);
+
+    if (cashflow > 0) // player has to pay
+    {
+        m_bank.takeMoney(currentPlayer().name(), cashflow);
+    }
+    if (cashflow < 0) // player gets money back
+    {
+        m_bank.giveMoney(currentPlayer().name(), -cashflow);
+    }
+
+    m_board.changeConstructionLevels(newLevels);
 }
 
 void Game::doCurrentPlayerEarnMoney(int amount)

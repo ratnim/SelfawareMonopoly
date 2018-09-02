@@ -31,6 +31,7 @@ public:
     void requestEndTurn(const QString& playerName);
     void requestBuyField(const QString& playerName, bool buy);
     void requestBuyHouse(const QString& playerName, int fieldId, bool buy);
+    void requestChangeHouses(const QString& playerName, const std::vector<std::pair<int,int>>& newLevels);
 
     void requestPossibleRequests(const QString& playerName);
 
@@ -39,6 +40,7 @@ public:
     void doCurrentPlayerMove(int distance);
     void doCurrentPlayerBuyField();
     void doCurrentPlayerBuyHouse(int fieldId, bool buy);
+    void doCurrentPlayerChangeHouses(const std::vector<std::pair<int,int>>& newLevels);
     void doCurrentPlayerEarnMoney(int amount);
 
     RingBuffer<Player>& players();
