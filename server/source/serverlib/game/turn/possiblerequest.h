@@ -16,6 +16,7 @@ public:
     static PossibleRequest endTurn();
     static PossibleRequest buyField();
     static PossibleRequest constructBuilding();
+    static PossibleRequest payDebt(const QString& beneficiary, int amount);
 
 protected:
     const QString m_request;

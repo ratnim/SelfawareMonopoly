@@ -38,6 +38,7 @@ set(sources
     tests/initstate_test.cpp
     tests/jailstate_test.cpp
     tests/movestate_test.cpp
+    tests/paystate_test.cpp
 
     tests/exception_test.cpp
 

@@ -42,3 +42,8 @@ PossibleRequest PossibleRequest::constructBuilding()
 {
     return PossibleRequest("construct_building");
 }
+
+PossibleRequest PossibleRequest::payDebt(const QString& beneficiary, int amount)
+{
+    return PossibleRequest("pay_debt", { { "beneficiary", beneficiary } , { "amount" , amount } });
+}

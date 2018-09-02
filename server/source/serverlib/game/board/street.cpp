@@ -3,6 +3,7 @@
 #include <game/game.h>
 
 #include <game/turn/buystate.h>
+#include <game/turn/paystate.h>
 
 Street::Street(const QString& name, int group, int price, int housePrice, std::array<int, ConstructionLevel::HOTEL + 1> rents)
     : Field(name, FieldType::street)
@@ -77,21 +78,19 @@ QJsonArray Street::rents() const
 
 bool Street::moveOn(const QString& playerName, Game* game)
 {
-    if (m_owner == playerName)
+    bool stateChanged = false;
+
+    if (m_owner == "")
     {
-        return false;
-	}
-	else
-	{
-		if (m_owner == "")
-		{
-            game->stateChange<BuyState>();
-            return true;
-		} 
-		else
-		{
-			// Pay the rent
-            return false;
-		}
-	}
+        game->stateChange<BuyState>();
+        stateChanged = true;
+    }
+    else if (m_owner != playerName)
+    {
+        std::vector<Debt> debts;
+        debts.emplace_back(playerName, m_owner, rent());
+        game->stateChange<PayState>(debts);
+        stateChanged = true;
+    }
+    return stateChanged;
 }
