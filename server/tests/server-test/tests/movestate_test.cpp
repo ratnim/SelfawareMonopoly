@@ -84,7 +84,6 @@ TEST(MoveStateTest, money_on_pass_start)
 
 TEST(MoveStateTest, roll_dice_1_pash)
 {
-
     Game game(std::move(fieldsFree()));
 
     game.players() = RingBuffer<Player>(std::vector<Player>{ { player_1, player_2 } });
