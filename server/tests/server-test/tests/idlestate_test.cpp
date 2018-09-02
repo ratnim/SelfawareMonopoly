@@ -406,7 +406,28 @@ TEST(IdleStateTest, buy_sell_houses_neutral_cashflow)
     game.requestChangeHouses(player_1, {{0,0}, {1,1}});
 
     EXPECT_EQ(2, property_spy.size());
-    EXPECT_EQ(1, money_spy.size());
+    EXPECT_EQ(0, money_spy.size());
+
+	EXPECT_NE(nullptr, dynamic_cast<IdleState*>(game.state()));
+}
+
+TEST(IdleStateTest, buy_sell_houses_no_change)
+{
+    Game game(fieldsTwoGroups());
+    game.players() = RingBuffer<Player>(std::vector<Player>{ { player_1 } });
+    game.stateChange<IdleState>();
+    game.bank().createAccount(player_1, 0);
+
+    dynamic_cast<Street*>(game.board()[0])->changeOwner(player_1);
+    dynamic_cast<Street*>(game.board()[1])->changeOwner(player_1);
+
+	QSignalSpy property_spy(&game, &Game::onPropertyChange);
+	QSignalSpy money_spy(&game, &Game::onMoneyChange);
+
+    game.requestChangeHouses(player_1, {{0,0}, {1,0}});
+
+    EXPECT_EQ(0, property_spy.size());
+    EXPECT_EQ(0, money_spy.size());
 
 	EXPECT_NE(nullptr, dynamic_cast<IdleState*>(game.state()));
 }

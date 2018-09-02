@@ -45,3 +45,51 @@ TEST(BoardTest, find_jail)
     Board board(std::move(fieldsSingleJail()));
     EXPECT_EQ(4, board.jailIndex());
 }
+
+TEST(BoardTest, houses_construction_prize_buy_single)
+{
+    Board board(fieldsTwoGroups());
+
+    int price = board.checkHouseChangePrice("", {{0,1}});
+
+    EXPECT_EQ(price, 50);
+}
+
+TEST(BoardTest, houses_construction_prize_buy_multi)
+{
+    Board board(fieldsTwoGroups());
+
+    int price = board.checkHouseChangePrice("", {{0,2}, {1,1}});
+
+    EXPECT_EQ(price, 150);
+}
+
+TEST(BoardTest, houses_construction_prize_sell_single)
+{
+    Board board(fieldsTwoGroups());
+    board.changeConstructionLevels({{0,1}});
+
+    int ret = board.checkHouseChangePrice("", {{0,0}});
+
+    EXPECT_EQ(ret, -25);
+}
+
+TEST(BoardTest, houses_construction_prize_sell_multi)
+{
+    Board board(fieldsTwoGroups());
+    board.changeConstructionLevels({{0,2}, {1,1}});
+
+    int ret = board.checkHouseChangePrice("", {{0,0}, {1,0}});
+
+    EXPECT_EQ(ret, -75);
+}
+
+TEST(BoardTest, houses_construction_prize_buy_sell_mixed)
+{
+    Board board(fieldsTwoGroups());
+    board.changeConstructionLevels({{0,1}, {1,0}});
+
+    int ret = board.checkHouseChangePrice("", {{0,0}, {1,1}});
+
+    EXPECT_EQ(ret, 25);
+}

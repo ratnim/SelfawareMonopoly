@@ -129,9 +129,12 @@ void Board::changeConstructionLevels(const std::vector<std::pair<int,int>>& newL
             throw Exception("Field is not a street.");
         }
 
-        street->changeConstructionLevel(ConstructionLevel(level));
+        if (level != street->constructionLevel())
+        {
+            street->changeConstructionLevel(ConstructionLevel(level));
 
-        emit onPropertyChange(id, street->owner(), level);
+            emit onPropertyChange(id, street->owner(), level);
+        }
     }
 }
 
@@ -195,12 +198,12 @@ int Board::checkHouseChangePrice(const QString& owner, const std::vector<std::pa
             }
         }
 
-        if (street->constructionLevel() > level)
+        if (street->constructionLevel() < level)
         {
             fullPrice += street->housePrice() * (level - street->constructionLevel());
         }
 
-        if (street->constructionLevel() < level)
+        if (street->constructionLevel() > level)
         {
             fullReturn += street->housePrice() * (street->constructionLevel() - level) / 2;
         }
