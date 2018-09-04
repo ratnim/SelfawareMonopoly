@@ -211,6 +211,7 @@ export default {
       this.lane2 = gameboard.slice(10, 20);
       this.lane3 = gameboard.slice(20, 30);
       this.lane4 = [].concat(gameboard.slice(30, 40)).reverse();
+      this.$store.commit("setGame", gameboard);
     },
     onPossibleActions: function(data) {
       console.log("Possible Requests", data.requests);
