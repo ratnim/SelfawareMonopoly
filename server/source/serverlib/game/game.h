@@ -30,7 +30,6 @@ public:
     void requestRollDice(const QString& playerName);
     void requestEndTurn(const QString& playerName);
     void requestBuyField(const QString& playerName, bool buy);
-    void requestBuyHouse(const QString& playerName, int fieldId, bool buy);
     void requestChangeHouses(const QString& playerName, const std::vector<std::pair<int,int>>& newLevels);
     void requestPayDebt(const QString& debtor, const QString& beneficiary);
 
@@ -41,7 +40,6 @@ public:
     void doCurrentPlayerGoToJail();
     void doCurrentPlayerMove(int distance);
     void doCurrentPlayerBuyField();
-    void doCurrentPlayerBuyHouse(int fieldId, bool buy);
     void doCurrentPlayerChangeHouses(const std::vector<std::pair<int,int>>& newLevels);
     void doCurrentPlayerEarnMoney(int amount);
     void doTransferMoney(const QString& sender, const QString& reciever, int amount);

@@ -45,13 +45,6 @@ void IdleState::requestEndTurn(const QString& playerName)
 	}
 }
 
-void IdleState::requestBuyHouse(const QString& playerName, int fieldId, bool buy)
-{
-    ensurePlayersTurn(playerName);
-
-    m_game->doCurrentPlayerBuyHouse(fieldId, buy);
-}
-
 void IdleState::requestChangeHouses(const QString& playerName, const std::vector<std::pair<int,int>>& newLevels)
 {
     ensurePlayersTurn(playerName);

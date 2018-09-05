@@ -78,46 +78,6 @@ void Board::changeOwner(int id, const QString& owner)
 	emit onPropertyChange(id, street->owner(), street->constructionLevel());
 }
 
-void Board::buildHouse(int id)
-{
-    auto street = dynamic_cast<Street*>(m_fields[id].get());
-	if (street == nullptr)
-	{
-        throw Exception("Field is not a street.");
-	}
-
-    const ConstructionLevel level = street->constructionLevel();
-
-    if (level == ConstructionLevel::HOTEL)
-    {
-        throw Exception("Street already has a hotel.");
-    }
-
-    street->changeConstructionLevel(ConstructionLevel(level + 1));
-
-	emit onPropertyChange(id, street->owner(), street->constructionLevel());
-}
-
-void Board::removeHouse(int id)
-{
-    auto street = dynamic_cast<Street*>(m_fields[id].get());
-	if (street == nullptr)
-	{
-        throw Exception("Field is not a street.");
-	}
-
-    const ConstructionLevel level = street->constructionLevel();
-
-    if (level == ConstructionLevel::BASE)
-    {
-        throw Exception("Street already has no houses.");
-    }
-
-    street->changeConstructionLevel(ConstructionLevel(level - 1));
-
-	emit onPropertyChange(id, street->owner(), street->constructionLevel());
-}
-
 void Board::changeConstructionLevels(const std::vector<std::pair<int,int>>& newLevels)
 {
     for (const auto [id, level] : newLevels)

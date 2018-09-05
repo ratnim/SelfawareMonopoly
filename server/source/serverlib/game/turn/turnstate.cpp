@@ -40,11 +40,6 @@ void TurnState::requestBuyField(const QString& playerName, bool buy)
     InvalidRequest();
 }
 
-void TurnState::requestBuyHouse(const QString& playerName, int fieldId, bool buy)
-{
-    InvalidRequest();
-}
-
 void TurnState::requestPayDebt(const QString& debtor, const QString& beneficiary)
 {
     InvalidRequest();
