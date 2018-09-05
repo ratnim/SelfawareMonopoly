@@ -3,11 +3,11 @@
   <easel-shape :x="0" :y="0" form="rect" :align="['bottom', 'left']" :fill="attributes.color" stroke="black" :dimensions="[fieldWidth, fieldLength]">
   </easel-shape>
   <easel-text
-       :text="label"
-       font="15px 'Helvetica'"
+       :text="label.replace(' ', '\n')"
+       font="14px 'Helvetica'"
        align="['center', 'left']"
        :y="fieldLength/2"
-       :x="10"
+       :x="5"
    >
    </easel-text>
 </easel-container>
@@ -30,7 +30,8 @@ export default {
     }
   },
   computed : {
-    color : () => this.$data.attributes.color || '#1d1d1d'
+    color : () => this.$data.attributes.color || '#1d1d1d',
+    //label2: () => this.label.replace(' ', '\n')
   }
 }
 </script>
