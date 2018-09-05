@@ -10,7 +10,8 @@ export default {
     lane : {type: Number, default: 1},
     diameter : {type: Number, default: 10},
     fieldLength : Number,
-    color: {type: String, default: "#FF0000"}
+    color: {type: String, default: "#FF0000"},
+    id: {type: Number, default: 0},
   },
   data: function() {
     return {

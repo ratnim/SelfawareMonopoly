@@ -16,6 +16,7 @@
 
     <div class="md-layout-item">
       <easel-canvas width="600" height="600" ref="stage" v-if="lane1.length>0">
+        <span v-for="i in 1"> <!-- to make fields an array -->
         <!--from LOS to jail -->
         <MonopolyField ref="fields" :x="10" :y="600-10-fieldLength" :fieldWidth="fieldLength" :fieldLength="fieldLength" :align="['bottom', 'left']" :label="lane1[lane1.length-1].name" :attributes="lane1[lane1.length-1].attributes"></MonopolyField>
         <MonopolyField ref="fields" v-for="(field, index) in lane1" v-if="index != lane1.length-1" :x="10+index*0" :y="10+fieldLength+index*fieldWidth" :fieldWidth="fieldLength" :fieldLength="fieldWidth" :align="['bottom', 'left']" :label="field.name" :attributes="field.attributes"></MonopolyField>
@@ -30,9 +31,10 @@
         <MonopolyField ref="fields" :x="600-10-fieldLength" :y="600-10-fieldLength" :fieldWidth="fieldLength" :fieldLength="fieldLength" :align="['bottom', 'left']" :label="lane4[lane4.length-1].name" :attributes="lane4[lane4.length-1].attributes"></MonopolyField>
         <MonopolyField ref="fields" v-for="(field, index) in lane4" v-if="index != lane4.length-1" :x="10+fieldLength+index*fieldWidth" :y="600-10-index*0" :fieldWidth="fieldLength" :fieldLength="fieldWidth" :label="field.name" :attributes="field.attributes"
           :rotation="270"></MonopolyField>
+        </span>
 
         <!--the players -->
-        <MonopolyPlayer v-for="player in players" :key="player.id" :color="player.color" :fieldLength="fieldLength" ref="monopolyPlayers"></MonopolyPlayer>
+        <MonopolyPlayer v-for="player in players" :id="player.id" :key="player.id" :color="player.color" :fieldLength="fieldLength" ref="monopolyPlayers"></MonopolyPlayer>
 
 
         <Dice :x="300-30" :y="300" ref="dice1"></Dice>
@@ -41,17 +43,20 @@
     </div>
 
     <div class="md-layout-item md-size-15">
-      <h2>Handle weise</h2>
-      <md-button @click="rollDice()">ROLL THE DICE</md-button>
-      <md-button @click="setReady()">READY</md-button>
-      <md-button @click="endTurn()">END TURN</md-button>
-      <md-button @click="startGame()">START GAME</md-button>
+      <h2>Aktionen</h2>
+
+      <md-button v-for="req in possibleRequests" @click="req.method()">{{req.label}}</md-button>
     </div>
   </div>
 
   <div class="">
+    {{info}}
     <h1>DEV TOOLS</h1>
     <md-button @click="__addFakePlayer()">add a fake player</md-button>
+    <md-button @click='onPlayerMove({
+      player_name: "pascal4",
+      target: 11,
+      type: "forward"})'>move</md-button>
 
 
 
@@ -105,10 +110,11 @@ export default {
       lane2: [],
       lane3: [],
       lane4: [],
-      possible_actions: {},
+      possibleRequests: [],
       canvas: {
         margin: 2
-      }
+      },
+      info: "Noch nichts passiert"
     }
   },
   computed: {
@@ -125,11 +131,16 @@ export default {
     let handlers = {
       "join_game": this.onPlayerJoined,
       "game_board": this.onGameboard,
+      "game_start": this.onGameStart,
       "possible_requests": this.onPossibleActions,
       "player_ready": this.onPlayerReady,
-      "change_turn" : this.onTurnChanged,
+      "change_turn": this.onTurnChanged,
       "money_change": this.onMoneyChange,
-      "error": (data) => {console.log(data);}
+      "roll_dice": this.onRollDice,
+      "player_move": this.onPlayerMove,
+      "error": (data) => {
+        console.log(data);
+      }
     }
     this.gameConnection = new GameConnection(this.sessionId, this.$route.query.game_id, handlers);
 
@@ -176,44 +187,89 @@ export default {
       //translate players in game grafic
       if (this.$refs.monopolyPlayers) {
         let pCount = this.players.length;
-        let step = 2*Math.PI/pCount;
+        let step = 2 * Math.PI / pCount;
         for (var i = 0; i < this.$refs.monopolyPlayers.length; i++) {
-          this.$refs.monopolyPlayers[i].x = 2+this.fieldLength/2 + 25*Math.sin((i+1)*step);
-          this.$refs.monopolyPlayers[i].y = 600-4-this.fieldLength/2-10 + 25*Math.cos((i+1)*step);
+          this.$refs.monopolyPlayers[i].x = 2 + this.fieldLength / 2 + 25 * Math.sin((i + 1) * step);
+          this.$refs.monopolyPlayers[i].y = 600 - 4 - this.fieldLength / 2 - 10 + 25 * Math.cos((i + 1) * step);
         }
       }
 
     },
-    onPlayerMoved: function(playerName, distance) {
-      for (var i = 0; i < this.players.length; i++) {
-        if (this.players[i].nickname == playerName) {
-          console.log(this.players[i].currentField);
-          this.players[i].currentField = (this.players[i].currentField + distance) % 40;
-          for (var j = 0; i < this.$refs.fields.length; j++) {
-            if (this.$refs.fields[j].name == this.gamesFlatten[this.players[i].currentField].name) {
-              this.$refs.players[i].move(this.$refs.fields[j].x, this.$refs.fields[j].y);
-            }
-          }
-          console.log(this.players[i].currentField);
-
-        }
-      }
+    onPlayerMove: function(data) {
+      //"data": {
+      //  "player_name": "8080",
+      //  "target": 11,
+      //  "type": "forward"
+      //}
+      var player = _.find(this.players, (p) => p.nickname == data.player_name);
+      var mps = [].concat(this.$refs.monopolyPlayers);
+      var playerFigure = _.find(mps, (p) => p.id == player.id);
+      player.currentField = data.target;
+      var fs = this.$refs.fields;
+      var field = _.find(fs, (f) => f.attributes.index == data.target)
+      console.log(field);
+      playerFigure.move(field.x, field.y);
     },
     onGameboard: function(data) {
 
       for (var i = 0; i < data.fields.length; i++) {
         data.fields[i].attributes = {
-          color: this.colorMapping[data.fields[i].group]
+          color: this.colorMapping[data.fields[i].group],
+          index: i
         };
       }
       var gameboard = data.fields;
+      this.gameboard = data.fields;
       this.lane1 = [].concat(gameboard.slice(0, 10)).reverse();
       this.lane2 = gameboard.slice(10, 20);
       this.lane3 = gameboard.slice(20, 30);
       this.lane4 = [].concat(gameboard.slice(30, 40)).reverse();
+      this.$store.commit("setGame", gameboard);
+    },
+    onGameStart: function() {
+      this.info = "Los gehts!";
     },
     onPossibleActions: function(data) {
+
+      let mapping = {
+        "player_ready": {
+          method: () => {
+            this.gameConnection.setReady()
+          },
+          label: "Startklar"
+        },
+        "game_start": {
+          method: () => {
+            this.gameConnection.startGame()
+          },
+          label: "Spiel starten"
+        },
+        "roll_dice": {
+          method: () => {
+            this.gameConnection.send("roll_dice")
+          },
+          label: "Würfeln"
+        },
+        "buy_field": {
+          method: () => {
+            this.gameConnection.send("buy_field")
+          },
+          label: "Feld kaufen"
+        },
+        "end_turn": {
+          method: () => {this.gameConnection.send("end_turn")},
+          label: "Zug beenden"
+        }
+      };
+      this.possibleRequests = [];
       console.log("Possible Requests", data.requests);
+      for (var i = 0; i < data.requests.length; i++) {
+        var r = {"method" : () => {this.gameConnection.send(data.requests[i].request)}, "label": data.requests[i].request}
+        if (mapping.hasOwnProperty(data.requests[i].request)) {
+          r.label = _.get(mapping, data.requests[i].request+'.label', r.label);
+        }
+        this.possibleRequests.push(mapping[data.requests[i].request])
+      }
     },
     onPlayerReady: function(data) {
       console.log(data.player_name + ' is now ready!');
@@ -226,10 +282,15 @@ export default {
     },
     onTurnChanged: function(data) {
       console.log('turn change!', data);
+      this.info = data.player_name + " ist am Zug";
     },
     onMoneyChange: function(data) {
       console.log("Money change");
     },
+    onRollDice: function(data) {
+      this.info = data.player_name + " würfelt " + data.eyes[0] + ' und ' + data.eyes[1];
+    },
+
     onError: function(message) {
       console.log(message);
     },
@@ -243,7 +304,9 @@ export default {
       let homeConnection = new HomeConnection({
         enter_lobby: (data) => {
           gameConnection = new GameConnection(data.session, this.$route.query.game_id, {
-            "possible_requests": () => {this.rollDice();},
+            "possible_requests": function() {
+              this.rollDice();
+            },
             "fallback": () => true,
             "error": () => true
           })
