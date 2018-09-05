@@ -86,10 +86,10 @@ __Route:__ /game
 __Incoming Events:__
 ```
     {
-        "name" : "possible_actions",
+        "name" : "possible_requests",
         "data" :
         {
-            names : [{name : <name>}]
+            requests : [{request:<request>, data: {}}]
         }
     }
 ```
@@ -105,11 +105,33 @@ __Incoming Events:__
 ```
 ```
     {
+        "name" : "money_change",
+        "data" :
+        {
+            player: <name>,
+            deposit: <new_value>
+        }
+    }
+```
+```
+{
+    "name" : "property_change",
+    "data" :
+    {
+        index: <index>,
+        owner: <player_name>,
+        construction_level: <level>
+    }
+}
+```
+```
+    {
         "name" : "player_move",
         "data" :
         {
             player_name : <player_name>,
-            distance : <distance>
+            type : <forward | backward | jump>
+            target : <field_index>
         }
     }
 ```
@@ -212,7 +234,7 @@ Returns:
         }
     }
 
-### Roll dice:
+### Roll dices:
 Expects:
 
     {
@@ -229,3 +251,102 @@ Returns:
             eyes : [<eye1>, <eye2>]
         }
     }
+
+### Buy a Street
+Possible Request:
+```
+    {
+        "request" : "buy_field",
+        "data" :
+        {
+            buy : 1
+        }
+    }
+```
+
+Expects:
+```
+    {
+        "request" : "buy_field",
+        "data" :
+        {
+            buy : < 0 | 1 >
+        }
+    }
+```
+
+Returns:
+
+```
+{
+    "name" : "property_change",
+    "data" :
+    {
+        index: <index>,
+        owner: <player_name>,
+        construction_level: <level>
+    }
+}
+```
+
+or
+
+```
+    {
+        "name" : "error",
+        "data" :
+        {
+            "id" : <id>,
+            "message" : <message>
+        }
+    }
+```
+
+### Pay a Debt
+Possible Request:
+
+```
+{
+    "request" : pay_debt,
+    "data": { 
+        "amount": <amount>,
+        "beneficiary" : <name>
+    } 
+}
+```
+
+Request:
+
+```
+{
+    "request" : pay_debt,
+    "data": {
+        "beneficiary": <name>
+    } 
+}
+```
+
+Returns:
+```
+    {
+        "name" : "money_change",
+        "data" :
+        {
+            player: <name>,
+            deposit: <new_value>
+        }
+    }
+```
+
+or
+
+```
+    {
+        "name" : "error",
+        "data" :
+        {
+            "id" : <id>,
+            "message" : <message>
+        }
+    }
+```

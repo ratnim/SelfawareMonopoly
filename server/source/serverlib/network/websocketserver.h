@@ -4,8 +4,8 @@
 #include <QWebSocketServer>
 
 #include <models/accountmodel.h>
-#include <routes/route.h>
-#include <routes/routefactory.h>
+#include <connections/connection.h>
+#include <connections/connectionfactory.h>
 
 class WebSocketServer : public QWebSocketServer
 {
@@ -15,5 +15,5 @@ public:
 protected:
     void acccept();
 
-    RouteFactory m_connectionFactory;
+    ConnectionFactory m_connectionFactory;
 };

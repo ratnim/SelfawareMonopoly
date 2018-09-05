@@ -16,6 +16,7 @@
 
     <div class="md-layout-item">
       <easel-canvas width="600" height="600" ref="stage" v-if="lane1.length>0">
+        <span v-for="i in 1"> <!-- to make fields an array -->
         <!--from LOS to jail -->
         <MonopolyField ref="fields" :x="10" :y="600-10-fieldLength" :fieldWidth="fieldLength" :fieldLength="fieldLength" :align="['bottom', 'left']" :label="lane1[lane1.length-1].name" :attributes="lane1[lane1.length-1].attributes"></MonopolyField>
         <MonopolyField ref="fields" v-for="(field, index) in lane1" v-if="index != lane1.length-1" :x="10+index*0" :y="10+fieldLength+index*fieldWidth" :fieldWidth="fieldLength" :fieldLength="fieldWidth" :align="['bottom', 'left']" :label="field.name" :attributes="field.attributes"></MonopolyField>
@@ -30,9 +31,10 @@
         <MonopolyField ref="fields" :x="600-10-fieldLength" :y="600-10-fieldLength" :fieldWidth="fieldLength" :fieldLength="fieldLength" :align="['bottom', 'left']" :label="lane4[lane4.length-1].name" :attributes="lane4[lane4.length-1].attributes"></MonopolyField>
         <MonopolyField ref="fields" v-for="(field, index) in lane4" v-if="index != lane4.length-1" :x="10+fieldLength+index*fieldWidth" :y="600-10-index*0" :fieldWidth="fieldLength" :fieldLength="fieldWidth" :label="field.name" :attributes="field.attributes"
           :rotation="270"></MonopolyField>
+        </span>
 
         <!--the players -->
-        <MonopolyPlayer v-for="player in players" :key="player.id" :color="player.color" :fieldLength="fieldLength" ref="monopolyPlayers"></MonopolyPlayer>
+        <MonopolyPlayer v-for="player in players" :id="player.id" :key="player.id" :color="player.color" :fieldLength="fieldLength" ref="monopolyPlayers"></MonopolyPlayer>
 
 
         <Dice :x="300-30" :y="300" ref="dice1"></Dice>
@@ -41,17 +43,20 @@
     </div>
 
     <div class="md-layout-item md-size-15">
-      <h2>Handle weise</h2>
-      <md-button @click="rollDice()">ROLL THE DICE</md-button>
-      <md-button @click="setReady()">READY</md-button>
-      <md-button @click="endTurn()">END TURN</md-button>
-      <md-button @click="startGame()">START GAME</md-button>
+      <h2>Aktionen</h2>
+
+      <md-button v-for="req in possibleRequests" @click="req.method()">{{req.label}}</md-button>
     </div>
   </div>
 
   <div class="">
+    {{info}}
     <h1>DEV TOOLS</h1>
     <md-button @click="__addFakePlayer()">add a fake player</md-button>
+    <md-button @click='onPlayerMove({
+      player_name: "pascal4",
+      target: 11,
+      type: "forward"})'>move</md-button>
 
 
 
@@ -105,10 +110,11 @@ export default {
       lane2: [],
       lane3: [],
       lane4: [],
-      possible_actions: {},
+      possibleRequests: [],
       canvas: {
         margin: 2
-      }
+      },
+      info: "Noch nichts passiert"
     }
   },
   computed: {
@@ -125,7 +131,16 @@ export default {
     let handlers = {
       "join_game": this.onPlayerJoined,
       "game_board": this.onGameboard,
-      "error": () => true
+      "game_start": this.onGameStart,
+      "possible_requests": this.onPossibleActions,
+      "player_ready": this.onPlayerReady,
+      "change_turn": this.onTurnChanged,
+      "money_change": this.onMoneyChange,
+      "roll_dice": this.onRollDice,
+      "player_move": this.onPlayerMove,
+      "error": (data) => {
+        console.log(data);
+      }
     }
     this.gameConnection = new GameConnection(this.sessionId, this.$route.query.game_id, handlers);
 
@@ -142,13 +157,13 @@ export default {
       this.gameConnection.rollDice();
     },
     setReady: function() {
-      gameConnection.setReady();
+      this.gameConnection.setReady();
     },
     startGame: function() {
-      gameConnection.startGame();
+      this.gameConnection.startGame();
     },
     endTurn: function() {
-      gameConnection.endTurn();
+      this.gameConnection.endTurn();
     },
 
     onDiceRolled: function(dice) {
@@ -172,320 +187,92 @@ export default {
       //translate players in game grafic
       if (this.$refs.monopolyPlayers) {
         let pCount = this.players.length;
-        let step = 2*Math.PI/pCount;
+        let step = 2 * Math.PI / pCount;
         for (var i = 0; i < this.$refs.monopolyPlayers.length; i++) {
-          this.$refs.monopolyPlayers[i].x = 2+this.fieldLength/2 + 25*Math.sin((i+1)*step);
-          this.$refs.monopolyPlayers[i].y = 600-4-this.fieldLength/2-10 + 25*Math.cos((i+1)*step);
+          this.$refs.monopolyPlayers[i].x = 2 + this.fieldLength / 2 + 25 * Math.sin((i + 1) * step);
+          this.$refs.monopolyPlayers[i].y = 600 - 4 - this.fieldLength / 2 - 10 + 25 * Math.cos((i + 1) * step);
         }
       }
 
     },
-    onPlayerMoved: function(playerName, distance) {
-      for (var i = 0; i < this.players.length; i++) {
-        if (this.players[i].nickname == playerName) {
-          console.log(this.players[i].currentField);
-          this.players[i].currentField = (this.players[i].currentField + distance) % 40;
-          for (var j = 0; i < this.$refs.fields.length; j++) {
-            if (this.$refs.fields[j].name == this.gamesFlatten[this.players[i].currentField].name) {
-              this.$refs.players[i].move(this.$refs.fields[j].x, this.$refs.fields[j].y);
-            }
-          }
-          console.log(this.players[i].currentField);
-
-        }
-      }
+    onPlayerMove: function(data) {
+      //"data": {
+      //  "player_name": "8080",
+      //  "target": 11,
+      //  "type": "forward"
+      //}
+      var player = _.find(this.players, (p) => p.nickname == data.player_name);
+      var mps = [].concat(this.$refs.monopolyPlayers);
+      var playerFigure = _.find(mps, (p) => p.id == player.id);
+      player.currentField = data.target;
+      var fs = this.$refs.fields;
+      var field = _.find(fs, (f) => f.attributes.index == data.target)
+      console.log(field);
+      playerFigure.move(field.x, field.y);
     },
     onGameboard: function(data) {
-      data = {
-        "fields": [{
-            "name": "Start",
-            "type": "start"
-          },
-          {
-            "name": "Mahrzahn",
-            "type": "street",
-            "group": 0,
-            "price": 60,
-            "house_price": 50,
-            "rent": [2, 10, 30, 90, 160, 250]
-          },
-          {
-            "name": "Community Chest",
-            "type": "society_card"
-          },
-          {
-            "name": "Mahlsdorf",
-            "type": "street",
-            "group": 0,
-            "price": 60,
-            "house_price": 50,
-            "rent": [4, 20, 60, 180, 320, 450]
-          },
-          {
-            "name": "Income Tax",
-            "type": "tax",
-            "rent": [200]
-          },
-          {
-            "name": "Westhafen",
-            "type": "station",
-            "group": 8,
-            "price": 200,
-            "rent": [50]
-          },
-          {
-            "name": "Reinickendorf",
-            "type": "street",
-            "group": 1,
-            "price": 100,
-            "house_price": 50,
-            "rent": [6, 30, 90, 270, 400, 550]
-          },
-          {
-            "name": "Chance",
-            "type": "event_card"
-          },
-          {
-            "name": "Tegel",
-            "type": "street",
-            "group": 1,
-            "price": 100,
-            "house_price": 50,
-            "rent": [6, 30, 90, 270, 400, 550]
-          },
-          {
-            "name": "Spandau",
-            "type": "street",
-            "group": 1,
-            "price": 120,
-            "house_price": 50,
-            "rent": [8, 40, 100, 300, 450, 600]
-          },
-          {
-            "name": "Jail",
-            "type": "jail"
-          },
-          {
-            "name": "Wedding",
-            "type": "street",
-            "group": 2,
-            "price": 140,
-            "house_price": 100,
-            "rent": [10, 50, 150, 450, 625, 750]
-          },
-          {
-            "name": "Brandenburger Tor",
-            "type": "utility",
-            "group": 9,
-            "price": 150,
-            "rent": 75
-          },
-          {
-            "name": "Moabit",
-            "type": "street",
-            "group": 2,
-            "price": 140,
-            "house_price": 100,
-            "rent": [10, 50, 150, 450, 625, 750]
-          },
-          {
-            "name": "Pankow",
-            "type": "street",
-            "group": 2,
-            "price": 160,
-            "house_price": 100,
-            "rent": [12, 60, 180, 500, 700, 900]
-          },
-          {
-            "name": "Messe Nord",
-            "type": "station",
-            "group": 8,
-            "price": 200,
-            "rent": [50]
-          },
-          {
-            "name": "Charlottenburg",
-            "type": "street",
-            "group": 3,
-            "price": 180,
-            "house_price": 100,
-            "rent": [14, 70, 200, 550, 750, 950]
-          },
-          {
-            "name": "Community Chest",
-            "type": "society_card"
-          },
-          {
-            "name": "Wilmersdorf",
-            "type": "street",
-            "group": 3,
-            "price": 180,
-            "house_price": 100,
-            "rent": [14, 70, 200, 550, 750, 950]
-          },
-          {
-            "name": "Friedenau",
-            "type": "street",
-            "group": 3,
-            "price": 200,
-            "house_price": 100,
-            "rent": [16, 80, 220, 600, 800, 1000]
-          },
-          {
-            "name": "Free Parking",
-            "type": "free"
-          },
-          {
-            "name": "Tempelhof",
-            "type": "street",
-            "group": 4,
-            "price": 220,
-            "house_price": 150,
-            "rent": [18, 90, 250, 700, 875, 1050]
-          },
-          {
-            "name": "Chance",
-            "type": "event_card"
-          },
-          {
-            "name": "Kreuzberg",
-            "type": "street",
-            "group": 4,
-            "price": 220,
-            "house_price": 150,
-            "rent": [18, 90, 250, 700, 875, 1050]
-          },
-          {
-            "name": "Neukölln",
-            "type": "street",
-            "group": 4,
-            "price": 240,
-            "house_price": 150,
-            "rent": [20, 100, 300, 750, 925, 1100]
-          },
-          {
-            "name": "Warschauer Straße",
-            "type": "station",
-            "group": 8,
-            "price": 200,
-            "rent": [50]
-          },
-          {
-            "name": "Sprengelkiez",
-            "type": "street",
-            "group": 5,
-            "price": 260,
-            "house_price": 150,
-            "rent": [22, 110, 330, 800, 975, 1150]
-          },
-          {
-            "name": "Bergmannkiez",
-            "type": "street",
-            "group": 5,
-            "price": 260,
-            "house_price": 150,
-            "rent": [22, 110, 330, 800, 975, 1150]
-          },
-          {
-            "name": "Fernsehturm",
-            "type": "utility",
-            "group": 9,
-            "price": 150,
-            "rent": 75
-          },
-          {
-            "name": "Kollwitzkiez",
-            "type": "street",
-            "group": 5,
-            "price": 280,
-            "house_price": 150,
-            "rent": [24, 120, 360, 850, 1025, 1200]
-          },
-          {
-            "name": "Go To Jail",
-            "type": "go_to_jail"
-          },
-          {
-            "name": "Schoeneberg",
-            "type": "street",
-            "group": 6,
-            "price": 300,
-            "house_price": 200,
-            "rent": [26, 130, 390, 900, 1100, 1275]
-          },
-          {
-            "name": "Friedrichshain",
-            "type": "street",
-            "group": 6,
-            "price": 300,
-            "house_price": 200,
-            "rent": [26, 130, 390, 900, 1100, 1275]
-          },
-          {
-            "name": "Community Chest",
-            "type": "society_card"
-          },
-          {
-            "name": "Prenzlauer Berg",
-            "type": "street",
-            "group": 6,
-            "price": 320,
-            "house_price": 200,
-            "rent": [28, 150, 450, 1000, 1200, 1400]
-          },
-          {
-            "name": "Alexander Platz",
-            "type": "station",
-            "group": 8,
-            "price": 200,
-            "rent": 50
-          },
-          {
-            "name": "Chance",
-            "type": "event_card"
-          },
-          {
-            "name": "Grunewald",
-            "type": "street",
-            "group": 7,
-            "price": 350,
-            "house_price": 200,
-            "rent": [35, 175, 500, 1100, 1300, 1500]
-          },
-          {
-            "name": "Luxury Tax",
-            "type": "tax",
-            "rent": 100
-          },
-          {
-            "name": "Mitte",
-            "type": "street",
-            "group": 7,
-            "price": 400,
-            "house_price": 200,
-            "rent": [50, 200, 600, 1400, 1700, 2000]
-          }
-
-        ]
-      };
 
       for (var i = 0; i < data.fields.length; i++) {
         data.fields[i].attributes = {
-          color: this.colorMapping[data.fields[i].group]
+          color: this.colorMapping[data.fields[i].group],
+          index: i
         };
       }
       var gameboard = data.fields;
+      this.gameboard = data.fields;
       this.lane1 = [].concat(gameboard.slice(0, 10)).reverse();
       this.lane2 = gameboard.slice(10, 20);
       this.lane3 = gameboard.slice(20, 30);
       this.lane4 = [].concat(gameboard.slice(30, 40)).reverse();
-      //var gameboard = data.fields.map((field) => field.assign("color": "red"));
-      //debugger;
-      //console.log(gameboard.length);
-      //this.lane1 = game.slice()
+      this.$store.commit("setGame", gameboard);
     },
-    onPlayerReady: function(playerName) {
-      console.log(playerName + ' is now ready!');
+    onGameStart: function() {
+      this.info = "Los gehts!";
+    },
+    onPossibleActions: function(data) {
+
+      let mapping = {
+        "player_ready": {
+          method: () => {
+            this.gameConnection.setReady()
+          },
+          label: "Startklar"
+        },
+        "game_start": {
+          method: () => {
+            this.gameConnection.startGame()
+          },
+          label: "Spiel starten"
+        },
+        "roll_dice": {
+          method: () => {
+            this.gameConnection.send("roll_dice")
+          },
+          label: "Würfeln"
+        },
+        "buy_field": {
+          method: () => {
+            this.gameConnection.send("buy_field")
+          },
+          label: "Feld kaufen"
+        },
+        "end_turn": {
+          method: () => {this.gameConnection.send("end_turn")},
+          label: "Zug beenden"
+        }
+      };
+      this.possibleRequests = [];
+      console.log("Possible Requests", data.requests);
+      for (var i = 0; i < data.requests.length; i++) {
+        var r = {"method" : () => {this.gameConnection.send(data.requests[i].request)}, "label": data.requests[i].request}
+        if (mapping.hasOwnProperty(data.requests[i].request)) {
+          r.label = _.get(mapping, data.requests[i].request+'.label', r.label);
+        }
+        this.possibleRequests.push(mapping[data.requests[i].request])
+      }
+    },
+    onPlayerReady: function(data) {
+      console.log(data.player_name + ' is now ready!');
     },
     onGameStarted: function() {
       console.log('Game started!');
@@ -493,9 +280,17 @@ export default {
     onGameEnded: function() {
       console.log('Game ended');
     },
-    onTurnChanged: function(playerName) {
-      console.log('It\'s ' + playerName + ' turn!');
+    onTurnChanged: function(data) {
+      console.log('turn change!', data);
+      this.info = data.player_name + " ist am Zug";
     },
+    onMoneyChange: function(data) {
+      console.log("Money change");
+    },
+    onRollDice: function(data) {
+      this.info = data.player_name + " würfelt " + data.eyes[0] + ' und ' + data.eyes[1];
+    },
+
     onError: function(message) {
       console.log(message);
     },
@@ -509,13 +304,16 @@ export default {
       let homeConnection = new HomeConnection({
         enter_lobby: (data) => {
           gameConnection = new GameConnection(data.session, this.$route.query.game_id, {
+            "possible_requests": function() {
+              this.rollDice();
+            },
             "fallback": () => true,
             "error": () => true
           })
         }
       });
-      setTimeout(() => homeConnection.createAccount("The Joker No." + Math.round(Math.random() * 100000)), 300);
-
+      setTimeout(() => homeConnection.createAccount("The Joker No." + Math.round(Math.random() * 1000)), 300);
+      setTimeout(() => gameConnection.setReady(), 1000);
     }
   }
 }

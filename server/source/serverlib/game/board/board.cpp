@@ -1,11 +1,17 @@
 #include "board.h"
 
-#include <QJsonObject>
 #include <QJsonArray>
+#include <QJsonObject>
+
+#include <game/board/street.h>
+
+#include <utils/exception.h>
 
 Board::Board(std::vector<std::unique_ptr<Field>> fields)
-	: m_fields(std::move(fields))
+    : m_fields(std::move(fields))
+    , m_jailIndex(0)
 {
+    findAndSetJailIndex();
 }
 
 size_t Board::size() const
@@ -16,12 +22,12 @@ size_t Board::size() const
 QJsonObject Board::description() const
 {
     QJsonArray fields;
-	for(const auto& field : m_fields)
-	{
+    for (const auto& field : m_fields)
+    {
         fields.append(field->description());
-	}
+    }
 
-	return {
+    return {
         { "fields", fields }
     };
 }
@@ -29,4 +35,55 @@ QJsonObject Board::description() const
 Field* Board::operator[](size_t index)
 {
     return m_fields[index].get();
+}
+
+int Board::targetForMove(int position, int distance)
+{
+    if (size() == 0)
+    {
+        return 0;
+    }
+
+    // 2 * size() prefents from wrong index on moving backwards over 0
+    return static_cast<int>((position + distance + 2 * size()) % size());
+}
+
+int Board::jailIndex() const
+{
+    return m_jailIndex;
+}
+
+void Board::findAndSetJailIndex()
+{
+	for (int i = 0; i < size(); ++i)
+	{
+		if (m_fields[i]->type() == FieldType::jail)
+		{
+            m_jailIndex = i;
+            return;
+		}
+	}
+    m_jailIndex = 0;
+}
+
+void Board::changeOwner(int id, const QString& owner)
+{
+    auto street = dynamic_cast<Street*>(m_fields[id].get());
+    if (street == nullptr)
+    {
+        throw Exception("Field is not a street.");
+    }
+    street->changeOwner(owner);
+
+	emit onPropertyChange(id, street->owner(), street->constructionLevel());
+}
+
+int Board::fieldPrice(int id)
+{
+    auto street = dynamic_cast<Street*>(m_fields[id].get());
+	if (street == nullptr)
+	{
+        throw Exception("Field is not a street.");
+	}
+    return street->price();
 }

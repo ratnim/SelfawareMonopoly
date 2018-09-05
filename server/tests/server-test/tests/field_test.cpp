@@ -1,22 +1,23 @@
 #include <gmock/gmock.h>
 
-#include <game/board/field.h>
 #include <QJsonObject>
+
+#include <game/board/field.h>
 
 TEST(FieldTest, get_description)
 {
-    Field field("Test", FieldType::start);
+    Field field("Test", FieldType::free);
 
     auto description = field.description();
 
     EXPECT_EQ("Test", description["name"].toString().toStdString());
-    EXPECT_EQ("start", description["type"].toString().toStdString());
+    EXPECT_EQ("free", description["type"].toString().toStdString());
 }
 
 TEST(FieldTypeStringConverterTest, type_to_name)
 {
     EXPECT_EQ(FieldType::jail, FieldTypeStringConverter::typeByName("jail"));
-	EXPECT_EQ(FieldType::go_to_jail, FieldTypeStringConverter::typeByName("go_to_jail"));
+    EXPECT_EQ(FieldType::go_to_jail, FieldTypeStringConverter::typeByName("go_to_jail"));
     EXPECT_ANY_THROW(FieldTypeStringConverter::typeByName("not_there"));
 }
 

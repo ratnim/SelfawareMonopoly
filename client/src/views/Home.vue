@@ -40,12 +40,12 @@ export default {
   },
 
   created() {
-    homeConnection.connect();
-    homeConnection.onJoinLobby(this.onJoinLobby);
-    homeConnection.onError(this.onError);
+    //homeConnection.connect();
+    //homeConnection.onJoinLobby(this.onJoinLobby);
+    //homeConnection.onError(this.onError);
   },
   beforeRouteLeave(to, from, next) {
-    homeConnection.disconnect();
+    //homeConnection.disconnect();
     next();
   },
 
@@ -56,12 +56,12 @@ export default {
       })
     },
     createAccount: function() {
-      homeConnection.createAccount(this.nickname);
+      //homeConnection.createAccount(this.nickname);
       this.$store.dispatch('createAccount', this.nickname);
     },
     onJoinLobby: function(sessionId) {
       this.$router.push({ name: 'lobby' });
-      this.$store.commit('setSessionId', sessionId);
+      //this.$store.commit('setSessionId', sessionId);
     },
     onError: function(message) {
       console.log(message);
