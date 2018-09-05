@@ -22,18 +22,18 @@ public:
 
     int targetForMove(int position, int distance);
     void changeOwner(int id, const QString& owner);
-    void changeConstructionLevels(const std::vector<std::pair<int,int>>& newLevels);
+    void changeConstructionLevels(const QString& owner, const std::vector<std::pair<int,int>>& newLevels);
     int fieldPrice(int id);
     int housePrice(int id);
 
-    int checkHouseChangePrice(const QString& owner, const std::vector<std::pair<int,int>>& newLevels);
-    void ensureFullGroupOwnership(const QString& owner, int id);
+    int calculateConstructionPrice(const QString& owner, const std::vector<std::pair<int,int>>& newLevels);
 
 signals:
     void onPropertyChange(int id, const QString& owner, int consrtuctionLevel);
 
 protected:
     void findAndSetJailIndex();
+    void validateConstructionLevels(const QString& owner, const std::vector<std::pair<int,int>> & levels);
 
     std::vector<std::unique_ptr<Field>> m_fields;
     int m_jailIndex;

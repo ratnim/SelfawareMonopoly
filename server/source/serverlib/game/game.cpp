@@ -117,7 +117,7 @@ void Game::doCurrentPlayerBuyField()
 
 void Game::doCurrentPlayerChangeHouses(const std::vector<std::pair<int,int>>& newLevels)
 {
-    auto cashflow = m_board.checkHouseChangePrice(currentPlayer().name(), newLevels);
+    auto cashflow = m_board.calculateConstructionPrice(currentPlayer().name(), newLevels);
 
     if (cashflow > 0) // player has to pay
     {
@@ -128,7 +128,7 @@ void Game::doCurrentPlayerChangeHouses(const std::vector<std::pair<int,int>>& ne
         m_bank.giveMoney(currentPlayer().name(), -cashflow);
     }
 
-    m_board.changeConstructionLevels(newLevels);
+    m_board.changeConstructionLevels(currentPlayer().name(), newLevels);
 }
 
 void Game::doCurrentPlayerEarnMoney(int amount)

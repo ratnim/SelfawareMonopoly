@@ -78,13 +78,15 @@ void Board::changeOwner(int id, const QString& owner)
 	emit onPropertyChange(id, street->owner(), street->constructionLevel());
 }
 
-void Board::changeConstructionLevels(const std::vector<std::pair<int,int>>& newLevels)
+void Board::changeConstructionLevels(const QString& owner, const std::vector<std::pair<int,int>>& newLevels)
 {
+    validateConstructionLevels(owner, newLevels);
+
     for (const auto [id, level] : newLevels)
     {
         auto street = dynamic_cast<Street*>(m_fields[id].get());
 
-        if (street == nullptr)
+        if (street == nullptr) // Should not happen, already checked in validate...()
         {
             throw Exception("Field is not a street.");
         }
@@ -118,45 +120,16 @@ int Board::housePrice(int id)
     return street->housePrice();
 }
 
-int Board::checkHouseChangePrice(const QString& owner, const std::vector<std::pair<int,int>>& newLevels)
+int Board::calculateConstructionPrice(const QString& owner, const std::vector<std::pair<int,int>>& newLevels)
 {
+    validateConstructionLevels(owner, newLevels);
+
     int fullPrice = 0;
     int fullReturn = 0;
 
-    uint8_t levelValidation = 0b00111111; // TODO: More dynamic: one '1' bit per building level
-
-    int group = -1;
-
     for (const auto [id, level] : newLevels)
     {
-        if (level < ConstructionLevel::BASE || level > ConstructionLevel::HOTEL)
-        {
-            throw Exception("Invalid construction level");
-        }
-
         auto street = dynamic_cast<Street*>(m_fields[id].get());
-
-        if (street == nullptr)
-        {
-            throw Exception("Field is not a street.");
-        }
-
-        if (street->owner() != owner)
-        {
-            throw Exception("Player does not own street.");
-        }
-
-        if (group == -1)
-        {
-            group = street->group();
-        }
-        else
-        {
-            if (street->group() != group)
-            {
-                throw Exception("Not all streets belong to the same group.");
-            }
-        }
 
         if (street->constructionLevel() < level)
         {
@@ -167,37 +140,50 @@ int Board::checkHouseChangePrice(const QString& owner, const std::vector<std::pa
         {
             fullReturn += street->housePrice() * (street->constructionLevel() - level) / 2;
         }
+    }
+
+    return fullPrice - fullReturn;
+}
+
+void Board::validateConstructionLevels(const QString& owner, const std::vector<std::pair<int,int>> & levels)
+{
+    uint8_t levelValidation = 0b00111111; // TODO: More dynamic: one '1' bit per building level
+    int group = -1;
+
+    for (const auto [id, level] : levels)
+    {
+        if (level < ConstructionLevel::BASE || level > ConstructionLevel::HOTEL)
+        {
+            throw Exception("Invalid construction level", Error::InvalidRequest);
+        }
+
+        auto street = dynamic_cast<Street*>(m_fields[id].get());
+
+        if (street == nullptr)
+        {
+            throw Exception("Field is not a street.", Error::InvalidRequest);
+        }
+
+        if (street->owner() != owner)
+        {
+            throw Exception("Player does not own street.", Error::InvalidRequest);
+        }
+
+        if (group == -1)
+        {
+            group = street->group();
+        }
+
+        if (street->group() != group)
+        {
+            throw Exception("Not all streets belong to the same group.", Error::InvalidRequest);
+        }
 
         levelValidation &= 0b11 << level;
     }
 
     if (levelValidation == 0)
     {
-        throw Exception("Construciton levels differ too much.");
-    }
-
-    return fullPrice - fullReturn;
-}
-
-void Board::ensureFullGroupOwnership(const QString& owner, int id)
-{
-    auto firstStreet = dynamic_cast<Street*>(m_fields[id].get());
-    if (firstStreet == nullptr)
-    {
-        throw Exception("Field is not a street.");
-    }
-
-    const auto checkedGroup = firstStreet->group();
-
-    for (auto& field : m_fields)
-    {
-        if (auto street = dynamic_cast<Street*>(field.get()))
-        {
-            if ((street->group() == checkedGroup)
-             && (street->owner() != owner))
-            {
-                throw Exception("Player does not own full group.", Error::InvalidRequest);
-            }
-        }
+        throw Exception("Construciton levels differ too much.", Error::InvalidRequest);
     }
 }
