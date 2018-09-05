@@ -68,6 +68,10 @@ export default class GameConnection {
   rollDice() {
     this.socket.send(createJSON('roll_dice', {}));
   }
+
+  send(request) {
+    this.socket.send(createJSON(request, {}));
+  }
 }
 
 
