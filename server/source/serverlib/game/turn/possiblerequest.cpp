@@ -38,6 +38,11 @@ PossibleRequest PossibleRequest::buyField()
 	return PossibleRequest("buy_field", {{ "buy" , 1 }});
 }
 
+PossibleRequest PossibleRequest::constructBuilding(const QJsonArray& groups)
+{
+    return PossibleRequest("construct_building", {{ "groups", groups }});
+}
+
 PossibleRequest PossibleRequest::payDebt(const QString& beneficiary, int amount)
 {
     return PossibleRequest("pay_debt", { { "beneficiary", beneficiary } , { "amount" , amount } });
