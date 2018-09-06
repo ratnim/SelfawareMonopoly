@@ -74,13 +74,31 @@ TEST(IdleStateTest, possible_requests)
     EXPECT_EQ(player_1, game.currentPlayer().name());
     EXPECT_EQ(player_1, request_spy.last().at(0).toString());
     EXPECT_TRUE(containsRequest(request_spy.last().at(1).toJsonArray(), "end_turn"));
-    EXPECT_TRUE(containsRequest(request_spy.last().at(1).toJsonArray(), "construct_building"));
+    EXPECT_FALSE(containsRequest(request_spy.last().at(1).toJsonArray(), "construct_building"));
 
     game.requestPossibleRequests(player_2);
 
     EXPECT_EQ(request_spy.last().at(0).toString(), player_2);
     EXPECT_FALSE(containsRequest(request_spy.last().at(1).toJsonArray(), "end_turn"));
     EXPECT_FALSE(containsRequest(request_spy.last().at(1).toJsonArray(), "construct_building"));
+}
+
+TEST(IdleStateTest, possible_requests_construct_buildings)
+{
+    Game game(fieldsTwoGroups());
+    game.players() = RingBuffer<Player>(std::vector<Player>{ { player_1 } });
+    game.stateChange<IdleState>();
+    dynamic_cast<Street*>(game.board()[0])->changeOwner(player_1);
+    dynamic_cast<Street*>(game.board()[1])->changeOwner(player_1);
+
+    QSignalSpy request_spy(&game, &Game::onPossibleRequests);
+
+    game.requestPossibleRequests(player_1);
+
+    EXPECT_EQ(player_1, game.currentPlayer().name());
+    EXPECT_EQ(player_1, request_spy.last().at(0).toString());
+    EXPECT_TRUE(containsRequest(request_spy.last().at(1).toJsonArray(), "end_turn"));
+    EXPECT_TRUE(containsRequest(request_spy.last().at(1).toJsonArray(), "construct_building"));
 }
 
 TEST(IdleStateTest, update_possible_actions)

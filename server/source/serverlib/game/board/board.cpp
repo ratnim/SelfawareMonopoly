@@ -66,6 +66,11 @@ void Board::findAndSetJailIndex()
     m_jailIndex = 0;
 }
 
+bool Board::ownsGroup(const QString& playerName)
+{
+    return false;
+}
+
 void Board::changeOwner(int id, const QString& owner)
 {
     auto street = dynamic_cast<Street*>(m_fields[id].get());

@@ -20,6 +20,7 @@ public:
     int jailIndex() const;
     Field* operator[](size_t index);
 
+	bool ownsGroup(const QString& playerName);
     int targetForMove(int position, int distance);
     void changeOwner(int id, const QString& owner);
     void changeConstructionLevels(const QString& owner, const std::vector<std::pair<int,int>>& newLevels);
