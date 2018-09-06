@@ -2,14 +2,16 @@
 <div class="home">
   <div class="md-layout">
     <div class="md-layout-item md-size-15">
-      <h3>Alles was du wissen musst</h3>
+      <h3>Übersicht</h3>
       <div ref="a">
-        Du bist {{nickname}}
+        <PlayerProfile v-show="player" :name="nickname" :player="player"></PlayerProfile>
+
+
       </div>
       <div ref="a">
-        Deine Gegner sind
+        Deine Gegner
         <div v-for="player in players" v-if="player.nickname != nickname">
-          {{player.nickname}}
+          <PlayerProfile :name="player.nickname" :player="player"></PlayerProfile>
         </div>
       </div>
     </div>
@@ -78,6 +80,7 @@ import LobbyConnection from '@/sockets/lobbyConnection' // just for DEV
 import MonopolyField from '@/components/MonopolyField'
 import MonopolyPlayer from '@/components/MonopolyPlayer'
 import Dice from '@/components/Dice'
+import PlayerProfile from '@/components/PlayerProfile'
 
 import game from '@/assets/game.json'
 
@@ -86,7 +89,8 @@ export default {
   components: {
     MonopolyField,
     MonopolyPlayer,
-    Dice
+    Dice,
+    PlayerProfile
   },
   data: function() {
     return {
@@ -125,6 +129,7 @@ export default {
     }),
     fieldWidth: () => (600 - 10 - 10) / (10 + 1 + 1), // + 1 because of l = 1.5*w
     fieldLength: () => (600 - 10 - 10) / (10 + 1 + 1) * 1.5,
+    player: function() {return _.find(this.players, {"nickname": this.nickname})}
   },
 
   created() {
@@ -138,6 +143,7 @@ export default {
       "money_change": this.onMoneyChange,
       "roll_dice": this.onRollDice,
       "player_move": this.onPlayerMove,
+      "property_change": this.onPropertyChange,
       "error": (data) => {
         console.log(data);
       }
@@ -181,7 +187,11 @@ export default {
           id: this.players.length,
           currentField: 0,
           nickname: playerName,
-          color: this.getRandomColor()
+          color: this.getRandomColor(),
+          isReady: false,
+          isOnTurn: null,
+          deposit: 0,
+          properties: []
         });
       };
       //translate players in game grafic
@@ -220,11 +230,15 @@ export default {
       }
       var gameboard = data.fields;
       this.gameboard = data.fields;
+      this.gameboard2Lanes(gameboard);
+      this.lane4 = [].concat(gameboard.slice(30, 40)).reverse();
+      this.$store.commit("setGame", gameboard);
+    },
+    gameboard2Lanes: function(gameboard) {
       this.lane1 = [].concat(gameboard.slice(0, 10)).reverse();
       this.lane2 = gameboard.slice(10, 20);
       this.lane3 = gameboard.slice(20, 30);
       this.lane4 = [].concat(gameboard.slice(30, 40)).reverse();
-      this.$store.commit("setGame", gameboard);
     },
     onGameStart: function() {
       this.info = "Los gehts!";
@@ -252,7 +266,7 @@ export default {
         },
         "buy_field": {
           method: () => {
-            this.gameConnection.send("buy_field")
+            this.gameConnection.buyField();
           },
           label: "Feld kaufen"
         },
@@ -272,7 +286,12 @@ export default {
       }
     },
     onPlayerReady: function(data) {
-      console.log(data.player_name + ' is now ready!');
+      this.info = data.player_name + ' is now ready!';
+      for (var i = 0; i < this.players.length; i++) {
+        if (this.players[i].nickname == data.player_name) {
+          this.players[i].isReady = true;
+        }
+      }
     },
     onGameStarted: function() {
       console.log('Game started!');
@@ -281,14 +300,53 @@ export default {
       console.log('Game ended');
     },
     onTurnChanged: function(data) {
-      console.log('turn change!', data);
+
       this.info = data.player_name + " ist am Zug";
+      for (var i = 0; i < this.players.length; i++) {
+        this.players[i].isOnTurn = false;
+        if (this.players[i].nickname == data.player_name) {
+          this.players[i].isOnTurn = true;
+        }
+      }
     },
     onMoneyChange: function(data) {
+      console.log(data);
       console.log("Money change");
+      this.info = data.player_name + (data.deposit > 0 ? " bekommt" : " zahlt") + data.deposit;
+      for (var i = 0; i < this.players.length; i++) {
+        if (this.players[i].nickname == data.player_name) {
+          this.players[i].deposit = data.deposit;
+        }
+      }
+      //{deposit: 1500, player_name: "pascal1"}
     },
     onRollDice: function(data) {
       this.info = data.player_name + " würfelt " + data.eyes[0] + ' und ' + data.eyes[1];
+    },
+
+    onPropertyChange: function(data) {
+      //property_change
+//       {
+//     "name" : "property_change",
+//     "data" :
+//     {
+//         index: <index>,
+//         owner: <player_name>,
+//         construction_level: <level>
+//     }
+// }
+      //change in gameboard,
+      //change in players
+      this.gameboard[data.index].owner = data.owner;
+      this.gameboard[data.index].construction_level = data.construction_level;
+      this.gameboard2Lanes(this.gameboard);
+
+      for (var i = 0; i < this.players.length; i++)
+      {
+        if (this.players[i].nickname == data.owner) {
+          this.players[i].properties.push(this.gameboard[data.index])
+        }
+      }
     },
 
     onError: function(message) {
