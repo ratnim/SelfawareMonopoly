@@ -34,7 +34,7 @@ public:
     QString owner() const;
 
 	void changeOwner(const QString& newOwner);
-
+    void changeConstructionLevel(const ConstructionLevel newLevel);
 
 	QJsonObject description() override;
 

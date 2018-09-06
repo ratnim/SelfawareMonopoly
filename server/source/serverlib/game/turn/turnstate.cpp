@@ -45,6 +45,10 @@ void TurnState::requestPayDebt(const QString& debtor, const QString& beneficiary
     InvalidRequest();
 }
 
+void TurnState::requestChangeHouses(const QString& playerName, const std::vector<std::pair<int,int>>& newLevels)
+{
+    InvalidRequest();
+}
 
 void TurnState::requestEndTurn(const QString& playerName)
 {

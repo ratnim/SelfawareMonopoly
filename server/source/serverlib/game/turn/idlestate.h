@@ -10,4 +10,5 @@ public:
     IdleState(TurnState* state);
 
     void requestEndTurn(const QString& playerName) override;
+    void requestChangeHouses(const QString& playerName, const std::vector<std::pair<int,int>>& newLevels) override;
 };
