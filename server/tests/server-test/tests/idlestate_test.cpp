@@ -88,8 +88,8 @@ TEST(IdleStateTest, possible_requests_construct_buildings)
     Game game(fieldsTwoGroups());
     game.players() = RingBuffer<Player>(std::vector<Player>{ { player_1 } });
     game.stateChange<IdleState>();
-    dynamic_cast<Street*>(game.board()[0])->changeOwner(player_1);
-    dynamic_cast<Street*>(game.board()[1])->changeOwner(player_1);
+    game.board().changeOwner(0, player_1);
+    game.board().changeOwner(1, player_1);
 
     QSignalSpy request_spy(&game, &Game::onPossibleRequests);
 
@@ -119,8 +119,8 @@ TEST(IdleStateTest, buy_houses)
     game.stateChange<IdleState>();
     game.bank().createAccount(player_1, 1000);
 
-    dynamic_cast<Street*>(game.board()[0])->changeOwner(player_1);
-    dynamic_cast<Street*>(game.board()[1])->changeOwner(player_1);
+    game.board().changeOwner(0, player_1);
+    game.board().changeOwner(1, player_1);
 
 	QSignalSpy property_spy(&game, &Game::onPropertyChange);
 	QSignalSpy money_spy(&game, &Game::onMoneyChange);
@@ -140,8 +140,8 @@ TEST(IdleStateTest, buy_houses_not_enough_money)
     game.stateChange<IdleState>();
     game.bank().createAccount(player_1, 0);
 
-    dynamic_cast<Street*>(game.board()[0])->changeOwner(player_1);
-    dynamic_cast<Street*>(game.board()[1])->changeOwner(player_1);
+    game.board().changeOwner(0, player_1);
+    game.board().changeOwner(1, player_1);
 
 	QSignalSpy property_spy(&game, &Game::onPropertyChange);
 	QSignalSpy money_spy(&game, &Game::onMoneyChange);
@@ -179,10 +179,10 @@ TEST(IdleStateTest, buy_houses_wrong_groups)
     game.stateChange<IdleState>();
     game.bank().createAccount(player_1, 1000);
 
-    dynamic_cast<Street*>(game.board()[0])->changeOwner(player_1);
-    dynamic_cast<Street*>(game.board()[1])->changeOwner(player_1);
-    dynamic_cast<Street*>(game.board()[2])->changeOwner(player_1);
-    dynamic_cast<Street*>(game.board()[3])->changeOwner(player_1);
+    game.board().changeOwner(0, player_1);
+    game.board().changeOwner(1, player_1);
+    game.board().changeOwner(2, player_1);
+    game.board().changeOwner(3, player_1);
 
 	QSignalSpy property_spy(&game, &Game::onPropertyChange);
 	QSignalSpy money_spy(&game, &Game::onMoneyChange);
@@ -202,8 +202,8 @@ TEST(IdleStateTest, buy_houses_invalid_level)
     game.stateChange<IdleState>();
     game.bank().createAccount(player_1, 1000);
 
-    dynamic_cast<Street*>(game.board()[0])->changeOwner(player_1);
-    dynamic_cast<Street*>(game.board()[1])->changeOwner(player_1);
+    game.board().changeOwner(0, player_1);
+    game.board().changeOwner(1, player_1);
 
 	QSignalSpy property_spy(&game, &Game::onPropertyChange);
 	QSignalSpy money_spy(&game, &Game::onMoneyChange);
@@ -241,10 +241,10 @@ TEST(IdleStateTest, sell_houses)
     game.stateChange<IdleState>();
     game.bank().createAccount(player_1, 0);
 
-    dynamic_cast<Street*>(game.board()[0])->changeOwner(player_1);
-    dynamic_cast<Street*>(game.board()[0])->changeConstructionLevel(ConstructionLevel::HOUSE_1);
-    dynamic_cast<Street*>(game.board()[1])->changeOwner(player_1);
-    dynamic_cast<Street*>(game.board()[1])->changeConstructionLevel(ConstructionLevel::HOUSE_1);
+    game.board().changeOwner(0, player_1);
+    game.board().changeConstructionLevel(0, ConstructionLevel::HOUSE_1);
+    game.board().changeOwner(1, player_1);
+    game.board().changeConstructionLevel(1, ConstructionLevel::HOUSE_1);
 
 	QSignalSpy property_spy(&game, &Game::onPropertyChange);
 	QSignalSpy money_spy(&game, &Game::onMoneyChange);
@@ -265,9 +265,9 @@ TEST(IdleStateTest, buy_sell_houses_neutral_cashflow)
     game.bank().createAccount(player_1, 0);
 
     // Please ignore that the original configuration is invalid
-    dynamic_cast<Street*>(game.board()[0])->changeOwner(player_1);
-    dynamic_cast<Street*>(game.board()[0])->changeConstructionLevel(ConstructionLevel::HOUSE_2);
-    dynamic_cast<Street*>(game.board()[1])->changeOwner(player_1);
+    game.board().changeOwner(0, player_1);
+    game.board().changeConstructionLevel(0, ConstructionLevel::HOUSE_2);
+    game.board().changeOwner(1, player_1);
 
 	QSignalSpy property_spy(&game, &Game::onPropertyChange);
 	QSignalSpy money_spy(&game, &Game::onMoneyChange);
@@ -288,8 +288,8 @@ TEST(IdleStateTest, buy_sell_houses_no_change)
     game.stateChange<IdleState>();
     game.bank().createAccount(player_1, 0);
 
-    dynamic_cast<Street*>(game.board()[0])->changeOwner(player_1);
-    dynamic_cast<Street*>(game.board()[1])->changeOwner(player_1);
+    game.board().changeOwner(0, player_1);
+    game.board().changeOwner(1, player_1);
 
 	QSignalSpy property_spy(&game, &Game::onPropertyChange);
 	QSignalSpy money_spy(&game, &Game::onMoneyChange);

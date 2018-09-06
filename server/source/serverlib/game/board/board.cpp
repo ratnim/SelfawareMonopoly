@@ -11,6 +11,7 @@ Board::Board(std::vector<std::unique_ptr<Field>> fields)
     : m_fields(std::move(fields))
     , m_jailIndex(0)
 {
+    initializeGroups();
     findAndSetJailIndex();
 }
 
@@ -53,22 +54,67 @@ int Board::jailIndex() const
     return m_jailIndex;
 }
 
+void Board::initializeGroups()
+{
+	for (int id = 0; id < m_fields.size(); ++id)
+	{
+        auto street = dynamic_cast<Street*>(m_fields[id].get());
+		if (street == nullptr)
+		{
+            continue;
+		}
+
+		if (m_groups.size() <= street->group())
+		{
+            m_groups.resize(street->group() + 1);
+		}
+
+		m_groups[street->group()].push_back(id);
+	}
+}
+
 void Board::findAndSetJailIndex()
 {
-	for (int i = 0; i < size(); ++i)
-	{
-		if (m_fields[i]->type() == FieldType::jail)
-		{
+    for (int i = 0; i < size(); ++i)
+    {
+        if (m_fields[i]->type() == FieldType::jail)
+        {
             m_jailIndex = i;
             return;
-		}
-	}
+        }
+    }
     m_jailIndex = 0;
 }
 
-bool Board::ownsGroup(const QString& playerName)
+bool Board::isGroupOwner(const QString& playerName)
 {
+    for (int groupId = 0; groupId < m_groups.size(); ++groupId)
+    {
+        if (isGroupOwner(playerName, groupId))
+        {
+            return true;
+        }
+    }
     return false;
+}
+
+bool Board::isGroupOwner(const QString& playerName, int groupId)
+{
+    if (groupId >= m_groups.size() || m_groups[groupId].size() == 0)
+    {
+        return false;
+    }
+
+    for (auto id : m_groups[groupId])
+    {
+        auto street = dynamic_cast<Street*>(m_fields[id].get());
+        if (street == nullptr || street->owner() != playerName)
+        {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 void Board::changeOwner(int id, const QString& owner)
@@ -80,59 +126,63 @@ void Board::changeOwner(int id, const QString& owner)
     }
     street->changeOwner(owner);
 
-	emit onPropertyChange(id, street->owner(), street->constructionLevel());
+    emit onPropertyChange(id, street->owner(), street->constructionLevel());
 }
 
-void Board::changeConstructionLevels(const QString& owner, const std::vector<std::pair<int,int>>& newLevels)
+void Board::changeConstructionLevels(const QString& owner, const std::vector<std::pair<int, int>>& newLevels)
 {
     validateConstructionLevels(owner, newLevels);
 
-    for (const auto [id, level] : newLevels)
+    for (const auto[id, level] : newLevels)
     {
-        auto street = dynamic_cast<Street*>(m_fields[id].get());
+        changeConstructionLevel(id, ConstructionLevel(level));
+    }
+}
 
-        if (street == nullptr)
-        {
-            throw Exception("Field is not a street.", Error::InvalidRequest);
-        }
+void Board::changeConstructionLevel(int id, ConstructionLevel level)
+{
+    auto street = dynamic_cast<Street*>(m_fields[id].get());
+    if (street == nullptr)
+    {
+        throw Exception("Field is not a street.", Error::InvalidRequest);
+    }
 
-        if (level != street->constructionLevel())
-        {
-            street->changeConstructionLevel(ConstructionLevel(level));
+    if (level != street->constructionLevel())
+    {
+        street->changeConstructionLevel(ConstructionLevel(level));
 
-            emit onPropertyChange(id, street->owner(), level);
-        }
+        emit onPropertyChange(id, street->owner(), level);
     }
 }
 
 int Board::fieldPrice(int id)
 {
     auto street = dynamic_cast<Street*>(m_fields[id].get());
-	if (street == nullptr)
-	{
+    if (street == nullptr)
+    {
         throw Exception("Field is not a street.", Error::InvalidRequest);
-	}
+    }
     return street->price();
 }
 
 int Board::housePrice(int id)
 {
     auto street = dynamic_cast<Street*>(m_fields[id].get());
-	if (street == nullptr)
-	{
+    if (street == nullptr)
+    {
         throw Exception("Field is not a street.", Error::InvalidRequest);
-	}
+    }
     return street->housePrice();
 }
 
-int Board::calculateConstructionPrice(const QString& owner, const std::vector<std::pair<int,int>>& newLevels)
+int Board::calculateConstructionPrice(const QString& owner, const std::vector<std::pair<int, int>>& newLevels)
 {
     validateConstructionLevels(owner, newLevels);
 
     int fullPrice = 0;
     int fullReturn = 0;
 
-    for (const auto [id, level] : newLevels)
+    for (const auto[id, level] : newLevels)
     {
         auto street = dynamic_cast<Street*>(m_fields[id].get());
 
@@ -150,12 +200,12 @@ int Board::calculateConstructionPrice(const QString& owner, const std::vector<st
     return fullPrice - fullReturn;
 }
 
-void Board::validateConstructionLevels(const QString& owner, const std::vector<std::pair<int,int>> & levels)
+void Board::validateConstructionLevels(const QString& owner, const std::vector<std::pair<int, int>>& levels)
 {
-    uint8_t levelValidation = 0b00111111; // TODO: More dynamic: one '1' bit per building level
+    uint8_t levelValidation = 0b00111111;  // TODO: More dynamic: one '1' bit per building level
     int group = -1;
 
-    for (const auto [id, level] : levels)
+    for (const auto[id, level] : levels)
     {
         if (level < ConstructionLevel::BASE || level > ConstructionLevel::HOTEL)
         {

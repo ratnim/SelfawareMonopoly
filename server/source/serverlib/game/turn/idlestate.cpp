@@ -20,7 +20,7 @@ void IdleState::requestPossibleRequests(const QString& playerName)
     if (playersTurn(playerName))
     {
         requests.append(PossibleRequest::endTurn().toJson());
-        if (m_game->board().ownsGroup(playerName))
+        if (m_game->board().isGroupOwner(playerName))
         {
             requests.append(PossibleRequest::constructBuilding().toJson());
         }
