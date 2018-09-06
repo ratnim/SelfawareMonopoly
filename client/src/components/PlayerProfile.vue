@@ -16,7 +16,7 @@
 
 
 <md-card-content>
-  <div v-for="prop in properties">
+  <div v-for="prop in player.properties">
     {{prop.name}}
   </div>
 

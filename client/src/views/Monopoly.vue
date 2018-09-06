@@ -273,14 +273,19 @@ export default {
         "end_turn": {
           method: () => {this.gameConnection.send("end_turn")},
           label: "Zug beenden"
+        },
+        "dont_buy_field": {
+          label: "Nicht kaufen"
         }
       };
       this.possibleRequests = [];
       console.log("Possible Requests", data.requests);
       for (var i = 0; i < data.requests.length; i++) {
-        var r = {"method" : () => {this.gameConnection.send(data.requests[i].request)}, "label": data.requests[i].request}
-        if (mapping.hasOwnProperty(data.requests[i].request)) {
-          r.label = _.get(mapping, data.requests[i].request+'.label', r.label);
+        var req = data.requests[i];
+        var r = {"method" : () => {this.gameConnection.send(req.request)}, "label": req.request}
+        if (mapping.hasOwnProperty(req.request)) {
+          console.log(req.request);
+          r.label = _.get(mapping, req+'.label', r.label);
         }
         this.possibleRequests.push(mapping[data.requests[i].request])
       }

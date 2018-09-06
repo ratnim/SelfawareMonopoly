@@ -36,7 +36,6 @@ export default {
         return {x: this.x + this.fieldWidth/2, y: this.y + this.fieldLength/2 };
       }
       else if (this.rotation == 90) {
-        debugger;
         return {x: this.x - this.fieldWidth/2, y: this.y + this.fieldLength/2 };
       }
       else if (this.rotation == 270) {
