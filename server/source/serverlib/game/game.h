@@ -33,6 +33,7 @@ public:
     void requestChangeHouses(const QString& playerName, const std::vector<std::pair<int,int>>& newLevels);
     void requestPayDebt(const QString& debtor, const QString& beneficiary);
 
+	void requestWatsonAddClick(const QString& playerName, const QString& addName);
 
     void requestPossibleRequests(const QString& playerName);
 
@@ -43,6 +44,8 @@ public:
     void doCurrentPlayerChangeHouses(const std::vector<std::pair<int,int>>& newLevels);
     void doCurrentPlayerEarnMoney(int amount);
     void doTransferMoney(const QString& sender, const QString& reciever, int amount);
+
+	void doHarmCurrentPlayer();
 
     RingBuffer<Player>& players();
     Player& currentPlayer();

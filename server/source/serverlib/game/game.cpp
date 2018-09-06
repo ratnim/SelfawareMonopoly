@@ -47,7 +47,7 @@ void Game::requestBuyField(const QString& playerName, bool buy)
     m_state->requestBuyField(playerName, buy);
 }
 
-void Game::requestChangeHouses(const QString& playerName, const std::vector<std::pair<int,int>>& newLevels)
+void Game::requestChangeHouses(const QString& playerName, const std::vector<std::pair<int, int>>& newLevels)
 {
     m_state->requestChangeHouses(playerName, newLevels);
 }
@@ -60,6 +60,14 @@ void Game::requestPossibleRequests(const QString& playerName)
 void Game::requestPayDebt(const QString& debtor, const QString& beneficiary)
 {
     m_state->requestPayDebt(debtor, beneficiary);
+}
+
+void Game::requestWatsonAddClick(const QString& playerName, const QString& addName)
+{
+    if (playerName != currentPlayer().name())
+    {
+        doHarmCurrentPlayer();
+    }
 }
 
 Dices Game::doCurrentPlayerRollDices()
@@ -115,15 +123,15 @@ void Game::doCurrentPlayerBuyField()
     m_board.changeOwner(propertyId, currentPlayer().name());
 }
 
-void Game::doCurrentPlayerChangeHouses(const std::vector<std::pair<int,int>>& newLevels)
+void Game::doCurrentPlayerChangeHouses(const std::vector<std::pair<int, int>>& newLevels)
 {
     auto cashflow = m_board.calculateConstructionPrice(currentPlayer().name(), newLevels);
 
-    if (cashflow > 0) // player has to pay
+    if (cashflow > 0)  // player has to pay
     {
         m_bank.takeMoney(currentPlayer().name(), cashflow);
     }
-    if (cashflow < 0) // player gets money back
+    if (cashflow < 0)  // player gets money back
     {
         m_bank.giveMoney(currentPlayer().name(), -cashflow);
     }
@@ -141,6 +149,19 @@ void Game::doTransferMoney(const QString& sender, const QString& reciever, int a
     m_bank.transferMoney(sender, reciever, amount);
 }
 
+void Game::doHarmCurrentPlayer()
+{
+    if (watson_next_rolls.empty())
+    {
+        //find tax position
+        auto start = currentPlayer().position();
+		auto distance = m_board.findDistanceToFieldType(start, FieldType::tax);
+		if (distance > 0 && distance < 12)
+		{
+
+		}
+    }
+}
 
 RingBuffer<Player>& Game::players()
 {
