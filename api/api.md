@@ -252,26 +252,21 @@ Returns:
         }
     }
 
+### Don't buy a Street
+
+Possible Request:
+```
+    {
+        "request" : "dont_buy_field",
+    }
+```
+
 ### Buy a Street
+
 Possible Request:
 ```
     {
         "request" : "buy_field",
-        "data" :
-        {
-            buy : 1
-        }
-    }
-```
-
-Expects:
-```
-    {
-        "request" : "buy_field",
-        "data" :
-        {
-            buy : < 0 | 1 >
-        }
     }
 ```
 
