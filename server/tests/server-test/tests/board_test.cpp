@@ -102,7 +102,8 @@ TEST(BoardTest, group_no_owner)
     EXPECT_FALSE(board.isGroupOwner(player, 0));
     EXPECT_FALSE(board.isGroupOwner(player, 1));
     EXPECT_FALSE(board.isGroupOwner(player, 2));
-    EXPECT_FALSE(board.isGroupOwner(player));
+
+    EXPECT_TRUE(board.ownedGroups(player).empty());
 }
 
 TEST(BoardTest, group_one_owner)
@@ -115,7 +116,7 @@ TEST(BoardTest, group_one_owner)
 
     EXPECT_FALSE(board.isGroupOwner(player, 1));
     EXPECT_FALSE(board.isGroupOwner(player, 2));
-
     EXPECT_TRUE(board.isGroupOwner(player, 0));
-    EXPECT_TRUE(board.isGroupOwner(player));
+
+    EXPECT_FALSE(board.ownedGroups(player).empty());
 }

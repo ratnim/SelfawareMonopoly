@@ -15,7 +15,7 @@ public:
     static PossibleRequest rollDice();
     static PossibleRequest endTurn();
     static PossibleRequest buyField();
-    static PossibleRequest constructBuilding();
+    static PossibleRequest constructBuilding(const QJsonArray& groups);
     static PossibleRequest payDebt(const QString& beneficiary, int amount);
 
 protected:

@@ -21,7 +21,7 @@ public:
     int jailIndex() const;
     Field* operator[](size_t index);
 
-	bool isGroupOwner(const QString& playerName);
+	std::vector<int> ownedGroups(const QString& playerName);
 	bool isGroupOwner(const QString& playerName, int groupId);
     int targetForMove(int position, int distance);
     void changeOwner(int id, const QString& owner);

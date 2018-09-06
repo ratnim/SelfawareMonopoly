@@ -86,16 +86,17 @@ void Board::findAndSetJailIndex()
     m_jailIndex = 0;
 }
 
-bool Board::isGroupOwner(const QString& playerName)
+std::vector<int> Board::ownedGroups(const QString& playerName)
 {
+    std::vector<int> ownedGroups;
     for (int groupId = 0; groupId < m_groups.size(); ++groupId)
     {
         if (isGroupOwner(playerName, groupId))
         {
-            return true;
+            ownedGroups.push_back(groupId);
         }
     }
-    return false;
+    return ownedGroups;
 }
 
 bool Board::isGroupOwner(const QString& playerName, int groupId)
