@@ -208,7 +208,7 @@ export default {
       var fs = this.$refs.fields;
       var field = _.find(fs, (f) => f.attributes.index == data.target)
       console.log(field);
-      playerFigure.move(field.x, field.y);
+      playerFigure.move(field.center.x, field.center.y);
     },
     onGameboard: function(data) {
 
