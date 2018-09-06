@@ -252,31 +252,27 @@ Returns:
         }
     }
 
+### Don't buy a Street
+
+Possible Request:
+```
+    {
+        "request" : "dont_buy_field",
+    }
+```
+
 ### Buy a Street
+
 Possible Request:
 ```
     {
         "request" : "buy_field",
-        "data" :
-        {
-            buy : 1
-        }
-    }
-```
-
-Expects:
-```
-    {
-        "request" : "buy_field",
-        "data" :
-        {
-            buy : < 0 | 1 >
-        }
     }
 ```
 
 Returns:
 
+on success:
 ```
 {
     "name" : "property_change",
@@ -291,6 +287,7 @@ Returns:
 
 or
 
+on failure:
 ```
     {
         "name" : "error",
@@ -327,6 +324,8 @@ Request:
 ```
 
 Returns:
+
+on success:
 ```
     {
         "name" : "money_change",
@@ -340,6 +339,64 @@ Returns:
 
 or
 
+on failure:
+```
+    {
+        "name" : "error",
+        "data" :
+        {
+            "id" : <id>,
+            "message" : <message>
+        }
+    }
+```
+
+### Build Houses
+
+Possible Request:
+
+```
+{
+    "request" : build_houses,
+    "data": { 
+        "groups": [<group_id>, ...]
+    } 
+}
+```
+
+Request:
+
+Construction level needs to be in range from 0 = no building, 1 = one house, ... up to 5 = hotel. 
+A request can only contain fields from one group.
+
+```
+{
+    "request" : build_houses,
+    "data": {
+        "building_sites": { <field_id> : <construction_level>, ... }
+    } 
+}
+```
+
+Returns:
+
+on success:
+```
+{
+    "name" : "property_change",
+    "data" :
+    {
+        index: <index>,
+        owner: <player_name>,
+        construction_level: <level>
+    }
+}
+```
+
+or
+
+
+on failure:
 ```
     {
         "name" : "error",

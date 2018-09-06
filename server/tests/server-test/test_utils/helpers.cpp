@@ -71,3 +71,13 @@ std::vector<std::unique_ptr<Field>> fieldsStart()
     fields.push_back(std::move(std::make_unique<Field>("free", FieldType::free)));
     return fields;
 }
+
+std::vector<std::unique_ptr<Field>> fieldsTwoGroups()
+{
+    std::vector<std::unique_ptr<Field>> fields;
+    fields.emplace_back(new Street("street A1", 0, 100,  50, std::array<int, ConstructionLevel::HOTEL + 1> {1, 2, 3, 4,  5,  6}));
+    fields.emplace_back(new Street("street A2", 0, 100,  50, std::array<int, ConstructionLevel::HOTEL + 1> {1, 2, 3, 4,  5,  6}));
+    fields.emplace_back(new Street("street B1", 1, 150, 100, std::array<int, ConstructionLevel::HOTEL + 1> {2, 4, 6, 8, 10, 12}));
+    fields.emplace_back(new Street("street B2", 1, 150, 100, std::array<int, ConstructionLevel::HOTEL + 1> {2, 4, 6, 8, 10, 12}));
+    return fields;
+}

@@ -20,6 +20,11 @@ void Street::changeOwner(const QString& newOwner)
     m_owner = newOwner;
 }
 
+void Street::changeConstructionLevel(const ConstructionLevel newLevel)
+{
+    m_constructionLevel = newLevel;
+}
+
 int Street::group() const
 {
     return m_group;
