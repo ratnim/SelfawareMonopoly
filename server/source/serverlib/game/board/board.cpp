@@ -71,7 +71,7 @@ void Board::changeOwner(int id, const QString& owner)
     auto street = dynamic_cast<Street*>(m_fields[id].get());
     if (street == nullptr)
     {
-        throw Exception("Field is not a street.");
+        throw Exception("Field is not a street.", Error::InvalidRequest);
     }
     street->changeOwner(owner);
 
@@ -86,9 +86,9 @@ void Board::changeConstructionLevels(const QString& owner, const std::vector<std
     {
         auto street = dynamic_cast<Street*>(m_fields[id].get());
 
-        if (street == nullptr) // Should not happen, already checked in validate...()
+        if (street == nullptr)
         {
-            throw Exception("Field is not a street.");
+            throw Exception("Field is not a street.", Error::InvalidRequest);
         }
 
         if (level != street->constructionLevel())
@@ -105,7 +105,7 @@ int Board::fieldPrice(int id)
     auto street = dynamic_cast<Street*>(m_fields[id].get());
 	if (street == nullptr)
 	{
-        throw Exception("Field is not a street.");
+        throw Exception("Field is not a street.", Error::InvalidRequest);
 	}
     return street->price();
 }
@@ -115,7 +115,7 @@ int Board::housePrice(int id)
     auto street = dynamic_cast<Street*>(m_fields[id].get());
 	if (street == nullptr)
 	{
-        throw Exception("Field is not a street.");
+        throw Exception("Field is not a street.", Error::InvalidRequest);
 	}
     return street->housePrice();
 }
