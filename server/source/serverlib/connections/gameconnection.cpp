@@ -17,7 +17,8 @@ GameConnection::GameConnection(QWebSocket* parent, const ConnectionRequest& requ
 
     m_requests["roll_dice"] = [&game, this](const QJsonValue&) { game.requestRollDice(m_playerName); };
     m_requests["end_turn"] = [&game, this](const QJsonValue&) { game.requestEndTurn(m_playerName); };
-    m_requests["buy_field"] = [&game, this](const QJsonValue& data) { game.requestBuyField(m_playerName, data["buy"].toBool()); };
+    m_requests["buy_field"] = [&game, this](const QJsonValue& data) { game.requestBuyField(m_playerName, true); };
+    m_requests["dont_buy_field"] = [&game, this](const QJsonValue& data) { game.requestBuyField(m_playerName, false); };
     m_requests["pay_debt"] = [&game, this](const QJsonValue& data) { game.requestPayDebt(m_playerName, data["beneficiary"].toString()); };
 
     m_requests["build_houses"] = [&game, this](const QJsonValue& data) {

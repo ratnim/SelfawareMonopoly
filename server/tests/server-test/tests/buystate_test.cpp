@@ -84,11 +84,13 @@ TEST(BuyStateTest, possible_requests)
 
     EXPECT_EQ(player_1, game.currentPlayer().name());
     EXPECT_EQ(player_1, request_spy.last().at(0).toString());
+    EXPECT_TRUE(containsRequest(request_spy.last().at(1).toJsonArray(), "dont_buy_field"));
     EXPECT_TRUE(containsRequest(request_spy.last().at(1).toJsonArray(), "buy_field"));
 
     game.requestPossibleRequests(player_2);
 
     EXPECT_EQ(request_spy.last().at(0).toString(), player_2);
+    EXPECT_FALSE(containsRequest(request_spy.last().at(1).toJsonArray(), "dont_buy_field"));
     EXPECT_FALSE(containsRequest(request_spy.last().at(1).toJsonArray(), "buy_field"));
 }
 
