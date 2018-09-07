@@ -120,3 +120,15 @@ TEST(BoardTest, group_one_owner)
 
     EXPECT_FALSE(board.ownedGroups(player).empty());
 }
+
+TEST(BoardTest, find_distance_to_field_with_type)
+{
+    Board board(fieldsTax());
+
+	EXPECT_EQ(0, board.distanceToNextField(0, FieldType::jail));
+    EXPECT_EQ(5, board.distanceToNextField(0, FieldType::tax));
+    EXPECT_EQ(1, board.distanceToNextField(2, FieldType::free));
+    EXPECT_EQ(3, board.distanceToNextField(4, FieldType::free));
+    EXPECT_EQ(6, board.distanceToNextField(0, FieldType::start));
+    EXPECT_EQ(5, board.distanceToNextField(1, FieldType::start));
+}

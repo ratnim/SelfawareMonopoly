@@ -51,6 +51,14 @@ int Board::targetForMove(int position, int distance)
 
 int Board::distanceToNextField(int position, FieldType type) const
 {
+	for (int distance = 1; distance <= size(); ++distance)
+	{
+        auto target = (position + distance) % size();
+		if (m_fields[target]->type() == type)
+		{
+            return distance;
+		}
+	}
     return 0;
 }
 
