@@ -15,6 +15,7 @@ public:
 
     void requestAddClick(const QString& playerName, const QString& addName);
     void requestScannedGMailAccount(const QString& playerName, Dices dices);
+    void requestGatherWatsonCoin(const QString& playerName, int amount, const QString& source);
 
 	void doHarmCurrentPlayer();
     void doManipulateNextRoll(const QString& playerName, Dices dices);

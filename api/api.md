@@ -468,4 +468,3 @@ Client sends for each round a player hast activated bitcoin mining a request to 
         }
     }
 ```
-

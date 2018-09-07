@@ -42,6 +42,8 @@ GameConnection::GameConnection(QWebSocket* parent, const ConnectionRequest& requ
 		game.watson().requestScannedGMailAccount(m_playerName, {eyes[0].toInt(), eyes[1].toInt()});
 	};
 
+	m_requests["add_watson_coin"] = [&game, this](const QJsonValue& data) { game.watson().requestGatherWatsonCoin(m_playerName, data["amount"].toInt(), data["source"].toString()); };
+
     watchGame(compound.watcher);
 }
 

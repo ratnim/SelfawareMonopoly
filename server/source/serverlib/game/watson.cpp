@@ -23,6 +23,11 @@ void Watson::requestScannedGMailAccount(const QString& playerName, Dices dices)
     doManipulateNextRoll(playerName, dices);
 }
 
+void Watson::requestGatherWatsonCoin(const QString& playerName, int amount, const QString& source)
+{
+
+}
+
 void Watson::doManipulateNextRoll(const QString& playerName, int x, int y)
 {
     doManipulateNextRoll(playerName, { x, y });
