@@ -26,6 +26,9 @@ set(sources
     tests/game_test.cpp
     tests/gameinfo_test.cpp
     tests/gamemodel_test.cpp
+	tests/dices_test.cpp
+
+	tests/watson_test.cpp
 
     tests/configuration_test.cpp
     tests/connection_test.cpp

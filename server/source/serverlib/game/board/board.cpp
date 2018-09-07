@@ -49,6 +49,19 @@ int Board::targetForMove(int position, int distance)
     return static_cast<int>((position + distance + 2 * size()) % size());
 }
 
+int Board::distanceToNextField(int position, FieldType type) const
+{
+	for (int distance = 1; distance <= size(); ++distance)
+	{
+        auto target = (position + distance) % size();
+		if (m_fields[target]->type() == type)
+		{
+            return distance;
+		}
+	}
+    return 0;
+}
+
 int Board::jailIndex() const
 {
     return m_jailIndex;

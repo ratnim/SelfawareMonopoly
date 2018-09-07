@@ -407,3 +407,24 @@ on failure:
         }
     }
 ```
+
+#
+
+## Watson
+
+### Advertising
+
+Client sends on click to server:
+
+```
+    {
+        "request" : "clicked_on_add",
+        "data" :
+        {
+            "add_name" : <add_name>
+        }
+    }
+```
+
+Effect: 
+Server manipulates the current players roll dice result.

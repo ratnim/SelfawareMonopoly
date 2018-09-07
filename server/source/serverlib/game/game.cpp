@@ -5,6 +5,7 @@
 Game::Game(std::vector<std::unique_ptr<Field>> fields)
     : m_board(std::move(fields))
     , m_players({})
+    , m_watson(this)
 {
     connect(&m_bank, &Bank::onMoneyChange, this, &Game::onMoneyChange);
     connect(&m_board, &Board::onPropertyChange, this, &Game::onPropertyChange);
@@ -47,7 +48,7 @@ void Game::requestBuyField(const QString& playerName, bool buy)
     m_state->requestBuyField(playerName, buy);
 }
 
-void Game::requestChangeHouses(const QString& playerName, const std::vector<std::pair<int,int>>& newLevels)
+void Game::requestChangeHouses(const QString& playerName, const std::vector<std::pair<int, int>>& newLevels)
 {
     m_state->requestChangeHouses(playerName, newLevels);
 }
@@ -66,10 +67,9 @@ Dices Game::doCurrentPlayerRollDices()
 {
     currentPlayer().rolled();
     Dices dices;
-    if (!watson_next_rolls.empty())
+    if (m_watson.diceAreManipulated())
     {
-        dices = watson_next_rolls.front();
-        watson_next_rolls.pop();
+        dices = m_watson.getManipulatedDices();
     }
 
     emit onRollDice(currentPlayer().name(), dices.first, dices.second);
@@ -115,15 +115,15 @@ void Game::doCurrentPlayerBuyField()
     m_board.changeOwner(propertyId, currentPlayer().name());
 }
 
-void Game::doCurrentPlayerChangeHouses(const std::vector<std::pair<int,int>>& newLevels)
+void Game::doCurrentPlayerChangeHouses(const std::vector<std::pair<int, int>>& newLevels)
 {
     auto cashflow = m_board.calculateConstructionPrice(currentPlayer().name(), newLevels);
 
-    if (cashflow > 0) // player has to pay
+    if (cashflow > 0)  // player has to pay
     {
         m_bank.takeMoney(currentPlayer().name(), cashflow);
     }
-    if (cashflow < 0) // player gets money back
+    if (cashflow < 0)  // player gets money back
     {
         m_bank.giveMoney(currentPlayer().name(), -cashflow);
     }
@@ -140,7 +140,6 @@ void Game::doTransferMoney(const QString& sender, const QString& reciever, int a
 {
     m_bank.transferMoney(sender, reciever, amount);
 }
-
 
 RingBuffer<Player>& Game::players()
 {
@@ -165,4 +164,9 @@ Bank& Game::bank()
 Board& Game::board()
 {
     return m_board;
+}
+
+Watson& Game::watson()
+{
+    return m_watson;
 }

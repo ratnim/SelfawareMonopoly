@@ -21,9 +21,11 @@ public:
     int jailIndex() const;
     Field* operator[](size_t index);
 
+    int targetForMove(int position, int distance);
+    int distanceToNextField(int position, FieldType type) const;
+
 	std::vector<int> ownedGroups(const QString& playerName);
 	bool isGroupOwner(const QString& playerName, int groupId);
-    int targetForMove(int position, int distance);
     void changeOwner(int id, const QString& owner);
     void changeConstructionLevels(const QString& owner, const std::vector<std::pair<int,int>>& newLevels);
     void changeConstructionLevel(int id, ConstructionLevel level);

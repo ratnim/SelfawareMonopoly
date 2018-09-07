@@ -1,15 +1,32 @@
 #pragma once
 
-#include <random>
+#include <queue>
+
+#include <QString>
 
 #include <game/dices.h>
+
+class Game;
 
 class Watson
 {
 public:
-    void addResult(Dices dices);
-    Dices roll();
+    Watson(Game * game);
+
+    void requestAddClick(const QString& playerName, const QString& addName);
+    
+	void doHarmCurrentPlayer();
+    void doManipulateNextRoll(Dices dices);
+    void doManipulateNextRoll(int x, int y);
+
+    Dices getManipulatedDices();
+
+	bool diceAreManipulated() const;
+    bool currentPlayerRequest(const QString& playerName) const;	
 
 protected:
-    std::vector<Dices> m_results;
+    void clearRolls();
+
+    Game* m_game;
+    std::queue<Dices> m_nextRolls;
 };

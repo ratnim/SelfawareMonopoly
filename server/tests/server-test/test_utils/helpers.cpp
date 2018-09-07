@@ -81,3 +81,15 @@ std::vector<std::unique_ptr<Field>> fieldsTwoGroups()
     fields.emplace_back(new Street("street B2", 1, 150, 100, std::array<int, ConstructionLevel::HOTEL + 1> {2, 4, 6, 8, 10, 12}));
     return fields;
 }
+
+std::vector<std::unique_ptr<Field>> fieldsTax()
+{
+    std::vector<std::unique_ptr<Field>> fields;
+    fields.push_back(std::move(std::make_unique<Start>("start")));
+    fields.push_back(std::move(std::make_unique<Field>("free", FieldType::free)));
+    fields.push_back(std::move(std::make_unique<Field>("free", FieldType::free)));
+    fields.push_back(std::move(std::make_unique<Field>("free", FieldType::free)));
+    fields.push_back(std::move(std::make_unique<Field>("free", FieldType::free)));
+    fields.push_back(std::move(std::make_unique<Field>("tax", FieldType::tax)));
+    return fields;
+}
