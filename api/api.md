@@ -418,7 +418,7 @@ Client sends on click to server:
 
 ```
     {
-        "request" : "player_clicked_on_add",
+        "request" : "clicked_on_add",
         "data" :
         {
             "add_name" : <add_name>

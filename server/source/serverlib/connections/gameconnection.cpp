@@ -34,7 +34,7 @@ GameConnection::GameConnection(QWebSocket* parent, const ConnectionRequest& requ
 
 	m_requests["possible_requests"] = [&game, this](const QJsonValue&) { game.requestPossibleRequests(m_playerName); };
 
-	m_requests["player_clicked_on_add"] = [&game, this](const QJsonValue& data) { game.requestWatsonAddClick(m_playerName, data["add_name"].toString()); };
+	m_requests["clicked_on_add"] = [&game, this](const QJsonValue& data) { game.watson().requestAddClick(m_playerName, data["add_name"].toString()); };
 
     watchGame(compound.watcher);
 }

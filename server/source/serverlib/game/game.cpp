@@ -5,6 +5,7 @@
 Game::Game(std::vector<std::unique_ptr<Field>> fields)
     : m_board(std::move(fields))
     , m_players({})
+    , m_watson(this)
 {
     connect(&m_bank, &Bank::onMoneyChange, this, &Game::onMoneyChange);
     connect(&m_board, &Board::onPropertyChange, this, &Game::onPropertyChange);
@@ -62,22 +63,13 @@ void Game::requestPayDebt(const QString& debtor, const QString& beneficiary)
     m_state->requestPayDebt(debtor, beneficiary);
 }
 
-void Game::requestWatsonAddClick(const QString& playerName, const QString& addName)
-{
-    if (playerName != currentPlayer().name())
-    {
-        doHarmCurrentPlayer();
-    }
-}
-
 Dices Game::doCurrentPlayerRollDices()
 {
     currentPlayer().rolled();
     Dices dices;
-    if (!watson_next_rolls.empty())
+    if (m_watson.diceAreManipulated())
     {
-        dices = watson_next_rolls.front();
-        watson_next_rolls.pop();
+        dices = m_watson.getManipulatedDices();
     }
 
     emit onRollDice(currentPlayer().name(), dices.first, dices.second);
@@ -149,20 +141,6 @@ void Game::doTransferMoney(const QString& sender, const QString& reciever, int a
     m_bank.transferMoney(sender, reciever, amount);
 }
 
-void Game::doHarmCurrentPlayer()
-{
-    if (watson_next_rolls.empty())
-    {
-        //find tax position
-        auto start = currentPlayer().position();
-		auto distance = m_board.findDistanceToFieldType(start, FieldType::tax);
-		if (distance > 0 && distance < 12)
-		{
-
-		}
-    }
-}
-
 RingBuffer<Player>& Game::players()
 {
     return m_players;
@@ -186,4 +164,9 @@ Bank& Game::bank()
 Board& Game::board()
 {
     return m_board;
+}
+
+Watson& Game::watson()
+{
+    return m_watson;
 }

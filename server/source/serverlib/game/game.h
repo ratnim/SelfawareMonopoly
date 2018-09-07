@@ -14,6 +14,8 @@
 #include <game/player.h>
 #include <game/turn/turnstate.h>
 
+#include <game/watson.h>
+
 class Game : public QObject, public Budhist<TurnState>
 {
     Q_OBJECT
@@ -30,10 +32,8 @@ public:
     void requestRollDice(const QString& playerName);
     void requestEndTurn(const QString& playerName);
     void requestBuyField(const QString& playerName, bool buy);
-    void requestChangeHouses(const QString& playerName, const std::vector<std::pair<int,int>>& newLevels);
+    void requestChangeHouses(const QString& playerName, const std::vector<std::pair<int, int>>& newLevels);
     void requestPayDebt(const QString& debtor, const QString& beneficiary);
-
-	void requestWatsonAddClick(const QString& playerName, const QString& addName);
 
     void requestPossibleRequests(const QString& playerName);
 
@@ -41,11 +41,9 @@ public:
     void doCurrentPlayerGoToJail();
     void doCurrentPlayerMove(int distance);
     void doCurrentPlayerBuyField();
-    void doCurrentPlayerChangeHouses(const std::vector<std::pair<int,int>>& newLevels);
+    void doCurrentPlayerChangeHouses(const std::vector<std::pair<int, int>>& newLevels);
     void doCurrentPlayerEarnMoney(int amount);
     void doTransferMoney(const QString& sender, const QString& reciever, int amount);
-
-	void doHarmCurrentPlayer();
 
     RingBuffer<Player>& players();
     Player& currentPlayer();
@@ -53,8 +51,7 @@ public:
     TurnState* state() const;
     Bank& bank();
     Board& board();
-
-    std::queue<Dices> watson_next_rolls;
+    Watson& watson();
 
 signals:
     void onBoardRequest(const QJsonObject& gameBoard);
@@ -76,4 +73,5 @@ protected:
     Board m_board;
     Bank m_bank;
     RingBuffer<Player> m_players;
+    Watson m_watson;
 };

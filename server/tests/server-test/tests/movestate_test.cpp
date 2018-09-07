@@ -33,7 +33,7 @@ TEST(MoveStateTest, roll_dice)
     QSignalSpy move_spy(&game, &Game::onPlayerMove);
 
     EXPECT_EQ(player_1, game.currentPlayer().name());
-    game.watson_next_rolls.emplace(2, 2);
+    game.watson().doManipulateNextRoll(2, 2);
     game.requestRollDice(player_1);
 
     EXPECT_EQ(roll_spy.size(), 1);
@@ -41,7 +41,7 @@ TEST(MoveStateTest, roll_dice)
     EXPECT_EQ("forward", move_spy.last().at(2).toString().toStdString());
     EXPECT_EQ(4, move_spy.last().at(1).toInt());
 
-	game.watson_next_rolls.emplace(1, 2);
+	game.watson().doManipulateNextRoll(1, 2);
     game.requestRollDice(player_1);
 
 	EXPECT_EQ("forward", move_spy.last().at(2).toString().toStdString());
@@ -59,24 +59,24 @@ TEST(MoveStateTest, money_on_pass_start)
     QSignalSpy money_spy(&game, &Game::onMoneyChange);
 
     EXPECT_EQ(player_1, game.currentPlayer().name());
-    game.watson_next_rolls.emplace(2, 2);
+    game.watson().doManipulateNextRoll(2, 2);
     game.requestRollDice(player_1);
 
     EXPECT_EQ(money_spy.size(), 0);
 
-    game.watson_next_rolls.emplace(1, 2);
+    game.watson().doManipulateNextRoll(1, 2);
     game.requestRollDice(player_1);
     EXPECT_EQ(money_spy.size(), 1);
 
 	game.requestEndTurn(player_1);
 
 	EXPECT_EQ(player_2, game.currentPlayer().name());
-    game.watson_next_rolls.emplace(3, 3);
+    game.watson().doManipulateNextRoll(3, 3);
     game.requestRollDice(player_2);
 
     EXPECT_EQ(money_spy.size(), 2);
 	EXPECT_EQ(player_2, game.currentPlayer().name());
-    game.watson_next_rolls.emplace(1, 2);
+    game.watson().doManipulateNextRoll(1, 2);
     game.requestRollDice(player_2);
 
      EXPECT_EQ(money_spy.size(), 2);
@@ -93,14 +93,14 @@ TEST(MoveStateTest, roll_dice_1_pash)
     QSignalSpy move_spy(&game, &Game::onPlayerMove);
 
     EXPECT_EQ(player_1, game.currentPlayer().name());
-    game.watson_next_rolls.emplace(6, 6);
+    game.watson().doManipulateNextRoll(6, 6);
     game.requestRollDice(player_1);
 
     EXPECT_EQ(roll_spy.size(), 1);
     EXPECT_EQ(move_spy.size(), 1);
     EXPECT_NE(nullptr, dynamic_cast<MoveState*>(game.state()));
 
-    game.watson_next_rolls.emplace(1, 2);
+    game.watson().doManipulateNextRoll(1, 2);
     game.requestRollDice(player_1);
 
     EXPECT_EQ(roll_spy.size(), 2);
@@ -119,7 +119,7 @@ TEST(MoveStateTest, roll_dice_pash_3_times)
     QSignalSpy move_spy(&game, &Game::onPlayerMove);
 
     EXPECT_EQ(player_1, game.currentPlayer().name());
-    game.watson_next_rolls.emplace(6, 6);
+    game.watson().doManipulateNextRoll(6, 6);
     game.requestRollDice(player_1);
 
     EXPECT_EQ(roll_spy.size(), 1);
@@ -127,7 +127,7 @@ TEST(MoveStateTest, roll_dice_pash_3_times)
     EXPECT_EQ("forward", move_spy.last().at(2).toString().toStdString());
     EXPECT_NE(nullptr, dynamic_cast<MoveState*>(game.state()));
 
-    game.watson_next_rolls.emplace(6, 6);
+    game.watson().doManipulateNextRoll(6, 6);
     game.requestRollDice(player_1);
 
     EXPECT_EQ(roll_spy.size(), 2);
@@ -135,7 +135,7 @@ TEST(MoveStateTest, roll_dice_pash_3_times)
     EXPECT_EQ("forward", move_spy.last().at(2).toString().toStdString());
     EXPECT_NE(nullptr, dynamic_cast<MoveState*>(game.state()));
 
-    game.watson_next_rolls.emplace(6, 6);
+    game.watson().doManipulateNextRoll(6, 6);
     game.requestRollDice(player_1);
 
     EXPECT_TRUE(game.currentPlayer().inJail());
@@ -166,7 +166,7 @@ TEST(MoveStateTest, state_transfer_to_idle)
     game.stateChange<MoveState>();
 
     EXPECT_EQ(player_1, game.currentPlayer().name());
-    game.watson_next_rolls.emplace(1, 2);
+    game.watson().doManipulateNextRoll(1, 2);
     game.requestRollDice(player_1);
 
     EXPECT_NE(nullptr, dynamic_cast<IdleState*>(game.state()));
