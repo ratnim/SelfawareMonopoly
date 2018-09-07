@@ -62,7 +62,6 @@ int Board::distanceToNextField(int position, FieldType type) const
     return 0;
 }
 
-
 int Board::jailIndex() const
 {
     return m_jailIndex;

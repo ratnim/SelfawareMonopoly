@@ -40,7 +40,7 @@ TEST(WatsonTest, harm_player_on_request_add_click)
 
     QSignalSpy roll_spy(&game, &Game::onRollDice);
 
-    game.watson().doHarmCurrentPlayer();
+    game.watson().requestAddClick(player_2, "test_add");
 
     game.requestRollDice(player_1);
 
@@ -57,7 +57,8 @@ TEST(WatsonTest, harm_player_on_request_add_click_already_manipulated)
     QSignalSpy roll_spy(&game, &Game::onRollDice);
 
 	game.watson().doManipulateNextRoll(1, 2);
-    game.watson().doHarmCurrentPlayer();
+
+    game.watson().requestAddClick(player_2, "test_add");
 
     game.requestRollDice(player_1);
 
