@@ -67,9 +67,9 @@ Dices Game::doCurrentPlayerRollDices()
 {
     currentPlayer().rolled();
     Dices dices;
-    if (m_watson.diceAreManipulated())
+    if (m_watson.diceAreManipulated(currentPlayer().name()))
     {
-        dices = m_watson.getManipulatedDices();
+        dices = m_watson.getManipulatedDices(currentPlayer().name());
     }
 
     emit onRollDice(currentPlayer().name(), dices.first, dices.second);
