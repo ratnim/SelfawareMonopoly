@@ -428,3 +428,22 @@ Client sends on click to server:
 
 Effect: 
 Server manipulates the current players roll dice result.
+
+### Scanned GMail Account
+
+### Advertising
+
+Client sends on scan gmail account to server:
+
+```
+    {
+        "request" : "scanned_gmail_account",
+        "data" :
+        {
+            "dices" : [ <eyes>, <eyes> ]
+        }
+    }
+```
+
+Effect: 
+Player will roll the requested eyes on next roll dice.
