@@ -30,3 +30,36 @@ TEST(WatsonTest, manipulate_dices)
 	EXPECT_EQ(6, roll_spy.last().at(1).toInt());
     EXPECT_EQ(6, roll_spy.last().at(2).toInt());
 }
+
+TEST(WatsonTest, harm_player_on_request_add_click)
+{
+    Game game(std::move(fieldsTax()));
+
+    game.players() = RingBuffer<Player>(std::vector<Player>{ { player_1, player_2 } });
+    game.stateChange<MoveState>();
+
+    QSignalSpy roll_spy(&game, &Game::onRollDice);
+
+    game.watson().doHarmCurrentPlayer();
+
+    game.requestRollDice(player_1);
+
+    EXPECT_EQ(5, roll_spy.last().at(1).toInt() + roll_spy.last().at(2).toInt());
+}
+
+TEST(WatsonTest, harm_player_on_request_add_click_already_manipulated)
+{
+    Game game(std::move(fieldsTax()));
+
+    game.players() = RingBuffer<Player>(std::vector<Player>{ { player_1, player_2 } });
+    game.stateChange<MoveState>();
+
+    QSignalSpy roll_spy(&game, &Game::onRollDice);
+
+	game.watson().doManipulateNextRoll(1, 2);
+    game.watson().doHarmCurrentPlayer();
+
+    game.requestRollDice(player_1);
+
+    EXPECT_EQ(3, roll_spy.last().at(1).toInt() + roll_spy.last().at(2).toInt());
+}

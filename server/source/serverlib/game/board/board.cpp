@@ -49,6 +49,12 @@ int Board::targetForMove(int position, int distance)
     return static_cast<int>((position + distance + 2 * size()) % size());
 }
 
+int Board::distanceToNextField(int position, FieldType type) const
+{
+    return 0;
+}
+
+
 int Board::jailIndex() const
 {
     return m_jailIndex;

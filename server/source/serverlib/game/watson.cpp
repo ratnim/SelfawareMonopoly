@@ -2,6 +2,8 @@
 
 #include <game/game.h>
 
+#include <utils/exception.h>
+
 Watson::Watson(Game* game)
     : m_game(game)
 {
@@ -28,12 +30,17 @@ void Watson::doManipulateNextRoll(Dices dices)
 
 void Watson::doHarmCurrentPlayer()
 {
-    //find tax position
     auto start = m_game->currentPlayer().position();
-    //auto distance = m_game->board().findDistanceToFieldType(start, FieldType::tax);
-    //if (distance > 0 && distance < 12)
-    {
-    }
+    auto distance = m_game->board().distanceToNextField(start, FieldType::tax);
+
+	try
+	{
+        Dices dices{distance};
+        doManipulateNextRoll(dices);
+	}
+    catch (Exception)
+	{
+    };
 }
 
 bool Watson::diceAreManipulated() const
