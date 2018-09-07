@@ -1,7 +1,7 @@
 #include "watson.h"
 
-#include <game/game.h>
 #include <game/dices.h>
+#include <game/game.h>
 
 #include <utils/exception.h>
 
@@ -21,6 +21,11 @@ void Watson::requestAddClick(const QString& playerName, const QString& addName)
 void Watson::requestScannedGMailAccount(const QString& playerName, Dices dices)
 {
     doManipulateNextRoll(playerName, dices);
+}
+
+void Watson::requestGatherWatsonCoin(const QString& playerName, int amount, const QString& source)
+{
+    doAddWatsonCoins(playerName, amount);
 }
 
 void Watson::doManipulateNextRoll(const QString& playerName, int x, int y)
@@ -49,10 +54,15 @@ void Watson::doHarmCurrentPlayer()
     };
 }
 
+void Watson::doAddWatsonCoins(const QString& playerName, int amount)
+{
+
+}
+
 bool Watson::diceAreManipulated(const QString& playerName) const
 {
     auto it = m_manipulatedDices.find(playerName);
-	bool manipulated = it != m_manipulatedDices.end();
+    bool manipulated = it != m_manipulatedDices.end();
     return manipulated;
 }
 
