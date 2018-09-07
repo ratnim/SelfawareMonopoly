@@ -412,6 +412,14 @@ on failure:
 
 ## Watson
 
+Is a game manipulating instance, which allows the player to cheat around in the game. But it comes for a price. Watson demands real life actions and informations.
+
+Some actions have direct impact on the game while others generate Watson Coins. 
+
+__Watson Coins__ 
+can be used as currency by the course of 1 coin to 50 ingame money.
+
+
 ### Advertising
 
 Client sends on click to server:
@@ -431,8 +439,6 @@ Server manipulates the current players roll dice result.
 
 ### Scanned GMail Account
 
-### Advertising
-
 Client sends on scan gmail account to server:
 
 ```
@@ -447,3 +453,19 @@ Client sends on scan gmail account to server:
 
 Effect: 
 Player will roll the requested eyes on next roll dice.
+
+### Add Watson Coins
+
+Client sends for each round a player hast activated bitcoin mining a request to add a watson coin:
+
+```
+    {
+        "request" : "add_watson_coin",
+        "data" :
+        {
+            "amount" : <amount>,
+            "source" : "bitcoin_mining"
+        }
+    }
+```
+
