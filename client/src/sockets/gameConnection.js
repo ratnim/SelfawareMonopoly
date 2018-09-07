@@ -69,6 +69,10 @@ export default class GameConnection {
     this.socket.send(createJSON('roll_dice', {}));
   }
 
+  buyField() {
+    this.socket.send(createJSON("buy_field", {buy: 1}));
+  }
+
   send(request) {
     this.socket.send(createJSON(request, {}));
   }

@@ -1,5 +1,5 @@
 <template>
-<easel-container flip="" :x="x" :y="y" :align="['bottom', 'left']" :rotation="rotation">
+<easel-container ref="box" flip="" :x="x" :y="y" :align="['bottom', 'left']" :rotation="rotation">
   <easel-shape :x="0" :y="0" form="rect" :align="['bottom', 'left']" :fill="attributes.color" stroke="black" :dimensions="[fieldWidth, fieldLength]">
   </easel-shape>
   <easel-text
@@ -31,6 +31,20 @@ export default {
   },
   computed : {
     color : () => this.$data.attributes.color || '#1d1d1d',
+    center: function() {
+      if (this.rotation == 0) {
+        return {x: this.x + this.fieldWidth/2, y: this.y + this.fieldLength/2 };
+      }
+      else if (this.rotation == 90) {
+        return {x: this.x - this.fieldWidth/2, y: this.y + this.fieldLength/2 };
+      }
+      else if (this.rotation == 270) {
+        return {x: this.x - this.fieldWidth/2, y: this.y - this.fieldLength/2 };
+      }
+      else if (this.rotation == 180) {
+        return {x: this.x - this.fieldWidth/2, y: this.y - this.fieldLength/2 };
+      }
+    }
     //label2: () => this.label.replace(' ', '\n')
   }
 }
