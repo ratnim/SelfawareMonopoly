@@ -259,35 +259,39 @@ export default {
           label: "Spiel starten"
         },
         "roll_dice": {
-          method: () => {
-            this.gameConnection.send("roll_dice")
-          },
           label: "Würfeln"
         },
         "buy_field": {
-          method: () => {
-            this.gameConnection.buyField();
-          },
-          label: "Feld kaufen"
+          label: "Feld kaufen für ${amount} €",
+          method: () => this.gameConnection.buyField()
         },
         "end_turn": {
-          method: () => {this.gameConnection.send("end_turn")},
           label: "Zug beenden"
         },
         "dont_buy_field": {
           label: "Nicht kaufen"
+        },
+        "pay_debt": {
+          label: "Zahle ${amount}€ an ${beneficiary}"
         }
       };
       this.possibleRequests = [];
       console.log("Possible Requests", data.requests);
       for (var i = 0; i < data.requests.length; i++) {
         var req = data.requests[i];
-        var r = {"method" : () => {this.gameConnection.send(req.request)}, "label": req.request}
+        var r = {"method" : () => {this.gameConnection.send(req.request, req.data)}, "label": req.request}
         if (mapping.hasOwnProperty(req.request)) {
-          console.log(req.request);
-          r.label = _.get(mapping, req+'.label', r.label);
+          r.label = _.get(mapping, req.request+'.label', r.label);
+          r.method = _.get(mapping, req.request+'.method', r.method);
         }
-        this.possibleRequests.push(mapping[data.requests[i].request])
+        if (req.request == "pay_debt") {
+          r.label = r.label.replace("${amount}", req.data.amount).replace("${beneficiary}", req.data.beneficiary);
+        }
+        if (req.request == "buy_field") {
+          let price = this.gameboard[this.player.currentField].price;
+          r.label = r.label.replace("${amount}", price);
+        }
+        this.possibleRequests.push(r)
       }
     },
     onPlayerReady: function(data) {
@@ -359,7 +363,6 @@ export default {
     },
     getRandomColor: function() {
       return "rgb(" + Math.round(Math.random() * 255) + ", " + Math.round(Math.random() * 255) + ", " + Math.round(Math.random() * 255) + ")";
-
     },
 
     __addFakePlayer: function() {

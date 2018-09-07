@@ -73,8 +73,22 @@ export default class GameConnection {
     this.socket.send(createJSON("buy_field", {buy: 1}));
   }
 
-  send(request) {
-    this.socket.send(createJSON(request, {}));
+  payDebt() {
+//     {
+//     "request" : pay_debt,
+//     "data": {
+//         "amount": <amount>,
+//         "beneficiary" : <name>
+//     }
+// }
+  this.socket.send(createJSON("pay_debt", {amount: 100, beneficiary: ""}));
+  }
+
+  send(request, data) {
+    if (data == undefined) {
+      data = {};
+    }
+    this.socket.send(createJSON(request, data));
   }
 }
 
