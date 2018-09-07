@@ -1,6 +1,6 @@
 #pragma once
 
-#include <queue>
+#include <map>
 
 #include <QString>
 
@@ -14,19 +14,18 @@ public:
     Watson(Game * game);
 
     void requestAddClick(const QString& playerName, const QString& addName);
-    
+    void requestScannedGMailAccount(const QString& playerName, Dices dices);
+
 	void doHarmCurrentPlayer();
-    void doManipulateNextRoll(Dices dices);
-    void doManipulateNextRoll(int x, int y);
+    void doManipulateNextRoll(const QString& playerName, Dices dices);
+    void doManipulateNextRoll(const QString& playerName, int x, int y);
 
-    Dices getManipulatedDices();
+    Dices getManipulatedDices(const QString& playerName);
 
-	bool diceAreManipulated() const;
+	bool diceAreManipulated(const QString& playerName) const;
     bool currentPlayerRequest(const QString& playerName) const;	
 
 protected:
-    void clearRolls();
-
     Game* m_game;
-    std::queue<Dices> m_nextRolls;
+    std::map<QString, Dices> m_manipulatedDices;
 };
