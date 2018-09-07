@@ -20,6 +20,7 @@ public:
 	void doHarmCurrentPlayer();
     void doManipulateNextRoll(const QString& playerName, Dices dices);
     void doManipulateNextRoll(const QString& playerName, int x, int y);
+    void doAddWatsonCoins(const QString& playerName, int amount);
 
     Dices getManipulatedDices(const QString& playerName);
 
