@@ -143,3 +143,52 @@ TEST(WatsonTest, use_money_for_coins)
     EXPECT_THROW(game.watson().doUseCoinsForMoney(player_1, 100), Exception);
     EXPECT_EQ(50, game.watson().availableMoneyForCoins(player_1));
 }
+
+
+TEST(WatsonTest, build_houses_with_coins)
+{
+    Game game(fieldsTwoGroups());
+    game.players() = RingBuffer<Player>(std::vector<Player>{ { player_1 } });
+    game.bank().createAccount(player_1, 1000);
+    game.watson().doAddWatsonCoins(player_1, 3);
+
+    game.board().changeOwner(0, player_1);
+    game.board().changeOwner(1, player_1);
+
+    game.doCurrentPlayerChangeHouses({ { 0, 1 }, { 1, 1 } });
+
+	EXPECT_EQ(1000, game.bank().balance(player_1));
+	EXPECT_EQ(1, game.watson().availableCoins(player_1));
+}
+
+TEST(WatsonTest, build_houses_with_partialy_coins)
+{
+    Game game(fieldsTwoGroups());
+    game.players() = RingBuffer<Player>(std::vector<Player>{ { player_1 } });
+    game.bank().createAccount(player_1, 1000);
+    game.watson().doAddWatsonCoins(player_1, 1);
+
+    game.board().changeOwner(0, player_1);
+    game.board().changeOwner(1, player_1);
+
+    game.doCurrentPlayerChangeHouses({ { 0, 1 }, { 1, 1 } });
+
+    EXPECT_EQ(950, game.bank().balance(player_1));
+    EXPECT_EQ(0, game.watson().availableCoins(player_1));
+}
+
+TEST(WatsonTest, build_houses_with_no_coins)
+{
+    Game game(fieldsTwoGroups());
+    game.players() = RingBuffer<Player>(std::vector<Player>{ { player_1 } });
+    game.bank().createAccount(player_1, 1000);
+    game.watson().doAddWatsonCoins(player_1, 0);
+
+    game.board().changeOwner(0, player_1);
+    game.board().changeOwner(1, player_1);
+
+    game.doCurrentPlayerChangeHouses({ { 0, 1 }, { 1, 1 } });
+
+    EXPECT_EQ(900, game.bank().balance(player_1));
+    EXPECT_EQ(0, game.watson().availableCoins(player_1));
+}

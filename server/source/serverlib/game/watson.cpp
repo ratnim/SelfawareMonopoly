@@ -85,6 +85,12 @@ int Watson::availableMoneyForCoins(const QString& playerName)
     return coinsToMoney(m_coins[playerName]);
 }
 
+int Watson::availableCoins(const QString& playerName)
+{
+    createCoinAccountIfNotExisting(playerName);
+    return m_coins[playerName];
+}
+
 bool Watson::currentPlayerRequest(const QString& playerName) const
 {
     return m_game->currentPlayer().name() == playerName;

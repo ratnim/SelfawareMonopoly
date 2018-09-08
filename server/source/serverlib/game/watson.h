@@ -25,6 +25,7 @@ public:
 
     Dices getManipulatedDices(const QString& playerName);
     int availableMoneyForCoins(const QString& playerName);
+    int availableCoins(const QString& playerName);
 
 	bool diceAreManipulated(const QString& playerName) const;
     bool currentPlayerRequest(const QString& playerName) const;	
