@@ -42,6 +42,7 @@ set(sources
     game/board/street.h
     game/board/gotojail.cpp
     game/board/gotojail.h
+    game/board/taxfield.cpp
     game/board/taxfield.h
     game/turn/endstate.cpp
     game/turn/endstate.h

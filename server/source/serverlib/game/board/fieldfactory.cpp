@@ -7,6 +7,7 @@
 #include <game/board/start.h>
 #include <game/board/street.h>
 #include <game/board/gotojail.h>
+#include <game/board/taxfield.h>
 
 std::unique_ptr<Field> FieldFactory::create(const QJsonObject& specification)
 {
@@ -21,6 +22,8 @@ std::unique_ptr<Field> FieldFactory::create(const QJsonObject& specification)
         return createStreet(specification);
     case FieldType::go_to_jail:
         return std::make_unique<GoToJail>(name);
+    case FieldType::tax:
+        return std::make_unique<TaxField>(name, specification["amount"].toInt());
     default:
         return std::make_unique<Field>(name, type);
 	}
