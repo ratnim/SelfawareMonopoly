@@ -103,6 +103,16 @@ __Incoming Events:__
         }
     }
 ```
+Where id is:
+    EXPECT_EQ(Error::NoError, 0);
+    EXPECT_EQ(Error::InvalidRoute, 1);
+    EXPECT_EQ(Error::UnsupportedAction, 2);
+    EXPECT_EQ(Error::MalformedRequest, 3);
+    EXPECT_EQ(Error::InvalidRequest, 4);
+    EXPECT_EQ(Error::InternalError, 5);
+    EXPECT_EQ(Error::InsufficientMoney, 6);
+    EXPECT_EQ(Error::InsufficientCoins, 7);
+
 ```
     {
         "name" : "money_change",
