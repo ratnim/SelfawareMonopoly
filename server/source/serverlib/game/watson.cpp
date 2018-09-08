@@ -54,9 +54,22 @@ void Watson::doHarmCurrentPlayer()
     };
 }
 
-void Watson::doAddWatsonCoins(const QString& playerName, int amount)
+void Watson::doAddWatsonCoins(const QString& playerName, int coins)
 {
+    createCoinAccountIfNotExisting(playerName);
+    m_coins[playerName] += coins;
+}
 
+void Watson::doUseCoinsForMoney(const QString& playerName, int money)
+{
+    createCoinAccountIfNotExisting(playerName);
+
+    if (money > availableMoneyForCoins(playerName))
+    {
+        throw Exception("Not enough coins available.", Error::InsufficientCoins);
+    }
+
+	m_coins[playerName] -= coinsForMoneyNeeded(money);
 }
 
 bool Watson::diceAreManipulated(const QString& playerName) const
@@ -64,6 +77,18 @@ bool Watson::diceAreManipulated(const QString& playerName) const
     auto it = m_manipulatedDices.find(playerName);
     bool manipulated = it != m_manipulatedDices.end();
     return manipulated;
+}
+
+int Watson::availableMoneyForCoins(const QString& playerName)
+{
+    createCoinAccountIfNotExisting(playerName);
+    return coinsToMoney(m_coins[playerName]);
+}
+
+int Watson::availableCoins(const QString& playerName)
+{
+    createCoinAccountIfNotExisting(playerName);
+    return m_coins[playerName];
 }
 
 bool Watson::currentPlayerRequest(const QString& playerName) const
@@ -76,4 +101,23 @@ Dices Watson::getManipulatedDices(const QString& playerName)
     auto dices = m_manipulatedDices.at(playerName);
     m_manipulatedDices.erase(playerName);
     return dices;
+}
+
+int Watson::coinsToMoney(int coins)
+{
+    return coins * course;
+}
+
+int Watson::coinsForMoneyNeeded(int money)
+{
+    return std::ceil(money / float(course));
+}
+
+void Watson::createCoinAccountIfNotExisting(const QString& playerName)
+{
+    auto it = m_coins.find(playerName);
+    if (it == m_coins.end())
+    {
+        m_coins.emplace(playerName, 0);
+    }
 }
