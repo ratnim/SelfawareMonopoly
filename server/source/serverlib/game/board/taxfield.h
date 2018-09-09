@@ -10,7 +10,7 @@ public:
     int amount() const;
 
     QJsonObject description() override;
-    bool moveOn(const QString& player, Game* game) override;
+    bool moveOn(const QString& player, Game* game, int distanceTraveled) override;
 
 protected:
     int m_amount;

@@ -29,7 +29,7 @@ ConstructionLevel Street::constructionLevel() const
     return m_constructionLevel;
 }
 
-int Street::rent(const Board &) const
+int Street::rent(const Board &, int) const
 {
     return m_rents[m_constructionLevel];
 }

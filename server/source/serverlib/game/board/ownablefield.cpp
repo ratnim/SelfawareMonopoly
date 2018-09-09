@@ -36,7 +36,7 @@ QJsonObject OwnableField::description()
     return descr;
 }
 
-bool OwnableField::moveOn(const QString& playerName, Game* game)
+bool OwnableField::moveOn(const QString& playerName, Game* game, int distanceTraveled)
 {
     bool stateChanged = false;
 
@@ -48,7 +48,7 @@ bool OwnableField::moveOn(const QString& playerName, Game* game)
     else if (m_owner != playerName)
     {
         std::vector<Debt> debts;
-        debts.emplace_back(playerName, m_owner, rent(game->board()));
+        debts.emplace_back(playerName, m_owner, rent(game->board(), distanceTraveled));
         game->stateChange<PayState>(debts);
         stateChanged = true;
     }

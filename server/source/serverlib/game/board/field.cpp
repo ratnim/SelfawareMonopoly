@@ -48,7 +48,7 @@ QJsonObject Field::description()
 	};
 }
 
-bool Field::moveOn(const QString& playerName, Game* game)
+bool Field::moveOn(const QString& playerName, Game* game, int distanceTraveled)
 {
     return false;
 }
