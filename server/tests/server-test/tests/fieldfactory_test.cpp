@@ -7,6 +7,7 @@
 #include <game/board/board.h>
 #include <game/board/street.h>
 #include <game/board/station.h>
+#include <game/board/utility.h>
 #include <game/board/gotojail.h>
 #include <game/board/start.h>
 #include <game/board/taxfield.h>
@@ -172,12 +173,29 @@ TEST(FieldFactoryTest, construct_field_tax)
 TEST(FieldFactoryTest, construct_field_utility)
 {
     QJsonObject specification{
-        { "name", "TestUtility" },
-        { "type", "utility" }
+        { "name", "TestStation" },
+        { "type", "utility" },
+        { "group", 5 },
+        { "price", 280 },
+        { "rent", QJsonArray({2, 4}) }
     };
 
-    auto field = FieldFactory::create(specification);
+    auto builtField = FieldFactory::create(specification);
 
+    // We need a board to check the rent
+    std::vector<std::unique_ptr<Field>> fields;
+    fields.push_back(std::move(builtField));
+    Board board(std::move(fields));
+
+    auto field = board[0];
+
+    EXPECT_EQ("TestStation", field->name());
     EXPECT_EQ(FieldType::utility, field->type());
-    EXPECT_EQ("TestUtility", field->name());
+
+    auto util = dynamic_cast<Utility*>(field);
+    EXPECT_NE(nullptr, util);
+    EXPECT_EQ(5, util->group());
+    EXPECT_EQ(280, util->price());
+    EXPECT_EQ(2, util->rent(board, 1));
+    EXPECT_EQ(4, util->rent(board, 2));
 }

@@ -3,7 +3,7 @@
 #include <game/board/board.h>
 
 Utility::Utility(const QString& name, int group, int price, std::vector<int> rents)
-    : OwnableField(name, FieldType::street, price)
+    : OwnableField(name, FieldType::utility, price)
     , m_group(group)
     , m_rents(rents)
 {
@@ -30,7 +30,7 @@ int Utility::rent(const Board & board, int distanceTravelled) const
         }
     }
 
-    return distanceTravelled * m_rents[utilities];
+    return distanceTravelled * m_rents[utilities-1];
 }
 
 QJsonObject Utility::description()

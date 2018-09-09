@@ -18,3 +18,4 @@ std::vector<std::unique_ptr<Field>> fieldsStart();
 std::vector<std::unique_ptr<Field>> fieldsTwoGroups();
 std::vector<std::unique_ptr<Field>> fieldsTax();
 std::vector<std::unique_ptr<Field>> fieldsStations();
+std::vector<std::unique_ptr<Field>> fieldsUtilities();
