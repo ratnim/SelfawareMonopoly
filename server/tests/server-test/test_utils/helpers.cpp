@@ -6,6 +6,7 @@
 #include <game/board/start.h>
 #include <game/board/street.h>
 #include <game/board/station.h>
+#include <game/board/taxfield.h>
 
 bool containsRequest(const QJsonArray& possibleRequests, const QString& request)
 {
@@ -91,7 +92,7 @@ std::vector<std::unique_ptr<Field>> fieldsTax()
     fields.push_back(std::move(std::make_unique<Field>("free", FieldType::free)));
     fields.push_back(std::move(std::make_unique<Field>("free", FieldType::free)));
     fields.push_back(std::move(std::make_unique<Field>("free", FieldType::free)));
-    fields.push_back(std::move(std::make_unique<Field>("tax", FieldType::tax)));
+    fields.push_back(std::move(std::make_unique<TaxField>("tax", 100)));
     return fields;
 }
 

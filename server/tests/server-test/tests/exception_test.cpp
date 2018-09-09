@@ -26,4 +26,6 @@ TEST(ExceptionTest, api_compatibility)
     EXPECT_EQ(Error::MalformedRequest, 3);
     EXPECT_EQ(Error::InvalidRequest, 4);
     EXPECT_EQ(Error::InternalError, 5);
+    EXPECT_EQ(Error::InsufficientMoney, 6);
+    EXPECT_EQ(Error::InsufficientCoins, 7);
 }
