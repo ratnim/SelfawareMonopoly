@@ -17,7 +17,7 @@ QJsonObject TaxField::description()
     return descr;
 }
 
-bool TaxField::moveOn(const QString& player, Game* game)
+bool TaxField::moveOn(const QString& player, Game* game, int)
 {
     std::vector<Debt> debts;
     debts.emplace_back(player, "", amount());

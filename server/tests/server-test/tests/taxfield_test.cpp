@@ -23,6 +23,6 @@ TEST(TaxFieldTest, transfer_to_pay_state)
 {
     Game game;
     TaxField tax("Test", 100);
-    EXPECT_TRUE(tax.moveOn("Gertrude", &game));
+    EXPECT_TRUE(tax.moveOn("Gertrude", &game, 0));
     EXPECT_NE(nullptr, dynamic_cast<PayState*>(game.state()));
 }
