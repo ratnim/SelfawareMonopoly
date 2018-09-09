@@ -5,6 +5,7 @@
 #include <game/board/gotojail.h>
 #include <game/board/start.h>
 #include <game/board/street.h>
+#include <game/board/station.h>
 
 bool containsRequest(const QJsonArray& possibleRequests, const QString& request)
 {
@@ -91,5 +92,16 @@ std::vector<std::unique_ptr<Field>> fieldsTax()
     fields.push_back(std::move(std::make_unique<Field>("free", FieldType::free)));
     fields.push_back(std::move(std::make_unique<Field>("free", FieldType::free)));
     fields.push_back(std::move(std::make_unique<Field>("tax", FieldType::tax)));
+    return fields;
+}
+
+std::vector<std::unique_ptr<Field>> fieldsStations()
+{
+    std::vector<std::unique_ptr<Field>> fields;
+    fields.push_back(std::move(std::make_unique<Start>("start")));
+    fields.push_back(std::move(std::make_unique<Station>("stationA", 0, 200, 100)));
+    fields.push_back(std::move(std::make_unique<Station>("stationB", 0, 200, 100)));
+    fields.push_back(std::move(std::make_unique<Station>("stationC", 0, 200, 100)));
+    fields.push_back(std::move(std::make_unique<Station>("stationD", 1, 500, 200)));
     return fields;
 }
