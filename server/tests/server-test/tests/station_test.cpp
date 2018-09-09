@@ -30,13 +30,13 @@ TEST(StationTest, rent_calculation)
     auto stationD = dynamic_cast<Station*>(board[4]); // Group 1
 
     // All stations are owned by "", so maximum owner bonus applies
-    EXPECT_EQ(400, stationA->rent(board)); // 100 * 2**2
-    EXPECT_EQ(200, stationD->rent(board)); // 200
+    EXPECT_EQ(400, stationA->rent(board, 0)); // 100 * 2**2
+    EXPECT_EQ(200, stationD->rent(board, 0)); // 200
 
     // Split ownership of group 0
     stationC->changeOwner("someone");
 
-    EXPECT_EQ(200, stationA->rent(board)); // 100 * 2
-    EXPECT_EQ(100, stationC->rent(board)); // 100
-    EXPECT_EQ(200, stationD->rent(board)); // 200
+    EXPECT_EQ(200, stationA->rent(board, 0)); // 100 * 2
+    EXPECT_EQ(100, stationC->rent(board, 0)); // 100
+    EXPECT_EQ(200, stationD->rent(board, 0)); // 200
 }

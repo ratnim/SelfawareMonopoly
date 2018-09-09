@@ -15,7 +15,7 @@ public:
     Station(const QString& name, int group, int price, int baseRent);
 
     int group() const;
-    int rent(const Board & board) const override;
+    int rent(const Board & board, int distanceTravelled) const override;
 
 	QJsonObject description() override;
 

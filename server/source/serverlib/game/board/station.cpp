@@ -14,7 +14,7 @@ int Station::group() const
     return m_group;
 }
 
-int Station::rent(const Board & board) const
+int Station::rent(const Board & board, int) const
 {
     int rent = m_baseRent;
 

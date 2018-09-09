@@ -82,7 +82,7 @@ TEST(FieldFactoryTest, construct_field_station)
     EXPECT_NE(nullptr, station);
     EXPECT_EQ(5, station->group());
     EXPECT_EQ(280, station->price());
-    EXPECT_EQ(24, station->rent(board));
+    EXPECT_EQ(24, station->rent(board, 0));
 }
 
 TEST(FieldFactoryTest, construct_field_event_card)
