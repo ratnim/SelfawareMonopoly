@@ -39,7 +39,7 @@ TEST(GameConnectionTest, request_non_empty_board)
 	BoardModel::setBoardDir("./assets/boards");
     QWebSocket socket;
     auto session = AccountModel::instance().createSession("request_non_empty_board_tester");
-    auto gameId = GameModel::instance().createGame("request_non_empty_board_game", "berlin.json");
+    auto gameId = GameModel::instance().createGame("request_non_empty_board_game", "berlin_en.json");
     auto connection = new GameConnection(&socket, { "game", session, gameId });
 
     QSignalSpy socket_spy(connection, &Watcher::broadcast);
