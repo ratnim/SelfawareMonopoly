@@ -34,6 +34,8 @@ set(sources
     game/board/board.h
     game/board/field.cpp
     game/board/field.h
+    game/board/ownablefield.cpp
+    game/board/ownablefield.h
     game/board/fieldfactory.cpp
     game/board/fieldfactory.h
     game/board/start.cpp
