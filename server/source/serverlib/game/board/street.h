@@ -27,7 +27,7 @@ public:
     int group() const;
     int housePrice() const;
     ConstructionLevel constructionLevel() const;
-    int rent(const Board & board) const override;
+    int rent(const Board & boar, int distanceTraveled) const override;
     void changeConstructionLevel(const ConstructionLevel newLevel);
 
 	QJsonObject description() override;

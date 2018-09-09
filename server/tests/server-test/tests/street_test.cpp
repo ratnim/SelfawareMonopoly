@@ -28,7 +28,7 @@ TEST(StreetTest, transfer_to_buy_state)
 {
     Game game;
     Street street("Test", 5, 200, 50, { 24, 120, 360, 850, 1025, 1200 });
-    EXPECT_TRUE(street.moveOn("Gertrude", &game));
+    EXPECT_TRUE(street.moveOn("Gertrude", &game, 0));
     EXPECT_NE(nullptr, dynamic_cast<BuyState*>(game.state()));
 }
 
@@ -38,7 +38,7 @@ TEST(StreetTest, transfer_to_pay_state)
     Street street("Test", 5, 200, 50, { 24, 120, 360, 850, 1025, 1200 });
     street.changeOwner("Gertrude");
 
-    EXPECT_TRUE(street.moveOn("Herbert", &game));
+    EXPECT_TRUE(street.moveOn("Herbert", &game, 0));
     EXPECT_NE(nullptr, dynamic_cast<PayState*>(game.state()));
 }
 
@@ -48,6 +48,6 @@ TEST(StreetTest, dont_change_state)
     Street street("Test", 5, 200, 50, { 24, 120, 360, 850, 1025, 1200 });
     street.changeOwner("Gertrude");
 
-    EXPECT_FALSE(street.moveOn("Gertrude", &game));
+    EXPECT_FALSE(street.moveOn("Gertrude", &game, 0));
     EXPECT_NE(nullptr, dynamic_cast<InitState*>(game.state()));
 }
