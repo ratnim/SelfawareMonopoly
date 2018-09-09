@@ -27,14 +27,14 @@
         {
             "name" : "Income Tax",
             "type" : "tax",
-            "rent" : [200]
+            "rent" : 200
         },
         {
             "name" : "Westhafen",
             "type" : "station",
             "group" : 8,
             "price" : 200,
-            "rent" : [50]
+            "rent" : 50
         },
         {
             "name" : "Reinickendorf",
@@ -104,7 +104,7 @@
             "type" : "station", 
             "group" : 8,
             "price" : 200,
-            "rent" : [50]
+            "rent" : 50
         },
         {
             "name" : "Charlottenburg",
@@ -171,7 +171,7 @@
             "type" : "station",
             "group" : 8,
             "price" : 200,
-            "rent" : [50]
+            "rent" : 50
         },
         {
             "name" : "Sprengelkiez",
