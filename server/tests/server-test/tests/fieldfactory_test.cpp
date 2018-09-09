@@ -8,6 +8,7 @@
 #include <game/board/street.h>
 #include <game/board/gotojail.h>
 #include <game/board/start.h>
+#include <game/board/taxfield.h>
 
 TEST(FieldFactoryTest, construct_field_start)
 {
@@ -138,13 +139,17 @@ TEST(FieldFactoryTest, construct_field_tax)
 {
     QJsonObject specification{
         { "name", "TestTax" },
-        { "type", "tax" }
+        { "type", "tax" },
+        { "amount", 100 }
     };
 
     auto field = FieldFactory::create(specification);
+    auto tax = dynamic_cast<TaxField*>(field.get());
 
+    ASSERT_NE(nullptr, tax);
     EXPECT_EQ(FieldType::tax, field->type());
     EXPECT_EQ("TestTax", field->name());
+    EXPECT_EQ(100, tax->amount());
 }
 
 TEST(FieldFactoryTest, construct_field_utility)

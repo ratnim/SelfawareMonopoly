@@ -121,11 +121,24 @@ void Game::doCurrentPlayerChangeHouses(const std::vector<std::pair<int, int>>& n
 
     if (cashflow > 0)  // player has to pay
     {
-        m_bank.takeMoney(currentPlayer().name(), cashflow);
+        auto toPay = cashflow;
+        auto watsonMoney = m_watson.availableMoneyForCoins(currentPlayer().name());
+		if (watsonMoney > cashflow)
+		{
+            m_watson.doUseCoinsForMoney(currentPlayer().name(), cashflow);
+            toPay = 0;
+		}
+		else
+		{
+            m_watson.doUseCoinsForMoney(currentPlayer().name(), watsonMoney);
+            toPay = cashflow - watsonMoney;
+		}
+
+		m_bank.takeMoney(currentPlayer().name(), toPay);
     }
     if (cashflow < 0)  // player gets money back
     {
-        m_bank.giveMoney(currentPlayer().name(), -cashflow);
+        m_bank.giveMoney(currentPlayer().name(), -cashflow);	
     }
 
     m_board.changeConstructionLevels(currentPlayer().name(), newLevels);
