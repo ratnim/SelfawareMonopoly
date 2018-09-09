@@ -48,7 +48,7 @@ bool OwnableField::moveOn(const QString& playerName, Game* game)
     else if (m_owner != playerName)
     {
         std::vector<Debt> debts;
-        debts.emplace_back(playerName, m_owner, rent());
+        debts.emplace_back(playerName, m_owner, rent(game->board()));
         game->stateChange<PayState>(debts);
         stateChanged = true;
     }

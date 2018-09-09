@@ -6,6 +6,7 @@
 #include <game/board/field.h>
 
 class Game;
+class Board;
 
 class OwnableField : public Field
 {
@@ -13,7 +14,7 @@ public:
     OwnableField(const QString& name, const FieldType type, const int price);
 
     int price() const;
-    virtual int rent() const = 0;
+    virtual int rent(const Board & board) const = 0;
     QString owner() const;
 
     void changeOwner(const QString& newOwner);
