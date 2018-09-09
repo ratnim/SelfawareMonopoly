@@ -4,6 +4,7 @@
 #include <QJsonArray>
 
 #include <game/board/fieldfactory.h>
+#include <game/board/board.h>
 #include <game/board/street.h>
 #include <game/board/gotojail.h>
 #include <game/board/start.h>
@@ -34,17 +35,24 @@ TEST(FieldFactoryTest, construct_field_street)
         { "rent", QJsonArray({24, 120, 360, 850, 1025, 1200}) }
     };
 
-    auto field = FieldFactory::create(specification);
+    auto builtField = FieldFactory::create(specification);
+
+    // We need a board to check the rent
+    std::vector<std::unique_ptr<Field>> fields;
+    fields.push_back(std::move(builtField));
+    Board board(std::move(fields));
+
+    auto field = board[0];
 
     EXPECT_EQ("TestStreet", field->name());
     EXPECT_EQ(FieldType::street, field->type());
 
-	auto street = dynamic_cast<Street*>(field.get());
+    auto street = dynamic_cast<Street*>(field);
     EXPECT_NE(nullptr, street);
     EXPECT_EQ(5, street->group());
     EXPECT_EQ(280, street->price());
     EXPECT_EQ(150, street->housePrice());
-    EXPECT_EQ(24, street->rent());
+    EXPECT_EQ(24, street->rent(board));
 }
 
 TEST(FieldFactoryTest, construct_field_station)
