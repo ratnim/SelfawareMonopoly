@@ -14,14 +14,14 @@ public:
     OwnableField(const QString& name, const FieldType type, const int price);
 
     int price() const;
-    virtual int rent(const Board & board) const = 0;
+    virtual int rent(const Board & board, const int distanceTraveled) const = 0;
     QString owner() const;
 
     void changeOwner(const QString& newOwner);
 
     QJsonObject description() override;
 
-    bool moveOn(const QString& playerName, Game* game) override;
+    bool moveOn(const QString& playerName, Game* game, int distanceTraveled) override;
 
 protected:
     QString m_owner;
