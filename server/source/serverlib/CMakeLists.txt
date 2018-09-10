@@ -44,6 +44,8 @@ set(sources
     game/board/street.h
     game/board/station.cpp
     game/board/station.h
+    game/board/utility.cpp
+    game/board/utility.h
     game/board/gotojail.cpp
     game/board/gotojail.h
     game/board/taxfield.cpp

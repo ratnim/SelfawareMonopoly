@@ -81,7 +81,7 @@
             "type" : "utility",
             "group" : 9,
             "price" : 150,
-            "rent" : 75
+            "rent" : [3,10]
         },
         {
             "name" : "Moabit",
@@ -194,7 +194,7 @@
             "type" : "utility",
             "group" : 9,
             "price" : 150,
-            "rent" : 75
+            "rent" : [3,10]
         },
         {
             "name" : "Kollwitzkiez",
