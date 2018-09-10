@@ -20,6 +20,7 @@ public:
 
     int jailIndex() const;
     Field* operator[](size_t index);
+    const Field* operator[](size_t index) const;
 
     int targetForMove(int position, int distance);
     int distanceToNextField(int position, FieldType type) const;

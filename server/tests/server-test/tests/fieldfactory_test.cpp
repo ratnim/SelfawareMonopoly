@@ -6,6 +6,7 @@
 #include <game/board/fieldfactory.h>
 #include <game/board/board.h>
 #include <game/board/street.h>
+#include <game/board/station.h>
 #include <game/board/gotojail.h>
 #include <game/board/start.h>
 #include <game/board/taxfield.h>
@@ -59,13 +60,29 @@ TEST(FieldFactoryTest, construct_field_station)
 {
     QJsonObject specification{
         { "name", "TestStation" },
-        { "type", "station" }
+        { "type", "station" },
+        { "group", 5 },
+        { "price", 280 },
+        { "rent", 24 }
     };
 
-    auto field = FieldFactory::create(specification);
+    auto builtField = FieldFactory::create(specification);
 
-    EXPECT_EQ(FieldType::station, field->type());
+    // We need a board to check the rent
+    std::vector<std::unique_ptr<Field>> fields;
+    fields.push_back(std::move(builtField));
+    Board board(std::move(fields));
+
+    auto field = board[0];
+
     EXPECT_EQ("TestStation", field->name());
+    EXPECT_EQ(FieldType::station, field->type());
+
+    auto station = dynamic_cast<Station*>(field);
+    EXPECT_NE(nullptr, station);
+    EXPECT_EQ(5, station->group());
+    EXPECT_EQ(280, station->price());
+    EXPECT_EQ(24, station->rent(board, 0));
 }
 
 TEST(FieldFactoryTest, construct_field_event_card)
@@ -140,7 +157,7 @@ TEST(FieldFactoryTest, construct_field_tax)
     QJsonObject specification{
         { "name", "TestTax" },
         { "type", "tax" },
-        { "amount", 100 }
+        { "rent", 100 }
     };
 
     auto field = FieldFactory::create(specification);

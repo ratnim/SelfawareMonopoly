@@ -38,6 +38,11 @@ Field* Board::operator[](size_t index)
     return m_fields[index].get();
 }
 
+const Field* Board::operator[](size_t index) const
+{
+    return m_fields[index].get();
+}
+
 int Board::targetForMove(int position, int distance)
 {
     if (size() == 0)

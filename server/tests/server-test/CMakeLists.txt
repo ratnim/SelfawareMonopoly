@@ -22,6 +22,7 @@ set(sources
 	tests/field_test.cpp
 	tests/gotojail_test.cpp
     tests/street_test.cpp
+    tests/station_test.cpp
     tests/taxfield_test.cpp
 
     tests/game_test.cpp
