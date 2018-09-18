@@ -4,14 +4,14 @@
     <div class="md-layout-item md-size-15">
       <h3>Übersicht</h3>
       <div ref="a">
-        <PlayerProfile v-show="player" :name="nickname" :player="player"></PlayerProfile>
+        <PlayerProfile v-if="player" :name="nickname" :player="player"></PlayerProfile>
 
 
       </div>
       <div ref="a">
         Deine Gegner
-        <div v-for="player in players" v-if="player.nickname != nickname">
-          <PlayerProfile :name="player.nickname" :player="player"></PlayerProfile>
+        <div v-for="player2 in players" v-if="player2.nickname != nickname">
+          <PlayerProfile :name="player2.nickname" :player="player2"></PlayerProfile>
         </div>
       </div>
     </div>
@@ -53,16 +53,10 @@
 
   <div class="">
     {{info}}
-    <h1>DEV TOOLS</h1>
-    <md-button @click="__addFakePlayer()">add a fake player</md-button>
-    <md-button @click='onPlayerMove({
-      player_name: "pascal4",
-      target: 11,
-      type: "forward"})'>move</md-button>
-
-
-
   </div>
+  <md-button @click="() => triggerWatson(true)">demo watson</md-button>
+  <WatsonSnackbar v-if="watson.snackbarActive" :onYes="watson.snackbarYes"></WatsonSnackbar>
+  <WatsonDialog v-if="watson.dialogActive"></WatsonDialog>
 </div>
 </template>
 
@@ -81,6 +75,8 @@ import MonopolyField from '@/components/MonopolyField'
 import MonopolyPlayer from '@/components/MonopolyPlayer'
 import Dice from '@/components/Dice'
 import PlayerProfile from '@/components/PlayerProfile'
+import WatsonSnackbar from '@/components/WatsonSnackbar'
+import WatsonDialog from '@/components/WatsonDialog'
 
 import game from '@/assets/game.json'
 
@@ -90,7 +86,9 @@ export default {
     MonopolyField,
     MonopolyPlayer,
     Dice,
-    PlayerProfile
+    PlayerProfile,
+    WatsonSnackbar,
+    WatsonDialog
   },
   data: function() {
     return {
@@ -118,7 +116,18 @@ export default {
       canvas: {
         margin: 2
       },
-      info: "Noch nichts passiert"
+      info: "Noch nichts passiert",
+      watson: {
+        snackbarActive: false,
+        dialogActive: false,
+        question: "",
+        snackbarYes: () => {console.log("he said yes");}
+      },
+
+      stats : {
+        moveCount : 0,
+        isOwnColor: false
+      }
     }
   },
   computed: {
@@ -169,7 +178,9 @@ export default {
       this.gameConnection.startGame();
     },
     endTurn: function() {
+      console.log("end turn!");
       this.gameConnection.endTurn();
+      this.stats.moveCount += 1;
     },
 
     onDiceRolled: function(dice) {
@@ -244,6 +255,7 @@ export default {
       this.info = "Los gehts!";
     },
     onPossibleActions: function(data) {
+      var vm = this;
 
       let mapping = {
         "player_ready": {
@@ -266,7 +278,8 @@ export default {
           method: () => this.gameConnection.buyField()
         },
         "end_turn": {
-          label: "Zug beenden"
+          label: "Zug beenden",
+          method: () => {vm.endTurn()}
         },
         "dont_buy_field": {
           label: "Nicht kaufen"
@@ -276,7 +289,7 @@ export default {
         }
       };
       this.possibleRequests = [];
-      console.log("Possible Requests", data.requests);
+      //console.log("Possible Requests", data.requests);
       for (var i = 0; i < data.requests.length; i++) {
         var req = data.requests[i];
         var r = {"method" : () => {this.gameConnection.send(req.request, req.data)}, "label": req.request}
@@ -291,8 +304,12 @@ export default {
           let price = this.gameboard[this.player.currentField].price;
           r.label = r.label.replace("${amount}", price);
         }
+        if (req.request == "end_turn") {
+          this.stats.moveCount++;
+        }
         this.possibleRequests.push(r)
       }
+      this.triggerWatson();
     },
     onPlayerReady: function(data) {
       this.info = data.player_name + ' is now ready!';
@@ -319,11 +336,13 @@ export default {
       }
     },
     onMoneyChange: function(data) {
-      console.log(data);
-      console.log("Money change");
-      this.info = data.player_name + (data.deposit > 0 ? " bekommt" : " zahlt") + data.deposit;
+      //console.log(data);
+      //console.log("Money change");
+
       for (var i = 0; i < this.players.length; i++) {
         if (this.players[i].nickname == data.player_name) {
+          let delta = data.deposit - this.players[i].deposit;
+          this.info = data.player_name + (delta > 0 ? " bekommt " : " zahlt ") + Math.abs(delta) + '€';
           this.players[i].deposit = data.deposit;
         }
       }
@@ -363,6 +382,20 @@ export default {
     },
     getRandomColor: function() {
       return "rgb(" + Math.round(Math.random() * 255) + ", " + Math.round(Math.random() * 255) + ", " + Math.round(Math.random() * 255) + ")";
+    },
+
+    triggerWatson: function(show) {
+
+      //starts a watson interaction if rules apply
+      if (show || this.stats.moveCount > 3 && this.stats.isOwnColor == false) {
+        this.watson.snackbarActive = true;
+        this.watson.question = "Willst du dir eine Spielerfarbe aussuchen?";
+        this.watson.snackbarYes = () => {
+          console.log("snack YES");
+          this.watson.snackbarActive = false;
+          this.watson.dialogActive = true;
+        };
+      }
     },
 
     __addFakePlayer: function() {
