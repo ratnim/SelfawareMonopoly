@@ -1,5 +1,6 @@
 <template>
 <div class="home">
+  <WatsonDialog v-if="watson.dialogActive"></WatsonDialog>
   <div class="md-layout">
     <div class="md-layout-item md-size-15">
       <h3>Übersicht</h3>
@@ -56,7 +57,7 @@
   </div>
   <md-button @click="() => triggerWatson(true)">demo watson</md-button>
   <WatsonSnackbar v-if="watson.snackbarActive" :onYes="watson.snackbarYes"></WatsonSnackbar>
-  <WatsonDialog v-if="watson.dialogActive"></WatsonDialog>
+
 </div>
 </template>
 
