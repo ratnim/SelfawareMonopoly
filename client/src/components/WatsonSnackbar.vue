@@ -19,8 +19,9 @@
      },
      methods: {
        callback: function() {
-         this.onYes();
          this.show2 = false;
+         setTimeout(this.onYes, 100); 
+
        }
      }
    }
