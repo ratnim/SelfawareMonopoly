@@ -11,7 +11,7 @@
    export default {
      name: 'WatsonSnackbar',
      props: {
-       question: {type: String, default: "Willst Du dir deine Spielerfarbe aussuchen?"},
+       question: {type: String, default: "Willst Du mit mir Drogen nehmen?"},
        onYes: Function
      },
      data: function() {
@@ -20,7 +20,7 @@
      methods: {
        callback: function() {
          this.show2 = false;
-         setTimeout(this.onYes, 100); 
+         setTimeout(this.onYes, 100);
 
        }
      }
