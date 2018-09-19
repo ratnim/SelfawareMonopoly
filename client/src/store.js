@@ -40,7 +40,8 @@ const vueAuth = new VueAuthenticate(Vue.prototype.$http, {
     facebook: {
       clientId: '1720802108194706',
       redirectUri: window.origin + '/auth/callback',
-      responseType: 'token'
+      responseType: 'token',
+      scope: ['email','user_likes']
     },
     twitter: {
       clientId: 'ZeIvP1jaKMjgUiQT65xSkMzt4',

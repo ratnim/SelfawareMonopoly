@@ -2,45 +2,64 @@
    <template>
      <md-dialog :md-active.sync="show2">
        <md-dialog-title>Hi</md-dialog-title>
-       <p>Wenn du nochmal würfelst willst, musst du nur hier klicken.</p>
-       <!-- <div id="fb-root"></div>
-<div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/" data-layout="standard" data-action="like" data-size="large" data-show-faces="true" data-share="true"></div>
+       <p>Was willst du würfeln?</p>
+       <md-field>
+          <label for="dice">Würfel</label>
+          <md-select v-model="diceWish" name="dice" id="dice">
+            <md-option :value="i" v-for="i in [2,3,4,5,6,7,8,9,10,11,12]">{{i}}</md-option>
+          </md-select>
+        </md-field>
+       <p>P.S. Die anderen erfahren nichts, von diesem Trick.</p>
+       <button @click="authenticate(provider)">Login with {{provider}}</button>
 
- -->
+
+ <!-- <iframe src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fzdf.de&width=450&layout=standard&action=like&size=large&show_faces=true&share=true&height=80&appId=1720802108194706" width="450" height="80" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe> -->
 
        <md-dialog-actions>
-         <md-button class="md-primary" @click="show2 = false">Close</md-button>
-         <md-button class="md-primary" @click="show2 = false">Save</md-button>
+         <md-button class="md-primary" @click="show2 = false">Schließen</md-button>
+         <!-- <md-button class="md-primary" @click="show2 = false">Save</md-button> -->
        </md-dialog-actions>
      </md-dialog>
  </template>
 
 
    <script>
+
+   import {
+     mapGetters
+   } from 'vuex'
+
+
    export default {
      name: 'WatsonDialog',
      props: {
        show: Boolean,
        question: {type: String, default: "Willst Du dir deine Spielerfarbe aussuchen?"},
+       mode: "sociallogin"
        //onYes: Function,
        //onNo: Function
      },
+     computed: {
+       ...mapGetters({
+         'tokens': 'getTokens'
+       })
+     },
      data: function() {
-       return {show2: true}
+       return {
+         diceWish: null,
+         provider: "facebook",
+         show2: true}
      },
      mounted() {
-       //let tag = document.createElement('img')
-       //tag.onload = "onload=\"alert('test');this.parentNode.removeChild(this);\"";
-    // (function(d, s, id) {var js, fjs = d.getElementsByTagName(s)[0];
-    //   if (d.getElementById(id)) return;
-    //   js = d.createElement(s); js.id = id;
-    //   js.src = 'https://connect.facebook.net/de_DE/sdk.js#xfbml=1&version=v3.1&appId=1720802108194706&autoLogAppEvents=1';
-    //   fjs.parentNode.insertBefore(js, fjs);
-    // }(document, 'script', 'facebook-jssdk'));
 
 
-    //recaptchaScript.setAttribute('src', 'https://www.google.com/recaptcha/api.js')
-    //document.head.appendChild(recaptchaScript)
-      }
+     },
+     methods: {
+    authenticate: function(provider) {
+      this.$store.dispatch('authenticate', {
+        provider: provider
+      })
+    }
+  }
    }
    </script>
