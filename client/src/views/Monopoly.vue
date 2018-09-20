@@ -10,7 +10,6 @@
             <div ref="a">
                 <PlayerProfile v-if="player" :name="nickname" :player="player"></PlayerProfile>
 
-
             </div>
             <div ref="a">
                 Deine Gegner
@@ -132,6 +131,7 @@ export default {
                 snackbarActive: false,
                 dialogActive: false,
                 question: "",
+                provider: "",
                 snackbarYes: () => {
                     console.log("he said yes");
                 }
@@ -409,6 +409,7 @@ export default {
 
         triggerWatson: function(show) {
 
+
             //starts a watson interaction if rules apply
             if (show || this.stats.moveCount > 3 && this.stats.isOwnColor == false) {
               this.watson.dialogActive = false;
@@ -436,6 +437,10 @@ export default {
           this.$store.commit('setToken', {
             token: null,
             provider: "facebook"
+          });
+          this.$store.commit('setToken', {
+            token: null,
+            provider: "google"
           });
         },
 

@@ -17,8 +17,8 @@
 
 <template>
 
-<md-dialog :md-active.sync="show2" md-click-outside-to-close="false">
-    <md-dialog-title>Deine Chance: Nutzername gegen Wunschergebnis</md-dialog-title>
+<md-dialog :md-active.sync="show2" :md-click-outside-to-close="false">
+    <md-dialog-title>Deine Chance: <br>{{title}}</md-dialog-title>
     <md-content class="content">
         <div class="md-layout">
             <div class="md-layout-item">
@@ -46,7 +46,7 @@
             </div>
         </div>
         <div class="">
-            <span>Erlaube mir Deinen Nutzernamen zu erfahren: </span>
+            <div>{{question}}</div>
             <md-button @click="authenticate(provider)">Klicke hier</md-button>
         </div>
 
@@ -71,9 +71,13 @@ import {
 from 'vuex'
 
 var messages = {
+  "generic": {
+      "title": "Kontrolliere die Würfel",
+      "question": "Erlaube mir etwas von Dir zu erfahren: "
+  },
     "facebook": {
-        "title": "",
-        "question": ""
+        "title": "Nutzername gegen Wunschergebnis",
+        "question": "Erlaube mir Deinen Nutzernamen zu erfahren: "
     }
 };
 
@@ -81,15 +85,7 @@ export default {
     name: 'WatsonDialog',
     props: {
         show: Boolean,
-        question: {
-            type: String,
-            default: "Willst Du dir deine Spielerfarbe aussuchen?"
-        },
         mode: "sociallogin",
-        provider: {
-            type: String,
-            default: "google"
-        },
         onYes: Function,
         onNo: Function
     },
@@ -97,7 +93,9 @@ export default {
         ...mapGetters({
                 'tokens': 'getTokens'
             }),
-            dealReady2: () => this.fblikes != null && this.diceWish1 != null && this.diceWish2 != null
+            dealReady2: () => this.fblikes != null && this.diceWish1 != null && this.diceWish2 != null,
+          //  title: () => {console.log(this.provider); return messages[this.provider] != null ? messages[this.provider]["title"] : messages["generic"]["title"]},
+      //      question: () => { return messages[this.provider] != null ? messages[this.provider]["question"] : messages["generic"]["question"]},
     },
     data: function() {
         return {
@@ -105,10 +103,25 @@ export default {
             diceWish2: null,
             show2: true,
             dealReady: false,
-            fblikes: null
+            fblikes: null,
+            question: messages["generic"].question,
+            title: messages["generic"].title,
+            provider: ""
         }
     },
     mounted() {
+      var provider;
+      if (this.tokens.facebook == null) {
+        provider = "facebook";
+      } else if (this.tokens.google == null) {
+        provider = "google";
+      } else {
+      }
+      this.provider = provider;
+      if (messages[provider]) {
+        this.question = messages[provider].question;
+        this.title = messages[provider].title;
+      }
         this.$store.watch(
                 (state) => {
                     return this.$store.state.tokens // could also put a Getter here
