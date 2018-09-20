@@ -58,7 +58,11 @@
     <div class="">
         {{info}}
     </div>
-    <md-button @click="() => triggerWatson(true)">demo watson</md-button>
+    <div class="" v-if="$route.query.demo == 1">
+      <md-button @click="() => triggerWatson(true)">demo watson</md-button>
+      <md-button @click="__resetTokens">reset tokens</md-button>
+
+    </div>
     <WatsonSnackbar v-if="watson.snackbarActive" :onYes="watson.snackbarYes" :question="watson.question"></WatsonSnackbar>
 
 </div>
@@ -418,14 +422,21 @@ export default {
             }
         },
 
-        watsonDealConfirmed: function() {
-          console.log("watson sagt ok");
-
+        watsonDealConfirmed: function(data) {
+          this.gameConnection.watsonManipulateDices(data.dices);
+          this.watson.dialogActive = false;
         },
 
         watsonDealCanceled: function() {
           console.log("watson sagt pech gehabt");
+          this.watson.dialogActive = false;
+        },
 
+        __resetTokens: function() {
+          this.$store.commit('setToken', {
+            token: null,
+            provider: "facebook"
+          });
         },
 
         __addFakePlayer: function() {

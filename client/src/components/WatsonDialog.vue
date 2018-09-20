@@ -5,15 +5,21 @@
 <md-dialog :md-active.sync="show2">
     <md-dialog-title>Deine Chance: Nutzername gegen Wunschergebnis</md-dialog-title>
     <div class="">
-      <p>Was willst du als nächstes würfeln?</p>
-      <md-field style="width: 200px">
-          <label for="dice">Würfel</label>
-          <md-select v-model="diceWish" name="dice" id="dice">
-              <md-option :value="i" v-for="i in [2,3,4,5,6,7,8,9,10,11,12]">{{i}}</md-option>
-          </md-select>
-      </md-field>
-      <md-button @click="authenticate(provider)">Klicke hier und du wirst zu facebook weitergeleitet</md-button>
-      <p>P.S. Die anderen erfahren nichts, von diesem Trick.</p>
+        <p>Was willst du als nächstes würfeln?</p>
+        <md-field style="width: 100px">
+            <label for="dice1">Würfel 1</label>
+            <md-select v-model="diceWish1" name="dice1" id="dice1">
+                <md-option :value="i" v-for="i in [1,2,3,4,5,6]">{{i}}</md-option>
+            </md-select>
+        </md-field>
+        <md-field style="width: 100px">
+            <label for="dice2">Würfel 2</label>
+            <md-select v-model="diceWish2" name="dice2" id="dice2">
+                <md-option :value="i" v-for="i in [1,2,3,4,5,6]">{{i}}</md-option>
+            </md-select>
+        </md-field>
+        <md-button @click="authenticate(provider)">Klicke hier und du wirst zu facebook weitergeleitet</md-button>
+        <p>P.S. Die anderen erfahren nichts, von diesem Trick.</p>
     </div>
 
     <!-- <iframe src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fzdf.de&width=450&layout=standard&action=like&size=large&show_faces=true&share=true&height=80&appId=1720802108194706" width="450" height="80" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe> -->
@@ -53,25 +59,33 @@ export default {
     },
     data: function() {
         return {
-            diceWish: null,
+            diceWish1: null,
+            diceWish2: null,
             provider: "facebook",
             show2: true,
             dealRaedy: false
         }
     },
     mounted() {
-      if (this.tokens["facebook"]) {
-        this.getFacebookLikes();
-      }
-    },
-    watch: {
-        // whenever tokens changes, this function will run
-        tokens: function(oldTokens, newTokens) {
-            if (newTokens["facebook"]) {
-                this.getFacebookLikes();
+        this.$store.watch(
+            (state) => {
+                return this.$store.state.tokens // could also put a Getter here
+            }, (newTokens, oldValue) => {
+                if (newTokens["facebook"]) {
+                    console.log("watch success");
+                    this.getFacebookLikes();
+                }
+            },
+            //Optional Deep if you need it
+            {
+                deep: true
             }
+        )
+        if (this.tokens["facebook"]) {
+            this.getFacebookLikes();
         }
     },
+    watch: {},
     methods: {
         authenticate: function(provider) {
             this.$store.dispatch('authenticate', {
@@ -79,7 +93,7 @@ export default {
             })
         },
         getFacebookLikes: function() {
-          let vm = this;
+            let vm = this;
             let url = "https://graph.facebook.com/v3.1/me/likes?limit=100";
             this.axios({
                 method: 'get',
@@ -100,12 +114,14 @@ export default {
 
         },
         cancel: function() {
-          this.show2 = false;
-          this.onNo();
+            this.show2 = false;
+            this.onNo();
         },
         confirm: function() {
-          this.show2 = false;
-          this.onYes();
+            this.show2 = false;
+            this.onYes({
+                dices: [this.diceWish1, this.diceWish2]
+            });
         }
     }
 }

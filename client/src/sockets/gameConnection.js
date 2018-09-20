@@ -73,6 +73,12 @@ export default class GameConnection {
     this.socket.send(createJSON("buy_field", {buy: 1}));
   }
 
+  watsonManipulateDices(dices) {
+    this.socket.send(createJSON("scanned_gmail_account", {
+      "dices": dices
+    }));
+  }
+
   payDebt() {
 //     {
 //     "request" : pay_debt,
