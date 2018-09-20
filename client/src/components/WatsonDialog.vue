@@ -1,32 +1,63 @@
+<style scoped>
 
+.content {
+    padding: 20px;
+}
+
+.text {
+    font-size: 20px;
+    line-height: 1.5;
+}
+
+.md-menu-content.md-select-menu {
+  width: auto;
+}
+
+</style>
 
 <template>
 
-<md-dialog :md-active.sync="show2">
+<md-dialog :md-active.sync="show2" md-click-outside-to-close="false">
     <md-dialog-title>Deine Chance: Nutzername gegen Wunschergebnis</md-dialog-title>
-    <div class="">
-        <p>Was willst du als nächstes würfeln?</p>
-        <md-field style="width: 100px">
-            <label for="dice1">Würfel 1</label>
-            <md-select v-model="diceWish1" name="dice1" id="dice1">
-                <md-option :value="i" v-for="i in [1,2,3,4,5,6]">{{i}}</md-option>
-            </md-select>
-        </md-field>
-        <md-field style="width: 100px">
-            <label for="dice2">Würfel 2</label>
-            <md-select v-model="diceWish2" name="dice2" id="dice2">
-                <md-option :value="i" v-for="i in [1,2,3,4,5,6]">{{i}}</md-option>
-            </md-select>
-        </md-field>
-        <md-button @click="authenticate(provider)">Klicke hier und du wirst zu facebook weitergeleitet</md-button>
-        <p>P.S. Die anderen erfahren nichts, von diesem Trick.</p>
-    </div>
+    <md-content class="content">
+        <div class="md-layout">
+            <div class="md-layout-item">
+                <img src="/img/monopolyman.jpg" alt="" style="height:160px"></div>
+            <div class="md-layout-item">
+                <p class="text">Was willst du als nächstes würfeln?</p>
+                <div class="md-layout">
+                    <div class="md-layout-item">
+                        <md-field style="width: 80px">
+                            <label for="dice1">Würfel 1</label>
+                            <md-select v-model="diceWish1" name="dice1" id="dice1" style="width: 80px">
+                                <md-option :value="i" v-for="i in [1,2,3,4,5,6]">{{i}}</md-option>
+                            </md-select>
+                        </md-field>
+                    </div>
+                    <div class="md-layout-item">
+                        <md-field style="width: 80px">
+                            <label for="dice2">Würfel 2</label>
+                            <md-select v-model="diceWish2" name="dice2" id="dice2" style="width: 80px">
+                                <md-option :value="i" v-for="i in [1,2,3,4,5,6]">{{i}}</md-option>
+                            </md-select>
+                        </md-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="">
+            <span>Erlaube mir Deinen Nutzernamen zu erfahren: </span>
+            <md-button @click="authenticate(provider)">Klicke hier</md-button>
+        </div>
+
+        <p>P.S. Die anderen erfahren nichts von diesem Trick.</p>
+    </md-content>
 
     <!-- <iframe src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fzdf.de&width=450&layout=standard&action=like&size=large&show_faces=true&share=true&height=80&appId=1720802108194706" width="450" height="80" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe> -->
 
     <md-dialog-actions>
         <md-button class="" @click="cancel">Deal abbrechen</md-button>
-        <md-button class="md-primary" :disabled="!dealRaedy" @click="confirm">Deal abschließen</md-button>
+        <md-button class="md-primary" :disabled="(!dealReady) || (diceWish1 == null) || (diceWish2 == null)" @click="confirm">Deal abschließen</md-button>
     </md-dialog-actions>
 </md-dialog>
 
@@ -39,6 +70,12 @@ import {
 }
 from 'vuex'
 
+var messages = {
+    "facebook": {
+        "title": "",
+        "question": ""
+    }
+};
 
 export default {
     name: 'WatsonDialog',
@@ -49,41 +86,50 @@ export default {
             default: "Willst Du dir deine Spielerfarbe aussuchen?"
         },
         mode: "sociallogin",
+        provider: {
+            type: String,
+            default: "google"
+        },
         onYes: Function,
         onNo: Function
     },
     computed: {
         ...mapGetters({
-            'tokens': 'getTokens'
-        })
+                'tokens': 'getTokens'
+            }),
+            dealReady2: () => this.fblikes != null && this.diceWish1 != null && this.diceWish2 != null
     },
     data: function() {
         return {
             diceWish1: null,
             diceWish2: null,
-            provider: "facebook",
             show2: true,
-            dealRaedy: false
+            dealReady: false,
+            fblikes: null
         }
     },
     mounted() {
         this.$store.watch(
-            (state) => {
-                return this.$store.state.tokens // could also put a Getter here
-            }, (newTokens, oldValue) => {
-                if (newTokens["facebook"]) {
-                    console.log("watch success");
-                    this.getFacebookLikes();
+                (state) => {
+                    return this.$store.state.tokens // could also put a Getter here
+                }, (oldTokens, newTokens) => {
+                    if (newTokens[this.provider]) {
+                        this.dealReady = true;
+
+                    }
+                    if (newTokens["facebook"]) {
+                        console.log("watch success");
+                        this.getFacebookLikes();
+                    }
+                },
+                //Optional Deep if you need it
+                {
+                    deep: true
                 }
-            },
-            //Optional Deep if you need it
-            {
-                deep: true
-            }
-        )
-        if (this.tokens["facebook"]) {
-            this.getFacebookLikes();
-        }
+            )
+            //if (this.tokens["facebook"]) {
+            //    this.getFacebookLikes();
+            //}
     },
     watch: {},
     methods: {
@@ -102,10 +148,11 @@ export default {
                 headers: {
                     'Authorization': 'Bearer ' + this.tokens['facebook']
                 }
-            }).then(function(resp) {
+            }).then((resp) => {
                 console.log(resp);
-                vm.fblikes = resp.data;
-                vm.dealRaedy = true;
+                this.fblikes = resp.data;
+                this.dealReady = true;
+                vm.dealReady = true;
 
             }).catch(function(err) {
                 console.log("Error");
