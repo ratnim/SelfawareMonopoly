@@ -47,7 +47,7 @@
         </div>
         <div class="">
             <div>{{question}}</div>
-            <md-button @click="authenticate(provider)">Klicke hier</md-button>
+            <md-button :disabled="dealReady" @click="authenticate(provider)">Klicke hier</md-button>
         </div>
 
         <p>P.S. Die anderen erfahren nichts von diesem Trick.</p>
