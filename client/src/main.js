@@ -19,6 +19,11 @@ Vue.use(require('vue-easeljs'));
 //Vue.use(VueWebsocket,process.env.VUE_APP_WEBSOCKET_URL);
 //console.log("Websocket", process.env.VUE_APP_WEBSOCKET_URL);
 
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+
+Vue.use(VueAxios, axios)
+
 Vue.config.productionTip = false
 
 new Vue({

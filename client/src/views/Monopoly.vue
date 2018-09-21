@@ -1,24 +1,27 @@
+
+
 <template>
+
 <div class="home">
-  <div class="md-layout">
-    <div class="md-layout-item md-size-15">
-      <h3>Übersicht</h3>
-      <div ref="a">
-        <PlayerProfile v-show="player" :name="nickname" :player="player"></PlayerProfile>
+    <WatsonDialog v-if="watson.dialogActive" :onYes="watsonDealConfirmed" :onNo="watsonDealCanceled"></WatsonDialog>
+    <div class="md-layout">
+        <div class="md-layout-item md-size-15">
+            <h3>Übersicht</h3>
+            <div ref="a">
+                <PlayerProfile v-if="player" :name="nickname" :player="player"></PlayerProfile>
 
-
-      </div>
-      <div ref="a">
-        Deine Gegner
-        <div v-for="player in players" v-if="player.nickname != nickname">
-          <PlayerProfile :name="player.nickname" :player="player"></PlayerProfile>
+            </div>
+            <div ref="a">
+                Deine Gegner
+                <div v-for="player2 in players" v-if="player2.nickname != nickname">
+                    <PlayerProfile :name="player2.nickname" :player="player2"></PlayerProfile>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
 
-    <div class="md-layout-item">
-      <easel-canvas width="600" height="600" ref="stage" v-if="lane1.length>0">
-        <span v-for="i in 1"> <!-- to make fields an array -->
+        <div class="md-layout-item">
+            <easel-canvas width="600" height="600" ref="stage" v-if="lane1.length>0">
+                <span v-for="i in 1"> <!-- to make fields an array -->
         <!--from LOS to jail -->
         <MonopolyField ref="fields" :x="10" :y="600-10-fieldLength" :fieldWidth="fieldLength" :fieldLength="fieldLength" :align="['bottom', 'left']" :label="lane1[lane1.length-1].name" :attributes="lane1[lane1.length-1].attributes"></MonopolyField>
         <MonopolyField ref="fields" v-for="(field, index) in lane1" v-if="index != lane1.length-1" :x="10+index*0" :y="10+fieldLength+index*fieldWidth" :fieldWidth="fieldLength" :fieldLength="fieldWidth" :align="['bottom', 'left']" :label="field.name" :attributes="field.attributes"></MonopolyField>
@@ -35,43 +38,44 @@
           :rotation="270"></MonopolyField>
         </span>
 
-        <!--the players -->
-        <MonopolyPlayer v-for="player in players" :id="player.id" :key="player.id" :color="player.color" :fieldLength="fieldLength" ref="monopolyPlayers"></MonopolyPlayer>
+                <!--the players -->
+                <MonopolyPlayer v-for="player in players" :id="player.id" :key="player.id" :color="player.color" :fieldLength="fieldLength" ref="monopolyPlayers"></MonopolyPlayer>
 
 
-        <Dice :x="300-30" :y="300" ref="dice1"></Dice>
-        <Dice :x="300+30" :y="300" ref="dice2"></Dice>
-      </easel-canvas>
+                <Dice :x="300-30" :y="300" ref="dice1"></Dice>
+                <Dice :x="300+30" :y="300" ref="dice2"></Dice>
+            </easel-canvas>
+        </div>
+
+        <div class="md-layout-item md-size-15">
+            <h2>Aktionen</h2>
+
+            <md-button v-for="req in possibleRequests" @click="req.method()">{{req.label}}</md-button>
+        </div>
     </div>
 
-    <div class="md-layout-item md-size-15">
-      <h2>Aktionen</h2>
-
-      <md-button v-for="req in possibleRequests" @click="req.method()">{{req.label}}</md-button>
+    <div class="">
+        {{info}}
     </div>
-  </div>
+    <div class="" v-if="$route.query.demo == 1">
+      <md-button @click="() => triggerWatson(true)">demo watson</md-button>
+      <md-button @click="__resetTokens">reset tokens</md-button>
 
-  <div class="">
-    {{info}}
-    <h1>DEV TOOLS</h1>
-    <md-button @click="__addFakePlayer()">add a fake player</md-button>
-    <md-button @click='onPlayerMove({
-      player_name: "pascal4",
-      target: 11,
-      type: "forward"})'>move</md-button>
+    </div>
+    <WatsonSnackbar v-if="watson.snackbarActive" :onYes="watson.snackbarYes" :question="watson.question"></WatsonSnackbar>
 
-
-
-  </div>
 </div>
+
 </template>
 
 <script>
+
 import _ from 'lodash';
 
 import {
-  mapGetters
-} from 'vuex'
+    mapGetters
+}
+from 'vuex'
 
 import GameConnection from '@/sockets/gameConnection'
 import HomeConnection from '@/sockets/homeConnection' // just for DEV
@@ -81,306 +85,382 @@ import MonopolyField from '@/components/MonopolyField'
 import MonopolyPlayer from '@/components/MonopolyPlayer'
 import Dice from '@/components/Dice'
 import PlayerProfile from '@/components/PlayerProfile'
+import WatsonSnackbar from '@/components/WatsonSnackbar'
+import WatsonDialog from '@/components/WatsonDialog'
 
 import game from '@/assets/game.json'
 
 export default {
-  name: 'monopoly',
-  components: {
-    MonopolyField,
-    MonopolyPlayer,
-    Dice,
-    PlayerProfile
-  },
-  data: function() {
-    return {
-      gameConnection: null,
-      game: game,
-      colorMapping: {
-        0: "#527479",
-        1: "#27C3A3",
-        2: "#EDE591",
-        3: "#89AE3D",
-        4: "#F1B661",
-        5: "#524090",
-        6: "#AAC3A3",
-        7: "#ED4591",
-        8: "#E34B00"
-      },
-      dice1: null,
-      dice2: null,
-      players: [],
-      lane1: [],
-      lane2: [],
-      lane3: [],
-      lane4: [],
-      possibleRequests: [],
-      canvas: {
-        margin: 2
-      },
-      info: "Noch nichts passiert"
-    }
-  },
-  computed: {
-    ...mapGetters({
-      tokens: 'getTokens',
-      nickname: 'getNickname',
-      sessionId: 'getSessionId'
-    }),
-    fieldWidth: () => (600 - 10 - 10) / (10 + 1 + 1), // + 1 because of l = 1.5*w
-    fieldLength: () => (600 - 10 - 10) / (10 + 1 + 1) * 1.5,
-    player: function() {return _.find(this.players, {"nickname": this.nickname})}
-  },
-
-  created() {
-    let handlers = {
-      "join_game": this.onPlayerJoined,
-      "game_board": this.onGameboard,
-      "game_start": this.onGameStart,
-      "possible_requests": this.onPossibleActions,
-      "player_ready": this.onPlayerReady,
-      "change_turn": this.onTurnChanged,
-      "money_change": this.onMoneyChange,
-      "roll_dice": this.onRollDice,
-      "player_move": this.onPlayerMove,
-      "property_change": this.onPropertyChange,
-      "error": (data) => {
-        console.log(data);
-      }
-    }
-    this.gameConnection = new GameConnection(this.sessionId, this.$route.query.game_id, handlers);
-
-  },
-  beforeRouteLeave(to, from, next) {
-    //gameConnection.disconnect();
-    next();
-  },
-
-  methods: {
-    rollDice: function() {
-      this.$refs.dice1.animate();
-      this.$refs.dice2.animate();
-      this.gameConnection.rollDice();
+    name: 'monopoly',
+    components: {
+        MonopolyField,
+        MonopolyPlayer,
+        Dice,
+        PlayerProfile,
+        WatsonSnackbar,
+        WatsonDialog
     },
-    setReady: function() {
-      this.gameConnection.setReady();
-    },
-    startGame: function() {
-      this.gameConnection.startGame();
-    },
-    endTurn: function() {
-      this.gameConnection.endTurn();
-    },
-
-    onDiceRolled: function(dice) {
-      this.$refs.dice1.show(dice[0]);
-      this.$refs.dice2.show(dice[1]);
-      this.dice1 = dice[0];
-      this.dice2 = dice[1];
-    },
-    onPlayerJoined: function(data) {
-      var playerName = data.player_name;
-      if (_.findIndex(this.players, {
-          'player_name': playerName
-        }) == -1) {
-        this.players.push({
-          id: this.players.length,
-          currentField: 0,
-          nickname: playerName,
-          color: this.getRandomColor(),
-          isReady: false,
-          isOnTurn: null,
-          deposit: 0,
-          properties: []
-        });
-      };
-      //translate players in game grafic
-      if (this.$refs.monopolyPlayers) {
-        let pCount = this.players.length;
-        let step = 2 * Math.PI / pCount;
-        for (var i = 0; i < this.$refs.monopolyPlayers.length; i++) {
-          this.$refs.monopolyPlayers[i].x = 2 + this.fieldLength / 2 + 25 * Math.sin((i + 1) * step);
-          this.$refs.monopolyPlayers[i].y = 600 - 4 - this.fieldLength / 2 - 10 + 25 * Math.cos((i + 1) * step);
-        }
-      }
-
-    },
-    onPlayerMove: function(data) {
-      //"data": {
-      //  "player_name": "8080",
-      //  "target": 11,
-      //  "type": "forward"
-      //}
-      var player = _.find(this.players, (p) => p.nickname == data.player_name);
-      var mps = [].concat(this.$refs.monopolyPlayers);
-      var playerFigure = _.find(mps, (p) => p.id == player.id);
-      player.currentField = data.target;
-      var fs = this.$refs.fields;
-      var field = _.find(fs, (f) => f.attributes.index == data.target)
-      console.log(field);
-      playerFigure.move(field.center.x, field.center.y);
-    },
-    onGameboard: function(data) {
-
-      for (var i = 0; i < data.fields.length; i++) {
-        data.fields[i].attributes = {
-          color: this.colorMapping[data.fields[i].group],
-          index: i
-        };
-      }
-      var gameboard = data.fields;
-      this.gameboard = data.fields;
-      this.gameboard2Lanes(gameboard);
-      this.lane4 = [].concat(gameboard.slice(30, 40)).reverse();
-      this.$store.commit("setGame", gameboard);
-    },
-    gameboard2Lanes: function(gameboard) {
-      this.lane1 = [].concat(gameboard.slice(0, 10)).reverse();
-      this.lane2 = gameboard.slice(10, 20);
-      this.lane3 = gameboard.slice(20, 30);
-      this.lane4 = [].concat(gameboard.slice(30, 40)).reverse();
-    },
-    onGameStart: function() {
-      this.info = "Los gehts!";
-    },
-    onPossibleActions: function(data) {
-
-      let mapping = {
-        "player_ready": {
-          method: () => {
-            this.gameConnection.setReady()
-          },
-          label: "Startklar"
-        },
-        "game_start": {
-          method: () => {
-            this.gameConnection.startGame()
-          },
-          label: "Spiel starten"
-        },
-        "roll_dice": {
-          label: "Würfeln"
-        },
-        "buy_field": {
-          label: "Feld kaufen für ${amount} €",
-          method: () => this.gameConnection.buyField()
-        },
-        "end_turn": {
-          label: "Zug beenden"
-        },
-        "dont_buy_field": {
-          label: "Nicht kaufen"
-        },
-        "pay_debt": {
-          label: "Zahle ${amount}€ an ${beneficiary}"
-        }
-      };
-      this.possibleRequests = [];
-      console.log("Possible Requests", data.requests);
-      for (var i = 0; i < data.requests.length; i++) {
-        var req = data.requests[i];
-        var r = {"method" : () => {this.gameConnection.send(req.request, req.data)}, "label": req.request}
-        if (mapping.hasOwnProperty(req.request)) {
-          r.label = _.get(mapping, req.request+'.label', r.label);
-          r.method = _.get(mapping, req.request+'.method', r.method);
-        }
-        if (req.request == "pay_debt") {
-          r.label = r.label.replace("${amount}", req.data.amount).replace("${beneficiary}", req.data.beneficiary);
-        }
-        if (req.request == "buy_field") {
-          let price = this.gameboard[this.player.currentField].price;
-          r.label = r.label.replace("${amount}", price);
-        }
-        this.possibleRequests.push(r)
-      }
-    },
-    onPlayerReady: function(data) {
-      this.info = data.player_name + ' is now ready!';
-      for (var i = 0; i < this.players.length; i++) {
-        if (this.players[i].nickname == data.player_name) {
-          this.players[i].isReady = true;
-        }
-      }
-    },
-    onGameStarted: function() {
-      console.log('Game started!');
-    },
-    onGameEnded: function() {
-      console.log('Game ended');
-    },
-    onTurnChanged: function(data) {
-
-      this.info = data.player_name + " ist am Zug";
-      for (var i = 0; i < this.players.length; i++) {
-        this.players[i].isOnTurn = false;
-        if (this.players[i].nickname == data.player_name) {
-          this.players[i].isOnTurn = true;
-        }
-      }
-    },
-    onMoneyChange: function(data) {
-      console.log(data);
-      console.log("Money change");
-      this.info = data.player_name + (data.deposit > 0 ? " bekommt" : " zahlt") + data.deposit;
-      for (var i = 0; i < this.players.length; i++) {
-        if (this.players[i].nickname == data.player_name) {
-          this.players[i].deposit = data.deposit;
-        }
-      }
-      //{deposit: 1500, player_name: "pascal1"}
-    },
-    onRollDice: function(data) {
-      this.info = data.player_name + " würfelt " + data.eyes[0] + ' und ' + data.eyes[1];
-    },
-
-    onPropertyChange: function(data) {
-      //property_change
-//       {
-//     "name" : "property_change",
-//     "data" :
-//     {
-//         index: <index>,
-//         owner: <player_name>,
-//         construction_level: <level>
-//     }
-// }
-      //change in gameboard,
-      //change in players
-      this.gameboard[data.index].owner = data.owner;
-      this.gameboard[data.index].construction_level = data.construction_level;
-      this.gameboard2Lanes(this.gameboard);
-
-      for (var i = 0; i < this.players.length; i++)
-      {
-        if (this.players[i].nickname == data.owner) {
-          this.players[i].properties.push(this.gameboard[data.index])
-        }
-      }
-    },
-
-    onError: function(message) {
-      console.log(message);
-    },
-    getRandomColor: function() {
-      return "rgb(" + Math.round(Math.random() * 255) + ", " + Math.round(Math.random() * 255) + ", " + Math.round(Math.random() * 255) + ")";
-    },
-
-    __addFakePlayer: function() {
-      let gameConnection; //TODO add auto rolldice if roll dice in possible_actions
-      let homeConnection = new HomeConnection({
-        enter_lobby: (data) => {
-          gameConnection = new GameConnection(data.session, this.$route.query.game_id, {
-            "possible_requests": function() {
-              this.rollDice();
+    data: function() {
+        return {
+            gameConnection: null,
+            game: game,
+            colorMapping: {
+                0: "#527479",
+                1: "#27C3A3",
+                2: "#EDE591",
+                3: "#89AE3D",
+                4: "#F1B661",
+                5: "#524090",
+                6: "#AAC3A3",
+                7: "#ED4591",
+                8: "#E34B00"
             },
-            "fallback": () => true,
-            "error": () => true
-          })
+            dice1: null,
+            dice2: null,
+            players: [],
+            lane1: [],
+            lane2: [],
+            lane3: [],
+            lane4: [],
+            possibleRequests: [],
+            canvas: {
+                margin: 2
+            },
+            info: "Noch nichts passiert",
+            watson: {
+                snackbarActive: false,
+                dialogActive: false,
+                question: "",
+                provider: "",
+                snackbarYes: () => {
+                    console.log("he said yes");
+                }
+            },
+
+            stats: {
+                moveCount: 0,
+                isOwnColor: false
+            }
         }
-      });
-      setTimeout(() => homeConnection.createAccount("The Joker No." + Math.round(Math.random() * 1000)), 300);
-      setTimeout(() => gameConnection.setReady(), 1000);
+    },
+    computed: {
+        ...mapGetters({
+                tokens: 'getTokens',
+                nickname: 'getNickname',
+                sessionId: 'getSessionId'
+            }),
+            fieldWidth: () => (600 - 10 - 10) / (10 + 1 + 1), // + 1 because of l = 1.5*w
+            fieldLength: () => (600 - 10 - 10) / (10 + 1 + 1) * 1.5,
+            player: function() {
+                return _.find(this.players, {
+                    "nickname": this.nickname
+                })
+            }
+    },
+
+    created() {
+        let handlers = {
+            "join_game": this.onPlayerJoined,
+            "game_board": this.onGameboard,
+            "game_start": this.onGameStart,
+            "possible_requests": this.onPossibleActions,
+            "player_ready": this.onPlayerReady,
+            "change_turn": this.onTurnChanged,
+            "money_change": this.onMoneyChange,
+            "roll_dice": this.onRollDice,
+            "player_move": this.onPlayerMove,
+            "property_change": this.onPropertyChange,
+            "error": (data) => {
+                console.log(data);
+            }
+        }
+        this.gameConnection = new GameConnection(this.sessionId, this.$route.query.game_id, handlers);
+
+    },
+    beforeRouteLeave(to, from, next) {
+        //gameConnection.disconnect();
+        next();
+    },
+
+    methods: {
+        rollDice: function() {
+            this.$refs.dice1.animate();
+            this.$refs.dice2.animate();
+            this.gameConnection.rollDice();
+        },
+        setReady: function() {
+            this.gameConnection.setReady();
+        },
+        startGame: function() {
+            this.gameConnection.startGame();
+        },
+        endTurn: function() {
+            console.log("end turn!");
+            this.gameConnection.endTurn();
+            this.stats.moveCount += 1;
+        },
+
+        onDiceRolled: function(dice) {
+            this.$refs.dice1.show(dice[0]);
+            this.$refs.dice2.show(dice[1]);
+            this.dice1 = dice[0];
+            this.dice2 = dice[1];
+        },
+        onPlayerJoined: function(data) {
+            var playerName = data.player_name;
+            if (_.findIndex(this.players, {
+                    'player_name': playerName
+                }) == -1) {
+                this.players.push({
+                    id: this.players.length,
+                    currentField: 0,
+                    nickname: playerName,
+                    color: this.getRandomColor(),
+                    isReady: false,
+                    isOnTurn: null,
+                    deposit: 0,
+                    properties: []
+                });
+            };
+            //translate players in game grafic
+            if (this.$refs.monopolyPlayers) {
+                let pCount = this.players.length;
+                let step = 2 * Math.PI / pCount;
+                for (var i = 0; i < this.$refs.monopolyPlayers.length; i++) {
+                    this.$refs.monopolyPlayers[i].x = 2 + this.fieldLength / 2 + 25 * Math.sin((i + 1) * step);
+                    this.$refs.monopolyPlayers[i].y = 600 - 4 - this.fieldLength / 2 - 10 + 25 * Math.cos((i + 1) * step);
+                }
+            }
+
+        },
+        onPlayerMove: function(data) {
+            //"data": {
+            //  "player_name": "8080",
+            //  "target": 11,
+            //  "type": "forward"
+            //}
+            var player = _.find(this.players, (p) => p.nickname == data.player_name);
+            var mps = [].concat(this.$refs.monopolyPlayers);
+            var playerFigure = _.find(mps, (p) => p.id == player.id);
+            player.currentField = data.target;
+            var fs = this.$refs.fields;
+            var field = _.find(fs, (f) => f.attributes.index == data.target)
+            console.log(field);
+            playerFigure.move(field.center.x, field.center.y);
+        },
+        onGameboard: function(data) {
+
+            for (var i = 0; i < data.fields.length; i++) {
+                data.fields[i].attributes = {
+                    color: this.colorMapping[data.fields[i].group],
+                    index: i
+                };
+            }
+            var gameboard = data.fields;
+            this.gameboard = data.fields;
+            this.gameboard2Lanes(gameboard);
+            this.lane4 = [].concat(gameboard.slice(30, 40)).reverse();
+            this.$store.commit("setGame", gameboard);
+        },
+        gameboard2Lanes: function(gameboard) {
+            this.lane1 = [].concat(gameboard.slice(0, 10)).reverse();
+            this.lane2 = gameboard.slice(10, 20);
+            this.lane3 = gameboard.slice(20, 30);
+            this.lane4 = [].concat(gameboard.slice(30, 40)).reverse();
+        },
+        onGameStart: function() {
+            this.info = "Los gehts!";
+        },
+        onPossibleActions: function(data) {
+            var vm = this;
+
+            let mapping = {
+                "player_ready": {
+                    method: () => {
+                        this.gameConnection.setReady()
+                    },
+                    label: "Startklar"
+                },
+                "game_start": {
+                    method: () => {
+                        this.gameConnection.startGame()
+                    },
+                    label: "Spiel starten"
+                },
+                "roll_dice": {
+                    label: "Würfeln"
+                },
+                "buy_field": {
+                    label: "Feld kaufen für ${amount} €",
+                    method: () => this.gameConnection.buyField()
+                },
+                "end_turn": {
+                    label: "Zug beenden",
+                    method: () => {
+                        vm.endTurn()
+                    }
+                },
+                "dont_buy_field": {
+                    label: "Nicht kaufen"
+                },
+                "pay_debt": {
+                    label: "Zahle ${amount}€ an ${beneficiary}"
+                }
+            };
+            this.possibleRequests = [];
+            //console.log("Possible Requests", data.requests);
+            for (var i = 0; i < data.requests.length; i++) {
+                var req = data.requests[i];
+                var r = {
+                    "method": () => {
+                        this.gameConnection.send(req.request, req.data)
+                    },
+                    "label": req.request
+                }
+                if (mapping.hasOwnProperty(req.request)) {
+                    r.label = _.get(mapping, req.request + '.label', r.label);
+                    r.method = _.get(mapping, req.request + '.method', r.method);
+                }
+                if (req.request == "pay_debt") {
+                    r.label = r.label.replace("${amount}", req.data.amount).replace("${beneficiary}", req.data.beneficiary);
+                }
+                if (req.request == "buy_field") {
+                    let price = this.gameboard[this.player.currentField].price;
+                    r.label = r.label.replace("${amount}", price);
+                }
+                if (req.request == "end_turn") {
+                    this.stats.moveCount++;
+                }
+                this.possibleRequests.push(r)
+            }
+            this.triggerWatson();
+        },
+        onPlayerReady: function(data) {
+            this.info = data.player_name + ' is now ready!';
+            for (var i = 0; i < this.players.length; i++) {
+                if (this.players[i].nickname == data.player_name) {
+                    this.players[i].isReady = true;
+                }
+            }
+        },
+        onGameStarted: function() {
+            console.log('Game started!');
+        },
+        onGameEnded: function() {
+            console.log('Game ended');
+        },
+        onTurnChanged: function(data) {
+
+            this.info = data.player_name + " ist am Zug";
+            for (var i = 0; i < this.players.length; i++) {
+                this.players[i].isOnTurn = false;
+                if (this.players[i].nickname == data.player_name) {
+                    this.players[i].isOnTurn = true;
+                }
+            }
+        },
+        onMoneyChange: function(data) {
+            //console.log(data);
+            //console.log("Money change");
+
+            for (var i = 0; i < this.players.length; i++) {
+                if (this.players[i].nickname == data.player_name) {
+                    let delta = data.deposit - this.players[i].deposit;
+                    this.info = data.player_name + (delta > 0 ? " bekommt " : " zahlt ") + Math.abs(delta) + '€';
+                    this.players[i].deposit = data.deposit;
+                }
+            }
+            //{deposit: 1500, player_name: "pascal1"}
+        },
+        onRollDice: function(data) {
+            this.info = data.player_name + " würfelt " + data.eyes[0] + ' und ' + data.eyes[1];
+        },
+
+        onPropertyChange: function(data) {
+            //property_change
+            //       {
+            //     "name" : "property_change",
+            //     "data" :
+            //     {
+            //         index: <index>,
+            //         owner: <player_name>,
+            //         construction_level: <level>
+            //     }
+            // }
+            //change in gameboard,
+            //change in players
+            this.gameboard[data.index].owner = data.owner;
+            this.gameboard[data.index].construction_level = data.construction_level;
+            this.gameboard2Lanes(this.gameboard);
+
+            for (var i = 0; i < this.players.length; i++) {
+                if (this.players[i].nickname == data.owner) {
+                    this.players[i].properties.push(this.gameboard[data.index])
+                }
+            }
+        },
+
+        onError: function(message) {
+            console.log(message);
+        },
+        getRandomColor: function() {
+            return "rgb(" + Math.round(Math.random() * 255) + ", " + Math.round(Math.random() * 255) + ", " + Math.round(Math.random() * 255) + ")";
+        },
+
+        triggerWatson: function(show) {
+
+
+            //starts a watson interaction if rules apply
+            if (show || this.stats.moveCount > 3 && this.stats.isOwnColor == false) {
+              this.watson.dialogActive = false;
+                this.watson.snackbarActive = true;
+                this.watson.question = "Würdest du gerne einmal zu den Würfeln flüstern?";
+                this.watson.snackbarYes = () => {
+                    //console.log("snack YES");
+                    this.watson.snackbarActive = false;
+                    this.watson.dialogActive = true;
+                };
+            }
+        },
+
+        watsonDealConfirmed: function(data) {
+          this.gameConnection.watsonManipulateDices(data.dices);
+          this.watson.dialogActive = false;
+        },
+
+        watsonDealCanceled: function() {
+          console.log("watson sagt pech gehabt");
+          this.watson.dialogActive = false;
+        },
+
+        __resetTokens: function() {
+          this.$store.commit('setToken', {
+            token: null,
+            provider: "facebook"
+          });
+          this.$store.commit('setToken', {
+            token: null,
+            provider: "google"
+          });
+        },
+
+        __addFakePlayer: function() {
+            let gameConnection; //TODO add auto rolldice if roll dice in possible_actions
+            let homeConnection = new HomeConnection({
+                enter_lobby: (data) => {
+                    gameConnection = new GameConnection(data.session, this.$route.query.game_id, {
+                        "possible_requests": function() {
+                            this.rollDice();
+                        },
+                        "fallback": () => true,
+                        "error": () => true
+                    })
+                }
+            });
+            setTimeout(() => homeConnection.createAccount("The Joker No." + Math.round(Math.random() * 1000)), 300);
+            setTimeout(() => gameConnection.setReady(), 1000);
+        }
     }
-  }
 }
+
 </script>
