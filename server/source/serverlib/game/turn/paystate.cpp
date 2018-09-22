@@ -3,6 +3,7 @@
 #include <QJsonArray>
 
 #include <game/turn/possiblerequest.h>
+#include <game/turn/idlestate.h>
 
 #include <game/game.h>
 
@@ -63,7 +64,15 @@ void PayState::requestFileBankruptcy(const QString& playerName)
         throw Exception("Player has no depts", Error::InvalidRequest);
     }
 
+    // Transfer posessions
     m_game->doFileBankruptcy(playerName, beneficiary);
+
+    // If it was his turn, move on to the next player automatically
+    if (m_game->currentPlayer().name() == playerName)
+    {
+        m_game->stateChange<IdleState>();
+        m_game->requestEndTurn(playerName);
+    }
 }
 
 int PayState::findDebtIndex(const QString& debtor, const QString& beneficiary) const
