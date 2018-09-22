@@ -27,6 +27,8 @@ void PayState::requestPossibleRequests(const QString& playerName)
         }
     }
 
+    requests.append(PossibleRequest::fileBankruptcy().toJson());
+
     emit m_game->onPossibleRequests(playerName, requests);
 }
 
@@ -39,6 +41,29 @@ void PayState::requestPayDebt(const QString& debtor, const QString& beneficiary)
     {
         changeToDefaultState();
     }
+}
+
+void PayState::requestFileBankruptcy(const QString& playerName)
+{
+    // Assuming only single beneficiary
+    bool playerHasDebt = false;
+    QString beneficiary;
+    for (auto& debt : m_debts)
+    {
+        if (debt.debtor == playerName)
+        {
+            playerHasDebt = true;
+            beneficiary = debt.beneficiary;
+            break;
+        }
+    }
+
+    if (!playerHasDebt)
+    {
+        throw Exception("Player has no depts", Error::InvalidRequest);
+    }
+
+    m_game->doFileBankruptcy(playerName, beneficiary);
 }
 
 int PayState::findDebtIndex(const QString& debtor, const QString& beneficiary) const

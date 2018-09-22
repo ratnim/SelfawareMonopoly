@@ -322,6 +322,14 @@ Possible Request:
 }
 ```
 
+Possible Request:
+
+```
+{
+    "request" : file_bankruptcy
+}
+```
+
 Request:
 
 ```

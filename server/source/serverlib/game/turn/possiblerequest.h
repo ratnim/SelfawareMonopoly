@@ -18,6 +18,7 @@ public:
     static PossibleRequest dontBuyField();
     static PossibleRequest constructBuilding(const QJsonArray& groups);
     static PossibleRequest payDebt(const QString& beneficiary, int amount);
+    static PossibleRequest fileBankruptcy();
 
 protected:
     const QString m_request;

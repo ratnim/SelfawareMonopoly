@@ -30,6 +30,7 @@ public:
 
     void requestPossibleRequests(const QString& playerName) override;
     void requestPayDebt(const QString& debtor, const QString& beneficiary) override;
+    void requestFileBankruptcy(const QString& playerName) override;
 
 protected:
     void payDebt(int debtIndex) const;

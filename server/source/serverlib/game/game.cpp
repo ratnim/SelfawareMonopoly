@@ -154,6 +154,33 @@ void Game::doTransferMoney(const QString& sender, const QString& reciever, int a
     m_bank.transferMoney(sender, reciever, amount);
 }
 
+void Game::doFileBankruptcy(const QString& debtor, const QString& beneficiary)
+{
+    // Transfer all belongings
+
+    m_bank.transferMoney(debtor, beneficiary, m_bank.balance(debtor));
+
+    for (int i = 0; i < m_board.size(); ++i)
+    {
+        auto field = m_board[i];
+        auto ownable = dynamic_cast<OwnableField*>(field);
+        auto street = dynamic_cast<Street*>(field);
+
+        if (!ownable)
+            continue;
+        if (ownable->owner() != debtor)
+            continue;
+
+        ownable->changeOwner(beneficiary);
+
+        // If returning street to bank, remove constructions
+        if (beneficiary == "" && street)
+        {
+            street->changeConstructionLevel(ConstructionLevel::BASE);
+        }
+    }
+}
+
 RingBuffer<Player>& Game::players()
 {
     return m_players;

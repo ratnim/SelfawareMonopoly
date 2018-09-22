@@ -44,6 +44,7 @@ public:
     void doCurrentPlayerChangeHouses(const std::vector<std::pair<int, int>>& newLevels);
     void doCurrentPlayerEarnMoney(int amount);
     void doTransferMoney(const QString& sender, const QString& reciever, int amount);
+    void doFileBankruptcy(const QString& debtor, const QString& beneficiary);
 
     RingBuffer<Player>& players();
     Player& currentPlayer();

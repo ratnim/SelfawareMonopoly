@@ -52,3 +52,8 @@ PossibleRequest PossibleRequest::payDebt(const QString& beneficiary, int amount)
 {
     return PossibleRequest("pay_debt", { { "beneficiary", beneficiary } , { "amount" , amount } });
 }
+
+PossibleRequest PossibleRequest::fileBankruptcy()
+{
+    return PossibleRequest("file_bankruptcy");
+}
