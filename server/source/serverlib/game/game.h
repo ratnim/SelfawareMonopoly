@@ -46,6 +46,9 @@ public:
     void doTransferMoney(const QString& sender, const QString& reciever, int amount);
     void doFileBankruptcy(const QString& debtor, const QString& beneficiary);
 
+    void playerLost(const QString& playerName);
+    void playerWon(const QString& playerName);
+
     RingBuffer<Player>& players();
     Player& currentPlayer();
 

@@ -22,6 +22,8 @@ public:
     void canRoll(bool value);
     bool canRoll() const;
 
+    bool operator==(const Player& other) const;
+
 protected:
 	const QString m_name;
     int m_timesRolled = 0;

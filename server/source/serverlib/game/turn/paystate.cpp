@@ -73,6 +73,8 @@ void PayState::requestFileBankruptcy(const QString& playerName)
         m_game->stateChange<IdleState>();
         m_game->requestEndTurn(playerName);
     }
+
+    m_game->playerLost(playerName);
 }
 
 int PayState::findDebtIndex(const QString& debtor, const QString& beneficiary) const

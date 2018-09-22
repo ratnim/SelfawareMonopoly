@@ -64,3 +64,8 @@ void Player::canRoll(bool value)
 {
 	m_canRoll = value;
 }
+
+bool Player::operator==(const Player& other) const
+{
+    return m_name == other.name();
+}

@@ -1,5 +1,7 @@
 #include "game.h"
 
+#include <utils/exception.h>
+
 #include <game/turn/initstate.h>
 
 Game::Game(std::vector<std::unique_ptr<Field>> fields)
@@ -179,6 +181,32 @@ void Game::doFileBankruptcy(const QString& debtor, const QString& beneficiary)
             street->changeConstructionLevel(ConstructionLevel::BASE);
         }
     }
+}
+
+void Game::playerLost(const QString& playerName)
+{
+    // TODO: Send message
+
+    // If current player filed bankruptcy, his turn was ended automatically before
+    if (currentPlayer().name() == playerName)
+    {
+        throw Exception("Current player cannot lose", Error::InternalError);
+    }
+
+    m_players.remove(playerName); // Why does this compile?
+
+    // If only one player is left, end the game
+    if (m_players.size() == 1)
+    {
+        playerWon(currentPlayer().name());
+    }
+}
+
+void Game::playerWon(const QString& playerName)
+{
+    // TODO: Send message
+
+    emit onGameEnd();
 }
 
 RingBuffer<Player>& Game::players()
