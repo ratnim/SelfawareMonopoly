@@ -6,6 +6,8 @@ Game::Game(std::vector<std::unique_ptr<Field>> fields)
     : m_board(std::move(fields))
     , m_players({})
     , m_watson(this)
+    , m_eventStack(CardStack::chanceStack())
+    , m_societyStack(CardStack::societyStack())
 {
     connect(&m_bank, &Bank::onMoneyChange, this, &Game::onMoneyChange);
     connect(&m_board, &Board::onPropertyChange, this, &Game::onPropertyChange);
@@ -177,6 +179,16 @@ Bank& Game::bank()
 Board& Game::board()
 {
     return m_board;
+}
+
+CardStack& Game::eventStack()
+{
+    return m_eventStack;
+}
+
+CardStack& Game::societyStack()
+{
+    return m_societyStack;
 }
 
 Watson& Game::watson()
