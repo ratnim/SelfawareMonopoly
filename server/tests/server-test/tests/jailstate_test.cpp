@@ -7,7 +7,7 @@
 #include <game/game.h>
 
 #include <game/turn/jailstate.h>
-#include <game/turn/idlestate.h>
+#include <game/turn/jailbuyoutstate.h>
 
 #include <utils/exception.h>
 
@@ -19,7 +19,7 @@ const QString player_1("Heinz");
 const QString player_2("Gertrude");
 }
 
-TEST(JailStateTest, state_transfer_to_idle)
+TEST(JailStateTest, state_transfer_to_buyout)
 {
     Game game;
 
@@ -30,7 +30,7 @@ TEST(JailStateTest, state_transfer_to_idle)
 	EXPECT_EQ(player_1, game.currentPlayer().name());
     game.watson().doManipulateNextRoll(player_1, 1, 2);
     game.requestRollDice(player_1);
-    EXPECT_NE(nullptr, dynamic_cast<IdleState*>(game.state()));
+    EXPECT_NE(nullptr, dynamic_cast<JailBuyoutState*>(game.state()));
 }
 
 TEST(JailStateTest, roll_dice_false_player)
