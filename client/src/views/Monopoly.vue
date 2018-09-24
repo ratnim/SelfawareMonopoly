@@ -21,6 +21,16 @@
 
         <div class="md-layout-item">
             <easel-canvas width="800" height="800" ref="stage" v-if="lane1.length>0">
+              <!-- Deko -->
+              <easel-text
+                   rotation="0"
+                   :text="'Selfaware \n Monopoly'"
+                   font="60px 'Montserrat'"
+                   align="['top', 'left']"
+                   :y="250"
+                   :x="250"
+               >
+               </easel-text>
                 <span v-for="i in 1"> <!-- to make fields an array -->
         <!--from LOS to jail -->
         <MonopolyField ref="fields" :x="10" :y="800-10-fieldLength" :fieldWidth="fieldLength" :fieldLength="fieldLength" :align="['bottom', 'left']" :label="lane1[lane1.length-1].name" :attributes="lane1[lane1.length-1].attributes"></MonopolyField>
@@ -40,7 +50,6 @@
 
                 <!--the players -->
                 <MonopolyPlayer v-for="player in players" :id="player.id" :key="player.id" :color="player.color" :fieldLength="fieldLength" ref="monopolyPlayers"></MonopolyPlayer>
-
 
                 <Dice :x="300-30" :y="300" ref="dice1"></Dice>
                 <Dice :x="300+30" :y="300" ref="dice2"></Dice>
@@ -247,16 +256,23 @@ export default {
             player.currentField = data.target;
             var fs = this.$refs.fields;
             var field = _.find(fs, (f) => f.attributes.index == data.target)
-            console.log(field);
-            playerFigure.move(field.center.x, field.center.y);
+            if (playerFigure !== undefined) {
+              playerFigure.move(field.center.x, field.center.y);
+            }
         },
         onGameboard: function(data) {
 
             for (var i = 0; i < data.fields.length; i++) {
                 data.fields[i].attributes = {
                     color: this.colorMapping[data.fields[i].group],
-                    index: i
+                    index: i,
+                    type: data.fields[i].type,
+                    houses: 0,
+                    price: data.fields[i].price
                 };
+                if (data.fields[i].name.length > 8) {
+                  data.fields[i].name = data.fields[i].name.substring(0, 8) + ' ' + data.fields[i].name.substring(8, data.fields[i].name.length)
+                }
             }
             var gameboard = data.fields;
             this.gameboard = data.fields;
@@ -294,7 +310,7 @@ export default {
                 },
                 "buy_field": {
                     label: "Feld kaufen für ${amount} €",
-                    //method: () => this.gameConnection.buyField()
+                    method: () => this.gameConnection.buyField()
                 },
                 "end_turn": {
                     label: "Zug beenden",
@@ -313,28 +329,32 @@ export default {
             //console.log("Possible Requests", data.requests);
             for (var i = 0; i < data.requests.length; i++) {
                 var req = data.requests[i];
+                let reqData = JSON.parse(JSON.stringify(req.data));
                 var r = {
                     "id": req.request,
                     "method": () => {
-                        this.gameConnection.send(req.request, req.data)
+                        this.gameConnection.send(req.request, reqData)
                     },
                     "label": req.request
                 }
-                if (mapping.hasOwnProperty(req.request)) {
-                    r.label = _.get(mapping, req.request + '.label', r.label);
-                    r.method = _.get(mapping, req.request + '.method', r.method);
-                }
+
+                r.label = _.get(mapping, req.request + '.label', r.label);
+                r.method = _.get(mapping, req.request + '.method', r.method);
+
                 if (req.request == "pay_debt") {
-                    r.label = r.label.replace("${amount}", req.data.amount).replace("${beneficiary}", req.data.beneficiary);
+                  r.label = r.label.replace("${amount}", req.data.amount).replace("${beneficiary}", req.data.beneficiary);
                 }
                 if (req.request == "buy_field") {
                     let price = this.gameboard[this.player.currentField].price;
                     r.label = r.label.replace("${amount}", price);
+                    if (this.gameboard[this.player.currentField].type != "street") {
+                      r.label = "Zahle " + price + "€"
+                    }
                 }
                 if (req.request == "end_turn") {
                     this.stats.moveCount++;
                 }
-                this.possibleRequests.push(r)
+                this.possibleRequests.push(r);
             }
             if (this.devAutoplay) {
               //debugger;
@@ -407,6 +427,7 @@ export default {
             //change in players
             this.gameboard[data.index].owner = data.owner;
             this.gameboard[data.index].construction_level = data.construction_level;
+            this.gameboard[data.index].attributes.houses = data.construction_level;
             this.gameboard2Lanes(this.gameboard);
 
             for (var i = 0; i < this.players.length; i++) {
@@ -424,7 +445,6 @@ export default {
         },
 
         triggerWatson: function(show) {
-
 
             //starts a watson interaction if rules apply
             if (show || this.stats.moveCount > 3 && this.stats.isOwnColor == false) {
