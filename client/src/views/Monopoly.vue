@@ -20,21 +20,21 @@
         </div>
 
         <div class="md-layout-item">
-            <easel-canvas width="600" height="600" ref="stage" v-if="lane1.length>0">
+            <easel-canvas width="800" height="800" ref="stage" v-if="lane1.length>0">
                 <span v-for="i in 1"> <!-- to make fields an array -->
         <!--from LOS to jail -->
-        <MonopolyField ref="fields" :x="10" :y="600-10-fieldLength" :fieldWidth="fieldLength" :fieldLength="fieldLength" :align="['bottom', 'left']" :label="lane1[lane1.length-1].name" :attributes="lane1[lane1.length-1].attributes"></MonopolyField>
+        <MonopolyField ref="fields" :x="10" :y="800-10-fieldLength" :fieldWidth="fieldLength" :fieldLength="fieldLength" :align="['bottom', 'left']" :label="lane1[lane1.length-1].name" :attributes="lane1[lane1.length-1].attributes"></MonopolyField>
         <MonopolyField ref="fields" v-for="(field, index) in lane1" v-if="index != lane1.length-1" :x="10+index*0" :y="10+fieldLength+index*fieldWidth" :fieldWidth="fieldLength" :fieldLength="fieldWidth" :align="['bottom', 'left']" :label="field.name" :attributes="field.attributes"></MonopolyField>
         <!--from prison to free parking -->
         <MonopolyField ref="fields" :x="10" :y="10" :fieldWidth="fieldLength" :fieldLength="fieldLength" :align="['bottom', 'left']" :label="lane2[0].name" :attributes="lane2[0].attributes"></MonopolyField>
         <MonopolyField ref="fields" v-for="(field, index) in lane2" v-if="index != 0" :x="10+fieldLength+index*fieldWidth" :y="10+index*0" :fieldWidth="fieldLength" :fieldLength="fieldWidth" :label="field.name" :attributes="field.attributes" :rotation="90"></MonopolyField>
         <!-- from free parking to goto prison -->
-        <MonopolyField ref="fields" :x="600-10-fieldLength" :y="10" :fieldWidth="fieldLength" :fieldLength="fieldLength" :align="['bottom', 'left']" :label="lane3[0].name" :attributes="lane3[0].attributes"></MonopolyField>
-        <MonopolyField ref="fields" v-for="(field, index) in lane3" v-if="index != 0" :x="600-10-index*0" :y="10+index*fieldWidth+fieldLength" :fieldWidth="fieldLength" :fieldLength="fieldWidth" :align="['bottom', 'right']" :label="field.name" :attributes="field.attributes"
+        <MonopolyField ref="fields" :x="800-10-fieldLength" :y="10" :fieldWidth="fieldLength" :fieldLength="fieldLength" :align="['bottom', 'left']" :label="lane3[0].name" :attributes="lane3[0].attributes"></MonopolyField>
+        <MonopolyField ref="fields" v-for="(field, index) in lane3" v-if="index != 0" :x="800-10-index*0" :y="10+index*fieldWidth+fieldLength" :fieldWidth="fieldLength" :fieldLength="fieldWidth" :align="['bottom', 'right']" :label="field.name" :attributes="field.attributes"
           :rotation="180"></MonopolyField>
         <!-- from goto prision to los -->
-        <MonopolyField ref="fields" :x="600-10-fieldLength" :y="600-10-fieldLength" :fieldWidth="fieldLength" :fieldLength="fieldLength" :align="['bottom', 'left']" :label="lane4[lane4.length-1].name" :attributes="lane4[lane4.length-1].attributes"></MonopolyField>
-        <MonopolyField ref="fields" v-for="(field, index) in lane4" v-if="index != lane4.length-1" :x="10+fieldLength+index*fieldWidth" :y="600-10-index*0" :fieldWidth="fieldLength" :fieldLength="fieldWidth" :label="field.name" :attributes="field.attributes"
+        <MonopolyField ref="fields" :x="800-10-fieldLength" :y="800-10-fieldLength" :fieldWidth="fieldLength" :fieldLength="fieldLength" :align="['bottom', 'left']" :label="lane4[lane4.length-1].name" :attributes="lane4[lane4.length-1].attributes"></MonopolyField>
+        <MonopolyField ref="fields" v-for="(field, index) in lane4" v-if="index != lane4.length-1" :x="10+fieldLength+index*fieldWidth" :y="800-10-index*0" :fieldWidth="fieldLength" :fieldLength="fieldWidth" :label="field.name" :attributes="field.attributes"
           :rotation="270"></MonopolyField>
         </span>
 
@@ -60,6 +60,7 @@
     <div class="" v-if="$route.query.demo == 1">
       <md-button @click="() => triggerWatson(true)">demo watson</md-button>
       <md-button @click="__resetTokens">reset tokens</md-button>
+      <md-switch v-model="devAutoplay">autoplay</md-switch>
 
     </div>
     <WatsonSnackbar v-if="watson.snackbarActive" :onYes="watson.snackbarYes" :question="watson.question"></WatsonSnackbar>
@@ -140,7 +141,8 @@ export default {
             stats: {
                 moveCount: 0,
                 isOwnColor: false
-            }
+            },
+            devAutoplay: false
         }
     },
     computed: {
@@ -149,8 +151,8 @@ export default {
                 nickname: 'getNickname',
                 sessionId: 'getSessionId'
             }),
-            fieldWidth: () => (600 - 10 - 10) / (10 + 1 + 1), // + 1 because of l = 1.5*w
-            fieldLength: () => (600 - 10 - 10) / (10 + 1 + 1) * 1.5,
+            fieldWidth: () => (800 - 10 - 10) / (10 + 1 + 1), // + 1 because of l = 1.5*w
+            fieldLength: () => (800 - 10 - 10) / (10 + 1 + 1) * 1.5,
             player: function() {
                 return _.find(this.players, {
                     "nickname": this.nickname
@@ -228,7 +230,7 @@ export default {
                 let step = 2 * Math.PI / pCount;
                 for (var i = 0; i < this.$refs.monopolyPlayers.length; i++) {
                     this.$refs.monopolyPlayers[i].x = 2 + this.fieldLength / 2 + 25 * Math.sin((i + 1) * step);
-                    this.$refs.monopolyPlayers[i].y = 600 - 4 - this.fieldLength / 2 - 10 + 25 * Math.cos((i + 1) * step);
+                    this.$refs.monopolyPlayers[i].y = 800 - 4 - this.fieldLength / 2 - 10 + 25 * Math.cos((i + 1) * step);
                 }
             }
 
@@ -292,7 +294,7 @@ export default {
                 },
                 "buy_field": {
                     label: "Feld kaufen für ${amount} €",
-                    method: () => this.gameConnection.buyField()
+                    //method: () => this.gameConnection.buyField()
                 },
                 "end_turn": {
                     label: "Zug beenden",
@@ -312,6 +314,7 @@ export default {
             for (var i = 0; i < data.requests.length; i++) {
                 var req = data.requests[i];
                 var r = {
+                    "id": req.request,
                     "method": () => {
                         this.gameConnection.send(req.request, req.data)
                     },
@@ -332,6 +335,19 @@ export default {
                     this.stats.moveCount++;
                 }
                 this.possibleRequests.push(r)
+            }
+            if (this.devAutoplay) {
+              //debugger;
+              console.log("autoplay in action");
+              for (var i = 0; i < this.possibleRequests.length; i++) {
+                if (this.possibleRequests[i].id == "end_turn") {
+                  return this.possibleRequests[i].method();
+                }
+              }
+            if (this.possibleRequests.length > 0) {
+              return this.possibleRequests[0].method();
+            }
+
             }
             this.triggerWatson();
         },
