@@ -54,7 +54,7 @@ TEST(FieldFactoryTest, construct_field_street)
     EXPECT_EQ(5, street->group());
     EXPECT_EQ(280, street->price());
     EXPECT_EQ(150, street->housePrice());
-    EXPECT_EQ(24, street->rent(board, 0));
+    EXPECT_EQ(24 * 2, street->rent(board, 0)); // Double rent rule applies
 }
 
 TEST(FieldFactoryTest, construct_field_station)
