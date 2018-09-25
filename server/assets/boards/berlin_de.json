@@ -5,7 +5,7 @@
             "type" : "start"
         },
         {
-            "name" : "Mahrzahn",
+            "name" : "Mahr-zahn",
             "type" : "street",
             "group" : 0,
             "price" : 60,
@@ -13,11 +13,11 @@
             "rent" : [2,10,30,90,160,250]
         },
         {
-            "name" : "Gemeinschaftsfeld",
+            "name" : "Gemein-schafts-feld",
             "type" : "society_card"
         },
         {
-            "name" : "Mahlsdorf",
+            "name" : "Mahls-dorf",
             "type" : "street",
             "group" : 0,
             "price" : 60,
@@ -25,19 +25,19 @@
             "rent" : [4,20,60,180,320,450]
         },
         {
-            "name" : "Einkommensteuer",
+            "name" : "Ein-kommens-teuer",
             "type" : "tax",
             "rent" : [200]
         },
         {
-            "name" : "Westhafen",
+            "name" : "Westkreuz",
             "type" : "station",
             "group" : 8,
             "price" : 200,
             "rent" : [50]
         },
         {
-            "name" : "Reinickendorf",
+            "name" : "Rei-nicken-dorf",
             "type" : "street",
             "group" : 1,
             "price" : 100,
@@ -45,7 +45,7 @@
             "rent" : [6,30,90,270,400,550]
         },
         {
-            "name" : "Ereignisfeld",
+            "name" : "Ereignis-feld",
             "type" : "event_card"
         },
         {
@@ -65,7 +65,7 @@
             "rent" : [8,40,100,300,450,600]
         },
         {
-            "name" : "Jail",
+            "name" : "Gefängnis",
             "type" : "jail"
         },
         {
@@ -77,7 +77,7 @@
             "rent" : [10,50,150,450,625,750]
         },
         {
-            "name" : "Brandenburger Tor",
+            "name" : "Branden-burger Tor",
             "type" : "utility",
             "group" : 9,
             "price" : 150,
@@ -100,14 +100,14 @@
             "rent" : [12,60,180,500,700,900]
         },
         {
-            "name" : "Messe Nord",
+            "name" : "Gesundbrunnen",
             "type" : "station",
             "group" : 8,
             "price" : 200,
             "rent" : [50]
         },
         {
-            "name" : "Charlottenburg",
+            "name" : "Char-lotten-burg",
             "type" : "street",
             "group" :  3,
             "price" : 180,
@@ -115,11 +115,11 @@
             "rent" : [14,70,200,550,750,950]
         },
         {
-            "name" : "Gemeinschaftsfeld",
+            "name" : "Gemein-schafts-feld",
             "type" : "society_card"
         },
         {
-            "name" : "Wilmersdorf",
+            "name" : "Wilmers-dorf",
             "type" : "street",
             "group" : 3,
             "price" : 180,
@@ -135,11 +135,11 @@
             "rent" : [16,80,220,600,800,1000]
         },
         {
-            "name" :"Free Parking",
+            "name" :"BER Flughafen",
             "type" : "free"
         },
         {
-            "name" : "Tempelhof",
+            "name" : "Tempel-hof",
             "type" : "street",
             "group" : 4,
             "price" :220,
@@ -147,7 +147,7 @@
             "rent" : [18,90,250,700,875,1050]
         },
         {
-            "name" : "Ereignisfeld",
+            "name" : "Ereignis-feld",
             "type" : "event_card"
         },
         {
@@ -159,7 +159,7 @@
             "rent" : [18,90,250,700,875,1050]
         },
         {
-            "name" : "Neukölln",
+            "name" : "Neu-kölln",
             "type" : "street",
             "group" : 4,
             "price" : 240,
@@ -167,14 +167,14 @@
             "rent" : [20,100,300,750,925,1100]
         },
         {
-            "name" : "Ostkreuz",
+            "name" : "Ost-kreuz",
             "type" : "station",
             "group" : 8,
             "price" : 200,
             "rent" : [50]
         },
         {
-            "name" : "Sprengelkiez",
+            "name" : "Sprengel-kiez",
             "type" : "street",
             "group" :  5,
             "price" : 260,
@@ -182,7 +182,7 @@
             "rent" : [22,110,330,800,975,1150]
         },
         {
-            "name" : "Bergmannkiez",
+            "name" : "Bergmann-kiez",
             "type" : "street",
             "group" : 5,
             "price" : 260,
@@ -190,14 +190,14 @@
             "rent" : [22,110,330,800,975,1150]
         },
         {
-            "name" : "Fernsehturm",
+            "name" : "Fernseh-turm",
             "type" : "utility",
             "group" : 9,
             "price" : 150,
             "rent" : 75
         },
         {
-            "name" : "Kollwitzkiez",
+            "name" : "Kollwitz-kiez",
             "type" : "street",
             "group" : 5,
             "price" : 280,
@@ -205,11 +205,11 @@
             "rent" : [24,120,360,850,1025,1200]
         },
         {
-            "name" : "Go To Jail",
+            "name" : "Ab ins Gefängnis",
             "type" : "go_to_jail"
         },
         {
-            "name" : "Schoeneberg",
+            "name" : "Schöne-berg",
             "type" : "street",
             "group" :  6,
             "price" : 300,
@@ -217,7 +217,7 @@
             "rent" : [26,130,390,900,1100,1275]
         },
         {
-            "name" : "Friedrichshain",
+            "name" : "Frie-drichs-hain",
             "type" : "street",
             "group" : 6,
             "price" : 300,
@@ -225,11 +225,11 @@
             "rent" : [26,130,390,900,1100,1275]
         },
         {
-            "name" : "Gemeinschaftsfeld",
+            "name" : "Gemein-schafts-feld",
             "type" : "society_card"
         },
         {
-            "name" : "Prenzlauer Berg",
+            "name" : "Prenz-lauer Berg",
             "type" : "street",
             "group" : 6,
             "price" : 320,
@@ -237,18 +237,18 @@
             "rent" : [28,150,450,1000,1200,1400]
         },
         {
-            "name" : "Alexanderplatz",
+            "name" : "Alex-ander-platz",
             "type" : "station",
             "group" : 8,
             "price" : 200,
             "rent" : 50
         },
         {
-            "name" : "Ereignisfeld",
+            "name" : "Ereignis-feld",
             "type" : "event_card"
         },
         {
-            "name" : "Grunewald",
+            "name" : "Grune-wald",
             "type" : "street",
             "group" : 7,
             "price" : 350,
@@ -256,7 +256,7 @@
             "rent" : [35,175,500,1100,1300,1500]
         },
         {
-            "name" : "Zusatzsteuer",
+            "name" : "Zusatz-steuer",
             "type" : "tax",
             "rent" : 100
         },
