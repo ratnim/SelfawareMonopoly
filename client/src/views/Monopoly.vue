@@ -3,11 +3,11 @@
 <template>
 
 <div class="home">
-  <div v-if="$route.query.demo == 1">
-    <md-button @click="() => triggerWatson(true)">demo watson</md-button>
-    <md-button @click="__resetTokens">reset tokens</md-button>
-    <md-switch v-model="devAutoplay">autoplay</md-switch>
-  </div>
+    <div v-if="$route.query.demo == 1">
+        <md-button @click="() => triggerWatson(true)">demo watson</md-button>
+        <md-button @click="__resetTokens">reset tokens</md-button>
+        <md-switch v-model="devAutoplay">autoplay</md-switch>
+    </div>
     <ConstructionDialog ref="constructionDialog"></ConstructionDialog>
     <WatsonDialog v-if="watson.dialogActive" :onYes="watsonDealConfirmed" :onNo="watsonDealCanceled"></WatsonDialog>
     <div class="md-layout">
@@ -27,16 +27,9 @@
 
         <div class="md-layout-item">
             <easel-canvas width="800" height="800" ref="stage" v-if="lane1.length>0">
-              <!-- Deko -->
-              <easel-text
-                   rotation="0"
-                   :text="'Selfaware \n Monopoly'"
-                   font="60px 'Montserrat'"
-                   align="['top', 'left']"
-                   :y="250"
-                   :x="250"
-               >
-               </easel-text>
+                <!-- Deko -->
+                <easel-text rotation="0" :text="'Selfaware \n Monopoly'" font="60px 'Montserrat'" align="['top', 'left']" :y="250" :x="250">
+                </easel-text>
                 <span v-for="i in 1"> <!-- to make fields an array -->
         <!--from LOS to jail -->
         <MonopolyField ref="fields" :x="10" :y="800-10-fieldLength" :fieldWidth="fieldLength" :fieldLength="fieldLength" :align="['bottom', 'left']" :label="lane1[lane1.length-1].name" :attributes="lane1[lane1.length-1].attributes"></MonopolyField>
@@ -259,7 +252,7 @@ export default {
             var fs = this.$refs.fields;
             var field = _.find(fs, (f) => f.attributes.index == data.target)
             if (playerFigure !== undefined) {
-              playerFigure.move(field.center.x, field.center.y);
+                playerFigure.move(field.center.x, field.center.y);
             }
         },
         onGameboard: function(data) {
@@ -325,7 +318,7 @@ export default {
                     label: "Zahle ${amount}€ an ${beneficiary}"
                 },
                 "construct_building": {
-                  label: "Haus bauen"
+                    label: "Haus bauen"
                 }
             };
             this.possibleRequests = [];
@@ -345,13 +338,13 @@ export default {
                 r.method = _.get(mapping, req.request + '.method', r.method);
 
                 if (req.request == "pay_debt") {
-                  r.label = r.label.replace("${amount}", req.data.amount).replace("${beneficiary}", req.data.beneficiary);
+                    r.label = r.label.replace("${amount}", req.data.amount).replace("${beneficiary}", req.data.beneficiary);
                 }
                 if (req.request == "buy_field") {
                     let price = this.gameboard[this.player.currentField].price;
                     r.label = r.label.replace("${amount}", price);
                     if (this.gameboard[this.player.currentField].type != "street") {
-                      r.label = "Zahle " + price + "€"
+                        r.label = "Zahle " + price + "€"
                     }
                 }
                 if (req.request == "end_turn") {
@@ -359,20 +352,22 @@ export default {
                 }
 
                 if (req.request == "construct_building") {
-                  r.method = () => {this.openConstructionDialog(req.data)};
+                    r.method = () => {
+                        this.openConstructionDialog(req.data)
+                    };
                 }
                 this.possibleRequests.push(r);
             }
             if (this.devAutoplay) {
-              console.log("autoplay in action");
-              for (var j = 0; j < this.possibleRequests.length; j++) {
-                if (this.possibleRequests[j].id == "end_turn") {
-                  return this.possibleRequests[j].method();
+                console.log("autoplay in action");
+                for (var j = 0; j < this.possibleRequests.length; j++) {
+                    if (this.possibleRequests[j].id == "end_turn") {
+                        return this.possibleRequests[j].method();
+                    }
                 }
-              }
-            if (this.possibleRequests.length > 0) {
-              return this.possibleRequests[0].method();
-            }
+                if (this.possibleRequests.length > 0) {
+                    return this.possibleRequests[0].method();
+                }
 
             }
             this.triggerWatson();
@@ -438,7 +433,12 @@ export default {
 
             for (var i = 0; i < this.players.length; i++) {
                 if (this.players[i].nickname == data.owner) {
-                    this.players[i].properties.push(this.gameboard[data.index])
+                    let obj = _.find(this.players[i].properties, (s) => s.name == this.gameboard[data.index].name)
+                    if (obj) {
+
+                    } else {
+                        this.players[i].properties.push(this.gameboard[data.index]);
+                    }
                 }
             }
         },
@@ -450,16 +450,23 @@ export default {
             return "rgb(" + Math.round(Math.random() * 255) + ", " + Math.round(Math.random() * 255) + ", " + Math.round(Math.random() * 255) + ")";
         },
         openConstructionDialog: function(groups) {
-          this.$refs.constructionDialog.groups = groups;
-          this.$refs.constructionDialog.gameboard = this.gameboard;
-          this.$refs.constructionDialog.open();
+            this.$refs.constructionDialog.groups = groups.groups;
+            this.$refs.constructionDialog.gameboard = this.gameboard;
+            this.$refs.constructionDialog.onYes = (houses) => {
+                console.log(houses, "onyes");
+                for (var group in houses) {
+                    this.gameConnection.buildHouses(houses[group]);
+                }
+            };
+
+            this.$refs.constructionDialog.open();
         },
 
         triggerWatson: function(show) {
 
             //starts a watson interaction if rules apply
             if (show || this.stats.moveCount > 30 && this.stats.isOwnColor == false) {
-              this.watson.dialogActive = false;
+                this.watson.dialogActive = false;
                 this.watson.snackbarActive = true;
                 this.watson.question = "Würdest du gerne einmal zu den Würfeln flüstern?";
                 this.watson.snackbarYes = () => {
@@ -471,24 +478,24 @@ export default {
         },
 
         watsonDealConfirmed: function(data) {
-          this.gameConnection.watsonManipulateDices(data.dices);
-          this.watson.dialogActive = false;
+            this.gameConnection.watsonManipulateDices(data.dices);
+            this.watson.dialogActive = false;
         },
 
         watsonDealCanceled: function() {
-          console.log("watson sagt pech gehabt");
-          this.watson.dialogActive = false;
+            console.log("watson sagt pech gehabt");
+            this.watson.dialogActive = false;
         },
 
         __resetTokens: function() {
-          this.$store.commit('setToken', {
-            token: null,
-            provider: "facebook"
-          });
-          this.$store.commit('setToken', {
-            token: null,
-            provider: "google"
-          });
+            this.$store.commit('setToken', {
+                token: null,
+                provider: "facebook"
+            });
+            this.$store.commit('setToken', {
+                token: null,
+                provider: "google"
+            });
         },
 
         __addFakePlayer: function() {
