@@ -79,7 +79,7 @@ export default class GameConnection {
     }));
   }
 
-  payDebt() {
+  payDebt(amount, beneficiary) {
 //     {
 //     "request" : pay_debt,
 //     "data": {
@@ -87,13 +87,14 @@ export default class GameConnection {
 //         "beneficiary" : <name>
 //     }
 // }
-  this.socket.send(createJSON("pay_debt", {amount: 100, beneficiary: ""}));
+  this.socket.send(createJSON("pay_debt", {amount, beneficiary}));
   }
 
   send(request, data) {
     if (data == undefined) {
       data = {};
     }
+    console.log("send:", createJSON(request, data));
     this.socket.send(createJSON(request, data));
   }
 }
