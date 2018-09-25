@@ -26,7 +26,7 @@
 </easel-bitmap>
   <easel-text
        :rotation="-90"
-       :text="label.replace(' ', '\n')"
+       :text="name"
        font="11px 'Montserrat'"
        align="['top', 'left']"
        :y="fieldLength-5"
@@ -65,6 +65,9 @@ export default {
   },
   computed : {
     color : () => this.$data.attributes.color || '#1d1d1d',
+    name: function() {
+      return this.label.replace(' ', '\n').replace(/-/g, '-\n');
+    },
     center: function() {
       if (this.rotation == 0) {
         return {x: this.x + this.fieldWidth/2, y: this.y + this.fieldLength/2 };

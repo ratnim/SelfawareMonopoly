@@ -30,7 +30,7 @@
                         <md-field style="width: 80px">
                             <label for="dice1">Würfel 1</label>
                             <md-select v-model="diceWish1" name="dice1" id="dice1" style="width: 80px">
-                                <md-option :value="i" v-for="i in [1,2,3,4,5,6]">{{i}}</md-option>
+                                <md-option :value="i" v-for="i in [1,2,3,4,5,6]" :key="i">{{i}}</md-option>
                             </md-select>
                         </md-field>
                     </div>
@@ -38,7 +38,7 @@
                         <md-field style="width: 80px">
                             <label for="dice2">Würfel 2</label>
                             <md-select v-model="diceWish2" name="dice2" id="dice2" style="width: 80px">
-                                <md-option :value="i" v-for="i in [1,2,3,4,5,6]">{{i}}</md-option>
+                                <md-option :value="i" v-for="i in [1,2,3,4,5,6]" :key="i">{{i}}</md-option>
                             </md-select>
                         </md-field>
                     </div>

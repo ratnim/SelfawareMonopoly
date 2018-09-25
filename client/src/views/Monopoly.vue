@@ -232,7 +232,7 @@ export default {
                     deposit: 0,
                     properties: []
                 });
-            };
+            }
             //translate players in game grafic
             if (this.$refs.monopolyPlayers) {
                 let pCount = this.players.length;
@@ -270,9 +270,7 @@ export default {
                     houses: 0,
                     price: data.fields[i].price
                 };
-                if (data.fields[i].name.length > 8) {
-                  data.fields[i].name = data.fields[i].name.substring(0, 8) + ' ' + data.fields[i].name.substring(8, data.fields[i].name.length)
-                }
+                
             }
             var gameboard = data.fields;
             this.gameboard = data.fields;
@@ -357,11 +355,10 @@ export default {
                 this.possibleRequests.push(r);
             }
             if (this.devAutoplay) {
-              //debugger;
               console.log("autoplay in action");
-              for (var i = 0; i < this.possibleRequests.length; i++) {
-                if (this.possibleRequests[i].id == "end_turn") {
-                  return this.possibleRequests[i].method();
+              for (var j = 0; j < this.possibleRequests.length; j++) {
+                if (this.possibleRequests[j].id == "end_turn") {
+                  return this.possibleRequests[j].method();
                 }
               }
             if (this.possibleRequests.length > 0) {
