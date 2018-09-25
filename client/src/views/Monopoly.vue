@@ -3,6 +3,12 @@
 <template>
 
 <div class="home">
+  <div v-if="$route.query.demo == 1">
+    <md-button @click="() => triggerWatson(true)">demo watson</md-button>
+    <md-button @click="__resetTokens">reset tokens</md-button>
+    <md-switch v-model="devAutoplay">autoplay</md-switch>
+  </div>
+    <ConstructionDialog ref="constructionDialog"></ConstructionDialog>
     <WatsonDialog v-if="watson.dialogActive" :onYes="watsonDealConfirmed" :onNo="watsonDealCanceled"></WatsonDialog>
     <div class="md-layout">
         <div class="md-layout-item md-size-15">
@@ -66,12 +72,6 @@
     <div class="">
         {{info}}
     </div>
-    <div class="" v-if="$route.query.demo == 1">
-      <md-button @click="() => triggerWatson(true)">demo watson</md-button>
-      <md-button @click="__resetTokens">reset tokens</md-button>
-      <md-switch v-model="devAutoplay">autoplay</md-switch>
-
-    </div>
     <WatsonSnackbar v-if="watson.snackbarActive" :onYes="watson.snackbarYes" :question="watson.question"></WatsonSnackbar>
 
 </div>
@@ -97,6 +97,7 @@ import Dice from '@/components/Dice'
 import PlayerProfile from '@/components/PlayerProfile'
 import WatsonSnackbar from '@/components/WatsonSnackbar'
 import WatsonDialog from '@/components/WatsonDialog'
+import ConstructionDialog from '@/components/ConstructionDialog'
 
 import game from '@/assets/game.json'
 
@@ -108,7 +109,8 @@ export default {
         Dice,
         PlayerProfile,
         WatsonSnackbar,
-        WatsonDialog
+        WatsonDialog,
+        ConstructionDialog
     },
     data: function() {
         return {
@@ -270,7 +272,7 @@ export default {
                     houses: 0,
                     price: data.fields[i].price
                 };
-                
+
             }
             var gameboard = data.fields;
             this.gameboard = data.fields;
@@ -321,6 +323,9 @@ export default {
                 },
                 "pay_debt": {
                     label: "Zahle ${amount}€ an ${beneficiary}"
+                },
+                "construct_building": {
+                  label: "Haus bauen"
                 }
             };
             this.possibleRequests = [];
@@ -351,6 +356,10 @@ export default {
                 }
                 if (req.request == "end_turn") {
                     this.stats.moveCount++;
+                }
+
+                if (req.request == "construct_building") {
+                  r.method = () => {this.openConstructionDialog(req.data)};
                 }
                 this.possibleRequests.push(r);
             }
@@ -440,11 +449,16 @@ export default {
         getRandomColor: function() {
             return "rgb(" + Math.round(Math.random() * 255) + ", " + Math.round(Math.random() * 255) + ", " + Math.round(Math.random() * 255) + ")";
         },
+        openConstructionDialog: function(groups) {
+          this.$refs.constructionDialog.groups = groups;
+          this.$refs.constructionDialog.gameboard = this.gameboard;
+          this.$refs.constructionDialog.open();
+        },
 
         triggerWatson: function(show) {
 
             //starts a watson interaction if rules apply
-            if (show || this.stats.moveCount > 3 && this.stats.isOwnColor == false) {
+            if (show || this.stats.moveCount > 30 && this.stats.isOwnColor == false) {
               this.watson.dialogActive = false;
                 this.watson.snackbarActive = true;
                 this.watson.question = "Würdest du gerne einmal zu den Würfeln flüstern?";
