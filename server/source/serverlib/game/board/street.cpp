@@ -1,5 +1,7 @@
 #include "street.h"
 
+#include <game/board/board.h>
+
 Street::Street(const QString& name, int group, int price, int housePrice, std::array<int, ConstructionLevel::HOTEL + 1> rents)
     : OwnableField(name, FieldType::street, price)
     , m_group(group)
@@ -29,9 +31,14 @@ ConstructionLevel Street::constructionLevel() const
     return m_constructionLevel;
 }
 
-int Street::rent(const Board &, int) const
+int Street::rent(const Board & board, int) const
 {
-    return m_rents[m_constructionLevel];
+    auto rent = m_rents[m_constructionLevel];
+
+    if (m_constructionLevel == ConstructionLevel::BASE && board.isGroupOwner(m_owner, m_group))
+        rent *= 2;
+
+    return rent;
 }
 
 QJsonObject Street::description()

@@ -26,7 +26,7 @@ public:
     int distanceToNextField(int position, FieldType type) const;
 
 	std::vector<int> ownedGroups(const QString& playerName);
-	bool isGroupOwner(const QString& playerName, int groupId);
+	bool isGroupOwner(const QString& playerName, int groupId) const;
     void changeOwner(int id, const QString& owner);
     void changeConstructionLevels(const QString& owner, const std::vector<std::pair<int,int>>& newLevels);
     void changeConstructionLevel(int id, ConstructionLevel level);

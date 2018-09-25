@@ -25,7 +25,8 @@
             "rent" : [4,20,60,180,320,450]
         },
         {
-            "name" : "Ein-kommens-teuer",
+
+            "name" : "Ein-kommen-steuer",
             "type" : "tax",
             "rent" : [200]
         },
@@ -69,7 +70,7 @@
             "type" : "jail"
         },
         {
-            "name" : "Wedding",
+            "name" : "Wed-ding",
             "type" : "street",
             "group" : 2,
             "price" : 140,
@@ -84,7 +85,7 @@
             "rent" : 75
         },
         {
-            "name" : "Moabit",
+            "name" : "Moa-bit",
             "type" : "street",
             "group" : 2,
             "price" : 140,
@@ -127,7 +128,7 @@
             "rent" : [14,70,200,550,750,950]
         },
         {
-            "name" : "Friedenau",
+            "name" : "Friede-nau",
             "type" : "street",
             "group" : 3,
             "price" :200,
@@ -151,7 +152,7 @@
             "type" : "event_card"
         },
         {
-            "name" : "Kreuzberg",
+            "name" : "Kreuz-berg",
             "type" : "street",
             "group" : 4,
             "price" : 220,
