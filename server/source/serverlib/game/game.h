@@ -9,6 +9,7 @@
 
 #include <game/bank/bank.h>
 #include <game/board/board.h>
+#include <game/cardstack.h>
 
 #include <game/dices.h>
 #include <game/player.h>
@@ -51,6 +52,8 @@ public:
     TurnState* state() const;
     Bank& bank();
     Board& board();
+    CardStack& eventStack();
+    CardStack& societyStack();
     Watson& watson();
 
 signals:
@@ -72,6 +75,8 @@ signals:
 protected:
     Board m_board;
     Bank m_bank;
+    CardStack m_eventStack;
+    CardStack m_societyStack;
     RingBuffer<Player> m_players;
     Watson m_watson;
 };

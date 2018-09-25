@@ -20,6 +20,9 @@ set(sources
     watchers/lobbywatcher.h
     game/dices.cpp
     game/dices.h
+    game/card.h
+    game/cardstack.cpp
+    game/cardstack.h
     game/game.cpp
     game/game.h
     game/gameinfo.cpp
@@ -50,6 +53,8 @@ set(sources
     game/board/gotojail.h
     game/board/taxfield.cpp
     game/board/taxfield.h
+    game/board/cardfield.cpp
+    game/board/cardfield.h
     game/turn/endstate.cpp
     game/turn/endstate.h
     game/turn/buystate.cpp

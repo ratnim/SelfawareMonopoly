@@ -10,6 +10,7 @@
 #include <game/board/utility.h>
 #include <game/board/gotojail.h>
 #include <game/board/taxfield.h>
+#include <game/board/cardfield.h>
 
 std::unique_ptr<Field> FieldFactory::create(const QJsonObject& specification)
 {
@@ -30,6 +31,9 @@ std::unique_ptr<Field> FieldFactory::create(const QJsonObject& specification)
         return std::make_unique<GoToJail>(name);
     case FieldType::tax:
         return std::make_unique<TaxField>(name, specification["rent"].toInt());
+    case FieldType::event_card:
+    case FieldType::society_card:
+        return std::make_unique<CardField>(name, type);
     default:
         return std::make_unique<Field>(name, type);
 	}
