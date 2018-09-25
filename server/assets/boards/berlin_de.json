@@ -81,7 +81,7 @@
             "type" : "utility",
             "group" : 9,
             "price" : 150,
-            "rent" : 75
+            "rent" : [75]
         },
         {
             "name" : "Moabit",
@@ -194,7 +194,7 @@
             "type" : "utility",
             "group" : 9,
             "price" : 150,
-            "rent" : 75
+            "rent" : [75]
         },
         {
             "name" : "Kollwitzkiez",
@@ -241,7 +241,7 @@
             "type" : "station",
             "group" : 8,
             "price" : 200,
-            "rent" : 50
+            "rent" : [50]
         },
         {
             "name" : "Ereignisfeld",
@@ -258,7 +258,7 @@
         {
             "name" : "Zusatzsteuer",
             "type" : "tax",
-            "rent" : 100
+            "rent" : [100]
         },
         {
             "name" : "Mitte",
