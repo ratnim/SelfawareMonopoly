@@ -64,7 +64,7 @@ TEST(FieldFactoryTest, construct_field_station)
         { "type", "station" },
         { "group", 5 },
         { "price", 280 },
-        { "rent", 24 }
+        { "rent", QJsonArray{{24}} }
     };
 
     auto builtField = FieldFactory::create(specification);
@@ -158,7 +158,7 @@ TEST(FieldFactoryTest, construct_field_tax)
     QJsonObject specification{
         { "name", "TestTax" },
         { "type", "tax" },
-        { "rent", 100 }
+        { "rent", QJsonArray{{100}} }
     };
 
     auto field = FieldFactory::create(specification);
