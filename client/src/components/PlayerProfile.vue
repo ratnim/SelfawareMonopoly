@@ -15,7 +15,7 @@
 
 
 <md-card-content>
-  <div v-for="prop in player.properties" v-bind:style="{ background: prop.attributes.color}">
+  <div v-for="prop in orderedProperties" v-bind:style="{ background: prop.attributes.color}">
     {{prop.name.replace(/-/g, '')}}
   </div>
 
@@ -46,7 +46,7 @@ export default {
   computed : {
     color : () =>  '#1d1d1d',
     orderedProperties: function () {
-    return _.orderBy(this.player.properties, 'id')
+    return _.orderBy(this.player.properties, 'attributes.index')
   }
 
     //label2: () => this.label.replace(' ', '\n')
