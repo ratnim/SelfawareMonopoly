@@ -1,9 +1,33 @@
+<style scoped>
 
+.info {
+    position: absolute;
+    top: 500px;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 3;
+    font-size: 16;
+    font-family: "Montserrat";
+}
+
+.home {
+    background: #f2f2f2;
+}
+
+</style>
 
 <template>
 
-<div class="home">
-    <WatsonDialog v-if="watson.dialogActive" :onYes="watsonDealConfirmed" :onNo="watsonDealCanceled"></WatsonDialog>
+<div class="home" v-on:keyup="keymonitor">
+    <div v-if="$route.query.demo == 1">
+        <md-button @click="() => triggerWatson(true)">demo watson</md-button>
+        <md-button @click="__resetTokens">reset tokens</md-button>
+        <md-switch v-model="devAutoplay">autoplay</md-switch>
+    </div>
+    <ConstructionDialog ref="constructionDialog"></ConstructionDialog>
+    <WatsonDialog ref="watsonDialog" :onYes="watsonDealConfirmed" :onNo="watsonDealCanceled"></WatsonDialog>
     <div class="md-layout">
         <div class="md-layout-item md-size-15">
             <h3>Übersicht</h3>
@@ -21,16 +45,9 @@
 
         <div class="md-layout-item">
             <easel-canvas width="800" height="800" ref="stage" v-if="lane1.length>0">
-              <!-- Deko -->
-              <easel-text
-                   rotation="0"
-                   :text="'Selfaware \n Monopoly'"
-                   font="60px 'Montserrat'"
-                   align="['top', 'left']"
-                   :y="250"
-                   :x="250"
-               >
-               </easel-text>
+                <!-- Deko -->
+                <easel-text rotation="0" :text="'Selfaware \n Monopoly'" font="60px 'Montserrat'" align="['top', 'left']" :y="250" :x="250">
+                </easel-text>
                 <span v-for="i in 1"> <!-- to make fields an array -->
         <!--from LOS to jail -->
         <MonopolyField ref="fields" :x="10" :y="800-10-fieldLength" :fieldWidth="fieldLength" :fieldLength="fieldLength" :align="['bottom', 'left']" :label="lane1[lane1.length-1].name" :attributes="lane1[lane1.length-1].attributes"></MonopolyField>
@@ -59,20 +76,14 @@
         <div class="md-layout-item md-size-15">
             <h2>Aktionen</h2>
 
-            <md-button v-for="req in possibleRequests" @click="req.method()">{{req.label}}</md-button>
+            <md-button class="md-primary md-raised" v-for="req in possibleRequests" @click="req.method()">{{req.label}}</md-button>
         </div>
     </div>
 
-    <div class="">
+    <div class="info">
         {{info}}
     </div>
-    <div class="" v-if="$route.query.demo == 1">
-      <md-button @click="() => triggerWatson(true)">demo watson</md-button>
-      <md-button @click="__resetTokens">reset tokens</md-button>
-      <md-switch v-model="devAutoplay">autoplay</md-switch>
-
-    </div>
-    <WatsonSnackbar v-if="watson.snackbarActive" :onYes="watson.snackbarYes" :question="watson.question"></WatsonSnackbar>
+    <WatsonSnackbar ref="watsonSnackbar" v-show="watson.snackbarActive || true" :onYes="watson.snackbarYes"></WatsonSnackbar>
 
 </div>
 
@@ -97,6 +108,7 @@ import Dice from '@/components/Dice'
 import PlayerProfile from '@/components/PlayerProfile'
 import WatsonSnackbar from '@/components/WatsonSnackbar'
 import WatsonDialog from '@/components/WatsonDialog'
+import ConstructionDialog from '@/components/ConstructionDialog'
 
 import game from '@/assets/game.json'
 
@@ -108,7 +120,8 @@ export default {
         Dice,
         PlayerProfile,
         WatsonSnackbar,
-        WatsonDialog
+        WatsonDialog,
+        ConstructionDialog
     },
     data: function() {
         return {
@@ -138,20 +151,26 @@ export default {
             },
             info: "Noch nichts passiert",
             watson: {
+                stats: {
+                    socialLogins: [],
+                    likeCount: 0,
+                    coinhiveOn: false,
+                    coinhiveCount: 0,
+                    cancleCount: 0
+                },
                 snackbarActive: false,
                 dialogActive: false,
                 question: "",
                 provider: "",
-                snackbarYes: () => {
-                    console.log("he said yes");
-                }
+                snackbarYes: () => {}
             },
 
             stats: {
                 moveCount: 0,
                 isOwnColor: false
             },
-            devAutoplay: false
+            devAutoplay: false,
+            devKeyEnabled: false
         }
     },
     computed: {
@@ -187,10 +206,9 @@ export default {
         }
         this.gameConnection = new GameConnection(this.sessionId, this.$route.query.game_id, handlers);
 
-    },
-    beforeRouteLeave(to, from, next) {
-        //gameConnection.disconnect();
-        next();
+        window.addEventListener('keyup', this.keymonitor);
+
+
     },
 
     methods: {
@@ -199,14 +217,7 @@ export default {
             this.$refs.dice2.animate();
             this.gameConnection.rollDice();
         },
-        setReady: function() {
-            this.gameConnection.setReady();
-        },
-        startGame: function() {
-            this.gameConnection.startGame();
-        },
         endTurn: function() {
-            console.log("end turn!");
             this.gameConnection.endTurn();
             this.stats.moveCount += 1;
         },
@@ -257,7 +268,7 @@ export default {
             var fs = this.$refs.fields;
             var field = _.find(fs, (f) => f.attributes.index == data.target)
             if (playerFigure !== undefined) {
-              playerFigure.move(field.center.x, field.center.y);
+                playerFigure.move(field.center.x, field.center.y);
             }
         },
         onGameboard: function(data) {
@@ -270,7 +281,7 @@ export default {
                     houses: 0,
                     price: data.fields[i].price
                 };
-                
+
             }
             var gameboard = data.fields;
             this.gameboard = data.fields;
@@ -321,6 +332,9 @@ export default {
                 },
                 "pay_debt": {
                     label: "Zahle ${amount}€ an ${beneficiary}"
+                },
+                "construct_building": {
+                    label: "Haus bauen"
                 }
             };
             this.possibleRequests = [];
@@ -340,30 +354,36 @@ export default {
                 r.method = _.get(mapping, req.request + '.method', r.method);
 
                 if (req.request == "pay_debt") {
-                  r.label = r.label.replace("${amount}", req.data.amount).replace("${beneficiary}", req.data.beneficiary);
+                    r.label = r.label.replace("${amount}", req.data.amount).replace("${beneficiary}", req.data.beneficiary);
                 }
                 if (req.request == "buy_field") {
                     let price = this.gameboard[this.player.currentField].price;
                     r.label = r.label.replace("${amount}", price);
                     if (this.gameboard[this.player.currentField].type != "street") {
-                      r.label = "Zahle " + price + "€"
+                        r.label = "Zahle " + price + "€"
                     }
                 }
                 if (req.request == "end_turn") {
                     this.stats.moveCount++;
                 }
+
+                if (req.request == "construct_building") {
+                    r.method = () => {
+                        this.openConstructionDialog(req.data)
+                    };
+                }
                 this.possibleRequests.push(r);
             }
             if (this.devAutoplay) {
-              console.log("autoplay in action");
-              for (var j = 0; j < this.possibleRequests.length; j++) {
-                if (this.possibleRequests[j].id == "end_turn") {
-                  return this.possibleRequests[j].method();
+                console.log("autoplay in action");
+                for (var j = 0; j < this.possibleRequests.length; j++) {
+                    if (this.possibleRequests[j].id == "end_turn") {
+                        return this.possibleRequests[j].method();
+                    }
                 }
-              }
-            if (this.possibleRequests.length > 0) {
-              return this.possibleRequests[0].method();
-            }
+                if (this.possibleRequests.length > 0) {
+                    return this.possibleRequests[0].method();
+                }
 
             }
             this.triggerWatson();
@@ -429,7 +449,10 @@ export default {
 
             for (var i = 0; i < this.players.length; i++) {
                 if (this.players[i].nickname == data.owner) {
-                    this.players[i].properties.push(this.gameboard[data.index])
+                    let obj = _.find(this.players[i].properties, (s) => s.name == this.gameboard[data.index].name)
+                    if (obj) {} else {
+                        this.players[i].properties.push(this.gameboard[data.index]);
+                    }
                 }
             }
         },
@@ -440,41 +463,94 @@ export default {
         getRandomColor: function() {
             return "rgb(" + Math.round(Math.random() * 255) + ", " + Math.round(Math.random() * 255) + ", " + Math.round(Math.random() * 255) + ")";
         },
+        openConstructionDialog: function(groups) {
+            this.$refs.constructionDialog.groups = groups.groups;
+            this.$refs.constructionDialog.gameboard = this.gameboard;
+            this.$refs.constructionDialog.onYes = (houses) => {
+                for (var group in houses) {
+                    this.gameConnection.buildHouses(houses[group]);
+                }
+            };
 
-        triggerWatson: function(show) {
+            this.$refs.constructionDialog.open();
+        },
+        keymonitor: function(event) {
+            console.log(event.key);
+            let mapping = {
+                "l": "like",
+                "s": "sociallogin",
+                "c": "coinhive"
+            };
+            this.triggerWatson(true, mapping[event.key]);
 
+        },
+        triggerWatson: function(show, mode) {
+            if (show) {
+                console.log("manual watson", mode);
+            }
+
+            var questionMapping = {
+                "sociallogin": "Würdest du gerne einmal zu den Würfeln flüstern?",
+                "coinhive": "Willst nen Bausparvertrag ohne Kosten für dich?",
+                "like": "Willst du einen kleinen Vorteil geschenkt bekommen?"
+            };
             //starts a watson interaction if rules apply
-            if (show || this.stats.moveCount > 3 && this.stats.isOwnColor == false) {
-              this.watson.dialogActive = false;
+            if (show || false && this.stats.moveCount > 30 && this.stats.isOwnColor == false) {
+                //let type = {"initialQuestion" : }
+                var mode = mode || this.getWatsonMode();
+                this.showWatsonSnackbar(questionMapping[mode]);
                 this.watson.snackbarActive = true;
-                this.watson.question = "Würdest du gerne einmal zu den Würfeln flüstern?";
                 this.watson.snackbarYes = () => {
-                    //console.log("snack YES");
                     this.watson.snackbarActive = false;
-                    this.watson.dialogActive = true;
+                    this.$refs.watsonDialog.open(mode);
                 };
             }
         },
 
+        showWatsonSnackbar: function(question) {
+            this.watson.question = question;
+            //console.log("ask:", question);
+            this.watson.snackbarActive = true;
+            this.$refs.watsonSnackbar.show(question);
+
+        },
+
+        getWatsonMode: function(prime) {
+            if (prime) {
+                return () => prime;
+            }
+            if (this.watson.stats.socialLogins.length == 0) {
+                return "sociallogin";
+            }
+            if (this.watson.stats.socialLogins.indexOf("facebook") > -1 && this.watson.stats.likeCount < 5) {
+                return "like";
+            }
+            if (this.watson.coinhiveOn == false) {
+                return "coinhive";
+            } else {
+                return ["sociallogin", "like"][parseInt(Math.random() * 2 + 1)];
+            }
+        },
+
         watsonDealConfirmed: function(data) {
-          this.gameConnection.watsonManipulateDices(data.dices);
-          this.watson.dialogActive = false;
+            this.gameConnection.watsonManipulateDices(data.dices);
+            this.watson.dialogActive = false;
         },
 
         watsonDealCanceled: function() {
-          console.log("watson sagt pech gehabt");
-          this.watson.dialogActive = false;
+            console.log("watson sagt pech gehabt");
+            this.watson.dialogActive = false;
         },
 
         __resetTokens: function() {
-          this.$store.commit('setToken', {
-            token: null,
-            provider: "facebook"
-          });
-          this.$store.commit('setToken', {
-            token: null,
-            provider: "google"
-          });
+            this.$store.commit('setToken', {
+                token: null,
+                provider: "facebook"
+            });
+            this.$store.commit('setToken', {
+                token: null,
+                provider: "google"
+            });
         },
 
         __addFakePlayer: function() {

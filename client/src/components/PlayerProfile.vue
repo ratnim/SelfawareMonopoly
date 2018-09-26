@@ -15,7 +15,7 @@
 
 
 <md-card-content>
-  <div v-for="prop in orderedProperties" v-bind:style="{ background: prop.attributes.color}">
+  <div v-for="prop in orderedProperties" :key="prop.name" v-bind:style="{ background: prop.attributes.color}">
     {{prop.name.replace(/-/g, '')}}
   </div>
 
@@ -40,7 +40,6 @@ export default {
   },
   data: function() {
     return {
-      owns: ["a", "b"]
     }
   },
   computed : {

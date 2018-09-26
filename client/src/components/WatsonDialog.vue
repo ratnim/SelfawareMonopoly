@@ -10,54 +10,88 @@
 }
 
 .md-menu-content.md-select-menu {
-  width: auto;
+    width: auto;
 }
 
 </style>
 
 <template>
 
-<md-dialog :md-active.sync="show2" :md-click-outside-to-close="false">
-    <md-dialog-title>Deine Chance: <br>{{title}}</md-dialog-title>
+<md-dialog :md-active.sync="show2" :md-click-outside-to-close="true">
+    <md-dialog-title>Deine Chance:
+        <br>{{title}}</md-dialog-title>
     <md-content class="content">
-        <div class="md-layout">
-            <div class="md-layout-item">
-                <img src="/img/monopolyman.jpg" alt="" style="height:160px"></div>
-            <div class="md-layout-item">
-                <p class="text">Was willst du als nächstes würfeln?</p>
-                <div class="md-layout">
-                    <div class="md-layout-item">
-                        <md-field style="width: 80px">
-                            <label for="dice1">Würfel 1</label>
-                            <md-select v-model="diceWish1" name="dice1" id="dice1" style="width: 80px">
-                                <md-option :value="i" v-for="i in [1,2,3,4,5,6]" :key="i">{{i}}</md-option>
-                            </md-select>
-                        </md-field>
-                    </div>
-                    <div class="md-layout-item">
-                        <md-field style="width: 80px">
-                            <label for="dice2">Würfel 2</label>
-                            <md-select v-model="diceWish2" name="dice2" id="dice2" style="width: 80px">
-                                <md-option :value="i" v-for="i in [1,2,3,4,5,6]" :key="i">{{i}}</md-option>
-                            </md-select>
-                        </md-field>
-                    </div>
+        <div class="" v-if="mode=='like'">
+            <div class="md-layout">
+                <div class="md-layout-item">
+                    <img src="/img/monopolyman.jpg" alt="" style="height:160px">
+                </div>
+                <div class="md-layout-item">
+                    <iframe src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FHassoPlattnerInstitute%2F&width=450&layout=standard&action=like&size=small&show_faces=true&share=true&height=80&appId=206652186611333" width="450" height="80" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
                 </div>
             </div>
         </div>
-        <div class="">
-            <div>{{question}}</div>
-            <md-button :disabled="dealReady" @click="authenticate(provider)">Klicke hier</md-button>
+
+
+
+        <div v-if="mode=='sociallogin'">
+            <div class="md-layout">
+                <div class="md-layout-item">
+                    <img src="/img/monopolyman.jpg" alt="" style="height:160px"></div>
+                <div class="md-layout-item">
+                    <p class="text">Was willst du als nächstes würfeln?</p>
+                    <div class="md-layout">
+                        <div class="md-layout-item">
+                            <md-field style="width: 80px">
+                                <label for="dice1">Würfel 1</label>
+                                <md-select v-model="diceWish1" name="dice1" id="dice1" style="width: 80px">
+                                    <md-option :value="i" v-for="i in [1,2,3,4,5,6]" :key="i">{{i}}</md-option>
+                                </md-select>
+                            </md-field>
+                        </div>
+                        <div class="md-layout-item">
+                            <md-field style="width: 80px">
+                                <label for="dice2">Würfel 2</label>
+                                <md-select v-model="diceWish2" name="dice2" id="dice2" style="width: 80px">
+                                    <md-option :value="i" v-for="i in [1,2,3,4,5,6]" :key="i">{{i}}</md-option>
+                                </md-select>
+                            </md-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="">
+                <div>{{question}}</div>
+                <md-button :disabled="dealReady" @click="authenticate(provider)">Klicke hier</md-button>
+            </div>
+        </div>
+
+
+
+
+        <div v-if="mode == 'coinhive'">
+            <div class="md-layout">
+                <div class="md-layout-item">
+                    <img src="/img/monopolyman.jpg" alt="" style="height:160px">
+                </div>
+                <div class="md-layout-item">
+                    <p class="text">Gib uns etwas von deiner Rechenleistung, dafür sparst du beim nächsten Häuserbau Geld ein.</p>
+                    <p class="text">Tipp: Stromkabel anschließen nicht vergessen.</p>
+                </div>
+                <md-switch v-model="coinhive">Rechenleistung freigeben</md-switch>
+            </div>
         </div>
 
         <p>P.S. Die anderen erfahren nichts von diesem Trick.</p>
     </md-content>
 
-    <!-- <iframe src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fzdf.de&width=450&layout=standard&action=like&size=large&show_faces=true&share=true&height=80&appId=1720802108194706" width="450" height="80" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe> -->
+
 
     <md-dialog-actions>
-        <md-button class="" @click="cancel">Deal abbrechen</md-button>
-        <md-button class="md-primary" :disabled="(!dealReady) || (diceWish1 == null) || (diceWish2 == null)" @click="confirm">Deal abschließen</md-button>
+        <!-- <md-button class="" @click="cancel">Deal abbrechen</md-button> -->
+        <md-button v-if="mode == 'sociallogin'" class="md-primary" :disabled="((mode == 'sociallogin' && (!dealReady) || (diceWish1 == null) || (diceWish2 == null)))" @click="confirm">Deal abschließen</md-button>
+
+        <md-button v-else class="md-primary" @click="confirm">Deal abschließen</md-button>
     </md-dialog-actions>
 </md-dialog>
 
@@ -71,10 +105,10 @@ import {
 from 'vuex'
 
 var messages = {
-  "generic": {
-      "title": "Kontrolliere die Würfel",
-      "question": "Erlaube mir etwas von Dir zu erfahren: "
-  },
+    "generic": {
+        "title": "Kontrolliere die Würfel",
+        "question": "Erlaube mir etwas von Dir zu erfahren: "
+    },
     "facebook": {
         "title": "Nutzername gegen Wunschergebnis",
         "question": "Erlaube mir Deinen Nutzernamen zu erfahren: "
@@ -85,7 +119,6 @@ export default {
     name: 'WatsonDialog',
     props: {
         show: Boolean,
-        mode: "sociallogin",
         onYes: Function,
         onNo: Function
     },
@@ -94,34 +127,35 @@ export default {
                 'tokens': 'getTokens'
             }),
             dealReady2: () => this.fblikes != null && this.diceWish1 != null && this.diceWish2 != null,
-          //  title: () => {console.log(this.provider); return messages[this.provider] != null ? messages[this.provider]["title"] : messages["generic"]["title"]},
-      //      question: () => { return messages[this.provider] != null ? messages[this.provider]["question"] : messages["generic"]["question"]},
+            //  title: () => {console.log(this.provider); return messages[this.provider] != null ? messages[this.provider]["title"] : messages["generic"]["title"]},
+            //      question: () => { return messages[this.provider] != null ? messages[this.provider]["question"] : messages["generic"]["question"]},
     },
     data: function() {
         return {
             diceWish1: null,
             diceWish2: null,
-            show2: true,
+            show2: false,
             dealReady: false,
             fblikes: null,
             question: messages["generic"].question,
             title: messages["generic"].title,
-            provider: ""
+            provider: "",
+            mode: "sociallogin",
+            coinhive: false,
         }
     },
     mounted() {
-      var provider;
-      if (this.tokens.facebook == null) {
-        provider = "facebook";
-      } else if (this.tokens.google == null) {
-        provider = "google";
-      } else {
-      }
-      this.provider = provider;
-      if (messages[provider]) {
-        this.question = messages[provider].question;
-        this.title = messages[provider].title;
-      }
+        var provider;
+        if (this.tokens.facebook == null) {
+            provider = "facebook";
+        } else if (this.tokens.google == null) {
+            provider = "google";
+        } else {}
+        this.provider = provider;
+        if (messages[provider]) {
+            this.question = messages[provider].question;
+            this.title = messages[provider].title;
+        }
         this.$store.watch(
                 (state) => {
                     return this.$store.state.tokens // could also put a Getter here
@@ -146,6 +180,16 @@ export default {
     },
     watch: {},
     methods: {
+        open: function(mode) {
+            this.mode = mode;
+            if (this.mode == "coinhive") {
+                this.title = "Sparen beim Bauen";
+            } else if (this.mode == "like") {
+                this.title = "Unterstütze uns und wir unterstützen Dich";
+            }
+            console.log("mode:", this.mode);
+            this.show2 = true;
+        },
         authenticate: function(provider) {
             this.$store.dispatch('authenticate', {
                 provider: provider

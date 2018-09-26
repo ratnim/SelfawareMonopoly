@@ -25,6 +25,7 @@
             "rent" : [4,20,60,180,320,450]
         },
         {
+
             "name" : "Ein-kommen-steuer",
             "type" : "tax",
             "rent" : [200]
@@ -100,7 +101,7 @@
             "rent" : [12,60,180,500,700,900]
         },
         {
-            "name" : "Gesundbrunnen",
+            "name" : "Gesund-brunnen",
             "type" : "station",
             "group" : 8,
             "price" : 200,
