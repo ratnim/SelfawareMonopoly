@@ -100,7 +100,7 @@
             "rent" : [12,60,180,500,700,900]
         },
         {
-            "name" : "Gesundbrunnen",
+            "name" : "Gesund-brunnen",
             "type" : "station",
             "group" : 8,
             "price" : 200,

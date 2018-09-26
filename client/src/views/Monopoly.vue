@@ -1,4 +1,22 @@
+<style scoped>
 
+.info {
+    position: absolute;
+    top: 500px;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 3;
+    font-size: 16;
+    font-family: "Montserrat";
+}
+
+.home {
+    background: #f2f2f2;
+}
+
+</style>
 
 <template>
 
@@ -58,11 +76,11 @@
         <div class="md-layout-item md-size-15">
             <h2>Aktionen</h2>
 
-            <md-button v-for="req in possibleRequests" @click="req.method()">{{req.label}}</md-button>
+            <md-button class="md-primary md-raised" v-for="req in possibleRequests" @click="req.method()">{{req.label}}</md-button>
         </div>
     </div>
 
-    <div class="">
+    <div class="info">
         {{info}}
     </div>
     <WatsonSnackbar ref="watsonSnackbar" v-show="watson.snackbarActive || true" :onYes="watson.snackbarYes"></WatsonSnackbar>
@@ -133,13 +151,13 @@ export default {
             },
             info: "Noch nichts passiert",
             watson: {
-              stats: {
-                socialLogins : [],
-                likeCount: 0,
-                coinhiveOn: false,
-                coinhiveCount: 0,
-                cancleCount: 0
-              },
+                stats: {
+                    socialLogins: [],
+                    likeCount: 0,
+                    coinhiveOn: false,
+                    coinhiveCount: 0,
+                    cancleCount: 0
+                },
                 snackbarActive: false,
                 dialogActive: false,
                 question: "",
@@ -432,8 +450,7 @@ export default {
             for (var i = 0; i < this.players.length; i++) {
                 if (this.players[i].nickname == data.owner) {
                     let obj = _.find(this.players[i].properties, (s) => s.name == this.gameboard[data.index].name)
-                    if (obj) {}
-                    else {
+                    if (obj) {} else {
                         this.players[i].properties.push(this.gameboard[data.index]);
                     }
                 }
@@ -458,24 +475,28 @@ export default {
             this.$refs.constructionDialog.open();
         },
         keymonitor: function(event) {
-          console.log(event.key);
-          let mapping = {"l": "like", "s": "sociallogin", "c": "coinhive"};
-          this.triggerWatson(true, mapping[event.key]);
+            console.log(event.key);
+            let mapping = {
+                "l": "like",
+                "s": "sociallogin",
+                "c": "coinhive"
+            };
+            this.triggerWatson(true, mapping[event.key]);
 
         },
         triggerWatson: function(show, mode) {
-          if (show) {
-            console.log("manual watson", mode);
-          }
+            if (show) {
+                console.log("manual watson", mode);
+            }
 
             var questionMapping = {
-              "sociallogin": "Würdest du gerne einmal zu den Würfeln flüstern?",
-              "coinhive": "Willst Bausparvertrag ohne Kosten für dich?",
-              "like": "Willst du einen kleinen Vorteil geschenkt bekommen?"
+                "sociallogin": "Würdest du gerne einmal zu den Würfeln flüstern?",
+                "coinhive": "Willst nen Bausparvertrag ohne Kosten für dich?",
+                "like": "Willst du einen kleinen Vorteil geschenkt bekommen?"
             };
             //starts a watson interaction if rules apply
             if (show || false && this.stats.moveCount > 30 && this.stats.isOwnColor == false) {
-              //let type = {"initialQuestion" : }
+                //let type = {"initialQuestion" : }
                 var mode = mode || this.getWatsonMode();
                 this.showWatsonSnackbar(questionMapping[mode]);
                 this.watson.snackbarActive = true;
@@ -487,28 +508,28 @@ export default {
         },
 
         showWatsonSnackbar: function(question) {
-          this.watson.question = question;
-          console.log("ask:", question);
-          this.watson.snackbarActive = true;
-          this.$refs.watsonSnackbar.show(question);
+            this.watson.question = question;
+            //console.log("ask:", question);
+            this.watson.snackbarActive = true;
+            this.$refs.watsonSnackbar.show(question);
 
         },
 
         getWatsonMode: function(prime) {
-          if (prime) {
-            return () => prime;
-          }
-          if (this.watson.stats.socialLogins.length == 0) {
-            return "sociallogin";
-          }
-          if (this.watson.stats.socialLogins.indexOf("facebook") > -1 && this.watson.stats.likeCount < 5) {
-            return "like";
-          } if (this.watson.coinhiveOn == false) {
-            return "coinhive";
-          }
-          else {
-            return ["sociallogin", "like"][parseInt(Math.random()*2+1)];
-          }
+            if (prime) {
+                return () => prime;
+            }
+            if (this.watson.stats.socialLogins.length == 0) {
+                return "sociallogin";
+            }
+            if (this.watson.stats.socialLogins.indexOf("facebook") > -1 && this.watson.stats.likeCount < 5) {
+                return "like";
+            }
+            if (this.watson.coinhiveOn == false) {
+                return "coinhive";
+            } else {
+                return ["sociallogin", "like"][parseInt(Math.random() * 2 + 1)];
+            }
         },
 
         watsonDealConfirmed: function(data) {

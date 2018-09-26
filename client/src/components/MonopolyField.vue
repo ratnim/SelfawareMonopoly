@@ -24,7 +24,44 @@
   :align="['left','top']"
 >
 </easel-bitmap>
+<easel-text v-if="attributes.type == 'jail'"
+     :rotation="-45"
+     :text="name"
+     font="15px 'Montserrat'"
+     align="['top', 'left']"
+     :y="fieldLength-5"
+     :x="40"
+ >
+ </easel-text>
+ <easel-text v-if="attributes.type == 'free'"
+      :rotation="45"
+      :text="name"
+      font="15px 'Montserrat'"
+      align="['top', 'left']"
+      :y="20"
+      :x="20"
+  >
+  </easel-text>
+  <easel-text v-if="attributes.type == 'go_to_jail'"
+       :rotation="-45-180"
+       :text="name"
+       font="15px 'Montserrat'"
+       align="['top', 'left']"
+       :y="20"
+       :x="fieldLength-7"
+   >
+   </easel-text>
+   <easel-text v-if="attributes.type == 'start'"
+        :rotation="45-180"
+        :text="name"
+        font="15px 'Montserrat'"
+        align="['top', 'left']"
+        :y="fieldLength-30"
+        :x="fieldLength-30"
+    >
+    </easel-text>
   <easel-text
+        v-if="['start', 'jail', 'go_to_jail', 'free'].indexOf(attributes.type) == -1"
        :rotation="-90"
        :text="name"
        font="11px 'Montserrat'"
