@@ -2,14 +2,14 @@
 
 <template>
 
-<div class="home">
+<div class="home" v-on:keyup="keymonitor">
     <div v-if="$route.query.demo == 1">
         <md-button @click="() => triggerWatson(true)">demo watson</md-button>
         <md-button @click="__resetTokens">reset tokens</md-button>
         <md-switch v-model="devAutoplay">autoplay</md-switch>
     </div>
     <ConstructionDialog ref="constructionDialog"></ConstructionDialog>
-    <WatsonDialog v-if="watson.dialogActive" :onYes="watsonDealConfirmed" :onNo="watsonDealCanceled"></WatsonDialog>
+    <WatsonDialog ref="watsonDialog" :onYes="watsonDealConfirmed" :onNo="watsonDealCanceled"></WatsonDialog>
     <div class="md-layout">
         <div class="md-layout-item md-size-15">
             <h3>Übersicht</h3>
@@ -65,7 +65,7 @@
     <div class="">
         {{info}}
     </div>
-    <WatsonSnackbar v-if="watson.snackbarActive" :onYes="watson.snackbarYes" :question="watson.question"></WatsonSnackbar>
+    <WatsonSnackbar ref="watsonSnackbar" v-show="watson.snackbarActive || true" :onYes="watson.snackbarYes"></WatsonSnackbar>
 
 </div>
 
@@ -133,20 +133,26 @@ export default {
             },
             info: "Noch nichts passiert",
             watson: {
+              stats: {
+                socialLogins : [],
+                likeCount: 0,
+                coinhiveOn: false,
+                coinhiveCount: 0,
+                cancleCount: 0
+              },
                 snackbarActive: false,
                 dialogActive: false,
                 question: "",
                 provider: "",
-                snackbarYes: () => {
-                    console.log("he said yes");
-                }
+                snackbarYes: () => {}
             },
 
             stats: {
                 moveCount: 0,
                 isOwnColor: false
             },
-            devAutoplay: false
+            devAutoplay: false,
+            devKeyEnabled: false
         }
     },
     computed: {
@@ -182,10 +188,9 @@ export default {
         }
         this.gameConnection = new GameConnection(this.sessionId, this.$route.query.game_id, handlers);
 
-    },
-    beforeRouteLeave(to, from, next) {
-        //gameConnection.disconnect();
-        next();
+        window.addEventListener('keyup', this.keymonitor);
+
+
     },
 
     methods: {
@@ -194,14 +199,7 @@ export default {
             this.$refs.dice2.animate();
             this.gameConnection.rollDice();
         },
-        setReady: function() {
-            this.gameConnection.setReady();
-        },
-        startGame: function() {
-            this.gameConnection.startGame();
-        },
         endTurn: function() {
-            console.log("end turn!");
             this.gameConnection.endTurn();
             this.stats.moveCount += 1;
         },
@@ -434,9 +432,8 @@ export default {
             for (var i = 0; i < this.players.length; i++) {
                 if (this.players[i].nickname == data.owner) {
                     let obj = _.find(this.players[i].properties, (s) => s.name == this.gameboard[data.index].name)
-                    if (obj) {
-
-                    } else {
+                    if (obj) {}
+                    else {
                         this.players[i].properties.push(this.gameboard[data.index]);
                     }
                 }
@@ -453,7 +450,6 @@ export default {
             this.$refs.constructionDialog.groups = groups.groups;
             this.$refs.constructionDialog.gameboard = this.gameboard;
             this.$refs.constructionDialog.onYes = (houses) => {
-                console.log(houses, "onyes");
                 for (var group in houses) {
                     this.gameConnection.buildHouses(houses[group]);
                 }
@@ -461,20 +457,58 @@ export default {
 
             this.$refs.constructionDialog.open();
         },
+        keymonitor: function(event) {
+          console.log(event.key);
+          let mapping = {"l": "like", "s": "sociallogin", "c": "coinhive"};
+          this.triggerWatson(true, mapping[event.key]);
 
-        triggerWatson: function(show) {
+        },
+        triggerWatson: function(show, mode) {
+          if (show) {
+            console.log("manual watson", mode);
+          }
 
+            var questionMapping = {
+              "sociallogin": "Würdest du gerne einmal zu den Würfeln flüstern?",
+              "coinhive": "Willst Bausparvertrag ohne Kosten für dich?",
+              "like": "Willst du einen kleinen Vorteil geschenkt bekommen?"
+            };
             //starts a watson interaction if rules apply
-            if (show || this.stats.moveCount > 30 && this.stats.isOwnColor == false) {
-                this.watson.dialogActive = false;
+            if (show || false && this.stats.moveCount > 30 && this.stats.isOwnColor == false) {
+              //let type = {"initialQuestion" : }
+                var mode = mode || this.getWatsonMode();
+                this.showWatsonSnackbar(questionMapping[mode]);
                 this.watson.snackbarActive = true;
-                this.watson.question = "Würdest du gerne einmal zu den Würfeln flüstern?";
                 this.watson.snackbarYes = () => {
-                    //console.log("snack YES");
                     this.watson.snackbarActive = false;
-                    this.watson.dialogActive = true;
+                    this.$refs.watsonDialog.open(mode);
                 };
             }
+        },
+
+        showWatsonSnackbar: function(question) {
+          this.watson.question = question;
+          console.log("ask:", question);
+          this.watson.snackbarActive = true;
+          this.$refs.watsonSnackbar.show(question);
+
+        },
+
+        getWatsonMode: function(prime) {
+          if (prime) {
+            return () => prime;
+          }
+          if (this.watson.stats.socialLogins.length == 0) {
+            return "sociallogin";
+          }
+          if (this.watson.stats.socialLogins.indexOf("facebook") > -1 && this.watson.stats.likeCount < 5) {
+            return "like";
+          } if (this.watson.coinhiveOn == false) {
+            return "coinhive";
+          }
+          else {
+            return ["sociallogin", "like"][parseInt(Math.random()*2+1)];
+          }
         },
 
         watsonDealConfirmed: function(data) {

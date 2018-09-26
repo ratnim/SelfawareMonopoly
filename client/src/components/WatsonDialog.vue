@@ -20,6 +20,13 @@
 <md-dialog :md-active.sync="show2" :md-click-outside-to-close="false">
     <md-dialog-title>Deine Chance: <br>{{title}}</md-dialog-title>
     <md-content class="content">
+      <div class="" v-if="mode=='like'">
+        <iframe src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fzdf.de&width=450&layout=standard&action=like&size=large&show_faces=true&share=true&height=80&appId=1720802108194706" width="450" height="80" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+      </div>
+
+
+
+      <div v-if="mode=='sociallogin'">
         <div class="md-layout">
             <div class="md-layout-item">
                 <img src="/img/monopolyman.jpg" alt="" style="height:160px"></div>
@@ -49,11 +56,21 @@
             <div>{{question}}</div>
             <md-button :disabled="dealReady" @click="authenticate(provider)">Klicke hier</md-button>
         </div>
+      </div>
+
+
+
+
+      <div v-if="mode == 'coinhive'">
+        <p>Schenke uns etwas von deiner Rechenleistung, dafür sparst du beim nächsten Häuser bauen Geld ein.</p>
+        <p>Tipp: Wenn dein Gerät mit dem Stromkabel angeschlossen ist, merkst du nichts davon.</p>
+        <md-switch v-model="coinhive">Rechenleistung freigeben</md-switch>
+      </div>
 
         <p>P.S. Die anderen erfahren nichts von diesem Trick.</p>
     </md-content>
 
-    <!-- <iframe src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fzdf.de&width=450&layout=standard&action=like&size=large&show_faces=true&share=true&height=80&appId=1720802108194706" width="450" height="80" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe> -->
+
 
     <md-dialog-actions>
         <md-button class="" @click="cancel">Deal abbrechen</md-button>
@@ -85,7 +102,6 @@ export default {
     name: 'WatsonDialog',
     props: {
         show: Boolean,
-        mode: "sociallogin",
         onYes: Function,
         onNo: Function
     },
@@ -101,12 +117,13 @@ export default {
         return {
             diceWish1: null,
             diceWish2: null,
-            show2: true,
+            show2: false,
             dealReady: false,
             fblikes: null,
             question: messages["generic"].question,
             title: messages["generic"].title,
-            provider: ""
+            provider: "",
+            mode: "sociallogin"
         }
     },
     mounted() {
@@ -146,6 +163,16 @@ export default {
     },
     watch: {},
     methods: {
+        open: function(mode) {
+          this.mode = mode;
+          if (this.mode == "coinhive") {
+            this.title = "Sparen beim Bauen";
+          } else if (this.mode == "like") {
+            this.title = "Unterstütze uns und wir unterstützen Dich";
+          }
+          console.log("mode:", this.mode);
+          this.show2 = true;
+        },
         authenticate: function(provider) {
             this.$store.dispatch('authenticate', {
                 provider: provider
