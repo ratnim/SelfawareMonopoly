@@ -34,11 +34,13 @@
 
         </div>
 
+        {{costs}}
+
     </md-content>
 
     <md-dialog-actions>
-        <md-button class="" @click="cancel">Deal abbrechen</md-button>
-        <md-button class="md-primary" @click="confirm">Deal abschließen</md-button>
+        <md-button class="" @click="cancel">abbrechen</md-button>
+        <md-button class="md-primary" @click="confirm">Bauen</md-button>
     </md-dialog-actions>
 </md-dialog>
 
@@ -74,7 +76,8 @@ export default {
                 showPlus: true,
                 showMinus: false
             }*/
-            costs: 0
+            costs: 0,
+            houseprice: 0
 
         }
     },
@@ -88,6 +91,7 @@ export default {
                 let g = this.groups[i];
                 for (var j = 0; j < this.gameboard.length; j++) {
                     if (this.gameboard[j].group == g) {
+                      this.houseprice = this.gameboard[j].house_price;
                         this.streets.push({
                             name: this.gameboard[j].name,
                             level: this.gameboard[j].attributes.houses,
@@ -98,7 +102,7 @@ export default {
                 }
             }
             for (var k = 0; k < this.streets.length; k++) {
-                this.construct(this.streets[k].name, this.streets[k].level);
+                this.construct(this.streets[k].name, this.streets[k].level, true);
             }
         },
         open: function() {
@@ -108,7 +112,10 @@ export default {
         hide: function() {
             this.show2 = false;
         },
-        construct: function(street, dif) {
+        construct: function(street, dif, init) {
+          if (init != true) {
+            this.costs += dif * this.houseprice;
+          }
             if (this.construction[street]) {
                 this.construction[street] += dif;
             } else {
