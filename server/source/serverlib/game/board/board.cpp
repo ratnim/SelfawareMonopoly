@@ -117,7 +117,7 @@ std::vector<int> Board::ownedGroups(const QString& playerName)
     return ownedGroups;
 }
 
-bool Board::isGroupOwner(const QString& playerName, int groupId)
+bool Board::isGroupOwner(const QString& playerName, int groupId) const
 {
     if (groupId >= m_groups.size() || m_groups[groupId].size() == 0)
     {
