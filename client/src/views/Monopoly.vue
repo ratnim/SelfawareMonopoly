@@ -2,7 +2,7 @@
 
 .info {
     position: absolute;
-    top: 500px;
+    top: 600px;
     left: 0;
     right: 0;
     margin-left: auto;
@@ -46,8 +46,16 @@
         <div class="md-layout-item">
             <easel-canvas width="800" height="800" ref="stage" v-if="lane1.length>0">
                 <!-- Deko -->
-                <easel-text rotation="0" :text="'Selfaware \n Monopoly'" font="60px 'Montserrat'" align="['top', 'left']" :y="250" :x="250">
+                <easel-text rotation="0" :text="'Selfaware\nMonopoly'" font="60px 'Montserrat'" align="['top', 'left']" :y="250" :x="250">
                 </easel-text>
+                <easel-bitmap image="/img/monopolyman_busy.jpg"
+                  scale="0.3"
+                  :rotation="0"
+                  :x="300"
+                  :y="350"
+                  :align="['left','top']"
+              >
+              </easel-bitmap>
                 <span v-for="i in 1"> <!-- to make fields an array -->
         <!--from LOS to jail -->
         <MonopolyField ref="fields" :x="10" :y="800-10-fieldLength" :fieldWidth="fieldLength" :fieldLength="fieldLength" :align="['bottom', 'left']" :label="lane1[lane1.length-1].name" :attributes="lane1[lane1.length-1].attributes"></MonopolyField>
@@ -80,7 +88,10 @@
         </div>
     </div>
 
+
+
     <div class="info">
+
         {{info}}
     </div>
     <WatsonSnackbar ref="watsonSnackbar" v-show="watson.snackbarActive || true" :onYes="watson.snackbarYes"></WatsonSnackbar>
