@@ -43,6 +43,7 @@ set(sources
     tests/idlestate_test.cpp
     tests/initstate_test.cpp
     tests/jailstate_test.cpp
+    tests/jailbuyoutstate_test.cpp
     tests/movestate_test.cpp
     tests/paystate_test.cpp
 

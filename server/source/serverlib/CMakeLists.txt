@@ -60,6 +60,8 @@ set(sources
     game/turn/idlestate.h
     game/turn/jailstate.cpp
     game/turn/jailstate.h
+    game/turn/jailbuyoutstate.cpp
+    game/turn/jailbuyoutstate.h
     game/turn/paystate.cpp
     game/turn/paystate.h
     game/turn/turnstate.cpp

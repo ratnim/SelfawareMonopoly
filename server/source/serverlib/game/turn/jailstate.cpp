@@ -4,7 +4,7 @@
 
 #include <game/dices.h>
 #include <game/game.h>
-#include <game/turn/idlestate.h>
+#include <game/turn/jailbuyoutstate.h>
 #include <game/turn/possiblerequest.h>
 
 JailState::JailState(TurnState* state)
@@ -27,7 +27,7 @@ void JailState::requestRollDice(const QString& playerName)
 	}
 	else
 	{
-        changeToDefaultState();
+        m_game->stateChange<JailBuyoutState>(dices);
 	}
 }
 
