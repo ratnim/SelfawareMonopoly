@@ -397,7 +397,7 @@ export default {
                 }
 
             }
-            this.triggerWatson();
+            //this.triggerWatson();
         },
         onPlayerReady: function(data) {
             this.info = data.player_name + ' is now ready!';

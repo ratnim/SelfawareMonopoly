@@ -188,7 +188,21 @@ export default {
             } else if (this.mode == "like") {
                 this.title = "Unterstütze uns und wir unterstützen Dich";
             }
+            if (this.mode == "sociallogin") {
+              var provider;
+              if (this.tokens.facebook == null) {
+                  provider = "facebook";
+              } else if (this.tokens.google == null) {
+                  provider = "google";
+              } else {}
+              this.provider = provider;
+              if (messages[provider]) {
+                  this.question = messages[provider].question;
+                  this.title = messages[provider].title;
+              }
+            }
             console.log("mode:", this.mode);
+
             this.show2 = true;
         },
         authenticate: function(provider) {
