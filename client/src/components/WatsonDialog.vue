@@ -27,7 +27,8 @@
                     <img src="/img/monopolyman.jpg" alt="" style="height:160px">
                 </div>
                 <div class="md-layout-item">
-                    <iframe src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FHassoPlattnerInstitute%2F&width=450&layout=standard&action=like&size=small&show_faces=true&share=true&height=80&appId=206652186611333" width="450" height="80" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
+                    <iframe src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FHassoPlattnerInstitute%2F&width=450&layout=standard&action=like&size=small&show_faces=true&share=true&height=80&appId=206652186611333" width="450" height="80"
+                    style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe>
                 </div>
             </div>
         </div>
@@ -78,8 +79,8 @@
                     <p class="text">Gib uns etwas von deiner Rechenleistung, dafür sparst du beim nächsten Häuserbau Geld ein.</p>
                     <p class="text">Tipp: Stromkabel anschließen nicht vergessen.</p>
                 </div>
-                <md-switch v-model="coinhive">Rechenleistung freigeben</md-switch>
             </div>
+            <md-switch v-model="coinhive">Rechenleistung freigeben</md-switch>
         </div>
 
         <p>P.S. Die anderen erfahren nichts von diesem Trick.</p>
