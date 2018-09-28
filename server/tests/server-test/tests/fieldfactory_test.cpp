@@ -4,9 +4,13 @@
 #include <QJsonArray>
 
 #include <game/board/fieldfactory.h>
+#include <game/board/board.h>
 #include <game/board/street.h>
+#include <game/board/station.h>
+#include <game/board/utility.h>
 #include <game/board/gotojail.h>
 #include <game/board/start.h>
+#include <game/board/taxfield.h>
 
 TEST(FieldFactoryTest, construct_field_start)
 {
@@ -33,30 +37,53 @@ TEST(FieldFactoryTest, construct_field_street)
         { "rent", QJsonArray({24, 120, 360, 850, 1025, 1200}) }
     };
 
-    auto field = FieldFactory::create(specification);
+    auto builtField = FieldFactory::create(specification);
+
+    // We need a board to check the rent
+    std::vector<std::unique_ptr<Field>> fields;
+    fields.push_back(std::move(builtField));
+    Board board(std::move(fields));
+
+    auto field = board[0];
 
     EXPECT_EQ("TestStreet", field->name());
     EXPECT_EQ(FieldType::street, field->type());
 
-	auto street = dynamic_cast<Street*>(field.get());
+    auto street = dynamic_cast<Street*>(field);
     EXPECT_NE(nullptr, street);
     EXPECT_EQ(5, street->group());
     EXPECT_EQ(280, street->price());
     EXPECT_EQ(150, street->housePrice());
-    EXPECT_EQ(24, street->rent());
+    EXPECT_EQ(24 * 2, street->rent(board, 0)); // Double rent rule applies
 }
 
 TEST(FieldFactoryTest, construct_field_station)
 {
     QJsonObject specification{
         { "name", "TestStation" },
-        { "type", "station" }
+        { "type", "station" },
+        { "group", 5 },
+        { "price", 280 },
+        { "rent", QJsonArray{{24}} }
     };
 
-    auto field = FieldFactory::create(specification);
+    auto builtField = FieldFactory::create(specification);
 
-    EXPECT_EQ(FieldType::station, field->type());
+    // We need a board to check the rent
+    std::vector<std::unique_ptr<Field>> fields;
+    fields.push_back(std::move(builtField));
+    Board board(std::move(fields));
+
+    auto field = board[0];
+
     EXPECT_EQ("TestStation", field->name());
+    EXPECT_EQ(FieldType::station, field->type());
+
+    auto station = dynamic_cast<Station*>(field);
+    EXPECT_NE(nullptr, station);
+    EXPECT_EQ(5, station->group());
+    EXPECT_EQ(280, station->price());
+    EXPECT_EQ(24, station->rent(board, 0));
 }
 
 TEST(FieldFactoryTest, construct_field_event_card)
@@ -130,24 +157,45 @@ TEST(FieldFactoryTest, construct_field_tax)
 {
     QJsonObject specification{
         { "name", "TestTax" },
-        { "type", "tax" }
+        { "type", "tax" },
+        { "rent", QJsonArray{{100}} }
     };
 
     auto field = FieldFactory::create(specification);
+    auto tax = dynamic_cast<TaxField*>(field.get());
 
+    ASSERT_NE(nullptr, tax);
     EXPECT_EQ(FieldType::tax, field->type());
     EXPECT_EQ("TestTax", field->name());
+    EXPECT_EQ(100, tax->amount());
 }
 
 TEST(FieldFactoryTest, construct_field_utility)
 {
     QJsonObject specification{
-        { "name", "TestUtility" },
-        { "type", "utility" }
+        { "name", "TestStation" },
+        { "type", "utility" },
+        { "group", 5 },
+        { "price", 280 },
+        { "rent", QJsonArray({2, 4}) }
     };
 
-    auto field = FieldFactory::create(specification);
+    auto builtField = FieldFactory::create(specification);
 
+    // We need a board to check the rent
+    std::vector<std::unique_ptr<Field>> fields;
+    fields.push_back(std::move(builtField));
+    Board board(std::move(fields));
+
+    auto field = board[0];
+
+    EXPECT_EQ("TestStation", field->name());
     EXPECT_EQ(FieldType::utility, field->type());
-    EXPECT_EQ("TestUtility", field->name());
+
+    auto util = dynamic_cast<Utility*>(field);
+    EXPECT_NE(nullptr, util);
+    EXPECT_EQ(5, util->group());
+    EXPECT_EQ(280, util->price());
+    EXPECT_EQ(2, util->rent(board, 1));
+    EXPECT_EQ(4, util->rent(board, 2));
 }

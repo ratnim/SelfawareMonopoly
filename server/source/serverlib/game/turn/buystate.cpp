@@ -19,6 +19,7 @@ void BuyState::requestPossibleRequests(const QString& playerName)
     if (playersTurn(playerName))
     {
         requests.append(PossibleRequest::buyField().toJson());
+        requests.append(PossibleRequest::dontBuyField().toJson());
     }
 
     emit m_game->onPossibleRequests(playerName, requests);

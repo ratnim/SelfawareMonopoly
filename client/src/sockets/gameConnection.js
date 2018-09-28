@@ -69,8 +69,43 @@ export default class GameConnection {
     this.socket.send(createJSON('roll_dice', {}));
   }
 
-  send(request) {
-    this.socket.send(createJSON(request, {}));
+  buyField() {
+    this.socket.send(createJSON("buy_field", {buy: 1}));
+  }
+
+  buildHouses(building_sites) {
+    /*{
+    "request" : build_houses,
+    "data": {
+        "building_sites": { <field_id> : <construction_level>, ... }
+    }
+    }*/
+    this.socket.send(createJSON("build_houses", {building_sites}));
+  }
+
+  watsonManipulateDices(dices) {
+    this.socket.send(createJSON("scanned_gmail_account", {
+      "dices": dices
+    }));
+  }
+
+  payDebt(amount, beneficiary) {
+//     {
+//     "request" : pay_debt,
+//     "data": {
+//         "amount": <amount>,
+//         "beneficiary" : <name>
+//     }
+// }
+  this.socket.send(createJSON("pay_debt", {amount, beneficiary}));
+  }
+
+  send(request, data) {
+    if (data == undefined) {
+      data = {};
+    }
+    console.log("send:", createJSON(request, data));
+    this.socket.send(createJSON(request, data));
   }
 }
 

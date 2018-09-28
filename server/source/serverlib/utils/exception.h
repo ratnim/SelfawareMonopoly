@@ -15,6 +15,8 @@ public:
         MalformedRequest,
         InvalidRequest,
         InternalError,
+		InsufficientMoney,
+		InsufficientCoins,
     };
     Q_ENUM(Error)
 };

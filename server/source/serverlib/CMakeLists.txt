@@ -34,14 +34,21 @@ set(sources
     game/board/board.h
     game/board/field.cpp
     game/board/field.h
+    game/board/ownablefield.cpp
+    game/board/ownablefield.h
     game/board/fieldfactory.cpp
     game/board/fieldfactory.h
     game/board/start.cpp
     game/board/start.h
     game/board/street.cpp
     game/board/street.h
+    game/board/station.cpp
+    game/board/station.h
+    game/board/utility.cpp
+    game/board/utility.h
     game/board/gotojail.cpp
     game/board/gotojail.h
+    game/board/taxfield.cpp
     game/board/taxfield.h
     game/turn/endstate.cpp
     game/turn/endstate.h

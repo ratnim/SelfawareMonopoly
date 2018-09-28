@@ -45,3 +45,90 @@ TEST(BoardTest, find_jail)
     Board board(std::move(fieldsSingleJail()));
     EXPECT_EQ(4, board.jailIndex());
 }
+
+TEST(BoardTest, houses_construction_prize_buy_single)
+{
+     Board board(fieldsTwoGroups());
+
+    int price = board.calculateConstructionPrice("", { { 0, 1 } });
+
+    EXPECT_EQ(price, 50);
+}
+
+TEST(BoardTest, houses_construction_prize_buy_multi)
+{
+    Board board(fieldsTwoGroups());
+
+    int price = board.calculateConstructionPrice("", { { 0, 2 }, { 1, 1 } });
+
+    EXPECT_EQ(price, 150);
+}
+
+TEST(BoardTest, houses_construction_prize_sell_single)
+{
+    Board board(fieldsTwoGroups());
+    board.changeConstructionLevels("", { { 0, 1 } });
+
+    int ret = board.calculateConstructionPrice("", { { 0, 0 } });
+
+    EXPECT_EQ(ret, -25);
+}
+
+TEST(BoardTest, houses_construction_prize_sell_multi)
+{
+    Board board(fieldsTwoGroups());
+    board.changeConstructionLevels("", { { 0, 2 }, { 1, 1 } });
+
+    int ret = board.calculateConstructionPrice("", { { 0, 0 }, { 1, 0 } });
+
+    EXPECT_EQ(ret, -75);
+}
+
+TEST(BoardTest, houses_construction_prize_buy_sell_mixed)
+{
+    Board board(fieldsTwoGroups());
+    board.changeConstructionLevels("", { { 0, 1 }, { 1, 0 } });
+
+    int ret = board.calculateConstructionPrice("", { { 0, 0 }, { 1, 1 } });
+
+    EXPECT_EQ(ret, 25);
+}
+
+TEST(BoardTest, group_no_owner)
+{
+    Board board(fieldsTwoGroups());
+    QString player = "Tester";
+
+    EXPECT_FALSE(board.isGroupOwner(player, 0));
+    EXPECT_FALSE(board.isGroupOwner(player, 1));
+    EXPECT_FALSE(board.isGroupOwner(player, 2));
+
+    EXPECT_TRUE(board.ownedGroups(player).empty());
+}
+
+TEST(BoardTest, group_one_owner)
+{
+    Board board(fieldsTwoGroups());
+    QString player = "Tester";
+    board.changeOwner(0 ,player);
+    board.changeOwner(1 ,player);
+    board.changeOwner(2 ,player);
+
+    EXPECT_FALSE(board.isGroupOwner(player, 1));
+    EXPECT_FALSE(board.isGroupOwner(player, 2));
+    EXPECT_TRUE(board.isGroupOwner(player, 0));
+
+    EXPECT_FALSE(board.ownedGroups(player).empty());
+}
+
+TEST(BoardTest, find_distance_to_field_with_type)
+{
+    Board board(fieldsTax());
+
+	EXPECT_EQ(0, board.distanceToNextField(0, FieldType::jail));
+    EXPECT_EQ(5, board.distanceToNextField(0, FieldType::tax));
+    EXPECT_EQ(1, board.distanceToNextField(2, FieldType::free));
+    EXPECT_EQ(3, board.distanceToNextField(4, FieldType::free));
+    EXPECT_EQ(6, board.distanceToNextField(0, FieldType::start));
+    EXPECT_EQ(5, board.distanceToNextField(1, FieldType::start));
+}

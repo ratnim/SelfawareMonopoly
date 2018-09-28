@@ -92,3 +92,18 @@ TEST(BankTest, transfer_to_player)
 	EXPECT_EQ(500, bank.balance(player_1));
 	EXPECT_EQ(1000, bank.balance(player_2));
 }
+
+TEST(BankTest, transfer_to_bank)
+{
+    Bank bank;
+    QSignalSpy bank_spy(&bank, &Bank::onMoneyChange);
+    QString player_1("player1");
+    bank.createAccount(player_1);
+
+    EXPECT_THROW(bank.transferMoney(player_1, "", 1000), Exception);
+
+    bank.giveMoney(player_1, 1500);
+    bank.transferMoney(player_1, "", 1000);
+    
+    EXPECT_EQ(500, bank.balance(player_1));
+}

@@ -22,10 +22,16 @@ set(sources
 	tests/field_test.cpp
 	tests/gotojail_test.cpp
     tests/street_test.cpp
+    tests/station_test.cpp
+    tests/utility_test.cpp
+    tests/taxfield_test.cpp
 
     tests/game_test.cpp
     tests/gameinfo_test.cpp
     tests/gamemodel_test.cpp
+	tests/dices_test.cpp
+
+	tests/watson_test.cpp
 
     tests/configuration_test.cpp
     tests/connection_test.cpp

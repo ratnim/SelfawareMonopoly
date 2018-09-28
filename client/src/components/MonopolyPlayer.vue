@@ -16,7 +16,7 @@ export default {
   data: function() {
     return {
       x: 40,
-      y: 600-50
+      y: 800-50
     }
   },
   computed : {
@@ -26,7 +26,7 @@ export default {
   mounted() {
     //debugger;
     this.x = 10 + 30;
-    this.y = 600 - 10 - this.fieldLength / 2;
+    this.y = 800 - 10 - this.fieldLength / 2;
   },
   methods : {
     move(x, y) {

@@ -11,7 +11,6 @@ void Bank::createAccount(const QString& name, int deposit)
 
     m_accounts.emplace(name, 0);
     changeDeposit(name, deposit);
-
 }
 
 void Bank::transferMoney(const QString& sender, const QString& reciever, int amount)
@@ -27,14 +26,21 @@ void Bank::transferMoney(const QString& sender, const QString& reciever, int amo
         throw Exception("Not sufficent money on bank account to pay debt.", Error::UnsupportedAction);
     }
 
-    const auto& recieverIt = m_accounts.find(reciever);
-    if (recieverIt == m_accounts.end())
+    if (reciever.isEmpty())
     {
-        throw Exception("Bank account does not exists.", Error::InternalError);
+        takeMoney(sender, amount);
     }
+    else
+    {
+        const auto& recieverIt = m_accounts.find(reciever);
+        if (recieverIt == m_accounts.end())
+        {
+            throw Exception("Bank account does not exists.", Error::InternalError);
+        }
 
-    changeDeposit(sender, -amount);
-    changeDeposit(reciever, amount);
+        changeDeposit(sender, -amount);
+        changeDeposit(reciever, amount);
+    }
 }
 
 void Bank::takeMoney(const QString& debtor, int debt)

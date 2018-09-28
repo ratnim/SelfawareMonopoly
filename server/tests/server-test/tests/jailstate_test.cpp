@@ -28,7 +28,7 @@ TEST(JailStateTest, state_transfer_to_idle)
     game.stateChange<JailState>();
 
 	EXPECT_EQ(player_1, game.currentPlayer().name());
-    game.watson_next_rolls.emplace(1, 2);
+    game.watson().doManipulateNextRoll(player_1, 1, 2);
     game.requestRollDice(player_1);
     EXPECT_NE(nullptr, dynamic_cast<IdleState*>(game.state()));
 }
@@ -55,7 +55,7 @@ TEST(JailStateTest, roll_dice_no_pash)
     QSignalSpy move_spy(&game, &Game::onPlayerMove);
 
     EXPECT_EQ(player_1, game.currentPlayer().name());
-    game.watson_next_rolls.emplace(1, 2);
+    game.watson().doManipulateNextRoll(player_1, 1, 2);
     game.requestRollDice(player_1);
 
     EXPECT_EQ(roll_spy.size(), 1);
@@ -75,7 +75,7 @@ TEST(JailStateTest, roll_dice_pash)
 
     EXPECT_EQ(player_1, game.currentPlayer().name());
 
-    game.watson_next_rolls.emplace(6, 6);
+    game.watson().doManipulateNextRoll(player_1, 6, 6);
     game.requestRollDice(player_1);
 
     EXPECT_EQ(roll_spy.size(), 1);

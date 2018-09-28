@@ -1,19 +1,90 @@
 <template>
-<easel-container flip="" :x="x" :y="y" :align="['bottom', 'left']" :rotation="rotation">
-  <easel-shape :x="0" :y="0" form="rect" :align="['bottom', 'left']" :fill="attributes.color" stroke="black" :dimensions="[fieldWidth, fieldLength]">
+<easel-container ref="box" flip="" :x="x" :y="y" :align="['bottom', 'left']" :rotation="rotation">
+  <easel-shape :x="0" :y="0" form="rect" :align="['bottom', 'left']" fill="white" stroke="black" :dimensions="[fieldWidth, fieldLength]">
   </easel-shape>
-  <easel-text
-       :text="label.replace(' ', '\n')"
-       font="14px 'Helvetica'"
-       align="['center', 'left']"
-       :y="fieldLength/2"
-       :x="5"
+  <easel-shape v-if="attributes.type == 'street'" :x="0" :y="0" form="rect" :align="['bottom', 'left']" :fill="attributes.color" stroke="black" :dimensions="[20, fieldLength]">
+  </easel-shape>
+  <easel-bitmap v-if="attributes.type == 'street' && attributes.houses < 5"
+    v-for="i in attributes.houses"
+    image="/img/icons/house2.png"
+    scale="0.025"
+    :rotation="-90"
+    :x="2"
+    :y="fieldLength-2-(15*(i-1))"
+    :align="['left','top']"
+>
+</easel-bitmap>
+<easel-bitmap v-if="attributes.type == 'street' && attributes.houses == 5"
+  v-for="i in attributes.houses"
+  image="/img/icons/hotel1.png"
+  scale="0.025"
+  :rotation="-90"
+  :x="2"
+  :y="fieldLength/2+3"
+  :align="['left','top']"
+>
+</easel-bitmap>
+<easel-text v-if="attributes.type == 'jail'"
+     :rotation="-45"
+     :text="name"
+     font="15px 'Montserrat'"
+     align="['top', 'left']"
+     :y="fieldLength-5"
+     :x="40"
+ >
+ </easel-text>
+ <easel-text v-if="attributes.type == 'free'"
+      :rotation="45"
+      :text="name"
+      font="15px 'Montserrat'"
+      align="['top', 'left']"
+      :y="20"
+      :x="20"
+  >
+  </easel-text>
+  <easel-text v-if="attributes.type == 'go_to_jail'"
+       :rotation="-45-180"
+       :text="name"
+       font="15px 'Montserrat'"
+       align="['top', 'left']"
+       :y="20"
+       :x="fieldLength-7"
    >
    </easel-text>
+   <easel-text v-if="attributes.type == 'start'"
+        :rotation="45-180"
+        :text="name"
+        font="15px 'Montserrat'"
+        align="['top', 'left']"
+        :y="fieldLength-30"
+        :x="fieldLength-30"
+    >
+    </easel-text>
+  <easel-text
+        v-if="['start', 'jail', 'go_to_jail', 'free'].indexOf(attributes.type) == -1"
+       :rotation="-90"
+       :text="name"
+       font="11px 'Montserrat'"
+       align="['top', 'left']"
+       :y="fieldLength-5"
+       :x="40"
+   >
+   </easel-text>
+   <easel-text v-if="attributes.price"
+        :rotation="-90"
+        :text="attributes.price + ' €'"
+        font="9px 'Montserrat'"
+        color="grey"
+        align="['top', 'center']"
+        :y="fieldLength-10"
+        :x="90"
+    >
+    </easel-text>
 </easel-container>
 </template>
 
 <script>
+
 export default {
   name: 'MonopolyField',
   props: {
@@ -31,6 +102,23 @@ export default {
   },
   computed : {
     color : () => this.$data.attributes.color || '#1d1d1d',
+    name: function() {
+      return this.label.replace(' ', '\n').replace(/-/g, '-\n');
+    },
+    center: function() {
+      if (this.rotation == 0) {
+        return {x: this.x + this.fieldWidth/2, y: this.y + this.fieldLength/2 };
+      }
+      else if (this.rotation == 90) {
+        return {x: this.x - this.fieldWidth/2, y: this.y + this.fieldLength/2 };
+      }
+      else if (this.rotation == 270) {
+        return {x: this.x + this.fieldLength/2, y: this.y - this.fieldLength/2 };
+      }
+      else if (this.rotation == 180) {
+        return {x: this.x - this.fieldWidth/2, y: this.y - this.fieldLength/2 };
+      }
+    }
     //label2: () => this.label.replace(' ', '\n')
   }
 }
