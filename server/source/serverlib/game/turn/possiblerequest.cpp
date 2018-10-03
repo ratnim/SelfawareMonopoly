@@ -35,7 +35,17 @@ PossibleRequest PossibleRequest::endTurn()
 
 PossibleRequest PossibleRequest::buyField()
 {
-	return PossibleRequest("buy_field", {{ "buy" , 1 }});
+	return PossibleRequest("buy_field");
+}
+
+PossibleRequest PossibleRequest::dontBuyField()
+{
+    return PossibleRequest("dont_buy_field");
+}
+
+PossibleRequest PossibleRequest::constructBuilding(const QJsonArray& groups)
+{
+    return PossibleRequest("construct_building", {{ "groups", groups }});
 }
 
 PossibleRequest PossibleRequest::payDebt(const QString& beneficiary, int amount)

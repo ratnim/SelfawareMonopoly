@@ -7,5 +7,5 @@ class GoToJail : public Field
 public:
     GoToJail(const QString& name);
 
-    bool moveOn(const QString& playerName, Game* game) override;
+    bool moveOn(const QString& playerName, Game* game, int distanceTraveled) override;
 };

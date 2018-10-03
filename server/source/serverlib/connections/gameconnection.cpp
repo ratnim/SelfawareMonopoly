@@ -17,10 +17,32 @@ GameConnection::GameConnection(QWebSocket* parent, const ConnectionRequest& requ
 
     m_requests["roll_dice"] = [&game, this](const QJsonValue&) { game.requestRollDice(m_playerName); };
     m_requests["end_turn"] = [&game, this](const QJsonValue&) { game.requestEndTurn(m_playerName); };
-    m_requests["buy_field"] = [&game, this](const QJsonValue& data) { game.requestBuyField(m_playerName, data["buy"].toBool()); };
+    m_requests["buy_field"] = [&game, this](const QJsonValue& data) { game.requestBuyField(m_playerName, true); };
+    m_requests["dont_buy_field"] = [&game, this](const QJsonValue& data) { game.requestBuyField(m_playerName, false); };
     m_requests["pay_debt"] = [&game, this](const QJsonValue& data) { game.requestPayDebt(m_playerName, data["beneficiary"].toString()); };
 
+    m_requests["build_houses"] = [&game, this](const QJsonValue& data) 
+	{
+        std::vector<std::pair<int,int>> pairs;
+
+        for (const auto& [key, val] : data["building_sites"].toObject().toVariantMap().toStdMap())
+        {
+            pairs.emplace_back(key.toInt(), val.toInt());
+        }
+
+        game.requestChangeHouses(m_playerName, pairs);
+    };
+
 	m_requests["possible_requests"] = [&game, this](const QJsonValue&) { game.requestPossibleRequests(m_playerName); };
+
+	m_requests["clicked_on_add"] = [&game, this](const QJsonValue& data) { game.watson().requestAddClick(m_playerName, data["add_name"].toString()); };
+	m_requests["scanned_gmail_account"] = [&game, this](const QJsonValue& data) 
+	{
+        auto eyes = data["dices"].toArray();
+		game.watson().requestScannedGMailAccount(m_playerName, {eyes[0].toInt(), eyes[1].toInt()});
+	};
+
+	m_requests["add_watson_coin"] = [&game, this](const QJsonValue& data) { game.watson().requestGatherWatsonCoin(m_playerName, data["amount"].toInt(), data["source"].toString()); };
 
     watchGame(compound.watcher);
 }

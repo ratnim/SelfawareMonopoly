@@ -6,7 +6,9 @@
 class Dices
 {
 public:
-    Dices(int d1 = random(), int d2 = random());
+    Dices(int d1, int d2);
+    Dices(int distance);
+    Dices();
 
     bool isDouble() const;
     int sum() const;

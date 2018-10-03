@@ -103,6 +103,16 @@ __Incoming Events:__
         }
     }
 ```
+Where id is:
+    EXPECT_EQ(Error::NoError, 0);
+    EXPECT_EQ(Error::InvalidRoute, 1);
+    EXPECT_EQ(Error::UnsupportedAction, 2);
+    EXPECT_EQ(Error::MalformedRequest, 3);
+    EXPECT_EQ(Error::InvalidRequest, 4);
+    EXPECT_EQ(Error::InternalError, 5);
+    EXPECT_EQ(Error::InsufficientMoney, 6);
+    EXPECT_EQ(Error::InsufficientCoins, 7);
+
 ```
     {
         "name" : "money_change",
@@ -252,31 +262,27 @@ Returns:
         }
     }
 
+### Don't buy a Street
+
+Possible Request:
+```
+    {
+        "request" : "dont_buy_field",
+    }
+```
+
 ### Buy a Street
+
 Possible Request:
 ```
     {
         "request" : "buy_field",
-        "data" :
-        {
-            buy : 1
-        }
-    }
-```
-
-Expects:
-```
-    {
-        "request" : "buy_field",
-        "data" :
-        {
-            buy : < 0 | 1 >
-        }
     }
 ```
 
 Returns:
 
+on success:
 ```
 {
     "name" : "property_change",
@@ -291,6 +297,7 @@ Returns:
 
 or
 
+on failure:
 ```
     {
         "name" : "error",
@@ -327,6 +334,8 @@ Request:
 ```
 
 Returns:
+
+on success:
 ```
     {
         "name" : "money_change",
@@ -340,6 +349,7 @@ Returns:
 
 or
 
+on failure:
 ```
     {
         "name" : "error",
@@ -347,6 +357,124 @@ or
         {
             "id" : <id>,
             "message" : <message>
+        }
+    }
+```
+
+### Build Houses
+
+Possible Request:
+
+```
+{
+    "request" : build_houses,
+    "data": { 
+        "groups": [<group_id>, ...]
+    } 
+}
+```
+
+Request:
+
+Construction level needs to be in range from 0 = no building, 1 = one house, ... up to 5 = hotel. 
+A request can only contain fields from one group.
+
+```
+{
+    "request" : build_houses,
+    "data": {
+        "building_sites": { <field_id> : <construction_level>, ... }
+    } 
+}
+```
+
+Returns:
+
+on success:
+```
+{
+    "name" : "property_change",
+    "data" :
+    {
+        index: <index>,
+        owner: <player_name>,
+        construction_level: <level>
+    }
+}
+```
+
+or
+
+
+on failure:
+```
+    {
+        "name" : "error",
+        "data" :
+        {
+            "id" : <id>,
+            "message" : <message>
+        }
+    }
+```
+
+#
+
+## Watson
+
+Is a game manipulating instance, which allows the player to cheat around in the game. But it comes for a price. Watson demands real life actions and informations.
+
+Some actions have direct impact on the game while others generate Watson Coins. 
+
+__Watson Coins__ 
+can be used as currency by the course of 1 coin to 50 ingame money.
+
+
+### Advertising
+
+Client sends on click to server:
+
+```
+    {
+        "request" : "clicked_on_add",
+        "data" :
+        {
+            "add_name" : <add_name>
+        }
+    }
+```
+
+Effect: 
+Server manipulates the current players roll dice result.
+
+### Scanned GMail Account
+
+Client sends on scan gmail account to server:
+
+```
+    {
+        "request" : "scanned_gmail_account",
+        "data" :
+        {
+            "dices" : [ <eyes>, <eyes> ]
+        }
+    }
+```
+
+Effect: 
+Player will roll the requested eyes on next roll dice.
+
+### Add Watson Coins
+
+Client sends for each round a player hast activated bitcoin mining a request to add a watson coin:
+
+```
+    {
+        "request" : "add_watson_coin",
+        "data" :
+        {
+            "amount" : <amount>,
+            "source" : "bitcoin_mining"
         }
     }
 ```
