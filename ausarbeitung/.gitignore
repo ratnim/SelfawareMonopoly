@@ -5,3 +5,5 @@
 *.log
 *.vscodeLog
 *fdb_latexmk
+*.blg
+*.synctex.gz
