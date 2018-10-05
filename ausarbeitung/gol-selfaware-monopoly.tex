@@ -17,7 +17,7 @@
 \newcommand{\Pascal}[1]{\textcolor{colorPascal}{TODO Pascal:} \todo{#1} }
 \newcommand{\Tobias}[1]{\textcolor{colorTobias}{TODO Tobias:} \todo{#1} }
 
-\newcommand{\neuerBegriff}[1]{\textit{#1}}
+\newcommand{\neuerBegriff}[1]{\textbf{\textit{#1}}}
 
 \title{Selfaware Monopoly}
 \author{Martin Fischer, Pascal Crenzin, Tobias Knöschke\\ Digital Engineering Fakultät, Hasso-Plattner-Institut \textbar{} Universität Potsdam}
@@ -48,9 +48,10 @@
 
 \copyrightspace % Erzeugt den Hinweis auf die Veranstaltung links unten
 
+\textcolor{red}{
 \section{Aufgabenstellung}
 Inhaltlich erwarten wir die wissenschaftliche Auseinandersetzung mit dem bearbeiteten Seminarthema. Analog zum Abschlussvortrag empfehlen wir eine Einführung in das Thema, die Vorstellung des technischen Prototypen (Architektur, Designentscheidungen, Umsetzung), eine Diskussion über Relevanz des bearbeiteten Themas in der Gesellschaft und Vorstellen von Eigenschaften und Ergebnissen eures Prototyps. Die Struktur der Ausarbeitung und genaue Themen besprecht ihr am Besten mit eurem Betreuer.
-
+}
 %----------------------------------------------------------------
 % Einleitung
 %----------------------------------------------------------------
@@ -109,37 +110,54 @@ Watson bietet dem Spieler unterscheidliche Deals an die Regeln zu umgehen.
 \textbf{indirekt} & Glück beeinflussen & Baupreis reduzieren \\
 \hline
 \end{tabular}
-\caption{Die Tabelle kategorisiert die Effekte der Deals die durch Watson angeboten werden.  in der horizontalen ob der Effekt eines Deals für die Spieler sichtbar ist und in der verticallen ob der Effekt direkt eintritt.}
+\caption{Die Tabelle kategorisiert die Effekte der Deals, die durch Watson angeboten werden, in zwei Dimensionen. In der horizontalen ob der Effekt eines Deals für die Spieler sichtbar ist und in der verticallen ob der Effekt direkt eintritt.}
 \label{tab:effekte}
 \end{table}
 
 Tabelle \ref{tab:effekte} kategorisiert die Effekte eines Deals in zwei Dimensionen, direkt oder indirekt, das bedeutet ob der Spieler ein direkt Nutzen bekommt und in offensichtlich und nicht offensichtlich.
 Daraus ergeben sich strukturell folgen Deals.
 
-\neuerBegriff{Offensichtlich-direkt} wäre ein offensichtlicher Deal, wie der Spieler darf Geld aus der Bank nehmen. 
+\neuerBegriff{Offensichtlich-direkt} wäre ein offensichtlicher Deal, wie der Spieler darf Geld aus der Bank nehmen und gibt dafür Informationen von sich preis. 
 Da es in dem Scenario nicht darum geht, wer am skrupelosesten schummelt, wird diese Art von Deals nicht durch Watson angeboten.
 
-\neuerBegriff{Offensichtlich-indirekt} sind alle Deals, bei denen andere Spieler den Effekte als Regelbruch ausmachen können aber die nicht direkt beim einlösen der Gegenleistung auftreten.
-Der Spieler erhält dabei von Watson für bestimmte Gegenleistung \neuerBegriff{Watson-Coins}, welche dann beim Hausbau den Preis pro Watson-Coin um 50 senken.
-Innerhalb des Prototyps bietet Watson dem Spieler an, Bitcoin Mining zu betreiben.
-Für jede Spielrunde in der der Spieler Bitcoin-Mining im Hintergrund laufen lässt, erhält er einen Watson-Coin.
+\neuerBegriff{Offensichtlich-indirekt} sind alle Deals, bei denen andere Spieler den Effekte als Regelbruch ausmachen können aber die nicht direkt beim Preisgeben von Informationen oder Ressourcen einen Effekt haben.
+Der Spieler weis zu den Zeitpunkt wenn ihm der Deal angeboten wird nicht nicht ob er, die Leistung durch Watson braucht oder nicht.
+Dadurch soll der Spieler zum Hammstern angehalten werden und im Zweifel mehr von sich Preis zu geben als nötig wäre.
 
-\neuerBegriff{verdeckt-direkt}
+Watson bietet den Spieler zum Beispiel an, Bitcoin Mining zu betreiben und so für jede Spielrunde die da Bitcoin-Mining im Hintergrund läuft, einen so genannten \neuerBegriff{Watson-Coin} zu generieren.
+Die Watson-Coins werden dann durch Watson für jeden Spieler ein Konto gespeichert.
+Der konkrete Stand dieses Kontos ist für den Spieler aber nicht einsehbar.
+Baut ein Spieler der Watson-Coins besitzt Häuser, so wird der Preis pro Watson-Coin um 50.
+Das tatsächlich erwirschaftete Guthaben auf Monero geht an Watson, bzw an das System.
+Für andere Spieler ist es nur beim Hausbau einsehbar ob der Spieler einen Deal von Watson angenommen hat oder nicht.
+Die Zahlen werden innerhalb des Spiels aber nur durch genaues hinschauen und nachrechnen einsehbar sein, wodurch es erschwert ist dies von außen mitzubekommen. 
 
-\Martin{beschreiben}
+\neuerBegriff{verdeckt-direkt} sind alle Deals, bei denen der Spieler Information oder Ressourcen an Watson übergibt und einen direkten Nutzen davon hat. 
+Durch den direkten Mehrwert den der Spieler gezeigt bekommt, soll der Spieler in Versuchung gebracht werden, selbst wenn er eigentlich keine Deals annehmen möchte, dies an dieser Stelle doch zu tun.
+Zum Beispiel ist es gerade im frühen und im späten Spielverlauf von entscheidender Bedeutung, entweder unbedingt oder auf keinen Fall ein bestimmtes Würfelergebniss zu erzielen.
 
-\neuerBegriff{verdeckt-indirekt}
+Watson bietet deshalb den Spieler an die Würfel zu manipulieren.
+\Pascal{Sind das noch weitere Deals?}
+Der Spieler muss dafür seine Identität auf Facebook an Watson übergeben und darf sich so sein nächstes Würfelergebniss wählen.
+Für andere Spieler ist es in keiner Weise einsichtig ob der Spieler einen Deal von Watson angenommen hat oder nicht.
 
-\Martin{beschreiben}
+\neuerBegriff{verdeckt-indirekt} sind alle Deals, bei denen der Spieler Information oder Ressourcen an Watson übergibt aber keinen direkten Effekt hat.
+Der Spieler weiß dabei nicht einmal ob es überhaupt einen Effekt hat.
+Da der Effekt nicht einmal für den Spieler selbst auszumachen ist, haben andere Spieler keine Möglichkeit herrauszufinden ob der Spieler Deals von Watson annimmt oder nicht.
+
+Watson bietet den Spielern zum Beispiel an bestimmte Webseiten zu besuchen oder Kommentare und Seiten auf Facebook zu liken.
+Tut der Spieler dies, merkt sich Watson dies und beeinflusst die Ereignisskarten die ein Spieler bekommt wenn er auf eine Ereignissfeld läuft.
+\Pascal{Welcher Auslöser ist das genau?}
 
 \subsubsection{Wann bietet Watson Deals an?}
 
 \section{Vorstellung Prototyp}
 
-
-
 \Tobias{Architektur, Designentscheidungen, Umsetzung}
+
 \Tobias{Eigenschaften und Ergebnisse beschreiben}
+
+\Tobias{Bitcoin-Mining: Zahlen, Daten, Fakten. Wieviel Geld ist das wirklich?}
 
 \Pascal{Apis beschreiben}
 
