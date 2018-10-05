@@ -6,14 +6,16 @@
 \usepackage{algpseudocode}
 \usepackage{url}
 \usepackage{color}
+\usepackage{tabularx}
 
 \definecolor{colorMartin}{RGB}{147,83,177}
 \definecolor{colorPascal}{RGB}{255,127,0}
 \definecolor{colorTobias}{RGB}{160,123,46}
 
-\newcommand{\Martin}[1]{ \textcolor{colorMartin}{TODO Martin:} #1 }
-\newcommand{\Pascal}[1]{ \textcolor{colorPascal}{TODO Pascal:} #1 }
-\newcommand{\Tobias}[1]{ \textcolor{colorTobias}{TODO Tobias:} #1 }
+\newcommand{\todo}[1]{\textit{#1}}
+\newcommand{\Martin}[1]{\textcolor{colorMartin}{TODO Martin:} \todo{#1} }
+\newcommand{\Pascal}[1]{\textcolor{colorPascal}{TODO Pascal:} \todo{#1} }
+\newcommand{\Tobias}[1]{\textcolor{colorTobias}{TODO Tobias:} \todo{#1} }
 
 \newcommand{\neuerBegriff}[1]{\textit{#1}}
 
@@ -73,29 +75,51 @@ Diese Komponente wird im folgenden \neuerBegriff{Watson} genannt.
 \subsection{Watson}
 
 Watson bietet den Spieler immer wieder die Möglichkeit, die Regel von Monopoly zu umgehen und dem Spieler so einen Vorteil zu verschaffen.
-Die Spieler müssen dafür aber aktiv die Entscheidung treffen, dass sie Watson nutzen.
 Im Gegenzug wird Watson versuchen unterschiedliche Ressourcen die nicht Inhalt des Spiels sind vom Spieler zu erhalten.
-
-
+Ein solcher Handel wird im folgenden als \neuerBegriff{Deal} bezeichnet.
+Die Spieler müssen aktiv die Entscheidung treffen, dass sie Watson nutzen.
+Dadurch kann Watson nur so weit agieren, wie es die Spieler zulassen.
+Sollte also alle Spieler eines Spiels zu keiner Zeit die Deals von Watson annehmen, entspricht das Spiel eine regelkonformen Monopolypartie.
 
 \subsubsection{Was will Watson?}
 
-Watson interessierend persöhnliche Information, wie zum Beispiel die Identität des Spielers auf Facebook, Twitter oder anderen Sozialen Platformen, Rechnenleistung um zum Beispiel Bitcoinmining zu betreiben oder im Namen anderer Aktionen wie Likes, Reviews oder Kommentare zu erstellen.
+Watson interessieren persöhnliche Information, Ressourcen und das Nutzen der Identität der Spieler.
 
-\Pascal{Welche APIs}
+Persöhnlich Informationen die Watson bekommen möchte sind zum Beispiel die Identität des Spielers auf Facebook, Twitter oder anderen Sozialen Platformen und das Scannen von E-Mails.
+\Pascal{Welche Plattformen und E-Mail accounts?}
 
-\subsubsection{Was bietet Watson den Spielern}
+Ressourcen die Watson bekommen möchte ist Rechnenleistung um Bitcoinmining zu betreiben.
+Beim Bitcoinmining wird die Kryptowhärung Monero gemined.
 
-Watson bietet dem Spieler unterscheidliche Möglichkeiten an die Regeln zu umgehen.
-\Martin{Schummelmatrix einfügen}
+Watson möchte die Identität der Spieler nutzen um auf Socialen Plattformen Likes oder Kommentare zu erstellen.
+\Pascal{Welche möglichkeiten haben wir umgesetzt?}
 
-\Martin{Abbildung} kategorisiert die Möglichkeiten in zwei Dimensionen, direkt oder indirekt, das bedeutet ob der Spieler ein direkt Nutzen bekommt und in offensichtlich und nicht offensichtlich.
+\subsubsection{Wie sieht so ein Deal aus?}
+
+Watson bietet dem Spieler unterscheidliche Deals an die Regeln zu umgehen.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline 
+& \textbf{verdeckt} & \textbf{offen} \\
+\hline
+\textbf{direkt} & Würfel manipulieren & - \\
+\hline
+\textbf{indirekt} & Glück beeinflussen & Baupreis reduzieren \\
+\hline
+\end{tabular}
+\caption{Die Tabelle kategorisiert die Effekte der Deals die durch Watson angeboten werden.  in der horizontalen ob der Effekt eines Deals für die Spieler sichtbar ist und in der verticallen ob der Effekt direkt eintritt.}
+\label{tab:effekte}
+\end{table}
+
+Tabelle \ref{tab:effekte} kategorisiert die Effekte eines Deals in zwei Dimensionen, direkt oder indirekt, das bedeutet ob der Spieler ein direkt Nutzen bekommt und in offensichtlich und nicht offensichtlich.
 Daraus ergeben sich strukturell folgen Deals.
 
-\neuerBegriff{Offensichtlich-direkt} wäre ein offensichtlicher Regelbruch, wie der Spieler darf Geld aus der Bank nehmen. 
-Das macht innerhalb unseres Scenarios keinen Sinn.
+\neuerBegriff{Offensichtlich-direkt} wäre ein offensichtlicher Deal, wie der Spieler darf Geld aus der Bank nehmen. 
+Da es in dem Scenario nicht darum geht, wer am skrupelosesten schummelt, wird diese Art von Deals nicht durch Watson angeboten.
 
-\neuerBegriff{Offensichtlich-indirekt} sind alle Regelbrüche, bei denen andere Spieler den Effekte als Regelbruch ausmachen können aber die nicht direkt beim einlösen der Gegenleistung auftreten.
+\neuerBegriff{Offensichtlich-indirekt} sind alle Deals, bei denen andere Spieler den Effekte als Regelbruch ausmachen können aber die nicht direkt beim einlösen der Gegenleistung auftreten.
 Der Spieler erhält dabei von Watson für bestimmte Gegenleistung \neuerBegriff{Watson-Coins}, welche dann beim Hausbau den Preis pro Watson-Coin um 50 senken.
 Innerhalb des Prototyps bietet Watson dem Spieler an, Bitcoin Mining zu betreiben.
 Für jede Spielrunde in der der Spieler Bitcoin-Mining im Hintergrund laufen lässt, erhält er einen Watson-Coin.
