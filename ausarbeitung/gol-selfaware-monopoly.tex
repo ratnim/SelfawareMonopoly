@@ -84,7 +84,7 @@ Sollte also alle Spieler eines Spiels zu keiner Zeit die Deals von Watson annehm
 
 \subsubsection{Was will Watson?}
 
-Watson interessieren persöhnliche Information, Ressourcen und das Nutzen der Identität der Spieler.
+Watson interessieren persöhnliche Information, Ressourcen und die Nutzung der Identität der Spieler um in ihrem Namen aufzutreten.
 
 Persöhnlich Informationen die Watson bekommen möchte sind zum Beispiel die Identität des Spielers auf Facebook, Twitter oder anderen Sozialen Platformen und das Scannen von E-Mails.
 \Pascal{Welche Plattformen und E-Mail accounts?}
@@ -151,27 +151,61 @@ Tut der Spieler dies, merkt sich Watson dies und beeinflusst die Ereignisskarten
 
 \subsubsection{Wann bietet Watson Deals an?}
 
+Es ist wichtig das Watson zum einen für andere Spieler nicht merklich in den Spielfluss eingreift.
+Das heißt wenn ein Spieler mit Watson interagiert sollen es die anderen Spieler nicht mitbekommen.
+Dafür sollte Watson möglichst dann die Deals anbieten wenn der Spieler gerade nichts zu tun hat.
+Deshalb bietet Watson Deals eher Spieler an, die gerade nicht an der Reihe sind.
+
+Zum anderen soll Watson eine hohe Erfolgsrate haben, das heißt, die Wahrscheinlichkeit das ein Spieler den Deal annimmt soll hoch sein.
+Um dies zu erreichen muss auf unterschiedlichste Faktoren geachtet werden. 
+
+Es wird bestimmt, ob der Spieler den Effekt des Deals gebrauchen kann oder nicht. 
+Einem Spieler der sehr viele Straßen besitzt, anzubieten die Würfel zu manipulieren hat wahrscheinlich weniger Erfolgschancen, als einem Spieler der unbedingt diese eine Straße brauch.
+Einem Spieler mit einem unbebauten Straßenzug den Baupreis zu reduzieren, hat wahrscheinlich eine höhere Chance als einem Spieler ohne Straßen.
+
+Spieler die schon Deals angenommen haben sollen Verhältnissmäßig viele Deals angeboten werden.
+Wohingegen Spieler die noch keine Deals angenommen haben weniger bis garkeine Angebote mehr bekommne.
+
+Deals sollen sich durch nur temporäre Verfügbarkeit interessant machen.
+Somit ist der Spieler angeregt selbst wenn er den Effekt erst später nutzen kann diesen auch anzunehmen.
+Weil er im Zweifel nicht darauf verzichten will.
+
+Außerdem sollen einige Deals zufällig angeboten werden.
+Das heißt ein Spieler bekommt eigentlich einen Deal auf denen eine oder mehrere der definierten Kriterien nicht zustimmen.
+
+\subsection{Wie bietet Watson die Deals an?}
+
+Die Watson Komponente soll zwar Teil des Spiels sein aber für den Spieler soll Watson eine klar erkennbare Komponente innerhalb des Interfaces darstellen.
+Dadurch soll klar werden, dass dies nicht mehr zu dem eigentlichen Monopolyspiel gehört und der Spieler an dieser Stelle eine Grenze überschreitet.
+Der Spieler muss dadurch aktiv Entscheiden ob er diesen Teil des Spiels nutzt.
+
 \section{Vorstellung Prototyp}
 
 \Tobias{Architektur, Designentscheidungen, Umsetzung}
 
 \Tobias{Eigenschaften und Ergebnisse beschreiben}
 
-\Tobias{Bitcoin-Mining: Zahlen, Daten, Fakten. Wieviel Geld ist das wirklich?}
-
 \Pascal{Apis beschreiben}
+
+\Tobias{Bitcoinmining: Zahlen, Daten, Fakten. Wieviel Geld ist das wirklich?}
+
+\Tobias{Likes und Reviews?}
 
 \section{Diskussion}
 
 \subsection{Apis}
 
-\Pascal{Was könnten man als Insider in mit den Apis tun?}
+\Pascal{Was könnten man als Insider mit den APIs tun?}
 
 \subsection{Relevanz innerhalb der Gesselschaft}
 
+\Martin{Levels der Gesellschaftskritik}
+
 \Martin{Relevanz beschreiben}
 
+\Martin{Nutzbarkeit/Interface beschreiben}
 
+\Martin{Wer könnte so etwas wie Watson bauen wollen? Bitcoinmining, Meinungsmache, Meinungsverfälschung}
 
 \bibliographystyle{acmsiggraph}
 \bibliography{gol-selfaware-monopoly}
