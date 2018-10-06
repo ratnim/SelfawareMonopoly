@@ -183,7 +183,83 @@ Der Spieler muss dadurch aktiv Entscheiden ob er diesen Teil des Spiels nutzt.
 
 \Tobias{Architektur, Designentscheidungen, Umsetzung}
 
+% Allgemein
+Der Prototyp präsentiert sich dem Nutzer als Website, welche dieser in einem normales Webbrowser aufrufen kann.
+Die Bereitstellung als Website bietet die Vorteile, dass einerseits jedweder Nutzer das Produkt nutzen kann, ohne dass spezielle Voraussetzungen, wie beispielsweise ein spezifisches Betriebssystem, gegeben sein müssen, während andererseits der Server als Anbieter unter bekannten und kontrollierbaren Bedingungen entwickelt werden kann.
+
+Der Server selbst ist geteilt in einen HTML-Server, welcher die Websites bereitstellt, sowie einen Websocket-Server, welcher die Spiellogik, inklusive Manipulationen implementiert und Auskunft über Ereignisse in den laufenden Spielen gibt.
+Diese beiden Komponenten sind zum großen Teil unabhängig. Die einzigen Verbindungen bestehen in der API, mit der über die Websockets kommuniziert wird, sowie dem Umstand, dass der Client die korrekte Adresse für die Verbindung zum Websocket kennen muss.
+Entsprechend dieser klaren Aufteilung wurden die Implementierungen parallel von zwei getrennten Gruppen durchgeführt, aufbauend auf der gemeinsam genutzten Websocket API.
+
+% Spielstatus
+Da im finalen System mehrere Akteure zusammenwirken, kommt das Problem der Synchronisation auf. In diesem speziellen Fall müssen sich der Server und sämtliche an einem Spiel beteiligten Clients einig sein über den Zustand dieses Spiels.
+Für jede Änderung einmal den vollständigen Zustand an sämtliche Clients zu senden wäre nicht nur eine zusätzliche Last für das Netzwerk, sondern auch ein erheblicher Mehraufwand für den Server, der zusätzlich dadurch erhöht wird, dass bedingt durch die Manipulationen von Watson manche Informationen nur bestimmten Spielern zugänglich sein dürfen.
+Aus diesem Grund müssen sämtliche Teilnehmer eine eigene lokale Kopie des Zustandes vorhalten, welche sie bei Bedarf aktualisieren.
+Der individuelle lokale Zustand wird ausgehend von einem Grundzustand iterativ durch Anwendung einzelner lokaler Aktionen erzeugt.
+Während der Grundzustand einzig von der Anzahl der beteiligten Spieler, deren Namen und dem gewählten Spielbrett abhängt, behandeln die Aktionen sämtliche Änderungen, welche durch die Züge und Entscheidungen der Spieler entstehen.
+Um inkrementellen Fehlern vorzubeugen, wird zum einen darauf geachtet, dass Aktionen in strikt der Reihenfolge angewendet werden, in der sie aufgetreten sind.
+Zum anderen wird für jede Änderung eines Wertes nicht die relative Veränderung übermittelt, wie es vor allem für die Kontostände und die Positionen der Spielfiguren einleuchtend wäre, sondern das absolute Ergebnis der Aktion.
+
+Die Abfolge der Aktionen wird für jedes Spiel in einer Datenbank hinterlegt, und ursprünglich erfolgte dies nur zur Dokumentation der mit dem Prototypen durchgeführten Nutzerstudien.
+Später wurden diese Aufzeichnungen auch dafür verwendet, um es Spieler, die durch äußere Störungen die Verbindung zum Server verloren haben, zu ermöglichen, wieder in ihr Spiel einzusteigen und die ,,verpassten`` Aktionen nachzuholen.
+
+% Server-Client-Kommunikation
+Die Kommunikation über die Websockets erfolgt asynchron, da beide Kommunikationspartner Meldungen an den anderen machen können, welche meist keiner direkten Rückmeldung bedürfen.
+Als Datenformat wurde JSON gewählt, da es einerseits von beiden Seiten einfach erzeugt und dekodiert werden kann, und andererseits selbst im ,,kodierten`` Zustand noch menschenlesbar und somit leichter nachvollziehbar ist.
+Der Inhalt einer Nachricht besteht aus einem Feld für den Zweck sowie weiteren Informationen, sofern der diese für den Zweck relevant sind. Während beispielsweise die Meldung über das Ende des Spiels ohne weitere Parameter versendet werden kann, wäre eine Nachricht über die Bewegung eines Spielers ohne die Angabe des Ziels sinnlos.
+
+Die Inhalte der Nachrichten reichen von organisatorischen Belangen, wie der Anmeldung eines Nutzers oder dem Beitritt zu einem Spiel, über spielinterne Geschehnisse, wie die Augenzahl der Würfel nach einem Wurf oder der Veränderung des Kontostands eines Spielers, bis hin zur Ausführung von Schummelaktionen, wie der Festlegung des nächsten Wurfergebnisses.
+Während beide Kommunikationspartner spontan Nachrichten an den anderen schicken können, übernimmt der Client, also der Nutzer mit seinem Browser, eine aktivere Rolle als der Server.
+Während der Server nur Statusmeldungen an die Clients schickt, wird ein Client bei bestimmten Anfragen auf spezifische Meldungen des Servers warten. Beispielsweise erwartet ein Client, der die Nachricht zum Kauf eines Grundstücks gesendet hat, dass einerseits der Besitzer dieses Grundstücks geändert wird, und sich andererseits der eigene Kontostand ändert.
+Zu beachten ist, dass jede dieser Anfragen genauso gut mit einer Fehlermeldung beantwortet werden kann. Diese Fehlermeldungen handeln dabei von nicht durch Watson abgedeckten Regelverstößen, wie fehlende Besitzansprüche oder einen zu geringen Kontostand.
+
+% Client-Architektur
+Der HTML-Server stellt den Nutzer zwei verschiedene Webseiten bereit.
+Die erste Seite, die ein Nutzer sieht, ist die Lobby, in der er sich erst einen Anzeigenamen aussuchen darf, und anschließend entweder einem bestehenden Spiel beitreten oder ein neues Spiel einleiten kann.
+Die andere Seite behandelt eine konkrete Instanz des Spiels. Sie enthält Informationen über den Zustand des Spielbretts, die Besitztümer aller beteiligten Spieler, sowie eine Auflistung sämtlicher Aktionen, die der Nutzer ausführen kann.
+Es liegt in der Natur dieser beiden Seiten, vor allem aber in der der zweiten Seite, dass sie dynamischen Inhalt zeigen müssen, der sich während der Betrachtung durch äußere Einflüsse ändern kann.
+Diesen dynamischen Inhalt auf Serverseite einzusetzen und die fertige Seite an den Client zu senden, hätte nicht nur dazu geführt, dass sich die Seiten aufs Geratewohl erneut laden müssten, sondern auch den HTML-Server als Mittelsmann zwischen dem Client und dem für die Spiellogik verantwortlichen Server eingesetzt.
+Stattdessen werden beide Seiten mit einem statischen Grundgerüst ausgeliefert, welches mittels Skripten zuerst eine direkte Verbindung zum Websocket-Server aufbaut, um dann mit den von dort empfangenen Daten die eigentliche Seite aufzubauen.
+Die Verwendung von Skripten und Websockets erlaubt nicht nur, die Aktualisierung der angezeigten Inhalte zu verzögern, bis auf dem Websocket tatsächlich neue Informationen eintreffen, sondern zusätzlich punktuelle Änderungen der betroffenen Abschnitte, ohne die Seite vollständig neu laden zu müssen.
+
+Für die dynamische Anpassung der Seiten kommt das Framework Vue\footnote{https://vuejs.org} zum Einsatz.
+Es erlaubt, die Struktur des HTML-Dokuments und die Eigenschaften seiner Elemente an Skript-Variablen zu binden, sodass sich der Inhalt nach dem Wert der Variablen richtet.
+Zusätzlich werden Callbacks eingerichtet, mit denen sämtliche von einer Variablen abhängigen Elemente automatisch aktualisiert werden, sobald sich der Wert der Variablen ändert.
+Dies geschieht separat für alle gebundenen Variablen, sodass der Aufwand für die Aktualisierung gering gehalten wird.
+Zusätzlich werden vielerorts die mit HTML 5 eingeführten Templates\footnote{https://www.w3.org/TR/html50/scripting-1.html\#the-template-element} verwendet.
+HTML-Templates erlauben es, HTML-Strukturen zu definieren, welche kopiert und angepasst werden können, bevor sie in das sichtbare Dokument eingefügt werden.
+Durch das Zusammenwirken von Templates und den Manipulationen durch Vue erhalten die Seiten einen ausgeprägten objektorientierten Charakter.
+
+% Server-Architektur
+Die Architektur des Websocket-Servers basiert auf Modell des erweiterten endlichen Automaten.
+Jedes laufende Spiel wird dabei durch einen Automaten modelliert, welcher auf Basis der von den Clients empfangenen Eingaben Zustandsänderungen vollführt und Ausgaben erzeugt.
+Während das Spielfeld und die Besitztümer der Spieler in jederzeit erreichbaren Variablen gehalten werden, werden die Zustände des Automaten überwiegend durch die verschiedenen Phasen während des Zuges eines Spielers bestimmt.
+Diese Zustände bestimmen die Auswahl an Aktionen, die die Spieler zum entsprechenden Zeitpunkt ausführen können, und basieren dabei auf den Regeln des Spiels.
+Beispielsweise darf ausschließlich der Spieler, der gerade am Zug ist, würfeln, und dies auch nur, wenn er seinen Zug gerade begonnen hat oder durch einen Pasch erneut würfeln darf.
+Zustandsübergänge erfolgen abhängig von den Aktionen der Spieler und dem aktuellen Spielstand, und folgen ebenfalls den Spielregeln.
+Die Modellierung mittels Zuständen erlaubt eine übersichtliche Implementierung einzelner Aktionen, und schützt gleichzeitig davor, ungültige Aktionen zu unternehmen.
+
+Während die Spiellogik mit dem genannten Automatenmodell von Grund auf implementiert wurde, wurden für die Kommunikation mit den Clients entsprechende Bibliotheken benutzt.
+Speziell finden einige Komponenten des Frameworks Qt\footnote{https://qt.io} Anwendung.
+Qt bietet neben einer Implementierung von Websockets auch die Möglichkeit zur asynchronen Kommunikation mittels Signalen und einer Event Queue, wovon in Bezug auf das Versenden der Rückmeldungen an die Clients Gebrauch gemacht wurde.
+Für die Datenbank, in der sowohl die Spieler als auch sämtliche Spiele inklusive ihrer Abläufe hinterlegt werden, bietet Qt eine Auswahl von Komponenten, welche die Verwendung einer SQL-Datenbank erleichtern.
+
+% Watson
+Die Schummelkomponente ,,Watson`` findet sich hauptsächlich im Client.
+Während die Effekte, die Watson herbeiführt, im Server umgesetzt werden müssen, werden die Entscheidungen, ob und welche Angebote Watson dem Nutzer macht lokal im Client getroffen.
+Auf der anderen Seite der Angebote, speziell bei der Anmeldung bei Dritten, besteht das Problem, dass nutzerspezifische Daten vom Client zum Server übertragen werden müssen.
+Die Idee, die Zugangsdaten an den Server zu senden und über die API des Drittanbieters an entsprechende Zugangstokens zu gelangen, wurde davon abgelöst, den Client die Tokens direkt anfragen zu lassen, um diese dann an den Server zu senden.
+Der letzte Schritt, das Senden an den Server, wird aus Sicherheitsgründen unterlassen. Für die Untersuchung des Verhaltens der Nutzer reicht der Erhalt der Tokens vom Drittanbieter aus.
+
+Die Häufigkeit, mit der Angebote gestellt werden, sowie deren Inhalt hängt vom Zustand des Spiels und des Spielers ab.
+Beispielsweise wird einem Spieler, dem zwei Grundstücke einer Farbgruppe gehören, während das dritte Grundstück noch nicht verkauft wurde, und der zusätzlich kurz vor dieser Farbgruppe steht, das Angebot gemacht werden, das Ergebnis seines nächsten Wurfs zu bestimmen.
+Diese Regeln wurden willkürlich festgelegt und können mit der Einführung zusätzlicher möglicher Schummelaktionen erweitert werden.
+
 \Tobias{Eigenschaften und Ergebnisse beschreiben}
+
+Der Prototyp in seinem gegenwärtigen Zustand bildet nicht das vollständige Regelwerk eines handelsüblichen Monopoly ab, da einige teils elementare Bestandteile, wie Auktionen oder der Handel zwischen Spielern, fehlen.
+Trotzdem ist er lauffähig, und dazu in der Lage, vollständige Spiele von Beginn bis Ende durchzuführen.
+Aufgrund unvorhergesehener Verzögerungen war es nicht möglich, Nutzerstudien mit dem Prototypen durchzuführen.
 
 \Pascal{Apis beschreiben}
 
