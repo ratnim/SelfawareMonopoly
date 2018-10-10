@@ -1,3 +1,17 @@
-\begin{thebibliography}{}
+\begin{thebibliography}{\protect\citename{NTV }2018}
+
+\bibitem[\protect\citename{FAZ }2015]{FAZWM2015}
+2015.
+\newblock {Ex-Fifa-Funktionär Blazer gesteht Korruption bei WM 1998 und 2010}.
+\newblock {\em Frankfurter Allgemeine Zeitung GMBH\/}.
+\newblock
+  \url{http://www.faz.net/aktuell/sport/sportpolitik/wm-1998-und-2010-ex-fifa-funktionaer-blazer-gesteht-korruption-bei-wm-1998-und-2010-13628556.html}.
+
+\bibitem[\protect\citename{NTV }2018]{NTVINTERPOL2018}
+2018.
+\newblock {China wirft Interpol-Chef Korruption vor}.
+\newblock {\em NTV\/}.
+\newblock
+  \url{https://www.n-tv.de/politik/China-wirft-Interpol-Chef-Korruption-vor-article20659271.html}.
 
 \end{thebibliography}

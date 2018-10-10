@@ -7,3 +7,5 @@
 *fdb_latexmk
 *.blg
 *.synctex.gz
+*.bak
+*.sav
