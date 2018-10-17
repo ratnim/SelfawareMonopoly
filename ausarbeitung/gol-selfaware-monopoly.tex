@@ -362,10 +362,40 @@ In dem Prototypen sind Offene-Indirekte Deals sind Deals, bei denen der Nutzen f
 
 \section{Future Work}
 
-\subsection{Auswertung}
+Inhalt dieser Arbeit war es ein System zu erschaffen welches mit der aktiven Beteiligung der Nutzer bestimmte Regeln bricht und das System im Gegenzug versucht so viele Information und Ressourcen des Nutzers zu erhalten.
 
 \subsection{Inteligente Watson Komponente}
 
+Die Entscheidung wann welche Deals durch die Watson Komponente angeboten werden erfolgt momentan noch regelbasiert.
+Watson könnte aber auch auf Grundlage von Metriken oder schon gewonnen Informationen agieren.
+Dadurch könnte Watson versuchen mehr oder prisantere Informationen zu erhalten.
+Außerdem könnte Watson auch Spiel übergreifend Interagieren.
+Dadurch wäre auch das ableiten von Informationen möglich, wie zum Beispiel, wer spielt mit wem.
+Ist es wahrscheinlich das sich diese Spieler auch außerhalb des Spiels kennen.
+Wenn ja, könnte Watson einem der beiden Deals anbieten der beiden Spieler Hilft oder mit absicht dem anderem Spieler schadet.
+
+\subsection{Persistenz}
+
+Um den Prototypen sinnvoll für weitere wissenschaftliche Zwecke nutzten zu können, müssten die Spielverläufe persistiert werden.
+Der Prototyp hält momentan alle Spielverläufe im Arbeitsspeicher.
+Dies müsste um eine Persistierung auf eine Datenbank oder etwas vergleichbares erweitert werden.
+Die Persistierung auf eine Datenbank würde den Vorteil bieten die Daten auch außerhalb des Prototyps zugänglich zu machen.
+
+\subsection{Auswertung}
+
+Nun stellen sich unterschiedlichste Fragen die mit Hilfe dieses Systems betrachtet werden können und sich dann auf unsere Gesellschafft übertragen lassen.
+Solche Fragestellung könnten wie folgt aussehen?
+
+\begin{itemize}
+\item Ab wann empfindet der Spieler ein 'Schummeln' als legal/plausibel oder unrechtmäßig?
+\item Wie regieren Gewinner des Spiels auf Belobung/Tadel?
+\item Ändert sich die Einstellung der Spieler gegenüber dem Spiel abhängig vom Spielerfolg?
+\item Inwiefern verändert sich die Bereitschaft zur Informationspreisgabe über den Verlauf des Spieles?
+\item Bis zu welchem Grad ist ein Spieler bereit, bewusst zum Nachteil anderen Spieler zu agieren?
+\end{itemize}
+
+Um diese Fragen besser beantworten zu können, müssten die Aufgezeichneten Spieldaten analysiert und aufbereitet werden.
+Zusätzlich müsste das Spiel um einen Feedback bzw. Fragemechanismus erweitert werden, der dem Spieler direkt nach dem Spiel Fragen über das Spielerlebniss stellt und diese mit den Daten über den Spielverlauf in Verbindung bringt.
 
 \bibliographystyle{acmsiggraph}
 \bibliography{gol-selfaware-monopoly}
