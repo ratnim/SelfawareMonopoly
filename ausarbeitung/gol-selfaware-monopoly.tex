@@ -44,7 +44,7 @@
 % Zusammenfassung
 %----------------------------------------------------------------
 \begin{abstract}
-    \textcolor{red}{TODO: Zusammenfassung schreiben}
+    \Martin{Zusammenfassung schreiben}
 \end{abstract}
 
 \copyrightspace % Erzeugt den Hinweis auf die Veranstaltung links unten
@@ -176,8 +176,6 @@ Der Spieler muss dadurch aktiv Entscheiden ob er diesen Teil des Spiels nutzt.
 
 \section{Vorstellung Prototyp}
 
-\Tobias{Architektur, Designentscheidungen, Umsetzung}
-
 % Allgemein
 Der Prototyp präsentiert sich dem Nutzer als Website, welche dieser in einem normales Webbrowser aufrufen kann.
 Die Bereitstellung als Website bietet die Vorteile, dass einerseits jedweder Nutzer das Produkt nutzen kann, ohne dass spezielle Voraussetzungen, wie beispielsweise ein spezifisches Betriebssystem, gegeben sein müssen, während andererseits der Server als Anbieter unter bekannten und kontrollierbaren Bedingungen entwickelt werden kann.
@@ -250,15 +248,11 @@ Die Häufigkeit, mit der Angebote gestellt werden, sowie deren Inhalt hängt vom
 Beispielsweise wird einem Spieler, dem zwei Grundstücke einer Farbgruppe gehören, während das dritte Grundstück noch nicht verkauft wurde, und der zusätzlich kurz vor dieser Farbgruppe steht, das Angebot gemacht werden, das Ergebnis seines nächsten Wurfs zu bestimmen.
 Diese Regeln wurden willkürlich festgelegt und können mit der Einführung zusätzlicher möglicher Schummelaktionen erweitert werden.
 
-\Tobias{Eigenschaften und Ergebnisse beschreiben}
-
 Der Prototyp in seinem gegenwärtigen Zustand bildet nicht das vollständige Regelwerk eines handelsüblichen Monopoly ab, da einige teils elementare Bestandteile, wie Auktionen oder der Handel zwischen Spielern, fehlen.
 Trotzdem ist er lauffähig, und dazu in der Lage, vollständige Spiele von Beginn bis Ende durchzuführen.
 Aufgrund unvorhergesehener Verzögerungen war es nicht möglich, Nutzerstudien mit dem Prototypen durchzuführen.
 
 \Pascal{Apis beschreiben}
-
-\Tobias{Bitcoinmining: Zahlen, Daten, Fakten. Wieviel Geld ist das wirklich?}
 
 Eine der Gegenleistungen, die für Schummelaktionen verlangt werden, ist die Verwendung von Rechnerressourcen des Nutzers, speziell für das sogenannte ,,Mining`` von Kryptowährung.
 Um das Mining durchzuführen, werden Skripte von Coinhive\footnote{https://coinhive.com} in Anspruch genommen, welche die Währung Monero (XMR)\footnote{https://getmonero.org/} erzeugen.
@@ -281,9 +275,7 @@ Laut Angaben von Coinhive zum Zeitpunkt der Schriftsetzung betrugen die Erfolgsw
 Zudem geben sie an, ihre Skripte ließen auf hochwertigen Prozessoren rund 90 Hashwerte pro Sekunde berechnen.
 Nimmt man all diese Zahlen, inklusive des Wechselkurses, zusammen, erhält man, dass ein einzelner Nutzer innerhalb einer Stunde einen Gegenwert von rund 0,000013 USD erzeugt.
 
-\Tobias{Likes und Reviews?}
-
-\section{Diskussion}
+\section{Diskussion}\label{sec:discussion}
 
 Durch den Prototypen wurde gezeigt, das es möglich ist Systeme zu bauen, die versuchen den Nutzer mit seiner Zustimmung dazu zu bringen Infromation und Ressourcen von sich herzugeben ohne einen Mehrwert außerhalb des bereitgestellten Spiels zu gewähren.
 
@@ -330,7 +322,8 @@ Für andere Spieler ist es nicht einsichtig ob er dieses Feature in Anspruch nim
 
 \subsubsection{Offene-Indirekte Deals in der Gesellschaft}
 
-In dem Prototypen sind Offene-Indirekte Deals sind Deals, bei denen der Nutzen für den Spieler nicht sofort eintritt aber wenn er eintritt andere Spieler sehen können das etwas nicht nach den normalen Regeln läuft.
+Offene-Indirekte Deals sind Deals, bei welchen der Nutzen für den Spieler verzögert eintritt und für andere Spieler erkenntlich ist das die Regeln umgangen wurden.
+Im entwickelten Prototypen bietet Watson den Spielern an durch Bitcoin-Mining den Preis beim bau von Häusern zu reduzieren.
 
 \Martin{Mapping Gesellschaft}
 
@@ -342,7 +335,9 @@ In dem Prototypen sind Offene-Indirekte Deals sind Deals, bei denen der Nutzen f
 
 \subsubsection{Verdeckte-Indirekte Deals in der Gesellschaft}
 
-\Martin{Beschreibung}
+Verdeckte-Indirekte Deals sind Deals, bei denen der Nutzen verzögert eintritt und auch nicht erkenntlich ist ob die Regeln umgangen wurden oder nicht.
+Im entwickelten Prototypen ist es möglich durch besuchen von Websites die Ereignisskarten zu beeinflussen.
+Folgt ein Spieler den durch Watson links, sorgt Watson dafür, dass es für den Spieler wahrscheinlicher ist positive Effekte durch Gemeinschafts- und Ereignisskarten zu erhalten.
 
 \Martin{Mapping Gesellschaft}
 
@@ -352,13 +347,38 @@ In dem Prototypen sind Offene-Indirekte Deals sind Deals, bei denen der Nutzen f
 
 \Martin{Beispiel Informationssystem}
 
-\subsection{Wer könnte solche Systeme bauen}
+\subsection{Warum baut man solche Systeme}
 
-\Martin{Echtgeld : PayToWin}
+Wie in vorangegangen Teil des Kapitels \ref{sec:discussion} gezeigt wurde lassen sich alle implementierten Methodiken sowohl in bestehenden Software Systemen als auch in der Gesellschaft wiederfinden.
 
-\Martin{Informationsbeschaffung : }
+Dabei implementieren dieses Systeme meist nicht alle der Methodiken die im dem hier vorgestellten Prototyp gezeigt wurden, sondern nutzen eine Teilmenge mit einer der folgenenden Motivationen.
 
-\Martin{Meinungsmache}
+\subsubsection{Kapitalerzeugung}
+
+Viele Systeme sind konzipiert um direkt Kapital zu erzeugen.
+Manche davon nutzen die hier vorgestellten Methodiken um dies zu erreichen. 
+Innerhalb der Computerspiele Industrie lasseb sich so gennante pay-to-win Spiele finden.
+Diese ermöglichen es dem Spieler mit Echtgeld die Regel zu umgehen oder einen direkte Vorteil innerhalb des Spiels zu erkaufen.
+Andere Spiel wie \Martin{Abstraction} aber auch Anwendungen wie \Martin{Sweat-Coin} nutzen Bitcoin-Mining um mit der Rechenleistung des Spielers Kapital zu generieren.
+
+\subsubsection{Informationsbeschaffung}
+
+Systeme welche das Ziel haben, Informationen über mögliche Kunden oder das Nutzungsverhalten von bestimmten Zielgruppen offen zu legen finden sich überall.
+Die Teilmenge der Systeme, welche dafür einen Bonus oder Vorteil dem Nutzer geben, welche sonst nicht oder nur gegen Echtgeld erhältlich wären entsprechen der Methodik des Prototypen.
+Beispiele dafür sind endlos, angefangen bei Gratiszeitungen gegen die eigene Anschrift bis hin zum verlinken des Facebook Accounts um einen Startbonus beim Anmelden auf einer Plattform zu bekommen.
+
+\subsubsection{Meinungsverzehrung}
+
+Beim Einkauf im Internet ist die Bewertung eines Produkts oft das wichtigste Kriterium ob man etwas kauft oder nicht.
+Umso breiter das Spektrum der Bewerter desto eher vertraut man der Bewertung.
+Änlich verhält es sich auch mit Bewertungen für Veranstaltung, Filme oder Restaurants.
+Angenommen eine Firma will mehr oder bessere Berwertung machen ohne dies zu forcieren, kann das ein endlosses Unterfangen werden.
+Deshalb wird versucht Nutzer zu einer Bewertung zu bewegen.
+Ab dem Zeitpunkt wo der Nutzer für eine positive Bewertung eine Gegenleistung bekommt oder eine Berwertung vorgegeben wird verlässt man den legalen Bereich.
+
+Wird die Identität einer anderen Person genutzt um einen Like oder eine Bewertung zu hinterlassen, ist dies gänzlich ilegal.
+Facebook geht gegen so gennante FakeLikes aggressive vor.
+Durch Facebook wird die im Prototyp umgesetzte Methode als Klickfarm bezeichnet. \cite{FakeLikes2018}
 
 \section{Future Work}
 
