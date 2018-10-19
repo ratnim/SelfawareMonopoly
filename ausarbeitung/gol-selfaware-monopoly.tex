@@ -41,13 +41,25 @@
 % Zusammenfassung
 %----------------------------------------------------------------
 \begin{abstract}
-    \Martin{Zusammenfassung schreiben}
+    In Kapitel \ref{sec:introduction} wird der Kontext dieser Arbeit und die Motivation für das Thema beschrieben.
+
+    In Kapitel \ref{sec:concept} wird ein Konzept für die erweiterte Komponente des Monopoly's entworfen.
+    Dabei wird definiert, welche Ressourcen und Informationen von Interesse sind und welche Plattformen als Ziel in Frage kommen.
+    Die Angebotenen Deals werden konzipiert und kategorisiert.
+
+    In Kapitel \ref{sec:prototype} wird die technische Implementierung des Prototypen beschrieben.
+    Dabei werden wichtige Design Entscheidungen analysiert und der finale Stand des Prototypen dargestellt.
+
+    In Kapitel \ref{sec:discussion} wird versucht die in den vorherigen Kapiteln konzipierten und implementierten Methodiken in der Gesellschaft wiederzufinden.
+    Dabei wird zum einen auf Softwatesysteme verwiesen welche diese Methodiken nutzen, als auch auf gesellschaftliche Phänomäne verwiesen die der selben Struktur folgen.
+
+    In Kapitel \ref{sec:future} wird beschrieben, welche Möglichkeiten und weitere Arbeiten aus der hier beschriebenen Arbeit entstehen könnten.
 \end{abstract}
 
 \copyrightspace % Erzeugt den Hinweis auf die Veranstaltung links unten
 
 
-\section{Einleitung}
+\section{Einleitung}\label{sec:introduction}
 
 Informations Systeme ersetzen immer mehr elementare Bestandteile unserer Gesellschaft.
 Soziale Netzwerke, das Finanz- und Bankwesen, Wahlsysteme um nur eine wenige Bereiche zu nennen.
@@ -59,7 +71,7 @@ Was wäre wenn das System durch das benutzen dieser Hintertüren, die Grenzen se
 
 Im Rahmen des Seminars Games of Life wollen wir ein solches System konzipieren und implementieren.
 
-\section{Konzept}
+\section{Konzept}\label{sec:concept}
 
 Das Spiel Monopoly war urpsrünglich als Gesellschaftskritik am Kapitalismus gedacht. \Martin{Nachweis} 
 Aufbauend auf dieser Grundidee wollen wir nun ein Spiel entwerfen, welches dem Spieler die Möglichkeit gibt die Spielregeln zu umgehen und sich im Gegenzug Information und Resourcen vom Spieler beschaft. 
@@ -171,7 +183,7 @@ Die Watson Komponente soll zwar Teil des Spiels sein aber für den Spieler soll 
 Dadurch soll klar werden, dass dies nicht mehr zu dem eigentlichen Monopolyspiel gehört und der Spieler an dieser Stelle eine Grenze überschreitet.
 Der Spieler muss dadurch aktiv Entscheiden ob er diesen Teil des Spiels nutzt.
 
-\section{Vorstellung Prototyp}
+\section{Vorstellung Prototyp}\label{sec:prototype}
 
 % Allgemein
 Der Prototyp präsentiert sich dem Nutzer als Website, welche dieser in einem normales Webbrowser aufrufen kann.
@@ -387,7 +399,7 @@ Wird die Identität einer anderen Person genutzt um einen Like oder eine Bewertu
 Facebook geht gegen so gennante FakeLikes aggressive vor.
 Durch Facebook wird die im Prototyp umgesetzte Methode als Klickfarm bezeichnet. \cite{FakeLikes2018}
 
-\section{Future Work}
+\section{Future Work}\label{sec:future}
 
 Inhalt dieser Arbeit war es ein System zu erschaffen welches mit der aktiven Beteiligung der Nutzer bestimmte Regeln bricht und das System im Gegenzug versucht so viele Information und Ressourcen des Nutzers zu erhalten.
 
