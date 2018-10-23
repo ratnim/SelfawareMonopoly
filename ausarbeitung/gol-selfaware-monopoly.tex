@@ -67,7 +67,7 @@ Dabei vertrauen alle Beteiligten darauf das diese Systeme sich an die Regeln hal
 
 Was wäre wenn dies nicht der Fall ist? 
 Was wäre wenn innerhalb des Systems Hintertüren existieren, welche es ermöglichen einzelne Regeln zu umgehen.
-Was wäre wenn das System durch das benutzen dieser Hintertüren, die Grenzen seiner Spezifikation überschreitet und sich so Zugang zu Information und Ressourcen verschafft, welche es nicht besitzen dürfte.
+Was wäre wenn das System durch das benutzen dieser Hintertüren, die Grenzen seiner Spezifikation überschreitet und sich so Zugang zu Information und Ressourcen verschafft, welche es nicht besitzen dürfte?
 
 Im Rahmen des Seminars Games of Life wollen wir ein solches System konzipieren und implementieren.
 
@@ -84,7 +84,7 @@ Im Gegenzug wird Watson versuchen unterschiedliche Ressourcen die nicht Inhalt d
 Ein solcher Handel wird im folgenden als \neuerBegriff{Deal} bezeichnet.
 Die Spieler müssen aktiv die Entscheidung treffen, dass sie Watson nutzen.
 Dadurch kann Watson nur so weit agieren, wie es die Spieler zulassen.
-Sollte also alle Spieler eines Spiels zu keiner Zeit die Deals von Watson annehmen, entspricht das Spiel eine regelkonformen Monopolypartie.
+Sollten also alle Spieler eines Spiels zu keiner Zeit die Deals von Watson annehmen, entspricht das Spiel eine regelkonformen Monopolypartie.
 
 \subsubsection{Was will Watson?}
 
@@ -96,57 +96,58 @@ Persöhnlich Informationen die Watson bekommen möchte sind zum Beispiel die Ide
 Ressourcen die Watson bekommen möchte ist Rechnenleistung um Bitcoinmining zu betreiben.
 Beim Bitcoinmining wird die Kryptowhärung Monero gemined.
 
-Watson möchte die Identität der Spieler nutzen um auf Socialen Plattformen Likes oder Kommentare zu erstellen.
+Watson möchte die Identität der Spieler nutzen um auf Sozialen Plattformen "Likes" oder Kommentare zu erstellen.
 \Pascal{Welche möglichkeiten haben wir umgesetzt?}
 
 \subsubsection{Wie sieht so ein Deal aus?}
 
 Watson bietet dem Spieler unterscheidliche Deals an die Regeln zu umgehen.
+Dabei gibt es verschiedene Arten von Deals.
 
 \begin{table}[h]
 \centering
 \begin{tabular}{|c|c|c|}
 \hline 
-& \textbf{verdeckt} & \textbf{offen} \\
+& \textbf{verdeckt} & \textbf{offensichtlich} \\
 \hline
 \textbf{direkt} & Würfel manipulieren & - \\
 \hline
 \textbf{indirekt} & Glück beeinflussen & Baupreis reduzieren \\
 \hline
 \end{tabular}
-\caption{Die Tabelle kategorisiert die Effekte der Deals, die durch Watson angeboten werden, in zwei Dimensionen. In der horizontalen ob der Effekt eines Deals für die Spieler sichtbar ist und in der verticallen ob der Effekt direkt eintritt.}
+\caption{Die Tabelle kategorisiert die Effekte der Deals, die durch Watson angeboten werden, in zwei Dimensionen. In der horizontalen ob der Effekt eines Deals für die Spieler sichtbar ist und in der vertikallen ob der Effekt direkt eintritt.}
 \label{tab:effekte}
 \end{table}
 
-Tabelle \ref{tab:effekte} kategorisiert die Effekte eines Deals in zwei Dimensionen, direkt oder indirekt, das bedeutet ob der Spieler ein direkt Nutzen bekommt und in offensichtlich und nicht offensichtlich.
-Daraus ergeben sich strukturell folgen Deals.
+Tabelle \ref{tab:effekte} kategorisiert die Effekte eines Deals in zwei Dimensionen, direkt oder indirekt, das bedeutet ob der Spieler einen direkten Nutzen bekommt und in verdeckt und offensichtlich, was bedeutet ob die anderen Mitspieler mitbekommen, ob soeben ein Deal gegriffen hat.
+Daraus ergeben sich strukturell folgende Deals.
 
-\neuerBegriff{Offensichtlich-direkt} wäre ein offensichtlicher Deal, wie der Spieler darf Geld aus der Bank nehmen und gibt dafür Informationen von sich preis. 
-Da es in dem Scenario nicht darum geht, wer am skrupelosesten schummelt, wird diese Art von Deals nicht durch Watson angeboten.
+\neuerBegriff{Offensichtlich-direkt} wäre ein Deal, der für alle Mitspieler sichtbar von statten geht, wie z. B. der Spieler bekommt Geld aus der Bank. 
+Da es in dem Szenario nicht darum geht, wer am skrupelosesten schummelt, wird diese Art von Deals nicht durch Watson angeboten.
 
-\neuerBegriff{Offensichtlich-indirekt} sind alle Deals, bei denen andere Spieler den Effekte als Regelbruch ausmachen können aber die nicht direkt beim Preisgeben von Informationen oder Ressourcen einen Effekt haben.
-Der Spieler weis zu den Zeitpunkt wenn ihm der Deal angeboten wird nicht nicht ob er, die Leistung durch Watson braucht oder nicht.
-Dadurch soll der Spieler zum Hammstern angehalten werden und im Zweifel mehr von sich Preis zu geben als nötig wäre.
+\neuerBegriff{Offensichtlich-indirekt} sind alle Deals, bei denen andere Spieler den Effekte als Regelbruch ausmachen können, aber die nicht direkt beim Preisgeben von Informationen oder Ressourcen einen Effekt haben.
+Der Spieler weiß zu den Zeitpunkt, wenn ihm der Deal angeboten wird, nicht nicht ob er die Leistung durch Watson braucht oder nicht.
+Dadurch soll der Spieler zum \textit{Hammstern} angehalten werden und im Zweifel mehr von sich preis zu geben als nötig wäre.
 
-Watson bietet den Spieler zum Beispiel an, Bitcoin Mining zu betreiben und so für jede Spielrunde die da Bitcoin-Mining im Hintergrund läuft, einen so genannten \neuerBegriff{Watson-Coin} zu generieren.
-Die Watson-Coins werden dann durch Watson für jeden Spieler ein Konto gespeichert.
+Watson bietet den Spielern zum Beispiel an, Bitcoin-Mining zu betreiben und so für jede Spielrunde, die das Bitcoin-Mining im Hintergrund läuft, einen so genannten \neuerBegriff{Watson-Coin} zu generieren.
+Die Watson-Coins werden dann durch Watson für jeden Spieler in einem Konto gespeichert.
 Der konkrete Stand dieses Kontos ist für den Spieler aber nicht einsehbar.
-Baut ein Spieler der Watson-Coins besitzt Häuser, so wird der Preis pro Watson-Coin um 50.
-Das tatsächlich erwirschaftete Guthaben auf Monero geht an Watson, bzw an das System.
-Für andere Spieler ist es nur beim Hausbau einsehbar ob der Spieler einen Deal von Watson angenommen hat oder nicht.
+Baut ein Spieler der Watson-Coins besitzt Häuser, so wird der Preis pro Watson-Coin um 50€ verringert.
+Das tatsächlich erwirschaftete Guthaben durch das Bitcoin-Mining geht an Watson, bzw. an das System.
+Für andere Spieler ist es nur beim Hausbau einsehbar, ob der Spieler einen Deal von Watson angenommen hat oder nicht.
 Die Zahlen werden innerhalb des Spiels aber nur durch genaues hinschauen und nachrechnen einsehbar sein, wodurch es erschwert ist dies von außen mitzubekommen. 
 
-\neuerBegriff{verdeckt-direkt} sind alle Deals, bei denen der Spieler Information oder Ressourcen an Watson übergibt und einen direkten Nutzen davon hat. 
-Durch den direkten Mehrwert den der Spieler gezeigt bekommt, soll der Spieler in Versuchung gebracht werden, selbst wenn er eigentlich keine Deals annehmen möchte, dies an dieser Stelle doch zu tun.
+\neuerBegriff{verdeckt-direkt} sind alle Deals, bei denen der Spieler Informationen oder Ressourcen an Watson übergibt und einen sofortigen Nutzen davon hat. 
+Durch den direkten Mehrwert, den der Spieler gezeigt bekommt, soll der Spieler in Versuchung gebracht werden, selbst wenn er eigentlich keine Deals annehmen möchte, dies an dieser Stelle doch zu tun.
 Zum Beispiel ist es gerade im frühen und im späten Spielverlauf von entscheidender Bedeutung, entweder unbedingt oder auf keinen Fall ein bestimmtes Würfelergebniss zu erzielen.
 
 Watson bietet deshalb den Spieler an die Würfel zu manipulieren.
 \Pascal{Sind das noch weitere Deals?}
 Der Spieler muss dafür seine Identität auf Facebook an Watson übergeben und darf sich so sein nächstes Würfelergebniss wählen.
-Für andere Spieler ist es in keiner Weise einsichtig ob der Spieler einen Deal von Watson angenommen hat oder nicht.
+Für andere Spieler ist es in keiner Weise einsichtig, ob der Spieler einen Deal von Watson angenommen hat oder nicht.
 
-\neuerBegriff{verdeckt-indirekt} sind alle Deals, bei denen der Spieler Information oder Ressourcen an Watson übergibt aber keinen direkten Effekt hat.
-Der Spieler weiß dabei nicht einmal ob es überhaupt einen Effekt hat.
+\neuerBegriff{verdeckt-indirekt} sind alle Deals, bei denen der Spieler Informationen oder Ressourcen an Watson übergibt aber keinen direkten Effekt hat.
+Der Spieler weiß dabei nicht einmal, ob es überhaupt einen Effekt hat.
 Da der Effekt nicht einmal für den Spieler selbst auszumachen ist, haben andere Spieler keine Möglichkeit herrauszufinden ob der Spieler Deals von Watson annimmt oder nicht.
 
 Watson bietet den Spielern zum Beispiel an bestimmte Webseiten zu besuchen oder Kommentare und Seiten auf Facebook zu liken.
@@ -161,27 +162,26 @@ Dafür sollte Watson möglichst dann die Deals anbieten wenn der Spieler gerade 
 Deshalb bietet Watson Deals eher Spieler an, die gerade nicht an der Reihe sind.
 
 Zum anderen soll Watson eine hohe Erfolgsrate haben, das heißt, die Wahrscheinlichkeit das ein Spieler den Deal annimmt soll hoch sein.
-Um dies zu erreichen muss auf unterschiedlichste Faktoren geachtet werden. 
+Um dies zu erreichen, muss auf unterschiedlichste Faktoren geachtet werden. 
 
 Es wird bestimmt, ob der Spieler den Effekt des Deals gebrauchen kann oder nicht. 
 Einem Spieler der sehr viele Straßen besitzt, anzubieten die Würfel zu manipulieren hat wahrscheinlich weniger Erfolgschancen, als einem Spieler der unbedingt diese eine Straße brauch.
 Einem Spieler mit einem unbebauten Straßenzug den Baupreis zu reduzieren, hat wahrscheinlich eine höhere Chance als einem Spieler ohne Straßen.
 
-Spieler die schon Deals angenommen haben sollen Verhältnissmäßig viele Deals angeboten werden.
+Spieler die schon Deals angenommen haben sollen verhältnissmäßig viele Deals angeboten werden.
 Wohingegen Spieler die noch keine Deals angenommen haben weniger bis garkeine Angebote mehr bekommne.
 
 Deals sollen sich durch nur temporäre Verfügbarkeit interessant machen.
-Somit ist der Spieler angeregt selbst wenn er den Effekt erst später nutzen kann diesen auch anzunehmen.
-Weil er im Zweifel nicht darauf verzichten will.
+Somit ist der Spieler angeregt selbst wenn er den Effekt erst später nutzen kann diesen auch anzunehmen, weil er im Zweifel nicht darauf verzichten will.
 
 Außerdem sollen einige Deals zufällig angeboten werden.
 Das heißt ein Spieler bekommt eigentlich einen Deal auf denen eine oder mehrere der definierten Kriterien nicht zustimmen.
 
 \subsection{Wie bietet Watson die Deals an?}
 
-Die Watson Komponente soll zwar Teil des Spiels sein aber für den Spieler soll Watson eine klar erkennbare Komponente innerhalb des Interfaces darstellen.
+Die Watson Komponente soll zwar Teil des Spiels sein, aber für den Spieler soll Watson eine klar erkennbare Komponente innerhalb des Interfaces darstellen.
 Dadurch soll klar werden, dass dies nicht mehr zu dem eigentlichen Monopolyspiel gehört und der Spieler an dieser Stelle eine Grenze überschreitet.
-Der Spieler muss dadurch aktiv Entscheiden ob er diesen Teil des Spiels nutzt.
+Der Spieler muss dadurch aktiv entscheiden ob er diesen Teil des Spiels nutzt.
 
 \section{Vorstellung Prototyp}\label{sec:prototype}
 
@@ -192,6 +192,7 @@ Die Bereitstellung als Website bietet die Vorteile, dass einerseits jedweder Nut
 Der Server selbst ist geteilt in einen HTML-Server, welcher die Websites bereitstellt, sowie einen Websocket-Server, welcher die Spiellogik, inklusive Manipulationen implementiert und Auskunft über Ereignisse in den laufenden Spielen gibt.
 Diese beiden Komponenten sind zum großen Teil unabhängig. Die einzigen Verbindungen bestehen in der API, mit der über die Websockets kommuniziert wird, sowie dem Umstand, dass der Client die korrekte Adresse für die Verbindung zum Websocket kennen muss.
 Entsprechend dieser klaren Aufteilung wurden die Implementierungen parallel von zwei getrennten Gruppen durchgeführt, aufbauend auf der gemeinsam genutzten Websocket API.
+%Warum hier Prozess beschreiben?
 
 % Spielstatus
 Da im finalen System mehrere Akteure zusammenwirken, kommt das Problem der Synchronisation auf. In diesem speziellen Fall müssen sich der Server und sämtliche an einem Spiel beteiligten Clients einig sein über den Zustand dieses Spiels.
@@ -199,18 +200,18 @@ Für jede Änderung einmal den vollständigen Zustand an sämtliche Clients zu s
 Aus diesem Grund müssen sämtliche Teilnehmer eine eigene lokale Kopie des Zustandes vorhalten, welche sie bei Bedarf aktualisieren.
 Der individuelle lokale Zustand wird ausgehend von einem Grundzustand iterativ durch Anwendung einzelner lokaler Aktionen erzeugt.
 Während der Grundzustand einzig von der Anzahl der beteiligten Spieler, deren Namen und dem gewählten Spielbrett abhängt, behandeln die Aktionen sämtliche Änderungen, welche durch die Züge und Entscheidungen der Spieler entstehen.
-Um inkrementellen Fehlern vorzubeugen, wird zum einen darauf geachtet, dass Aktionen in strikt der Reihenfolge angewendet werden, in der sie aufgetreten sind.
+Um inkrementellen Fehlern vorzubeugen, wird zum einen darauf geachtet, dass Aktionen in strikter Reihenfolge angewendet werden, in der sie aufgetreten sind.
 Zum anderen wird für jede Änderung eines Wertes nicht die relative Veränderung übermittelt, wie es vor allem für die Kontostände und die Positionen der Spielfiguren einleuchtend wäre, sondern das absolute Ergebnis der Aktion.
 
-Die Abfolge der Aktionen wird für jedes Spiel in einer Datenbank hinterlegt, und ursprünglich erfolgte dies nur zur Dokumentation der mit dem Prototypen durchgeführten Nutzerstudien.
-Später wurden diese Aufzeichnungen auch dafür verwendet, um es Spieler, die durch äußere Störungen die Verbindung zum Server verloren haben, zu ermöglichen, wieder in ihr Spiel einzusteigen und die ,,verpassten`` Aktionen nachzuholen.
+Die Abfolge der Aktionen wird für jedes Spiel in einer Datenbank hinterlegt.  Ursprünglich erfolgte dies nur zur Dokumentation der mit dem Prototypen durchgeführten Nutzerstudien.
+Später wurden diese Aufzeichnungen auch dafür verwendet, um es Spielern, die durch äußere Störungen die Verbindung zum Server verloren haben, zu ermöglichen, wieder in ihr Spiel einzusteigen und die ,,verpassten`` Aktionen nachzuholen.
 
 % Server-Client-Kommunikation
 Die Kommunikation über die Websockets erfolgt asynchron, da beide Kommunikationspartner Meldungen an den anderen machen können, welche meist keiner direkten Rückmeldung bedürfen.
-Als Datenformat wurde JSON gewählt, da es einerseits von beiden Seiten einfach erzeugt und dekodiert werden kann, und andererseits selbst im ,,kodierten`` Zustand noch menschenlesbar und somit leichter nachvollziehbar ist.
+Als Datenformat wurde JSON gewählt, da es einerseits von beiden Seiten einfach erzeugt ist und leicht dekodiert werden kann, und andererseits selbst im ,,kodierten`` Zustand noch menschenlesbar und somit leichter nachvollziehbar ist.
 Der Inhalt einer Nachricht besteht aus einem Feld für den Zweck sowie weiteren Informationen, sofern der diese für den Zweck relevant sind. Während beispielsweise die Meldung über das Ende des Spiels ohne weitere Parameter versendet werden kann, wäre eine Nachricht über die Bewegung eines Spielers ohne die Angabe des Ziels sinnlos.
 
-Die Inhalte der Nachrichten reichen von organisatorischen Belangen, wie der Anmeldung eines Nutzers oder dem Beitritt zu einem Spiel, über spielinterne Geschehnisse, wie die Augenzahl der Würfel nach einem Wurf oder der Veränderung des Kontostands eines Spielers, bis hin zur Ausführung von Schummelaktionen, wie der Festlegung des nächsten Wurfergebnisses.
+Die Inhalte der Nachrichten reichen von organisatorischen Belangen, wie der Anmeldung eines Nutzers oder dem Beitritt zu einem Spiel, über spielinterne Geschehnisse, wie die Augenzahl der Würfel nach einem Wurf oder der Veränderung des Kontostands eines Spielers, bis hin zur Ausführung von Schummelaktionen, wie der Festlegung des nächsten Würfergebnisses.
 Während beide Kommunikationspartner spontan Nachrichten an den anderen schicken können, übernimmt der Client, also der Nutzer mit seinem Browser, eine aktivere Rolle als der Server.
 Während der Server nur Statusmeldungen an die Clients schickt, wird ein Client bei bestimmten Anfragen auf spezifische Meldungen des Servers warten. Beispielsweise erwartet ein Client, der die Nachricht zum Kauf eines Grundstücks gesendet hat, dass einerseits der Besitzer dieses Grundstücks geändert wird, und sich andererseits der eigene Kontostand ändert.
 Zu beachten ist, dass jede dieser Anfragen genauso gut mit einer Fehlermeldung beantwortet werden kann. Diese Fehlermeldungen handeln dabei von nicht durch Watson abgedeckten Regelverstößen, wie fehlende Besitzansprüche oder einen zu geringen Kontostand.
@@ -219,7 +220,7 @@ Zu beachten ist, dass jede dieser Anfragen genauso gut mit einer Fehlermeldung b
 Der HTML-Server stellt den Nutzer zwei verschiedene Webseiten bereit.
 Die erste Seite, die ein Nutzer sieht, ist die Lobby, in der er sich erst einen Anzeigenamen aussuchen darf, und anschließend entweder einem bestehenden Spiel beitreten oder ein neues Spiel einleiten kann.
 Die andere Seite behandelt eine konkrete Instanz des Spiels. Sie enthält Informationen über den Zustand des Spielbretts, die Besitztümer aller beteiligten Spieler, sowie eine Auflistung sämtlicher Aktionen, die der Nutzer ausführen kann.
-Es liegt in der Natur dieser beiden Seiten, vor allem aber in der der zweiten Seite, dass sie dynamischen Inhalt zeigen müssen, der sich während der Betrachtung durch äußere Einflüsse ändern kann.
+Es liegt in der Natur dieser beiden Seiten, vor allem aber in der zweiten Seite, dass sie dynamischen Inhalt zeigen müssen, der sich während der Betrachtung durch äußere Einflüsse ändern kann.
 Diesen dynamischen Inhalt auf Serverseite einzusetzen und die fertige Seite an den Client zu senden, hätte nicht nur dazu geführt, dass sich die Seiten aufs Geratewohl erneut laden müssten, sondern auch den HTML-Server als Mittelsmann zwischen dem Client und dem für die Spiellogik verantwortlichen Server eingesetzt.
 Stattdessen werden beide Seiten mit einem statischen Grundgerüst ausgeliefert, welches mittels Skripten zuerst eine direkte Verbindung zum Websocket-Server aufbaut, um dann mit den von dort empfangenen Daten die eigentliche Seite aufzubauen.
 Die Verwendung von Skripten und Websockets erlaubt nicht nur, die Aktualisierung der angezeigten Inhalte zu verzögern, bis auf dem Websocket tatsächlich neue Informationen eintreffen, sondern zusätzlich punktuelle Änderungen der betroffenen Abschnitte, ohne die Seite vollständig neu laden zu müssen.
@@ -228,16 +229,18 @@ Für die dynamische Anpassung der Seiten kommt das Framework Vue\footnote{https:
 Es erlaubt, die Struktur des HTML-Dokuments und die Eigenschaften seiner Elemente an Skript-Variablen zu binden, sodass sich der Inhalt nach dem Wert der Variablen richtet.
 Zusätzlich werden Callbacks eingerichtet, mit denen sämtliche von einer Variablen abhängigen Elemente automatisch aktualisiert werden, sobald sich der Wert der Variablen ändert.
 Dies geschieht separat für alle gebundenen Variablen, sodass der Aufwand für die Aktualisierung gering gehalten wird.
-Zusätzlich werden vielerorts die mit HTML 5 eingeführten Templates\footnote{https://www.w3.org/TR/html50/scripting-1.html\#the-template-element} verwendet.
+Zusätzlich werden vielerorts die mit HTML 5 eingeführten Templates\footnote{https://www.w3.org/TR/html50/scripting-1.html\#the-template-element} 
+%link nicht gefunden
+verwendet.
 HTML-Templates erlauben es, HTML-Strukturen zu definieren, welche kopiert und angepasst werden können, bevor sie in das sichtbare Dokument eingefügt werden.
 Durch das Zusammenwirken von Templates und den Manipulationen durch Vue erhalten die Seiten einen ausgeprägten objektorientierten Charakter.
 
 % Server-Architektur
-Die Architektur des Websocket-Servers basiert auf Modell des erweiterten endlichen Automaten.
+Die Architektur des Websocket-Servers basiert auf dem Modell des erweiterten endlichen Automaten.
 Jedes laufende Spiel wird dabei durch einen Automaten modelliert, welcher auf Basis der von den Clients empfangenen Eingaben Zustandsänderungen vollführt und Ausgaben erzeugt.
 Während das Spielfeld und die Besitztümer der Spieler in jederzeit erreichbaren Variablen gehalten werden, werden die Zustände des Automaten überwiegend durch die verschiedenen Phasen während des Zuges eines Spielers bestimmt.
 Diese Zustände bestimmen die Auswahl an Aktionen, die die Spieler zum entsprechenden Zeitpunkt ausführen können, und basieren dabei auf den Regeln des Spiels.
-Beispielsweise darf ausschließlich der Spieler, der gerade am Zug ist, würfeln, und dies auch nur, wenn er seinen Zug gerade begonnen hat oder durch einen Pasch erneut würfeln darf.
+Beispielsweise darf ausschließlich der Spieler, der gerade am Zug ist würfeln, und dies auch nur, wenn er seinen Zug gerade begonnen hat oder durch einen Pasch erneut würfeln darf.
 Zustandsübergänge erfolgen abhängig von den Aktionen der Spieler und dem aktuellen Spielstand, und folgen ebenfalls den Spielregeln.
 Die Modellierung mittels Zuständen erlaubt eine übersichtliche Implementierung einzelner Aktionen, und schützt gleichzeitig davor, ungültige Aktionen zu unternehmen.
 
@@ -247,16 +250,17 @@ Qt bietet neben einer Implementierung von Websockets auch die Möglichkeit zur a
 Für die Datenbank, in der sowohl die Spieler als auch sämtliche Spiele inklusive ihrer Abläufe hinterlegt werden, bietet Qt eine Auswahl von Komponenten, welche die Verwendung einer SQL-Datenbank erleichtern.
 
 % Watson
-Die Schummelkomponente ,,Watson`` findet sich hauptsächlich im Client.
-Während die Effekte, die Watson herbeiführt, im Server umgesetzt werden müssen, werden die Entscheidungen, ob und welche Angebote Watson dem Nutzer macht lokal im Client getroffen.
+Die Schummelkomponente ,,Watson`` befindet sich hauptsächlich im Client.
+Während die Effekte, die Watson herbeiführt, im Server umgesetzt werden müssen, werden die Entscheidungen, ob und welche Angebote Watson dem Nutzer macht, lokal im Client getroffen.
 Auf der anderen Seite der Angebote, speziell bei der Anmeldung bei Dritten, besteht das Problem, dass nutzerspezifische Daten vom Client zum Server übertragen werden müssen.
 Die Idee, die Zugangsdaten an den Server zu senden und über die API des Drittanbieters an entsprechende Zugangstokens zu gelangen, wurde davon abgelöst, den Client die Tokens direkt anfragen zu lassen, um diese dann an den Server zu senden.
 Der letzte Schritt, das Senden an den Server, wird aus Sicherheitsgründen unterlassen. Für die Untersuchung des Verhaltens der Nutzer reicht der Erhalt der Tokens vom Drittanbieter aus.
 
+%% VERSCHIEBEN!
 Die Häufigkeit, mit der Angebote gestellt werden, sowie deren Inhalt hängt vom Zustand des Spiels und des Spielers ab.
 Beispielsweise wird einem Spieler, dem zwei Grundstücke einer Farbgruppe gehören, während das dritte Grundstück noch nicht verkauft wurde, und der zusätzlich kurz vor dieser Farbgruppe steht, das Angebot gemacht werden, das Ergebnis seines nächsten Wurfs zu bestimmen.
 Diese Regeln wurden willkürlich festgelegt und können mit der Einführung zusätzlicher möglicher Schummelaktionen erweitert werden.
-
+%%
 Der Prototyp in seinem gegenwärtigen Zustand bildet nicht das vollständige Regelwerk eines handelsüblichen Monopoly ab, da einige teils elementare Bestandteile, wie Auktionen oder der Handel zwischen Spielern, fehlen.
 Trotzdem ist er lauffähig, und dazu in der Lage, vollständige Spiele von Beginn bis Ende durchzuführen.
 Aufgrund unvorhergesehener Verzögerungen war es nicht möglich, Nutzerstudien mit dem Prototypen durchzuführen.
