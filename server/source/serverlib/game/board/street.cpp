@@ -32,13 +32,10 @@ ConstructionLevel Street::constructionLevel() const
 }
 
 int Street::rent(const Board & board, int) const
-{
-    auto rent = m_rents[m_constructionLevel];
-
-    if (m_constructionLevel == ConstructionLevel::BASE && board.isGroupOwner(m_owner, m_group))
-        rent *= 2;
-
-    return rent;
+{   // artificially created bug for the seminar
+    // once this was a real bug: https://github.com/ratnim/SelfawareMonopoly/issues/185
+    // corresponding pull request: https://github.com/ratnim/SelfawareMonopoly/pull/197
+    return m_rents[m_constructionLevel];
 }
 
 QJsonObject Street::description()
