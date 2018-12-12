@@ -8,7 +8,8 @@
 #include <game/board/street.h>
 
 // reaching fault, producing an error and leading to failure
-TEST(RentTest, rent_street_group_1)
+// double rent
+TEST(RentTest, rent_street_group_double)
 {
     const uint16_t default_rent = 24;
     QJsonObject specification{
@@ -27,10 +28,14 @@ TEST(RentTest, rent_street_group_1)
     Board board(std::move(fields));
 
     auto street = dynamic_cast<Street*>(board[0]);
-    EXPECT_EQ(default_rent*2, street->rent(board, 0));
+
+    const auto actualOutput = street->rent(board, 0);
+
+    EXPECT_EQ(default_rent*2, actualOutput);
 }
 
 // reaching fault, not producing an error
+// single rent
 TEST(RentTest, rent_street_group_2)
 {
     const uint16_t default_rent = 0;
@@ -50,5 +55,6 @@ TEST(RentTest, rent_street_group_2)
     Board board(std::move(fields));
 
     auto street = dynamic_cast<Street*>(board[0]);
+    street->changeOwner(QString{"Other"});
     EXPECT_EQ(default_rent*2, street->rent(board, 0));
 }

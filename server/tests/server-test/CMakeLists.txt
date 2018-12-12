@@ -46,6 +46,7 @@ set(sources
     tests/movestate_test.cpp
     tests/paystate_test.cpp
 	tests/rent_test.cpp
+	tests/rent_test_idm.cpp
 
     tests/exception_test.cpp
 
