@@ -7,6 +7,10 @@
 \usepackage{url}
 \usepackage{color}
 \usepackage{tabularx}
+\usepackage{enumitem}
+
+\usepackage{graphicx}
+\graphicspath{ {./graphics/} }
 
 \definecolor{colorMartin}{RGB}{147,83,177}
 \definecolor{colorPascal}{RGB}{255,127,0}
@@ -61,19 +65,16 @@
 
 \section{Einleitung}\label{sec:introduction}
 
-Informations Systeme ersetzen immer mehr elementare Bestandteile unserer Gesellschaft.
-Soziale Netzwerke, das Finanz- und Bankwesen, Wahlsysteme um nur eine wenige Bereiche zu nennen.
+Informationssysteme ersetzen immer mehr elementare Bestandteile unserer Gesellschaft: Soziale Netzwerke, das Finanz- und Bankwesen, Wahlsysteme um nur eine wenige Bereiche zu nennen.
 Dabei vertrauen alle Beteiligten darauf das diese Systeme sich an die Regeln halten und alle Beteiligeten gleichermaßen fair behandeln.
 
-Was wäre wenn dies nicht der Fall ist? 
-Was wäre wenn innerhalb des Systems Hintertüren existieren, welche es ermöglichen einzelne Regeln zu umgehen.
-Was wäre wenn das System durch das benutzen dieser Hintertüren, die Grenzen seiner Spezifikation überschreitet und sich so Zugang zu Information und Ressourcen verschafft, welche es nicht besitzen dürfte?
+Im Rahmen des Seminars Games of Life wollen wir ein System konzipieren und implementieren, welches dem entgegen steht, indem es Hintertüren anbietet, um einzelne Regeln zu umgehen.
+%Was wäre wenn das System durch das benutzen dieser Hintertüren, die Grenzen seiner Spezifikation überschreitet und sich so Zugang zu Information und Ressourcen verschafft, welche es nicht besitzen dürfte?
 
-Im Rahmen des Seminars Games of Life wollen wir ein solches System konzipieren und implementieren.
 
 \section{Konzept}\label{sec:concept}
 
-Das Spiel Monopoly war urpsrünglich als Gesellschaftskritik am Kapitalismus gedacht. \Martin{Nachweis} 
+Als das Spiel Monopoly in seiner aller ersten Form 1904 das erste mal aufkam, war es als sozial-kritisches Spiel gedacht. \footnote{https://winningmoves.de/blog/die-geschichte-des-monopoly-spiels}
 Aufbauend auf dieser Grundidee wollen wir nun ein Spiel entwerfen, welches dem Spieler die Möglichkeit gibt die Spielregeln zu umgehen und sich im Gegenzug Information und Resourcen vom Spieler beschaft. 
 Diese Komponente wird im folgenden \neuerBegriff{Watson} genannt.
 
@@ -86,18 +87,18 @@ Die Spieler müssen aktiv die Entscheidung treffen, dass sie Watson nutzen.
 Dadurch kann Watson nur so weit agieren, wie es die Spieler zulassen.
 Sollten also alle Spieler eines Spiels zu keiner Zeit die Deals von Watson annehmen, entspricht das Spiel eine regelkonformen Monopolypartie.
 
+Der Name Watson ist frei gewählt und wurde von uns bewusst als Personifikation eines Algorithmuses gewählt. Assoziationen zu IBM-Watson, dem Supercomputer, der souverän Quizfragen beantwortet und Sherlock Homes Assistenten Watson sind vielleicht keine Zufälle.
+
 \subsubsection{Was will Watson?}
 
 Watson interessieren persöhnliche Information, Ressourcen und die Nutzung der Identität der Spieler um in ihrem Namen aufzutreten.
 
-Persöhnlich Informationen die Watson bekommen möchte sind zum Beispiel die Identität des Spielers auf Facebook, Twitter oder anderen Sozialen Platformen und das Scannen von E-Mails.
-\Pascal{Welche Plattformen und E-Mail accounts?}
+Persöhnlich Informationen die Watson bekommen möchte sind zum Beispiel die Identität des Spielers auf Sozialen Platformen oder Zugriff auf andere Dienste wie E-Mail Services.
 
 Ressourcen die Watson bekommen möchte ist Rechnenleistung um Bitcoinmining zu betreiben.
 Beim Bitcoinmining wird die Kryptowhärung Monero gemined.
 
 Watson möchte die Identität der Spieler nutzen um auf Sozialen Plattformen "Likes" oder Kommentare zu erstellen.
-\Pascal{Welche möglichkeiten haben wir umgesetzt?}
 
 \subsubsection{Wie sieht so ein Deal aus?}
 
@@ -142,8 +143,7 @@ Durch den direkten Mehrwert, den der Spieler gezeigt bekommt, soll der Spieler i
 Zum Beispiel ist es gerade im frühen und im späten Spielverlauf von entscheidender Bedeutung, entweder unbedingt oder auf keinen Fall ein bestimmtes Würfelergebniss zu erzielen.
 
 Watson bietet deshalb den Spieler an die Würfel zu manipulieren.
-\Pascal{Sind das noch weitere Deals?}
-Der Spieler muss dafür seine Identität auf Facebook an Watson übergeben und darf sich so sein nächstes Würfelergebniss wählen.
+Der Spieler muss dafür persönliche Daten an Watson übergeben und darf sich so sein nächstes Würfelergebniss wählen.
 Für andere Spieler ist es in keiner Weise einsichtig, ob der Spieler einen Deal von Watson angenommen hat oder nicht.
 
 \neuerBegriff{verdeckt-indirekt} sind alle Deals, bei denen der Spieler Informationen oder Ressourcen an Watson übergibt aber keinen direkten Effekt hat.
@@ -151,8 +151,8 @@ Der Spieler weiß dabei nicht einmal, ob es überhaupt einen Effekt hat.
 Da der Effekt nicht einmal für den Spieler selbst auszumachen ist, haben andere Spieler keine Möglichkeit herrauszufinden ob der Spieler Deals von Watson annimmt oder nicht.
 
 Watson bietet den Spielern zum Beispiel an bestimmte Webseiten zu besuchen oder Kommentare und Seiten auf Facebook zu liken.
-Tut der Spieler dies, merkt sich Watson dies und beeinflusst die Ereignisskarten die ein Spieler bekommt wenn er auf eine Ereignissfeld läuft.
-\Pascal{Welcher Auslöser ist das genau?}
+Tut der Spieler dies, merkt sich Watson dies und beeinflusst die Ereignisskarten, die ein Spieler bekommt, wenn er auf eine Ereignissfeld läuft.
+
 
 \subsubsection{Wann bietet Watson Deals an?}
 
@@ -176,6 +176,33 @@ Somit ist der Spieler angeregt selbst wenn er den Effekt erst später nutzen kan
 
 Außerdem sollen einige Deals zufällig angeboten werden.
 Das heißt ein Spieler bekommt eigentlich einen Deal auf denen eine oder mehrere der definierten Kriterien nicht zustimmen.
+
+Deals werden regelbasiert angeboten. Die Regeln, die wir aufgestellt haben sind:
+
+\begin{enumerate}
+  \item \neuerBegriff{isNotMyTurn} heißt, dass Deals nur angeboten werden, wenn der Spieler nicht am Zug ist. Der Grund für diese Regel ist, dass es zu keiner Zeitverzögerung des Spielzuges kommen soll, wodurch andere Spieler einen Dealabschluss vermuten könnten. Außerdem bleiben so Spieler selbst wenn sie nicht am Zug sind in das Spielgeschehen involviert.
+  \item \neuerBegriff{"roundsSinceLastInteraction > 3"} heißt, dass mindestens drei Runden gespielt werden müssen bevor erneut ein Deal angeboten wird. Die Drei ist ein von uns gewählter Threshold. Binnen drei Runden schafft ein Spieler durchschnittlich etwa eine Halbe Umrundung des Spielfeldes.
+  
+    \item \neuerBegriff{"Probability(ranking, behaviour, random) > 0.4"} heißt, das eine Wahrscheinlichkeit berechnet wird basierend auf den drei Parametern ranking, behaviour und random.
+ranking ist die aktuelle Position des Spielers im vergleich zu den anderen. Dies berechnet sich aus Kontostand und Wert der Straßen.
+behaviour ist ein Faktor, der das Spielverhalten beschreibt. Wurden bisher viele Deals angenommen ist der Faktor sehr hoch.
+random ist ein Faktor, der die Funktion nicht deterministisch macht. 
+Wird der von unse gegeben Threshold von 0.4 überschritten, so wird ein Deal vorgeschlagen.
+\end{enumerate}
+
+
+\subsection{Was bietet Watson für Deals an?}
+
+Watson erscheint als ein Dialog Fenster. Dabei gibt es in der Eingabemaske zunächst die Option für den Spieler sich seinen Vorteil auszusuchen. Darunter folgt die Aufforderung eine Aktion auszuführen. 
+Für die Aktionen haben wir auf Dienste von Drittanbietern konzentriert, die APIs bereitstellen, welche persönliche Informationen oder Aktionen zulassen. Folgende Dienste haben sich dabei für uns als geeignet herausgestellt: GMail, facebook, ..
+Um Zugriffsrechte zu bekommen wird die von allen Diensten angebotene OAuth2.0 Schnittstelle verwendet. OAuth ist ein Prozess bei dem sich ein Nutzer bei einem Dienst anmeldet und anschließend ein Zugangsschlüssel (access token) bereitgestellt wird, welcher mit ausgewählten Berechtigungen versehen ist. Mit diesen Zugangsschlüssel kann die authorisierte Anwendung dann Daten abfragen oder Aktionen ausführen.
+Im Abschnitt Diskussion APIs gehen wir genauer auf die Informationen und Aktionen die abgegriffen bzw. ausgeführt werden können ein und wie Nutzer auch dem entgegen wirken können.
+
+\begin{figure}[h]\\
+\caption{Watson Dialog: Beeinflussen der Würfel}
+\includegraphics[width=8cm]{watson_dices}
+\end{figure}
+
 
 \subsection{Wie bietet Watson die Deals an?}
 
@@ -301,6 +328,26 @@ Alle API's dieser Plattformen haben bestimmte Schutz Mechanismen um sich vor bö
 \Pascal{Was könnten man aber als Insider hinter den API's tun?}
 
 \Pascal{Was wäre möglich wenn man die API's umgehen kann?}
+
+\section{Diskussion APIs und so}\label{sec:apidiscussion}
+\Pascal{
+Wie in REF hier! bereits angesprochen macht sich die Watson Komponente die APIs verschiedener Dienste zunutze. In diesem Abschnitt wird diskutiert, welche Rechte über die APIs freigegeben werden.
+\subsection{Facebook API}
+Facebook ist mit XX Nutzern die größte soziale online Platform. Sie ermöglicht den Austausch mit Freunden und Fremden. Eine Facebook-App kann folgende Informationen erhalten: Email, Name, Alter, Geburtstadatum, Likes, ...
+Außerdem können folgende Aktionen ausgeführt werden: Like a Page, 
+Folgende Informationen und Aktionen sind u.a. nicht möglich: Freundesliste abfragen, Persönliche Nachricht schreiben.
+
+Die sammelbaren Daten reichen aus, um ein sehr genaues Profil einer Person zu erstellen. Abhängig davon wie aktiv und seriös eine Person auf facebook unterwegs ist, können neben den persönlichen Metadaten wie Name, Wohnort etc. auch auf politische Interessen, Musikgeschmack, Freizeitaktivitäten und Lieblingsvereine geschlossen werden. 
+Mit diesen Informationen kann einem Nuzer noch genauere Werbung zugespielt werden, aber auch für statistische Interessen sind die Informationen wertvoll. 
+
+\subsection{GMail API}
+GMail ist der weit verbreitete Mail-Service von Google. Mit der GMail API bekommt man Zugriff auf Lese, Schreibe und Verwaltungsrechte des E-Mail-Postfaches. Diese Berechtigungen werden u.a. von Mail-Clients wie Thunderbird oder Outlook benötigt.
+Wenn Anwendungen mit anderen Interesse Zugriff auf das E-Mailkonto bekommen, so können ebenfalls viele Details über eine Person bezogen werden. Eine Nutzung sind Bestellbestätigungen, die Aufschlus auf Kaufverhalten und Vermögenssituation zulassen.
+
+Was wird getan zum Verhindern?
+
+
+}
 
 \subsection{Analogie zu unserer Gesellschaft}
 
