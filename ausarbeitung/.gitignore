@@ -1,0 +1,11 @@
+# Latex
+
+*.aux
+*.fls
+*.log
+*.vscodeLog
+*fdb_latexmk
+*.blg
+*.synctex.gz
+*.bak
+*.sav
