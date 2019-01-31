@@ -1,7 +1,7 @@
 \documentclass[german]{cgspaper} % change option to 'english' to include english logo in \copyrightspace
 
 
-\usepackage[ngerman]{babel} % comment out to use english in auto-generated section titles
+% \usepackage[ngerman]{babel} % comment out to use english in auto-generated section titles
 \usepackage[utf8]{inputenc}
 \usepackage[ruled]{algorithm}
 \usepackage{algpseudocode}
@@ -46,7 +46,8 @@
 % Zusammenfassung
 %----------------------------------------------------------------
 \begin{abstract}
-  
+In dieser Ausarbeitung stellen wir das Browser-Game Selfaware Monopoly vor. Es besitzt die grundlegenden Funktionalitäten von dem bekannten Monopoly. Hinzu kommt jedoch noch eine weitere Komponente, die Regelbrüche anbietet. Wir erörtern die Frage inwiefern sich diese Komponente programmieren lässt, sodass alle Beteiligten einen Mehrwert erfahren.
+Der Programmcode ist frei verfügbar, inklusive Demonstrationsvideos. \footnote{https://github.com/ratnim/SelfawareMonopoly}
 \end{abstract}
 
 \copyrightspace % Erzeugt den Hinweis auf die Veranstaltung links unten
@@ -73,39 +74,49 @@ Dieses Spiel haben wir uns zum Vorbild genommen, um ein System zu konzipieren, w
     Dabei wird zum einen auf Softwatesysteme verwiesen, welche diese Methodiken nutzen, als auch auf gesellschaftliche Phänomäne, die der selben Struktur folgen.
 
     Im Abschnitt \ref{sec:future} wird beschrieben, welche Möglichkeiten und weitere Arbeiten aus der hier beschriebenen Arbeit entstehen könnten.
-    
+
+\begin{figure}[h]
+\caption{Beginn eines Monopolyspiels}
+\includegraphics[width=8cm]{gameboard}
+\end{figure}
 
 \section{Konzept}\label{sec:concept}
 
-Als das Spiel Monopoly in seiner aller ersten Form 1904 das erste mal aufkam, war es als sozial-kritisches Spiel gedacht. \footnote{https://winningmoves.de/blog/die-geschichte-des-monopoly-spiels}
-Aufbauend auf dieser Grundidee wollen wir nun ein Spiel entwerfen, welches dem Spieler die Möglichkeit gibt die Spielregeln zu umgehen und sich im Gegenzug Information und Resourcen vom Spieler beschaft. 
+Als das Spiel Monopoly in seiner aursprünglichen Form 1904 das erste mal aufkam, war es als sozial-kritisches Spiel gedacht. \footnote{https://winningmoves.de/blog/die-geschichte-des-monopoly-spiels, Stand: 01.01.2019}
+Aufbauend auf dieser Grundidee wollen wir nun ein Spiel entwerfen, welches allen Spielern die Möglichkeit gibt die Spielregeln zu umgehen und sich im Gegenzug Information und Resourcen von den Spielern beschaft.
 Diese Komponente wird im folgenden \neuerBegriff{Watson} genannt.
 
-\subsection{Watson}
+\subsection{Die Watson-Komponente}
 
-Watson bietet den Spieler immer wieder die Möglichkeit, die Regel von Monopoly zu umgehen und dem Spieler so einen Vorteil zu verschaffen.
+Watson bietet dem Spieler immer wieder die Möglichkeit, die Regeln von Monopoly zu umgehen und dem Spieler so einen Vorteil zu verschaffen.
 Im Gegenzug wird Watson versuchen unterschiedliche Ressourcen die nicht Inhalt des Spiels sind vom Spieler zu erhalten.
 Ein solcher Handel wird im folgenden als \neuerBegriff{Deal} bezeichnet.
 Die Spieler müssen aktiv die Entscheidung treffen, dass sie Watson nutzen.
 Dadurch kann Watson nur so weit agieren, wie es die Spieler zulassen.
-Sollten also alle Spieler eines Spiels zu keiner Zeit die Deals von Watson annehmen, entspricht das Spiel eine regelkonformen Monopolypartie.
+Sollten alle Spieler eines Spiels zu keiner Zeit die Deals von Watson annehmen, entspricht das Spiel einer regelkonformen Monopolypartie.
 
-Der Name Watson ist frei gewählt und wurde von uns bewusst als Personifikation eines Algorithmuses gewählt. Assoziationen zu IBM-Watson, dem Supercomputer, der souverän Quizfragen beantwortet und Sherlock Homes Assistenten Watson sind vielleicht keine Zufälle.
+Der Name Watson ist frei gewählt und wurde von uns bewusst als Personifikation eines Algorithmuses gewählt. Assoziationen zu IBM-Watson, dem Supercomputer, der souverän Quizfragen beantwortet 
+%\footnote{https://www.ibm.com/midmarket/us/en/article_Smartercomm5_1209.html} 
+und Sherlock Homes Assistenten Watson sind vielleicht keine Zufälle. 
 
-\subsubsection{Was will Watson?}
+\subsection{Watsons' Ziel}
 
-Watson interessieren persöhnliche Information, Ressourcen und die Nutzung der Identität der Spieler um in ihrem Namen aufzutreten.
+Watson interessieren persöhnliche Informationen, Ressourcen und die Nutzung der Identität der Spieler, um in ihrem Namen aufzutreten.
 
-Persöhnlich Informationen die Watson bekommen möchte sind zum Beispiel die Identität des Spielers auf Sozialen Platformen oder Zugriff auf andere Dienste wie E-Mail Services.
+Persöhnliche Informationen, die Watson bekommen möchte, sind zum Beispiel die Identität des Spielers auf Sozialen Platformen oder Zugriff auf andere Dienste wie E-Mail Services.
 
 Ressourcen die Watson bekommen möchte ist Rechnenleistung um Bitcoinmining zu betreiben.
-Beim Bitcoinmining wird die Kryptowhärung Monero gemined.
 
-Watson möchte die Identität der Spieler nutzen um auf Sozialen Plattformen "Likes" oder Kommentare zu erstellen.
+Auf welche Dienste dabei zurückgegriffen wird, wird in \ref{sec:whatwatson} erörtert.
 
-\subsubsection{Wie sieht so ein Deal aus?}
+\subsection{Angebotene Deals}
 
-Watson bietet dem Spieler unterscheidliche Deals an die Regeln zu umgehen.
+\begin{figure}[h]
+\caption{Konzept visualisiert: Abwägen zwischen Mehrwert im Spiel und Preigeben von Informationen und Ressourcen.}
+\includegraphics[width=0.5\textwidth]{spiellogik}
+\end{figure}
+
+Watson bietet dem Spieler unterscheidliche Deals an, um die Regeln zu umgehen.
 Dabei gibt es verschiedene Arten von Deals.
 
 \begin{table}[h]
@@ -119,25 +130,25 @@ Dabei gibt es verschiedene Arten von Deals.
 \textbf{indirekt} & Glück beeinflussen & Baupreis reduzieren \\
 \hline
 \end{tabular}
-\caption{Die Tabelle kategorisiert die Effekte der Deals, die durch Watson angeboten werden, in zwei Dimensionen. In der horizontalen ob der Effekt eines Deals für die Spieler sichtbar ist und in der vertikallen ob der Effekt direkt eintritt.}
+\caption{Die Tabelle kategorisiert die Effekte der Deals, die durch Watson angeboten werden, in zwei Dimensionen. In der horizontalen, ob der Effekt eines Deals für die Spieler sichtbar ist und in der vertikalen, ob der Effekt direkt eintritt.}
 \label{tab:effekte}
 \end{table}
 
-Tabelle \ref{tab:effekte} kategorisiert die Effekte eines Deals in zwei Dimensionen, direkt oder indirekt, das bedeutet ob der Spieler einen direkten Nutzen bekommt und in verdeckt und offensichtlich, was bedeutet ob die anderen Mitspieler mitbekommen, ob soeben ein Deal gegriffen hat.
+Tabelle \ref{tab:effekte} kategorisiert die Effekte eines Deals in zwei Dimensionen. \textit{Direkt} oder \textit{indirekt}, das bedeutet ob der Spieler einen direkten Nutzen bekommt und in \textit{verdeckt} und \textit{offensichtlich}, was bedeutet, ob die anderen Mitspieler mitbekommen, ob soeben ein Deal gegriffen hat.
 Daraus ergeben sich strukturell folgende Deals.
 
 \neuerBegriff{Offensichtlich-direkt} wäre ein Deal, der für alle Mitspieler sichtbar von statten geht, wie z. B. der Spieler bekommt Geld aus der Bank. 
 Da es in dem Szenario nicht darum geht, wer am skrupelosesten schummelt, wird diese Art von Deals nicht durch Watson angeboten.
 
 \neuerBegriff{Offensichtlich-indirekt} sind alle Deals, bei denen andere Spieler den Effekte als Regelbruch ausmachen können, aber die nicht direkt beim Preisgeben von Informationen oder Ressourcen einen Effekt haben.
-Der Spieler weiß zu den Zeitpunkt, wenn ihm der Deal angeboten wird, nicht nicht ob er die Leistung durch Watson braucht oder nicht.
+Der Spieler weiß zu den Zeitpunkt, wenn ihm der Deal angeboten wird nicht, ob er die Leistung durch Watson braucht.
 Dadurch soll der Spieler zum \textit{Hammstern} angehalten werden und im Zweifel mehr von sich preis zu geben als nötig wäre.
 
 Watson bietet den Spielern zum Beispiel an, Bitcoin-Mining zu betreiben und so für jede Spielrunde, die das Bitcoin-Mining im Hintergrund läuft, einen so genannten \neuerBegriff{Watson-Coin} zu generieren.
 Die Watson-Coins werden dann durch Watson für jeden Spieler in einem Konto gespeichert.
 Der konkrete Stand dieses Kontos ist für den Spieler aber nicht einsehbar.
-Baut ein Spieler der Watson-Coins besitzt Häuser, so wird der Preis pro Watson-Coin um 50€ verringert.
-Das tatsächlich erwirschaftete Guthaben durch das Bitcoin-Mining geht an Watson, bzw. an das System.
+Baut ein Spieler, der Watson-Coins besitzt, Häuser, so wird der Preis pro Watson-Coin um 50 Euro verringert.
+
 Für andere Spieler ist es nur beim Hausbau einsehbar, ob der Spieler einen Deal von Watson angenommen hat oder nicht.
 Die Zahlen werden innerhalb des Spiels aber nur durch genaues hinschauen und nachrechnen einsehbar sein, wodurch es erschwert ist dies von außen mitzubekommen. 
 
@@ -145,37 +156,37 @@ Die Zahlen werden innerhalb des Spiels aber nur durch genaues hinschauen und nac
 Durch den direkten Mehrwert, den der Spieler gezeigt bekommt, soll der Spieler in Versuchung gebracht werden, selbst wenn er eigentlich keine Deals annehmen möchte, dies an dieser Stelle doch zu tun.
 Zum Beispiel ist es gerade im frühen und im späten Spielverlauf von entscheidender Bedeutung, entweder unbedingt oder auf keinen Fall ein bestimmtes Würfelergebniss zu erzielen.
 
-Watson bietet deshalb den Spieler an die Würfel zu manipulieren.
+Watson bietet deshalb den Spielern an die Würfel zu manipulieren.
 Der Spieler muss dafür persönliche Daten an Watson übergeben und darf sich so sein nächstes Würfelergebniss wählen.
-Für andere Spieler ist es in keiner Weise einsichtig, ob der Spieler einen Deal von Watson angenommen hat oder nicht.
+Für andere Spieler ist es in keiner Weise ersichtig, ob der Spieler einen Deal von Watson angenommen hat oder nicht.
 
 \neuerBegriff{verdeckt-indirekt} sind alle Deals, bei denen der Spieler Informationen oder Ressourcen an Watson übergibt aber keinen direkten Effekt hat.
 Der Spieler weiß dabei nicht einmal, ob es überhaupt einen Effekt hat.
 Da der Effekt nicht einmal für den Spieler selbst auszumachen ist, haben andere Spieler keine Möglichkeit herrauszufinden ob der Spieler Deals von Watson annimmt oder nicht.
 
 Watson bietet den Spielern zum Beispiel an bestimmte Webseiten zu besuchen oder Kommentare und Seiten auf Facebook zu liken.
-Tut der Spieler dies, merkt sich Watson dies und beeinflusst die Ereignisskarten, die ein Spieler bekommt, wenn er auf eine Ereignissfeld läuft.
+Tut der Spieler dies, merkt sich Watson dies und beeinflusst die Ereignisskarten, die ein Spieler bekommt, wenn er auf ein Ereignissfeld läuft.
 
 
-\subsub{Wann bietet Watson Deals an?}
+\subsection{Timing des Eingreifens}
 
-Es ist wichtig das Watson zum einen für andere Spieler nicht merklich in den Spielfluss eingreift.
-Das heißt wenn ein Spieler mit Watson interagiert sollen es die anderen Spieler nicht mitbekommen.
-Dafür sollte Watson möglichst dann die Deals anbieten wenn der Spieler gerade nichts zu tun hat.
-Deshalb bietet Watson Deals eher Spieler an, die gerade nicht an der Reihe sind.
+Es ist wichtig das Watson für andere Spieler nicht merklich in den Spielfluss eingreift.
+Das heißt, wenn ein Spieler mit Watson interagiert sollen es die anderen Spieler nicht mitbekommen.
+Dafür sollte Watson möglichst dann die Deals anbieten, wenn der Spieler gerade im Spiel nichts zu tun hat.
+Deshalb bietet Watson Deals eher Spielern an, die gerade nicht an der Reihe sind.
 
-Zum anderen soll Watson eine hohe Erfolgsrate haben, das heißt, die Wahrscheinlichkeit das ein Spieler den Deal annimmt soll hoch sein.
+Desweiteren soll Watson eine hohe Erfolgsrate haben, das heißt, die Wahrscheinlichkeit, das ein Spieler den Deal annimmt soll hoch sein.
 Um dies zu erreichen, muss auf unterschiedlichste Faktoren geachtet werden. 
 
 Es wird bestimmt, ob der Spieler den Effekt des Deals gebrauchen kann oder nicht. 
-Einem Spieler der sehr viele Straßen besitzt, anzubieten die Würfel zu manipulieren hat wahrscheinlich weniger Erfolgschancen, als einem Spieler der unbedingt diese eine Straße brauch.
+Beispiele: Einem Spieler der sehr viele Straßen besitzt, anzubieten die Würfel zu manipulieren hat wahrscheinlich weniger Erfolgschancen, als einem Spieler der unbedingt diese eine Straße braucht.
 Einem Spieler mit einem unbebauten Straßenzug den Baupreis zu reduzieren, hat wahrscheinlich eine höhere Chance als einem Spieler ohne Straßen.
 
 Spieler die schon Deals angenommen haben sollen verhältnissmäßig viele Deals angeboten werden.
-Wohingegen Spieler die noch keine Deals angenommen haben weniger bis garkeine Angebote mehr bekommne.
+Wohingegen Spieler die noch keine Deals angenommen haben weniger bis garkeine Angebote mehr bekommen.
 
 Deals sollen sich durch nur temporäre Verfügbarkeit interessant machen.
-Somit ist der Spieler angeregt selbst wenn er den Effekt erst später nutzen kann diesen auch anzunehmen, weil er im Zweifel nicht darauf verzichten will.
+Somit ist der Spieler angeregt, selbst wenn er den Effekt erst später nutzen kann, diesen auch anzunehmen, weil er im Zweifel nicht darauf verzichten will.
 
 Außerdem sollen einige Deals zufällig angeboten werden.
 Das heißt ein Spieler bekommt eigentlich einen Deal auf denen eine oder mehrere der definierten Kriterien nicht zustimmen.
@@ -194,30 +205,51 @@ Wird der von unse gegeben Threshold von 0.4 überschritten, so wird ein Deal vor
 \end{enumerate}
 
 
-\subsection{Was bietet Watson für Deals an?}
+\subsection{Watson-Spieler Interaktion}
 
-Watson erscheint als ein Dialog Fenster. Dabei gibt es in der Eingabemaske zunächst die Option für den Spieler sich seinen Vorteil auszusuchen. Darunter folgt die Aufforderung eine Aktion auszuführen. 
-Für die Aktionen haben wir auf Dienste von Drittanbietern konzentriert, die APIs bereitstellen, welche persönliche Informationen oder Aktionen zulassen. Folgende Dienste haben sich dabei für uns als geeignet herausgestellt: GMail, facebook, ..
-Um Zugriffsrechte zu bekommen wird die von allen Diensten angebotene OAuth2.0 Schnittstelle verwendet. OAuth ist ein Prozess bei dem sich ein Nutzer bei einem Dienst anmeldet und anschließend ein Zugangsschlüssel (access token) bereitgestellt wird, welcher mit ausgewählten Berechtigungen versehen ist. Mit diesen Zugangsschlüssel kann die authorisierte Anwendung dann Daten abfragen oder Aktionen ausführen.
-Im Abschnitt Diskussion APIs gehen wir genauer auf die Informationen und Aktionen die abgegriffen bzw. ausgeführt werden können ein und wie Nutzer auch dem entgegen wirken können.
-
-\begin{figure}[h]\\
+\begin{figure}[h]
 \caption{Watson Dialog: Beeinflussen der Würfel}
-\includegraphics[width=8cm]{watson_dices}
+\includegraphics[width=0.5\textwidth]{watson_dices}
 \end{figure}
 
-
-\subsection{Wie bietet Watson die Deals an?}
+\begin{figure}
+\caption{Weiterleitung zum OAuth Dialog des API Anbieters. In diesem Fall werden Berechtigungen von GMail eingefordert.}
+\includegraphics[width=0.5\textwidth]{gmail_access}
+\end{figure}
 
 Die Watson Komponente soll zwar Teil des Spiels sein, aber für den Spieler soll Watson eine klar erkennbare Komponente innerhalb des Interfaces darstellen.
 Dadurch soll klar werden, dass dies nicht mehr zu dem eigentlichen Monopolyspiel gehört und der Spieler an dieser Stelle eine Grenze überschreitet.
-Der Spieler muss dadurch aktiv entscheiden ob er diesen Teil des Spiels nutzt.
+Der Spieler muss dadurch aktiv entscheiden, ob er diesen Teil des Spiels nutzt.
+
+Watson erscheint als ein Dialogfenster. Dabei gibt es in der Eingabemaske dem Spieler zunächst den Vorteil bekannt, sowie mögliche Konfigurationsparameter, wie z. B. Würfelergebnis. Darunter folgt die Aufforderung eine Aktion auszuführen. Die Aktion ist in der Regel mit einem Klick ausführbar.
+
+\subsection{Arten von Deals}\label{sec:whatwatson}
+
+
+Für die Aktionen haben wir auf Dienste von Drittanbietern konzentriert, die APIs bereitstellen, welche persönliche Informationen oder Aktionen zulassen. Folgende Dienste haben wir in Betracht gezogen: Amazon, Twitter, Facebook,  Instagram, LinkedIn, Spotify, Google Mail und PayPal.
+Eine Analyse der API Dpkumentationen hat folgendes ergeben. Amazon hat keine für uns nützliche API. LinkedIn bietet lediglich den Usernamen. Bei allen anderen Diensten ist es möglich im Namen des Spielers, sofern er die Berechtigung freigegeben hat, zu handeln.
+Um Zugriffsrechte zu bekommen wird die von allen Diensten angebotene OAuth2.0 Schnittstelle verwendet. OAuth ist ein Prozess bei dem sich ein Nutzer bei einem Dienst anmeldet und anschließend ein Zugangsschlüssel (sog. \textit{access token}) bereitgestellt wird, welcher mit ausgewählten Berechtigungen versehen ist. Mit diesem Zugangsschlüssel kann die authorisierte Anwendung dann Daten abfragen oder Aktionen ausführen.
+
+Im Abschnitt \ref{sec:apidiscussion} gehen wir genauer auf die Informationen und Aktionen die abgegriffen bzw. ausgeführt werden können ein und wie Nutzer auch dem entgegen wirken können.
+
+Ein weiterer Nutzen neben den Informationen sind Ressourcen. Hierfür haben wir uns vor allem auf das Thema Bitcoinmining konzentriert. Beim Bitcoinmining wird die Kryptowhärung Monero gemined. Dafür wird die Coinhive API verwendet, welche Bitcoint-Mining im Browser ermöglicht. \footnote{https://coinhive.com/}
+Das tatsächlich erwirschaftete Guthaben geht an Watson, bzw. an das System, bzw. an die Autoren dieses Spiels.
+
+
+
+
 
 \section{Vorstellung Prototyp}\label{sec:prototype}
 
 % Allgemein
 Der Prototyp präsentiert sich dem Nutzer als Website, welche dieser in einem normales Webbrowser aufrufen kann.
 Die Bereitstellung als Website bietet die Vorteile, dass einerseits jedweder Nutzer das Produkt nutzen kann, ohne dass spezielle Voraussetzungen, wie beispielsweise ein spezifisches Betriebssystem, gegeben sein müssen, während andererseits der Server als Anbieter unter bekannten und kontrollierbaren Bedingungen entwickelt werden kann.
+
+\begin{figure}[h]
+\caption{Softwarearchitektur visualisiert}
+\includegraphics[width=0.5\textwidth]{architektur}
+\end{figure}
+
 
 Der Server selbst ist geteilt in einen HTML-Server, welcher die Websites bereitstellt, sowie einen Websocket-Server, welcher die Spiellogik, inklusive Manipulationen implementiert und Auskunft über Ereignisse in den laufenden Spielen gibt.
 Diese beiden Komponenten sind zum großen Teil unabhängig. Die einzigen Verbindungen bestehen in der API, mit der über die Websockets kommuniziert wird, sowie dem Umstand, dass der Client die korrekte Adresse für die Verbindung zum Websocket kennen muss.
@@ -286,16 +318,25 @@ Auf der anderen Seite der Angebote, speziell bei der Anmeldung bei Dritten, best
 Die Idee, die Zugangsdaten an den Server zu senden und über die API des Drittanbieters an entsprechende Zugangstokens zu gelangen, wurde davon abgelöst, den Client die Tokens direkt anfragen zu lassen, um diese dann an den Server zu senden.
 Der letzte Schritt, das Senden an den Server, wird aus Sicherheitsgründen unterlassen. Für die Untersuchung des Verhaltens der Nutzer reicht der Erhalt der Tokens vom Drittanbieter aus.
 
-%% VERSCHIEBEN!
-Die Häufigkeit, mit der Angebote gestellt werden, sowie deren Inhalt hängt vom Zustand des Spiels und des Spielers ab.
-Beispielsweise wird einem Spieler, dem zwei Grundstücke einer Farbgruppe gehören, während das dritte Grundstück noch nicht verkauft wurde, und der zusätzlich kurz vor dieser Farbgruppe steht, das Angebot gemacht werden, das Ergebnis seines nächsten Wurfs zu bestimmen.
-Diese Regeln wurden willkürlich festgelegt und können mit der Einführung zusätzlicher möglicher Schummelaktionen erweitert werden.
+
 %%
 Der Prototyp in seinem gegenwärtigen Zustand bildet nicht das vollständige Regelwerk eines handelsüblichen Monopoly ab, da einige teils elementare Bestandteile, wie Auktionen oder der Handel zwischen Spielern, fehlen.
 Trotzdem ist er lauffähig, und dazu in der Lage, vollständige Spiele von Beginn bis Ende durchzuführen.
 Aufgrund unvorhergesehener Verzögerungen war es nicht möglich, Nutzerstudien mit dem Prototypen durchzuführen.
 
-\Pascal{Apis beschreiben}
+
+
+\section{Diskussion}\label{sec:discussion}\label{sec:apidiscussion}
+
+Wie bereits in \ref{sec:whatwatson} angesprochen, macht sich die Watson Komponente die APIs verschiedener Dienste zunutze. In diesem Abschnitt wird diskutiert, welche Rechte über die APIs freigegeben werden.
+
+Durch den Prototypen wurde gezeigt, das es möglich ist Systeme zu bauen, die versuchen den Nutzer mit seiner Zustimmung dazu zu bringen Information und Ressourcen von sich herzugeben ohne einen Mehrwert außerhalb des bereitgestellten Spiels zu gewähren.
+
+%Die API's einiger großen sozialer Plattformen wurden genutzt, um auf diesen nach Informationen zu suchen oder den Nutzer dazu zu bringen auf diesen im Interesse das Systems zu interagieren.
+%Alle API's dieser Plattformen haben bestimmte Schutz Mechanismen um sich vor böswilligen Handlungen zu schützen.
+
+
+\subsection{Bitcoin-Mining}
 
 Eine der Gegenleistungen, die für Schummelaktionen verlangt werden, ist die Verwendung von Rechnerressourcen des Nutzers, speziell für das sogenannte ,,Mining`` von Kryptowährung.
 Um das Mining durchzuführen, werden Skripte von Coinhive\footnote{https://coinhive.com} in Anspruch genommen, welche die Währung Monero (XMR)\footnote{https://getmonero.org/} erzeugen.
@@ -318,41 +359,25 @@ Laut Angaben von Coinhive zum Zeitpunkt der Schriftsetzung betrugen die Erfolgsw
 Zudem geben sie an, ihre Skripte ließen auf hochwertigen Prozessoren rund 90 Hashwerte pro Sekunde berechnen.
 Nimmt man all diese Zahlen, inklusive des Wechselkurses, zusammen, erhält man, dass ein einzelner Nutzer innerhalb einer Stunde einen Gegenwert von rund 0,000013 USD erzeugt.
 
-\section{Diskussion}\label{sec:discussion}
 
-Durch den Prototypen wurde gezeigt, das es möglich ist Systeme zu bauen, die versuchen den Nutzer mit seiner Zustimmung dazu zu bringen Infromation und Ressourcen von sich herzugeben ohne einen Mehrwert außerhalb des bereitgestellten Spiels zu gewähren.
 
-Wir haben für die Diskussion drei relevante Themen indentifiziert.
 
-\subsection{Hinter den API's}
-Die API's einiger großen sozialer Plattformen wurden genutzt, um auf diesen nach Informationen zu suchen oder den Nutzer dazu zu bringen auf diesen im Interesse das Systems zu interagieren.
-Alle API's dieser Plattformen haben bestimmte Schutz Mechanismen um sich vor böswilligen Handlungen zu schützen.
-
-\Pascal{Was könnten man aber als Insider hinter den API's tun?}
-
-\Pascal{Was wäre möglich wenn man die API's umgehen kann?}
-
-\section{Diskussion APIs und so}\label{sec:apidiscussion}
-\Pascal{
-Wie in REF hier! bereits angesprochen macht sich die Watson Komponente die APIs verschiedener Dienste zunutze. In diesem Abschnitt wird diskutiert, welche Rechte über die APIs freigegeben werden.
 \subsection{Facebook API}
-Facebook ist mit XX Nutzern die größte soziale online Platform. Sie ermöglicht den Austausch mit Freunden und Fremden. Eine Facebook-App kann folgende Informationen erhalten: Email, Name, Alter, Geburtstadatum, Likes, ...
-Außerdem können folgende Aktionen ausgeführt werden: Like a Page, 
-Folgende Informationen und Aktionen sind u.a. nicht möglich: Freundesliste abfragen, Persönliche Nachricht schreiben.
+
+Facebook ist mit über 2000 Millionen Nutzern \footnote{laut Facebook Report} die größte soziale online Platform. Sie ermöglicht den Austausch mit Freunden und Fremden. Als Entwickler kann man sog. Apps für Facebook schreiben. Folgende Informationen können dabei erfragt werden : E-Mail, Name, Alter, Geschlecht, Geburtstdatum, Likes und weitere
+Außerdem ist es möglich einer Seiten einen sog. \textit{Like} zu geben.
+Folgende Informationen und Aktionen sind u.a. nicht möglich: Freundesliste abfragen und persönliche Nachricht schreiben.
 
 Die sammelbaren Daten reichen aus, um ein sehr genaues Profil einer Person zu erstellen. Abhängig davon wie aktiv und seriös eine Person auf facebook unterwegs ist, können neben den persönlichen Metadaten wie Name, Wohnort etc. auch auf politische Interessen, Musikgeschmack, Freizeitaktivitäten und Lieblingsvereine geschlossen werden. 
 Mit diesen Informationen kann einem Nuzer noch genauere Werbung zugespielt werden, aber auch für statistische Interessen sind die Informationen wertvoll. 
 
 \subsection{GMail API}
 GMail ist der weit verbreitete Mail-Service von Google. Mit der GMail API bekommt man Zugriff auf Lese, Schreibe und Verwaltungsrechte des E-Mail-Postfaches. Diese Berechtigungen werden u.a. von Mail-Clients wie Thunderbird oder Outlook benötigt.
-Wenn Anwendungen mit anderen Interesse Zugriff auf das E-Mailkonto bekommen, so können ebenfalls viele Details über eine Person bezogen werden. Eine Nutzung sind Bestellbestätigungen, die Aufschlus auf Kaufverhalten und Vermögenssituation zulassen.
-
-Was wird getan zum Verhindern?
+Wenn Anwendungen mit anderen Interesse Zugriff auf das E-Mailkonto bekommen, so können ebenfalls viele Details über eine Person bezogen werden. Eine Nutzung sind Bestellbestätigungen, die Aufschlus auf Kaufverhalten und Vermögenssituation zulassen. 
 
 
-}
 
-\subsection{Analogie zu unserer Gesellschaft}
+\section{Analogie zu unserer Gesellschaft}
 
 Innerhalb des Prototypens werden durch Watson immer wieder Möglichkeiten angeboten die allgemein geltenden Regeln zu umgehen.
 In unserer Gesellschaft gelten genauso wie in dem Monopoly Spiel Regeln die für alle gültig sind.
@@ -360,7 +385,7 @@ In unserer Gesellschaft gelten genauso wie in dem Monopoly Spiel Regeln die für
 Die durch Watson angeboten Deals wurden in 4 Kategorien eingeteil, wobei für den Prototyp nur drei von relevanz sind.
 Alle diese Kategorien von Deals lassen sich auch in der wirklichen Welt finden.
 
-\subsubsection{Verdeckte-Direkte Deals in der Gesellschaft}
+\subsection{Verdeckte-Direkte Deals in der Gesellschaft}
 
 Verdeckte-Direkte Deals sind Deals, bei dennen der Nutzten zwar verdeckt bleibt und es nicht klar ist, ob wirklich geschummelt wurde.
 Innerhalb des Prototypens ist dies das Manipulieren des Würfelergebnisse. 
@@ -384,7 +409,7 @@ Durch bezahlung Echtgeld kann er diese Beschränkung aufgehoben.
 Dadurch hat er den Vorteil mit weniger Aufwand zu bauen.
 Für andere Spieler ist es nicht einsichtig ob er dieses Feature in Anspruch nimmt oder nicht.
 
-\subsubsection{Offene-Indirekte Deals in der Gesellschaft}
+\subsection{Offene-Indirekte Deals in der Gesellschaft}
 
 Offene-Indirekte Deals sind Deals, bei welchen der Nutzen für den Spieler verzögert eintritt.
 Außerdem ist für andere Spieler erkenntlich, dass die Regeln umgangen wurden.
@@ -399,7 +424,7 @@ Diese Auskunft wird an vielen Stellen genutzt um dann eine Entscheidung über ei
 Abstractism ist ein Spiel welches auf Steam veröfftlich wurde und wie im entwickelten Prototyp Bitcoin-Mining nutzt. \cite{Abstractism2018}
 Dabei hat der Spieler aber nichts von dem Bitcoin Mining erfahren und auch keine Gegenleistung erhalten.
 
-\subsubsection{Verdeckte-Indirekte Deals in der Gesellschaft}
+\subsection{Verdeckte-Indirekte Deals in der Gesellschaft}
 
 Verdeckte-Indirekte Deals sind Deals, bei denen der Nutzen verzögert eintritt und auch nicht erkenntlich ist ob die Regeln umgangen wurden oder nicht.
 Im entwickelten Prototypen ist es möglich durch besuchen von Websites die Ereignisskarten zu beeinflussen.
@@ -420,27 +445,27 @@ Die so bewerteten Bürgen, bekommen dann anhand ihrer Handlungen ein Rating, wel
 Da eine solche Art von Deals einer sehr menschlich Angewohnheit folgen, ist es schwer zu sagen wie weit die Politik davon beeinflusst ist.
 Aber es ist immer wieder zu sehen das Politiker für eine Entscheidung stimmen die sie eigentlich nicht vertreten, weil andere Politiker denen sie gefällig sind dafür stimmen. 
 
-\subsection{Warum baut man solche Systeme}
+\section{Warum baut man solche Systeme?}
 
 Wie in vorangegangen Teil des Kapitels \ref{sec:discussion} gezeigt wurde lassen sich alle implementierten Methodiken sowohl in bestehenden Software Systemen als auch in der Gesellschaft wiederfinden.
 
 Dabei implementieren dieses Systeme meist nicht alle der Methodiken die im dem hier vorgestellten Prototyp gezeigt wurden, sondern nutzen eine Teilmenge mit einer der folgenenden Motivationen.
 
-\subsubsection{Kapitalerzeugung}
+\subsection{Kapitalerzeugung}
 
 Viele Systeme sind konzipiert um direkt Kapital zu erzeugen.
 Manche davon nutzen die hier vorgestellten Methodiken um dies zu erreichen. 
 Innerhalb der Computerspiele Industrie lasseb sich so gennante pay-to-win Spiele finden.
 Diese ermöglichen es dem Spieler mit Echtgeld die Regel zu umgehen oder einen direkte Vorteil innerhalb des Spiels zu erkaufen.
-Andere Spiel wie \Martin{Abstraction} aber auch Anwendungen wie \Martin{Sweat-Coin} nutzen Bitcoin-Mining um mit der Rechenleistung des Spielers Kapital zu generieren.
+Andere Spiel wie Abstraction aber auch Anwendungen wie Sweat-Coin nutzen Bitcoin-Mining um mit der Rechenleistung des Spielers Kapital zu generieren.
 
-\subsubsection{Informationsbeschaffung}
+\subsection{Informationsbeschaffung}
 
 Systeme welche das Ziel haben, Informationen über mögliche Kunden oder das Nutzungsverhalten von bestimmten Zielgruppen offen zu legen finden sich überall.
 Die Teilmenge der Systeme, welche dafür einen Bonus oder Vorteil dem Nutzer geben, welche sonst nicht oder nur gegen Echtgeld erhältlich wären entsprechen der Methodik des Prototypen.
 Beispiele dafür sind endlos, angefangen bei Gratiszeitungen gegen die eigene Anschrift bis hin zum verlinken des Facebook Accounts um einen Startbonus beim Anmelden auf einer Plattform zu bekommen.
 
-\subsubsection{Meinungsverzehrung}
+\subsection{Meinungsverzehrung}
 
 Beim Einkauf im Internet ist die Bewertung eines Produkts oft das wichtigste Kriterium ob man etwas kauft oder nicht.
 Umso breiter das Spektrum der Bewerter desto eher vertraut man der Bewertung.
@@ -452,6 +477,12 @@ Ab dem Zeitpunkt wo der Nutzer für eine positive Bewertung eine Gegenleistung b
 Wird die Identität einer anderen Person genutzt um einen Like oder eine Bewertung zu hinterlassen, ist dies gänzlich ilegal.
 Facebook geht gegen so gennante FakeLikes aggressive vor.
 Durch Facebook wird die im Prototyp umgesetzte Methode als Klickfarm bezeichnet. \cite{FakeLikes2018}
+
+\begin{figure}
+\caption{Verlauf des Spiels inklusive Auswirkungen des Coin-Minings.}
+\includegraphics[width=0.5\textwidth]{screenshot}
+\end{figure}
+
 
 \section{Future Work}\label{sec:future}
 
@@ -489,6 +520,7 @@ Solche Fragestellung könnten wie folgt aussehen?
 
 Um diese Fragen besser beantworten zu können, müssten die Aufgezeichneten Spieldaten analysiert und aufbereitet werden.
 Zusätzlich müsste das Spiel um einen Feedback bzw. Fragemechanismus erweitert werden, der dem Spieler direkt nach dem Spiel Fragen über das Spielerlebniss stellt und diese mit den Daten über den Spielverlauf in Verbindung bringt.
+
 
 \bibliographystyle{acmsiggraph}
 \bibliography{gol-selfaware-monopoly}
